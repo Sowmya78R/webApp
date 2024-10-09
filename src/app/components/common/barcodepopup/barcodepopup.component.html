@@ -1,0 +1,18 @@
+<ngx-smart-modal customClass="nsm-centered" id="scannerModalForWebCam" #scannerModalForWebCam [identifier]="'scannerModalForWebCam'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="float-right">
+        <i class="fa fa-close" style="cursor: pointer;
+  font-size: 23px;
+  margin-left: 270px;" (click)="closeScanner()"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <zxing-scanner #scanner *ngIf="scannerEnable" [formats]="['QR_CODE', 'EAN_13','CODE_128', 'DATA_MATRIX']"
+        [enable]="scannerEnable" (scanSuccess)="[scanSuccessHandler($event),scannerModalForWebCam.close()]">
+      </zxing-scanner>
+    </div>
+  </div>
+</ngx-smart-modal>

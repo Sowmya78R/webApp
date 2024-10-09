@@ -1,0 +1,479 @@
+<div id="inBody" [formGroup]="issuesInventoryForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-6 offset-md-2 mt-2">
+      <div class="udcBtns float-right">
+        <a (click)="upfile.click()"><img src="assets/Export.png" title="Upload Excel" alt=""
+            style="width: 25px;height: 23px;margin-right: 16px;">
+          <input id="upfile" #upfile (click)="upfile.value = null" value=""
+            style="background: none !important;border: none !important;" class="hidden" type="file" accept=".xlsx"
+            (change)="uploadExcel($event)">
+        </a>
+        <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets\Log file 2.png" title="Log File" alt=""
+            style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+        </a>
+        <a>
+          <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+            style="background: none !important;border: none !important;">
+            <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="formBox portlet-title"
+        style="background-color: white;border-bottom-left-radius:50px;border-top-right-radius:50px;border-top:white">
+        <div class="panel-body">
+          <div class="row force-overflow">
+            <div class="col-md-6">
+              <div class="row p-2">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="col-sm-8 col-form-label">{{'Product Category' |translate}}</label>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select Product Catgeory'" [settings]="dropdownSettings"
+                        [data]="categoriesList" [formControl]="issuesInventoryForm.controls['productCategoryNames']"
+                        (ngModelChange)="getCategoryName()" placeholder="{{'product Category Name' |translate}}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group" style="margin-left:10px">
+                    <label class="col-sm-8 col-form-label">{{'Sub Category 1' |translate}}</label>
+                    <div class="col-sm-6">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 1'" [settings]="dropdownSettings"
+                        [data]="subList1" [formControl]="issuesInventoryForm.controls['subcatgory1']"
+                        (focusout)="getExistingCategory()" [disabled]="isSub1Disable">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="col-sm-8 col-form-label">{{'Sub Category 2' |translate}}</label>
+                    <div class="col-sm-6">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 2'" [settings]="dropdownSettings"
+                        [data]="subList2" name="Sub-Category 1" [disabled]="isSub2Disable"
+                        [formControl]="issuesInventoryForm.controls['subcatgory2']"
+                        (focusout)="getSub3DropdownDisable()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="col-sm-8 col-form-label">{{'Sub Category 3' |translate}}</label>
+                    <div class="col-sm-6">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 3'" [settings]="dropdownSettings"
+                        [data]="subList3" [formControl]="issuesInventoryForm.controls['subcatgory3']"
+                        [disabled]="isSub3Disable" (focusout)="getDropdownDatas()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="col-sm-8 col-form-label">{{'Product' |translate}}</label>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select Product'" [settings]="dropdownSettings"
+                        [data]="productListValuesIDs" [formControl]="issuesInventoryForm.controls['productIDNames']">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 col-form-label">{{'Remarks' |translate}}</label>
+                    <div class="col-sm-12">
+                      <input type="text" class="form-control" [(ngModel)]="remarksGlobal"
+                      [ngModelOptions]="{standalone: true}" (focusout)="addRemarkstoLine()">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row float-right">
+                    <div class="col-sm-12 mt-2">
+                      <button class="btn btn-green m-1" (click)="getData()">{{'Filter' |translate}}</button>
+                      <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <!-- datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" -->
+        <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th>Image</th>
+              <th scope="col">{{'Include' |translate}}<input type="checkbox" class="form-control"
+                  [(ngModel)]="selectAllLinesVariable" [ngModelOptions]="{standalone: true}"
+                  (click)="selectAllData($event,'linesArray')"></th>
+              <th scope="col">{{'Product ID' |translate}}</th>
+              <th scope="col">{{'Product Name' |translate}}</th>
+              <th scope="col">{{'Product Description' |translate}}</th>
+              <th scope="col">{{'Brand Name' |translate}}</th>
+
+              <th scope="col">{{'UOM' |translate}}</th>
+              <th scope="col">{{'Available Quantity' |translate}} </th>
+
+              <th scope="col">{{'Issue Quantity' |translate}}</th>
+              <th scope="col">{{'Remarks' |translate}}</th>
+              <th scope="col" [hidden]="locAllocation=='Auto'">{{'Location Selection' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of linesArray;let i = index">
+              <td class="text-left">{{i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td><input type="checkbox" (click)="onSelect($event,data)" [(ngModel)]="data.isChecked"
+                  [checked]="data.isChecked" [ngModelOptions]="{standalone: true}"></td>
+              <td>{{data.productMasterInfo?.productID}}</td>
+              <td>{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.productMasterInfo?.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+
+              <td class="text-center">{{data.inventoryUnit}}</td>
+
+              <td>{{data.totalQuantityInventoryUnit | decimalwithTenDigits}}</td>
+
+              <td><input type="text" class="form-control" [(ngModel)]="data.issueQuantity"
+                  (keyup)="validateDecimal('linesArray','issueQuantity',i)" [ngModelOptions]="{standalone: true}"
+                  (focusout)="getFirstTableData($event,data,'issueQuantity',i)">
+              </td>
+              <td><input type="text" class="form-control" [(ngModel)]="data.remarks"
+                  [ngModelOptions]="{standalone: true}" (focusout)="getFirstTableData($event,data,'remarks',i)"></td>
+              <td [hidden]="locAllocation=='Auto'"><i class="fa fa-table" style="cursor: pointer"
+                  (click)="openModalRecievedLocations(data,i)"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="form-group row" style="width:406px">
+            <label class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10 mt-1">
+              <label class="radio-inline" style="color:grey">
+                <input type="radio" value="Created" class="m-1" [(ngModel)]="newReqObj.status"
+                  [ngModelOptions]="{standalone: true}" (change)="getChangedStatus()" name="status"
+                  name="statusOptions">
+                Created
+              </label>
+              <label class="radio-inline" class="ourCommonColor">
+                <input type="radio" value="Approved" class="m-1" [(ngModel)]="newReqObj.status"
+                  [ngModelOptions]="{standalone: true}" (change)="getChangedStatus()" name="status"
+                  name="statusOptions">
+                Approved
+              </label>
+              <label class="radio-inline" style="color:red">
+                <input checked type="radio" value="Rejected" class="m-1" [(ngModel)]="newReqObj.status"
+                  [ngModelOptions]="{standalone: true}" (change)="getChangedStatus()" name="status"
+                  name="statusOptions">
+                Rejected
+              </label>
+              <label class="radio-inline" style="color:green">
+                <input checked type="radio" value="Completed" class="m-1" [(ngModel)]="newReqObj.status"
+                  [ngModelOptions]="{standalone: true}" (change)="getChangedStatus()" name="status"
+                  name="statusOptions">
+                Completed
+              </label>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="text-center">
+                <button class="btn btn-green m-1" (click)="statusSave('','','Approved')"
+                  *ngIf="globalStatus =='Created'">{{'Approve' |translate}}</button>
+                <button class="btn btn-white m-1" (click)="statusSave('','','Rejected')"
+                  *ngIf="globalStatus=='Created'">{{'Reject' |translate}}</button>
+                <button class="btn btn-green m-1" (click)="statusSave('','','Completed')"
+                  *ngIf="globalStatus=='Approved'">{{'Complete' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row" style="width:580px">
+            <label class="col-sm-2 col-form-label">Issue Status</label>
+            <div class="col-sm-10 mt-1">
+              <label class="radio-inline">
+                <input type="radio" value="All" class="m-1" [(ngModel)]="newObj.issueStatus"
+                  [ngModelOptions]="{ standalone: true }" (change)="fetchAllInventoryIssues()" name="issueStatus"
+                  name="issueStatus">
+                All
+              </label>
+              <label class="radio-inline" style="color:grey">
+                <input type="radio" value="Open" class="m-1" [(ngModel)]="newObj.issueStatus"
+                  [ngModelOptions]="{ standalone: true }" (change)="fetchAllInventoryIssues()" name="issueStatus"
+                  name="issueStatus">
+                Open
+              </label>
+              <label class="radio-inline" style="color:green">
+                <input checked type="radio" value="Closed" class="m-1" [(ngModel)]="newObj.issueStatus"
+                  [ngModelOptions]="{ standalone: true }" (change)="fetchAllInventoryIssues()" name="issueStatus"
+                  name="issueStatus">
+                Closed
+              </label>
+
+
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-md-3">
+          <div class="row float-right">
+            <div class="col-sm-12">
+              <button class="btn btn-green m-2" (click)="firstTableSave()">{{'Inventory Issue' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label>Show</label>
+          </div>
+          <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+              class="form-control" [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select></div>
+          <div class="col-md-0.5 pl-0"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1">
+            <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+              (keyup)="fetchAllInventoryIssues(page=1, itemsPerPage);">
+          </div>
+        </div>
+        <table class="table table-striped" style="overflow-y: auto;display: block;">
+          <thead>
+            <tr style="background-color:'blueviolet'">
+              <th>{{'Sr.No' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','SO Number')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','SO Number')"></i></th>
+              <th>{{'Image' | translate}}</th>
+              <th>{{'Include' |translate}}
+                <!-- (click)="selectAllData($event,'issueInventoryTableFetch')" -->
+                <input type="checkbox" class="form-control"
+                  [disabled]="newReqObj.status == 'Rejected' || newReqObj.status == 'Completed'"
+                  (click)="selectAllDataForSecond($event,'issueInventoryTableFetch')"
+                  [(ngModel)]="selectAllCheckboxValue" [ngModelOptions]="{standalone: true}">
+              </th>
+
+              <th>{{'Action' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','SO Number')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','SO Number')"></i></th>
+
+              <th>{{'Transaction ID' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Transaction ID')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Transaction ID')"></i></th>
+              <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Product ID')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product ID')"></i></th>
+              <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Product Name')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Name')"></i></th>
+              <th>{{'Product Description' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Product Description')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Description')"></i></th>
+              <th>{{'Brand Name' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Brand Name')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Brand Name')"></i></th>
+              <th>{{'Available Quantity' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Available Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Available Quantity')"></i></th>
+              <th>{{'Issued Quantity' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Issued Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Issued Quantity')"></i></th>
+              <th>{{'Reason' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Reason')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Reason')"></i></th>
+              <th>{{'Created By' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Created By')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Created By')"></i></th>
+              <th>{{'Approved By/Rejected By' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Approved By/Rejected By')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Approved By/Rejected By')"></i></th>
+              <th>{{'Completed Date' |translate}} <i class="fa fa-sort-asc"
+                  (click)="setDirection('ASC','Completed Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Completed Date')"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of issueInventoryTableFetch | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+              <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td><input type="checkbox" [checked]="data.isChecked" (click)="onCheckBoxSelect($event,data)"
+                  [disabled]="data.status=='Completed' || data.status == 'Rejected'"></td>
+              <td>
+                <select [value]="data.status" (change)="statusSave(data,$event)" class="form-control"
+                  style="width: 100px;">
+                  <option *ngIf="data.status=='Created'" value="Created" [disabled]="data.status=='Created'">Created
+                  </option>
+                  <option value="Approved" *ngIf="data.status=='Created'
+                  || data.status=='Approved'" [disabled]="data.status=='Approved'">
+                    Approved</option>
+                  <option value="Rejected" *ngIf="data.status=='Rejected' || data.status=='Created'"
+                    [disabled]="data.status=='Rejected'">Rejected
+                  </option>
+                  <option *ngIf="data.status=='Approved' || data.status=='Completed'" value="Completed"
+                    [disabled]="data.status=='Completed'">Completed</option>
+                </select>
+              </td>
+              <td>{{data.fullInventoryIssueTransactionID}}</td>
+
+              <td>{{data.productMasterInfo?.productID}}</td>
+              <td>{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td>{{data.totalAvailableQuantity | decimalwithTenDigits}}</td>
+              <td>{{data.issueQuantity | decimalwithTenDigits}}</td>
+              <td>{{data.remarks}}</td>
+              <td>{{data.createdBy}}</td>
+              <td>{{data.approvedBy}}</td>
+              <td class="text-center">{{data.completedDate | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2" *ngIf="issueInventoryTableFetch.length>0">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" (pageChange)="fetchAllInventoryIssues((page = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="goodsrecieving" #pickupLocationsModal
+  [identifier]="'pickupLocationsModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <h5>{{'Issues Inventory' |translate}}</h5>
+        </div>
+        <div class="col-md-3">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="wmsDataTables p-2">
+        <div id="style-8" class="panel-body scrollbar" style="height:auto">
+          <table id="example" class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">{{'Include' |translate}}</th>
+                <th scope="col">{{'Location Name' |translate}}</th>
+                <th scope="col">{{'Available Quantity' |translate}}</th>
+                <th scope="col">{{'Batch Number' |translate}}</th>
+                <th scope="col">{{'Picked Quantity' |translate}}</th>
+                <th scope="col">{{'Invoice Number' |translate}}</th>
+                <th scope="col">{{'Invoice Date' |translate}}</th>
+                <th scope="col">{{'BOE Number ' |translate}}</th>
+                <th scope="col">{{'BOE Date' |translate}}</th>
+                <th scope="col">{{'BOND Number' |translate}}</th>
+                <th scope="col">{{'BOND Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pickupLocations;let i=index">
+                <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                    [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                <td>{{data.locationInfo.locationName}}</td>
+                <td>{{data.quantityInventoryUnit | decimalwithTenDigits}}</td>
+                <td>{{data.batchNumber}}</td>
+                <td *ngIf="!data.isEdit">
+                  <span>
+                    {{data.pickedQuantity}}
+                  </span>
+                </td>
+                <td *ngIf="data.isEdit"><span>
+                    <input type="text" class="form-control" #pickedQuantity [(ngModel)]="data.pickedQuantity"
+                      [ngModelOptions]="{standalone: true}" (focusout)="savequantity(pickedQuantity.value,data)"
+                      (keyup)="validateDecimal('pickupLocations','pickedQuantity',i)"></span>
+                </td>
+                <td>{{data.invoiceNumber}}</td>
+                <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.billOfEntryNumber}}</td>
+                <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.bondNumber}}</td>
+                <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class=" float-right">
+        <button class="btn btn-green" (click)="savePickupLocations()">{{'Save' |translate}}</button>
+        <button class="btn btn-white" (click)="resetRecieveLocations()">{{'Clear' |translate}}</button>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

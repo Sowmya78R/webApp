@@ -1,0 +1,145 @@
+<form [formGroup]="editCustomerDetailsForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+<div class="panel portlet">
+  <div class="formBox portlet-title">
+    <div class="row">
+      <div class="panel-heading formTitle">
+        <h4>{{'EDIT CUSTOMER DETAILS' |translate}}</h4>
+        <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span> | <i
+            class="material-icons fullscreen"> unfold_less </i> </div>
+      </div>
+      <div class="formTitleHover">
+        <h4>{{'EDIT CUSTOMER DETAILS' |translate}}
+          <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+        </h4>
+      </div>
+    </div>
+    <div id="style-8" class="panel-body scrollbar">
+      <div class="row force-overflow">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Customer ID' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="customerID" readOnly formControlName="customerID" name="customerID" placeholder="{{'Customer ID' |translate}}"
+                class="form-control"
+                (focus)="onFocusForElement('customerID')" (focusout)="onFocusOutForElement()" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Customer Name' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="customerName1" readOnly formControlName="customerName"
+
+                (focus)="onFocusForElement('customerName')" (focusout)="onFocusOutForElement()" name="customerName"
+                placeholder="{{'Customer Name' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Customer Type' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <select class="form-control" id="customerType" name="customerType" formControlName="customerType"
+
+                (ngModelChange)="onFocusForElement('customerType')" (focusout)="onFocusOutForElement()">
+                <option [ngValue]="null" [selected]="true">--Select--</option>
+                <option *ngFor="let customerType of customerTypes" [ngValue]="customerType">
+                  {{customerType}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="email" name="email" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('email')" (focusout)="onFocusOutForElement()" formControlName="email"
+                placeholder="{{'Customer Email ID' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Country' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <select id="country" name="country" formControlName="country" placeholder="Country"
+                (focusout)="onFocusOutForElement()" (ngModelChange)="onFocusForElement('country')"
+                class="form-control vbrg">
+                <option [ngValue]="null">--Select--</option>
+                <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}</option>
+              </select>
+            </div>
+          </div>
+          <p class="ml-3 mt-4" [hidden]="statusCheck"><a (click)="redirectToCustomerMasterData()" class="red"><u>{{'Edit More Customer details' |translate}}</u></a></p>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'State' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="state" name="state" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('state')" (focusout)="onFocusOutForElement()" formControlName="state"
+                placeholder="{{'State' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'City' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="city" name="city" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('city')" (focusout)="onFocusOutForElement()" formControlName="city"
+                placeholder="{{'City' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'SPOC Name' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="spocName" name="spocName" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('spocName')" (focusout)="onFocusOutForElement()" formControlName="spocName"
+                placeholder="{{'SPOC Name' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'SPOC Phone Number' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <input id="spocPhoneNumber" name="spocPhoneNumber" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('spocPhoneNumber')" (focusout)="onFocusOutForElement()"
+                formControlName="spocPhoneNumber" placeholder="{{'SPOC Number' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'SPOC Email' |translate}}</label>
+            <div class="col-sm-7">
+              <input id="spocEmailID" name="spocEmailID" [readOnly]="isReadMode"
+
+                (focus)="onFocusForElement('spocEmail')" (focusout)="onFocusOutForElement()" formControlName="spocEmail"
+                placeholder="{{'SPOC Email ID' |translate}}" class="form-control" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-3" *ngIf="!isEditCustomer">
+          <div class="form-group row">
+            <div class="col-sm-12 text-center  mb-3">
+              <button class="btn btn-green" (click)="update()" [disabled]="!permissionsList.includes('Update') || statusCheck" >{{'Update' |translate}}</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-3" *ngIf="isEditCustomer">
+          <div class="form-group row">
+             <div class="col-sm-12 text-center mb-3">
+                <button class="btn btn-green mr-2" (click)="save()">{{'Save' |translate}}</button>
+                <button class="btn btn-white" (click)="cancel()">{{'Cancel' |translate}}</button>
+             </div>
+          </div>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>

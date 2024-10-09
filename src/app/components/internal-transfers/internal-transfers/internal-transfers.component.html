@@ -1,0 +1,622 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-6 offset-md-2 mt-2">
+        <div class="udcBtns float-right" *ngIf="permissionsList.includes('Update')">
+          <a (click)="upfile.click()"><img src="assets/Export.png" title="Upload Excel" alt=""
+              style="width: 25px;height: 23px;margin-right: 16px;">
+            <input id="upfile" #upfile (click)="upfile.value = null" value=""
+              style="background: none !important;border: none !important;" class="hidden" type="file" accept=".xlsx"
+              (change)="uploadExcel($event)">
+          </a>
+          <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets\Log file 2.png" title="Log File" alt=""
+              style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'INTERNAL TRANSFERS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'INTERNAL TRANSFERS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <form [formGroup]="internalTransferForm">
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <!--  <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="dataService"
+                          (selected)="onProductIDNameChange()"
+                          [ngClass]="{'valiError': shouldShowErrors('productIDName'), 'valiSucess': shouldShowSuccess('productIDName')}"
+                          [minSearchLength]="0" placeholder="{{'Product ID/Name' |translate}}">
+                        </ng2-completer> -->
+                        <ng2-completer #productCompleter name="productIDName" formControlName="productIDName"
+                          [datasource]="dataService" (selected)="onProductIDNameChange()"
+                          [ngClass]="{'valiError': shouldShowErrors('productIDName'), 'valiSucess': shouldShowSuccess('productIDName')}"
+                          [minSearchLength]="0" placeholder="{{'Product ID/Name' |translate}}">
+                        </ng2-completer>
+
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="internalTransferForm.controls.inventoryAllocationType.value=='Auto'">
+                      <label class="col-sm-5 col-form-label">{{'SCR Location' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer name="sourceLocation" formControlName="sourceLocation"
+                          [datasource]="locationNames" (selected)="fetchAllLocations()"
+                          [ngClass]="{'valiError': shouldShowErrors('sourceLocation'), 'valiSucess': shouldShowSuccess('sourceLocation')}"
+                          [minSearchLength]="0" placeholder="{{'Source Location' |translate}}">
+                        </ng2-completer>
+                        <!-- <input id="sourceLocation" name="sourceLocation" placeholder="{{'Source Location' |translate}}"
+                        [ngClass]="{'valiError': shouldShowErrors('sourceLocation'), 'valiSucess': shouldShowSuccess('sourceLocation')}"
+                          (focus)="onFocusForElement('sourceLocation')" (focusout)="onFocusOutForElement()"
+                          class="form-control" formControlName="sourceLocation" type="text"> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'DES Location' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <!-- <input id="destinationLocation" name="destinationLocation"
+                        [ngClass]="{'valiError': shouldShowErrors('destinationLocation'), 'valiSucess': shouldShowSuccess('destinationLocation')}"
+                          (focus)="onFocusForElement('destinationLocation')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Destination Location' |translate}}" class="form-control" formControlName="destinationLocation"
+                          type="text"> -->
+                        <ng2-completer name="destinationLocation" formControlName="destinationLocation"
+                          [datasource]="destinationLocationNames"
+                          [ngClass]="{'valiError': shouldShowErrors('destinationLocation'), 'valiSucess': shouldShowSuccess('destinationLocation')}"
+                          [minSearchLength]="0" placeholder="{{'Destination Location' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="leftSideText"
+                      [hidden]="internalTransferForm.controls.inventoryAllocationType.value=='Manual'">
+                      <label class="col-sm-5 col-form-label">{{'Reason' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="reason" placeholder="{{'Reason' |translate}}" class="form-control"
+                          formControlName="reason"
+                          [ngClass]="{'valiError': shouldShowErrors('reason'), 'valiSucess': shouldShowSuccess('reason')}"
+                          (focus)="onFocusForElement('reason')" (focusout)="onFocusOutForElement()" type="text">
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row" *ngIf="showImage">
+                      <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                      <div class="col-sm-8">
+                        <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                          alt="No Image">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Transfer Quantity' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="transferQuantity" name="addressLine1"
+                          placeholder="{{'Transfer Quantity' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('transferQuantity'), 'valiSucess': shouldShowSuccess('transferQuantity')}"
+                          (focus)="onFocusForElement('transferQuantity')" (focusout)="onFocusOutForElement()"
+                          class="form-control" formControlName="transferQuantity" type="text"
+                          oninput="validity.valid||(value='');" min="0" (keyup)="validateDecimal('transferQuantity')">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Allocation Type' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <button class="btn-secondary"
+                          *ngIf="internalTransferForm.controls.inventoryAllocationType.value=='Manual'"
+                          (click)="saveAllocationType('Manual')">Manual</button>
+                        <button class="btn-success"
+                          *ngIf="internalTransferForm.controls.inventoryAllocationType.value=='Auto'"
+                          (click)="saveAllocationType('Auto')">Auto</button>
+                        <div class="col-md-12 d-flex justify-content-end"
+                          *ngIf="internalTransferForm.controls.inventoryAllocationType.value=='Manual'"
+                          style="margin-top: -23px;height: 0px;">
+                          <div class="d-flex flex-column align-items-end">
+                            <i class="fa fa-search" style="margin-left: 20px;cursor: pointer;"
+                              (click)="openModalRecievedLocations()"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="internalTransferForm.controls.inventoryAllocationType.value=='Manual'">
+                      <label class="col-sm-5 col-form-label">{{'Selected Locations' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" [placeholder]="'Select'" [(ngModel)]="returnShowValues"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="rightSideText"
+                      [hidden]="internalTransferForm.controls.inventoryAllocationType.value=='Manual'">
+                      <label class="col-sm-5 col-form-label">{{'Reason' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="reason" placeholder="{{'Reason' |translate}}" class="form-control"
+                          formControlName="reason"
+                          [ngClass]="{'valiError': shouldShowErrors('reason'), 'valiSucess': shouldShowSuccess('reason')}"
+                          (focus)="onFocusForElement('reason')" (focusout)="onFocusOutForElement()" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group row">
+
+                      <div class="col-sm-12 text-center  mb-3 mt-3">
+                        <button class="btn btn-green mr-1" (click)="save()"
+                          [disabled]="isButtonDisabled(internalTransferForm)">{{'SAVE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <ngx-smart-modal customClass="nsm-centered" id="internalTransfer" #pickupLocationsModal
+        [identifier]="'pickupLocationsModal'">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <h5>{{'Inventory' |translate}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="wmsDataTables p-2">
+              <div id="style-8" class="panel-body scrollbar" style="height:auto">
+                <table id="example" class="table table-striped">
+                  <thead>
+                    <tr style="background-color:'blueviolet'">
+                      <th *ngFor="let key of tableHeadingsForPopup">{{key}} <i class="fa fa-sort-asc"
+                          (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                          left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let inventory of pickupLocations;let i = index">
+                      <td><input type="checkbox" [checked]="inventory.isChecked" (click)="read1($event,inventory)"
+                          [(ngModel)]="inventory.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                      <td>{{inventory.productMasterInfo?.productIDName}}</td>
+                      <td>{{inventory.zoneInfo?.zoneName}}</td>
+                      <td>{{inventory.locationInfo?.locationName}}</td>
+                      <td *ngIf="!inventory.isEdit">
+                        <span>
+                          {{inventory.transferQuantity}}
+                        </span>
+                      </td>
+                      <td *ngIf="inventory.isEdit"><span>
+                          <input type="text" class="form-control" #transferQuantity
+                            [(ngModel)]="inventory.transferQuantity" (keyup)="validateLocationDecimal(i)"
+                            (focusout)="savequantity(transferQuantity.value,inventory)"
+                            [ngModelOptions]="{standalone: true}">
+                        </span>
+                      </td>
+                      <td><span *ngIf="!inventory.isEdit">{{inventory.reason}}</span>
+                        <span *ngIf="inventory.isEdit"><input placeholder="{{'Reason' |translate}}" class="form-control"
+                            [(ngModel)]="inventory.reason" type="text"></span>
+                      </td>
+                      <td>{{inventory.quantityInventoryUnit | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                      <td>{{inventory.availableQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                      <td>{{inventory.reservedQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                      <td>{{inventory.invoiceNumber}}</td>
+                      <td>{{inventory.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{inventory.billOfEntryNumber}}</td>
+                      <td>{{inventory.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{inventory.bondNumber}}</td>
+                      <td>{{inventory.bondDate | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" [hidden]="statusCheck">
+            <div class="float-right">
+              <button class="btn btn-green" (click)="savePickupLocations()">{{'Save'
+                |translate}}</button>
+              <button class="btn btn-white" (click)="resetRecieveLocations()">{{'Clear'
+                |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </ngx-smart-modal>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'INVENTORY DETAILS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+
+              <div class="formTitleHover">
+                <h4>{{'INVENTORY DETAILS' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="style-8" class="wmsDataTables"
+                    style="min-height:auto;overflow-y: hidden;">
+                    <div class="row">
+                      <div class="col-md-1 pr-0">
+                        <label>Show</label>
+                      </div>
+                      <div class="col-md-2" style="top:-10px"><select [(ngModel)]="itemsPerPage"
+                          (change)="fetchAllDFirst(first=1,$event)" class="form-control"
+                          [ngModelOptions]="{standalone: true}">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select></div>
+                      <div class="col-md-1 pl-0"><label>Entries</label>
+                      </div>
+                      <div class="col-md-5"></div>
+                      <div class="col-md-1">
+                        <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                          [ngModelOptions]="{standalone: true}" (keyup)="this.fetchAllInventories(first=1, itemsPerPage)">
+                      </div>
+                    </div>
+                    <table class="table table-striped" style="overflow-y: auto;display: block;">
+                      <thead>
+                        <tr style="background-color:'blueviolet'">
+                          <th *ngFor="let key of tableHeadings">{{key}} <i class="fa fa-sort-asc"
+                              (click)="setDirection('ASC',key,'header')" aria-hidden="true"></i> <i
+                              class="fa fa-sort-desc" style="    position: relative;
+                              left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key,'header')"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let inventory of filteredInventoryByProduct | paginate: {itemsPerPage: itemsPerPage,currentPage: first,totalItems: totalItemsList,id:'first'};let i=index;"
+                          [ngStyle]="{'color':(inventory.inventoryAvailability ? 'black' : 'red')}">
+                          <td class="text-left">{{((first-1) * itemsPerPage)+i+1}}</td>
+                          <!--   <td class="text-left">{{i+1}}</td> -->
+                          <td>{{inventory.productMasterInfo?.productIDName}}</td>
+                          <td>{{inventory.zoneInfo?.zoneName}}</td>
+                          <td>{{inventory.locationInfo?.locationName}}</td>
+                          <td>{{inventory.quantityInventoryUnit | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                          <td>{{inventory.availableQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                          <td>{{inventory.reservedQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                          <td>{{inventory.batchNumber}}</td>
+                          <td>{{inventory.serialNumber}}</td>
+                        </tr>
+                      </tbody>
+                      <div class="row mt-2">
+                        <div class="col-md-12" style="text-align: end;">
+                          <pagination-controls class="pagi" (pageChange)="fetchAllInventories((first = $event))"
+                            id="first">
+                          </pagination-controls>
+                        </div>
+                      </div>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!--  <div class="row force-overflow">
+                <div class="col-md-12">
+                  <table class="table table-striped d-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{'Product ID/Name' |translate}}</th>
+                        <th>{{'Zone Name' |translate}}</th>
+                        <th>{{'Location Name' |translate}}</th>
+                        <th>{{'Quantity Inventory Unit' |translate}}</th>
+                        <th>{{'Available Quantity' |translate}}</th>
+                        <th>{{'Reserved Quantity' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="filteredInventoryByProduct.length > 0">
+                      <tr *ngFor="let inventory of filteredInventoryByProduct; let i = index"
+                        [ngStyle]="{'color':(inventory.inventoryAvailability ? 'black' : 'red')}">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{inventory.productMasterInfo?.productIDName}}</td>
+                        <td>{{inventory.zoneInfo?.zoneName}}</td>
+                        <td>{{inventory.locationInfo?.locationName}}</td>
+                        <td>{{inventory.quantityInventoryUnit}} {{inventory.inventoryUnit}}</td>
+                        <td>{{inventory.availableQuantity}} {{inventory.inventoryUnit}}</td>
+                        <td>{{inventory.reservedQuantity}} {{inventory.inventoryUnit}}</td>
+                      </tr>
+                    </tbody>
+                    <tbody *ngIf="filteredInventoryByProduct.length === 0">
+                      <tr>
+                        <th colspan="6" class="text-center"> No records found in Inventory </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Status</label>
+          <div class="col-sm-10 mt-1">
+            <label class="radio-inline ml-2" style="color:grey">
+              <input type="radio" value="All" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="findAllInternalTransfers()" name="status" name="statusOptions">
+              ALL
+            </label>
+            <label class="radio-inline ml-2" style="color:grey">
+              <input type="radio" value="Created" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="findAllInternalTransfers()" name="status" name="statusOptions">
+              Created
+            </label>
+            <label class="radio-inline ml-2" style="color:green">
+              <input type="radio" value="Completed" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="findAllInternalTransfers()" name="status" name="statusOptions">
+              Completed
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+
+          <div class="row">
+            <div class="">
+              <label>Show</label>
+            </div>
+           <div class="col-md-1">
+              <select [(ngModel)]="itemsPerPageInternalTransfers" (change)="onItemsPerPageChange(second=1,$event)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option [value]="5">5</option>
+                <option [value]="10">10</option>
+                <option [value]="25">25</option>
+                <option [value]="50">50</option>
+              </select>
+            </div>
+            <div class="col-md-1"><label>Entries</label>
+            </div>
+            <div class="col-md-8"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKeyInternalTransfer" placeholder="Search..."
+                [ngModelOptions]="{standalone: true}"
+                (keyup)="findAllInternalTransfers(second=1, itemsPerPageInternalTransfers);">
+            </div>
+          </div>
+
+          <table class="table table-striped w-100">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <!-- <th *ngFor="let key of internalTransfersHeading">{{key}} <i class="fa fa-sort-asc"
+                    (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th> -->
+                <td>{{'S.No' |translate}}</td>
+                <td>{{'Image' | translate}}</td>
+                <td>{{'Status' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','Status')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Status')"></i></td>
+                <td>{{'Transaction ID' |translate}}<i class="fa fa-sort-asc"
+                    (click)="setDirection1('ASC','Transaction ID')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    aria-hidden="true" (click)="setDirection1('DESC','Transaction ID')"></i></td>
+                <td>{{'Assigned To' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','Assigned To')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Assigned To')"></i></td>
+                <td>{{'Assigned By' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','Assigned By')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Assigned By')"></i></td>
+                <td>{{'Product ID/Name' |translate}}<i class="fa fa-sort-asc"
+                    (click)="setDirection1('ASC','Product ID/Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    aria-hidden="true" (click)="setDirection1('DESC','Product ID/Name')"></i></td>
+                <td>{{'Source Location' |translate}}<i class="fa fa-sort-asc"
+                    (click)="setDirection1('ASC','Source Location')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    aria-hidden="true" (click)="setDirection1('DESC','Source Location')"></i></td>
+                <td>{{'Destination Location' |translate}}<i class="fa fa-sort-asc"
+                    (click)="setDirection1('ASC','Destination Location')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Destination Location')"></i></td>
+                <td>{{'Transfer Quantity' |translate}}<i class="fa fa-sort-asc"
+                    (click)="setDirection1('ASC','Transfer Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" aria-hidden="true" (click)="setDirection1('DESC','Transfer Quantity')"></i>
+                </td>
+                <td>{{'Reason' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','Reason')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Reason')"></i></td>
+                <td>{{'Start Date' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','Start Date')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','Start Date')"></i></td>
+                <td>{{'End Date' |translate}}<i class="fa fa-sort-asc" (click)="setDirection1('ASC','End Date')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" aria-hidden="true"
+                    (click)="setDirection1('DESC','End Date')"></i></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let internalTransfer of internalTransfers | paginate: {itemsPerPage: itemsPerPageInternalTransfers,currentPage: second,totalItems: totalItems,id:'second'};let i=index;">
+                <td class="text-left">{{((second-1) * itemsPerPageInternalTransfers)+i+1}}</td>
+                <td *ngIf="internalTransfer.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + internalTransfer.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip"
+                      class="tooltip-text">{{internalTransfer.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!internalTransfer.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(internalTransfer.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td *ngIf="!permissionToggle">
+                  <div class="row">
+                    <div class="col-md-6" *ngIf="internalTransfer.showComplete && !internalTransfer.isCompleteorReject">
+                      <span>
+                        <span *ngIf="internalTransfer.startDate">
+                          <button class="btn btn-primary"
+                            (click)="onStatusChange(internalTransfer,'status')">Complete</button></span>
+                        <span *ngIf="!internalTransfer.startDate"><button class="btn btn-primary"
+                            (click)="onStatusChange(internalTransfer,'startDate')">Start</button></span>
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row" *ngIf="internalTransfer.isViewToggle == false">
+                        <div class="col-sm-5">
+                          <span *ngIf="(!internalTransfer.showComplete ||  internalTransfer.isCompleteorReject)">
+                            <p
+                              [ngStyle]="{'color':(internalTransfer.statusStages[internalTransfer.statusStages.length-1].status=='Created') ?'grey':'green'}">
+                              {{internalTransfer.statusStages[internalTransfer.statusStages.length-1].status}}</p>
+                          </span>
+                          <span style="display: flex;justify-content: left;">
+                            <i class="fa fa-arrow-down" aria-hidden="true"
+                              style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                              (click)="changeDownToggle(internalTransfer)">
+                            </i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="internalTransfer.isViewToggle == true">
+                        <div class="col-sm-5">
+                          <i class="fa fa-arrow-up" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeUpToggle(internalTransfer)">
+                          </i>
+                        </div>
+                        <div class="col-sm-4">
+                          <span>
+                            <p *ngFor="let start of internalTransfer.statusStages"
+                              [ngStyle]="{'color':(start.status=='Created') ?'grey':'green'}">
+                              {{start.status}} {{start.statusSubmittedBy}}
+                              {{start.statusSubmittedDate |
+                              date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="permissionToggle && internalTransfer.statusStages && statusObj">
+                  <div class="row">
+                    <div class="col-md-6"
+                      *ngIf="internalTransfer.statusStages[internalTransfer.statusStages.length-1].statusSequence == statusObj.statusSequence && !internalTransfer.startDate && !internalTransfer.isCompleteorReject">
+                      <span>
+                        <select [value]="internalTransfer.dummyStage" (change)="statusSave(internalTransfer,$event)">
+                          <option selected disabled value="null">Select</option>
+                          <option>{{statusObj.status}}</option>
+                          <option>Rejected</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="col-md-6" *ngIf="internalTransfer.showComplete && !internalTransfer.isCompleteorReject">
+                      <span>
+                        <span *ngIf="internalTransfer.startDate">
+                          <button class="btn btn-primary"
+                            (click)="onStatusChange(internalTransfer,'status')">Complete</button></span>
+                        <span *ngIf="!internalTransfer.startDate"><button class="btn btn-primary"
+                            (click)="onStatusChange(internalTransfer,'startDate')">Start</button></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row" *ngIf="internalTransfer.isViewToggle == false">
+                      <div class="col-sm-4">
+                        <span
+                          *ngIf="(internalTransfer.statusStages[internalTransfer.statusStages.length-1].statusSequence != statusObj.statusSequence && !internalTransfer.showComplete) || internalTransfer.isCompleteorReject">
+                          <p>{{internalTransfer.statusStages[internalTransfer.statusStages.length-1].status}}</p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-down" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeDownToggle(internalTransfer)">
+                        </i>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="internalTransfer.isViewToggle == true">
+                      <div class="col-sm-10">
+                        <span>
+                          <p *ngFor="let start of internalTransfer.statusStages">
+                            {{start.status}} {{start.statusSubmittedBy}}
+                            {{start.statusSubmittedDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-up" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeUpToggle(internalTransfer)">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>{{internalTransfer.fullInternalTransferTransactionID}}</td>
+                <td *ngIf="!internalTransfer.endDate">
+                  <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                    [data]="wareHouseTeamsListIDs" [(ngModel)]="internalTransfer.assignedTo"
+                    [ngModelOptions]="{standalone: true}" (focusout)="intoEmployee($event,internalTransfer)"
+                    [disabled]="noPermissions">
+                  </ng-multiselect-dropdown>
+                </td>
+                <td *ngIf="internalTransfer.endDate">{{internalTransfer.assignedTo}}</td>
+                <td>{{internalTransfer.assignedBy}}</td>
+                <td>{{internalTransfer.productMasterInfo?.productIDName}}</td>
+                <td>{{internalTransfer.sourceLocation?.locationName}}</td>
+                <td>{{internalTransfer.destinationLocation?.locationName}}</td>
+                <td>{{internalTransfer.transferQuantity | decimalwithTenDigits}} {{internalTransfer.inventoryUnit}}</td>
+                <td>{{internalTransfer.reason}}</td>
+                <td class="text-center">{{internalTransfer.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-center">{{internalTransfer.completedBy}} <br> {{internalTransfer.endDate | date:
+                  'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+          <div class="text-right" style="text-align: end;">
+            <pagination-controls class="pagi" (pageChange)="findAllInternalTransfers((second = $event))" id="second">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>

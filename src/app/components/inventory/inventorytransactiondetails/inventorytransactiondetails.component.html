@@ -1,0 +1,369 @@
+<div id="inBody" [formGroup]="inventoryTransactionDetailsForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4 offset-md-4">
+          <div class="udcBtns float-right">
+            <ul>
+              <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i> Download Excel </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'INVENTORY BY TRANSACTION' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                        class="fa fa-angle-up"></i></span>
+                    |
+                    <i class="material-icons fullscreen"> unfold_less </i>
+                  </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'INVENTORY BY TRANSACTION' |translate}} <div class="float-right"><i
+                        class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body scrollbar" id="style-8">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Transaction Type' |translate}}</label>
+                      <div class="col-sm-6">
+                        <select name="" id="" class="form-control" formControlName="transactionType"
+                        (change)="getOrderIDs()">
+                          <option [ngValue]=null [selected]=true>--Select--</option>
+                          <option value="GOODS RECEIVING">GOODS RECEIVING</option>
+                          <option value="PURCHASE RETURN">PURCHASE RETURN</option>
+                          <option value="SALES RETURN">SALES RETURN</option>
+                          <option value="SALES ORDER">SALES ORDER</option>
+                          <option value="WAREHOUSE TRANSFER">WAREHOUSE TRANSFER</option>
+                          <option value="WAREHOUSE TRANSFER RETURN">WAREHOUSE TRANSFER RETURN</option>
+                          <option value="Opening Inventory" >OPENING INVENTORY</option>
+                          <option value="INVENTORY RECEIVING">INVENTORY RECEIVING</option>
+                          <option value="INVENTORY ADJUSTMENT">INVENTORY ADJUSTMENT</option>
+                          <option value="INTERNAL TRANSFER">INTERNAL TRANSFER</option>
+                          <option value="WAREHOUSE TRANSFER REPLENISHMENT">WAREHOUSE TRANSFER REPLENISHMENT</option>
+                          <option value="WAREHOUSE TRANSFER CROSS DOCKING">WAREHOUSE TRANSFER CROSS DOCKING</option>
+                          <option value="CYCLE COUNTING">CYCLE COUNTING</option>
+                          <option value="REPLENISHMENT">REPLENISHMENT</option>
+                          <option value="CROSS DOCKING">CROSS DOCKING</option>
+                          <option value="INVENTORY ISSUE REPLENISHMENT">INVENTORY ISSUE REPLENISHMENT</option>
+                          <option value="INVENTORY ISSUE">INVENTORY ISSUE</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="productIDs" formControlName="productIDNames">
+                    </ng-multiselect-dropdown>
+                       <!--  <ng2-completer id="Product" name="Product" formControlName="productIDName"
+                          [datasource]="productIDs" [minSearchLength]="0" placeholder="{{'Product' |translate}}">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order ID' |translate}}</label>
+                      <div class="col-sm-6">
+                        <ejs-combobox #remote [dataSource]="products" [fields]="fields"
+                        (open)="onOpen($event,'dropdownObj')" [query]="query" [(ngModel)]='newReqObj.dummyorderID'
+                        [allowFiltering]="true" (filtering)='onFiltering($event)'
+                        (change)="accessOrderID($event)" [enablePersistence]="true"
+                        [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                        <!-- <ng2-completer id="Order ID" name="Order ID" formControlName="orderID" [datasource]="products"
+                          [minSearchLength]="0" placeholder="{{'Order ID' |translate}}" 
+                          [inputClass]="'form-control form-control-inline'">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Suppiler ID/Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="supplierIDNames" formControlName="supplierIDNames">
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Zone' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="zonesIDs" formControlName="zoneNames">
+                    </ng-multiselect-dropdown>
+                        <!-- <ng2-completer id="Zone" name="Zone" formControlName="zoneName" [datasource]="zonesIDs"
+                          [minSearchLength]="0" placeholder="{{'Zone' |translate}}">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Rack' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="racksIDs" formControlName="rackNames">
+                    </ng-multiselect-dropdown>
+                        <!-- <ng2-completer id="Rack" name="Rack" formControlName="rackName" [datasource]="racksIDs"
+                          [minSearchLength]="0" placeholder="{{'Rack' |translate}}">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Location' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="locationsIDs" formControlName="locationNames">
+                    </ng-multiselect-dropdown> 
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Customer ' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="customersIDsList" formControlName="customerIDNames">
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="wareHouseIDNamesList" formControlName="wareHouseIDNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Transaction From' |translate}}</label>
+                      <div class="col-sm-6">
+                        <input type="date" name="" class="form-control" id="" formControlName="transactionDateTimeFrom">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Transaction To' |translate}}</label>
+                      <div class="col-sm-6">
+                        <input type="date" name="" class="form-control" id="" formControlName="transactionDateTimeTo">
+                      </div>
+                    </div>
+                    <div class="col-md-12 mt-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label"> </label>
+                        <div class="col-sm-8 text-right mb-3">
+                          <button class="btn btn-green mr-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                          <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label class="mt-1">Show</label>
+              </div>
+              <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage"
+                  (change)="fetchAllD(page=1,$event)" class="form-control" [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+                <div class="col-md-1 mt-1"><label>Entries</label> 
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1" style="left: -20px;">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="generate(page=1, itemsPerPage)">
+              </div>
+            </div>
+            <!-- pt-3 pl-3 pr-3 p-3"
+                style="min-height:auto;overflow-y: hidden;" -->
+            <table class="table table-striped" style="overflow-y: auto;display: block;">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <th *ngFor="let key of inventoryTransactiontableHeadings">{{key |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                      aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let i=index;let data of inventoryTransactionDetailsList | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                  <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                  <td *ngIf="data.productImageResource">
+                    <div class="tooltip-container">
+                      <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                        alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                      <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                    </div>
+                  </td>
+                  <td *ngIf="!data.productImageResource">
+                    <div class="noImageIcon">
+                      <p class="noImageIconText">
+                        {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                    </div>
+                  </td>
+                  <td>{{data.inventoryTransactionDetailsIDPrefix}}{{data.inventoryTransactionDetailsID}}</td>
+                  <td>
+                    <span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                    <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                    <span
+                      *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo?.wareHouseIDName}}</span>
+                    <span
+                      *ngIf="data.wareHouseTransferDestinationInfo">{{data.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+                  </td>
+                  <td class="text-center">{{data.inventoryUnit}}</td>
+                  <td>{{data.totalQuantity | decimalwithTenDigits}}</td>
+                  <td>{{data.transactionType}}</td>
+                  <td>{{data.transactionDateTime| date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                  <td>{{data.status}}</td>
+                  <td>{{data.inventoryTransactionIDPrefix}}{{data.inventoryTransactionID}}</td>
+                  <td>{{data.orderID}}</td>
+                  <td>{{data.lineNumber}}</td>
+                  <td>{{data.productMasterInfo?.productID}}</td>
+                  <td>{{data.productMasterInfo?.productName}}</td>
+                  <td>{{data.productDescription}}</td>
+                  <td>{{data.brandName}} </td>
+                  <td>{{data.quantity | decimalwithTenDigits}}</td>
+                  <td class="text-center">{{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.batchNumber}}</td>
+                  <td>{{data.productPurchasePrice | decimalFilter}}</td>
+                  <td>{{data.productSalePrice | decimalFilter}}</td>
+                  <td class="text-center">{{data.currency}}</td>
+                  <td>{{data.zoneInfo?.zoneName}}</td>
+                  <td>{{data.rackInfo?.rackName}}</td>
+                  <td>{{data.columnInfo?.columnName}}</td>
+                  <td>{{data.levelInfo?.levelName}}</td>
+                  <td>{{data.locationInfo?.locationName}}</td>
+                  <td>{{data.billOfEntryNumber}}</td>
+                  <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.invoiceNumber}}</td>
+                  <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.bondNumber}}</td>
+                  <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.exBondNumber}}</td>
+                  <td>{{data.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.productCategoryInfo?.productCategoryName}}</td>
+                  <!-- <td>{{data.productSubCategory1Name}}</td>
+                  <td>{{data.productSubCategory2Name}}</td>
+                  <td>{{data.productSubCategory3Name}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+            <div class="row  mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Transaction Details ID' |translate}}</th>
+                  <th scope="col">{{'Supplier/Customer/WareHouse IDName' |translate}}</th>
+                  <th scope="col">{{'UOM' |translate}}</th>
+                  <th scope="col">{{'Quantity' |translate}}</th>
+                  <th scope="col">{{'Transaction Type' |translate}}</th>
+                  <th scope="col">{{'Transaction Date & Time' |translate}}</th>
+                  <th scope="col">{{'Status' |translate}}</th>
+                  <th scope="col">{{'Transaction ID' |translate}}</th>
+                  <th scope="col">{{'Order ID' |translate}}</th>
+                  <th scope="col">{{'Line Number' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Description' |translate}}</th>
+                  <th scope="col">{{'Brand Name' |translate}}</th>
+                  <th scope="col">{{'Quantity' |translate}}</th>
+                  <th scope="col">{{'Manufacturing Date' |translate}}</th>
+                  <th scope="col">{{'Expiry Date' |translate}}</th>
+                  <th scope="col">{{'Batch Number' |translate}}</th>
+                  <th scope="col">{{'Product Purchase Price' |translate}}</th>
+                  <th scope="col">{{'Product Sales Price' |translate}}</th>
+                  <th scope="col">{{'Currency' | translate}}</th>
+                  <th scope="col">{{'Zone Name' |translate}}</th>
+                  <th scope="col">{{'Rack Name' |translate}}</th>
+                  <th scope="col">{{'Column Name' |translate}}</th>
+                  <th scope="col">{{'Level Name' |translate}}</th>
+                  <th scope="col">{{'Location Name' |translate}}</th>
+                  <th scope="col">{{'product Sub Category 1' |translate}}</th>
+                  <th scope="col">{{'product Sub Category 2' |translate}}</th>
+                  <th scope="col">{{'product Sub Category 3' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of inventoryTransactionDetailsList; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <td>{{data.inventoryTransactionDetailsID}}</td>
+                  <td>
+                    <span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                    <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                    <span
+                      *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo?.wareHouseIDName}}</span>
+                    <span
+                      *ngIf="data.wareHouseTransferDestinationInfo">{{data.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+                  </td>
+                  <td class="text-center">{{data.inventoryUnit}}</td>
+                  <td>{{data.totalQuantity}} </td>
+                  <td>{{data.transactionType}}</td>
+                  <td>{{data.transactionDateTime | date:'short'}}</td>
+                  <td>{{data.status}}</td>
+                  <td>{{data.inventoryTransactionID}}</td>
+                  <td>{{data.orderID}}</td>
+                  <td>{{data.lineNumber}}</td>
+                  <td>{{data.productMasterInfo?.productID}}</td>
+                  <td>{{data.productMasterInfo?.productName}}</td>
+                  <td>{{data.productDescription}}</td>
+                  <td>{{data.brandName}} </td>
+                  <td>{{data.quantity}}</td>
+                  <td class="text-center">{{data.mfgDate | date:'short'}}</td>
+                  <td class="text-center">{{data.expiryDate | date:'short'}}</td>
+                  <td>{{data.batchNumber}}</td>
+                  <td>{{data.productPurchasePrice}}</td>
+                  <td>{{data.productSalePrice}}</td>
+                  <td class="text-center">{{data.currency}}</td>
+                  <td>{{data.zoneInfo?.zoneName}}</td>
+                  <td>{{data.rackInfo?.rackName}}</td>
+                  <td>{{data.columnInfo?.columnName}}</td>
+                  <td>{{data.levelInfo?.levelName}}</td>
+                  <td>{{data.locationInfo?.locationName}}</td>
+                   <td>{{data.productCategoryInfo?.productCategoryName}}</td>
+                  <td>{{data.productSubCategory1Name}}</td>
+                  <td>{{data.productSubCategory2Name}}</td>
+                  <td>{{data.productSubCategory3Name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1015 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="supplierForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="udcBtns">
+            <!--  <p *ngIf="isShowOrHideError" class="text-danger">Please add missing fields: <span>{{missingParams}}</span></p> -->
+          </div>
+        </div>
+        <div class="col-md-12 ">
+          <div class="udcBtns float-right" *ngIf="permissionsList.includes('Update')">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" #import (click)="import.value = null" class="hidden" type="file" accept=".xlsx"
+                (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="downloadExcelFile()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" #import (click)="import.value = null"
+                    class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="downloadExcelFile()"><a> <i class="material-icons align-middle">
+                    get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'SUPPLIER ATTRIBUTES' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SUPPLIER ATTRIBUTES' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'SupplierID' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="supplierID" name="supplierID"
+                          [readonly]="isReadMode" (keyup)="getSupplierIDName()" formControlName="supplierID"
+                          placeholder="Supplier ID" [ngClass]="{'valiError': shouldShowErrors('supplierID',supplierForm),'valiSucess':
+                           shouldShowSuccess('supplierID')}" (focus)="onFocusForElement('supplierID')"
+                          (focusout)="onFocusOutForElement()" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="supplierName" name="supplierName" formControlName="supplierName"
+                          [readonly]="isReadMode" (keyup)="getSupplierIDName()"
+                          placeholder="{{'Supplier Name' |translate}}" class="form-control" type="text" [ngClass]="{'valiError': shouldShowErrors('supplierName',supplierForm),
+                          'valiSucess':
+                          shouldShowSuccess('supplierName')}" (focus)="onFocusForElement('supplierName')"
+                          (focusout)="onFocusOutForElement()" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier ID/Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="supplierIDName" name="supplierIDName" formControlName="supplierIDName" readOnly
+                          placeholder="{{'Supplier ID/Name' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Service Type' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="serviceType" name="serviceType" formControlName="serviceType"
+                          placeholder="{{'Service Type' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier Type' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="supplierType" name="supplierType"
+                          formControlName="supplierType" [ngClass]="{'valiError': shouldShowErrors('supplierType',supplierForm),
+                          'valiSucess':shouldShowSuccess('supplierType')}" (focus)="onFocusForElement('supplierType')"
+                          (focusout)="onFocusOutForElement()" [disabled]="makeThisDisabled" required>
+                          <option [ngValue]="undefined" [selected]="true">--Select--</option>
+                          <option *ngFor="let supplierType of supplierTypes" [ngValue]="supplierType">
+                            {{supplierType}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Days to Supply' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="daysRequiredToSupply" name="daysRequiredToSupply"
+                          formControlName="daysRequiredToSupply" placeholder="{{'Days Required to Supply' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'PO Expiry Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="poExpiryDate" name="poExpiryDate" formControlName="poExpiryDate"
+                          placeholder="{{'PO Expiry Date' |translate}}" class="form-control" type="date"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Tax Group' |translate}}</label>
+                      <div class="col-sm-7" formGroupName="taxGroup">
+                        <select class="form-control" name="taxGroup" id="taxGroup" formControlName="taxGroup"
+                          [disabled]="makeThisDisabled">
+                          <!-- (ngModelChange)="fetchAllTaxTypesByCountryId($event)"> -->
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let taxGroup of taxGroups" [ngValue]="taxGroup.taxGroup">{{taxGroup.taxGroup}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Tax Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" name="taxType" id="taxType" formControlName="taxType"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let taxType of taxTypes" [ngValue]="taxType">{{taxType}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Terms Of payment' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select name="" class="form-control" id="" formControlName="termsOfPayment"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="undefined" [selected]="true">--Select--</option>
+                          <option *ngFor="let data of termOfPayments" [ngValue]="data.termsOfPaymentCode">
+                            {{data.termsOfPaymentCode}}</option>
+                        </select>
+                        <!--    <input id="termsOfPayment" name="termsOfPayment" formControlName="termsOfPayment"
+                          placeholder="{{'Terms Of payment' |translate}}" class="form-control" type="text"> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Lead Time' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="leadTime" name="leadTime" formControlName="leadTime"
+                          placeholder="{{'Lead Time' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Credit Period' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="creditPeriod" name="creditPeriod" formControlName="creditPeriod"
+                          placeholder="{{'Credit Period' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Currency' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="currency" name="currency" formControlName="currency"
+                          name="country" [disabled]="makeThisDisabled">
+                          <option [ngValue]="undefined" [selected]="true">--Select--</option>
+                          <option *ngFor="let currency of currencies" [ngValue]="currency.currency">
+                            {{currency.currency}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'SUPPLIER ADDITIONAL DETAILS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SUPPLIER ADDITIONAL DETAILS' |translate}} <i class="material-icons rotetIcon">
+                      unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Business Head Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="businessHeadName" name="businessHeadName" formControlName="businessHeadName"
+                          placeholder="{{'Business Head Name' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Business Head Email' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="businessHeadEmail" name="businessHeadEmail" formControlName="businessHeadEmail"
+                          placeholder="{{'Business Head Email' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Business Head Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="businessHeadNumber" name="businessHeadNumber" formControlName="businessHeadNumber"
+                          placeholder="{{'Business Head Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'SPOC Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="spocName" name="spocName" formControlName="spocName"
+                          placeholder="{{'SPOC Name' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'SPOC Email ID' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="spocEmail" name="spocEmail" formControlName="spocEmail"
+                          placeholder="{{'SPOC Email ID' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'SPOC Number' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="spocNumber" name="spocNumber" formControlName="spocNumber"
+                          placeholder="{{'SPOC Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'SUPPLIER BILLING DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SUPPLIER BILLING DETAILS' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'UOM' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select id="uom" class="form-control" name="uom" formControlName="uom"
+                          [disabled]="makeThisDisabled">
+                          <option value="">Select</option>
+                          <option *ngFor="let uom of units" [ngValue]="uom.unitCode">{{uom.unitCode}}
+                          </option>
+                          <!-- <option>Pallet</option>
+                          <option>SqFt</option>
+                          <option>SqMt</option>
+                          <option>CuSqFt</option>
+                          <option>CuSqMt</option> -->
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="rate" name="rate" formControlName="rate" placeholder="{{'Rate' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate Per Polycover' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="ratePerPolycover" name="ratePerPolycover" formControlName="ratePerPolycover"
+                          placeholder="{{'Rate Per Polycover' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate Per Label' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="ratePerLabel" name="ratePerLabel" formControlName="ratePerLabel"
+                          placeholder="{{'Rate Per Label' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate Per Carbon Box' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="ratePerCarbonBox" name="ratePerCarbonBox" formControlName="ratePerCarbonBox"
+                          placeholder="{{'Rate Per Carbon Box' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Bill Period' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select id="period" class="form-control" name="period" formControlName="period"
+                          [disabled]="makeThisDisabled">
+                          <option [value]="null">Select</option>
+                          <option>1 Day</option>
+                          <option>1 Week</option>
+                          <option>1 Fortnight</option>
+                          <option>1 Month</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Contract Start Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="contractStartDate" name="contractStartDate" formControlName="contractStartDate"
+                          class="form-control" type="date" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Contract End Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="contractEndDate" name="contractEndDate" formControlName="contractEndDate"
+                          class="form-control" type="date" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Addresses' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Addresses' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <select class="form-control" [(ngModel)]="selectedAddress" [ngModelOptions]="{standalone: true}"
+                      (change)="selectedAddressMethod()">
+                      <option value="Ship to Address">Ship to Address</option>
+                      <option value="Ship from Address">Ship from Address</option>
+                      <option value="Bill to Address">Bill to Address</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <button class="btn btn-green" (click)="addShipToLine()">+ ADD</button>
+                  </div>
+                  <div *ngIf="selectedAddress=='Ship to Address'">
+                    <ng-container formArrayName="shipToAddresses"
+                      *ngFor="let a of supplierForm.get('shipToAddresses').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                        <fieldset class="row mx-3 mb-2">
+                          <p style="font-size: 12px;" class="ml-3">{{selectedAddress}} {{i + 1}}: </p>
+                          <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                            <i class="fa fa-trash" (click)="removeShipToLine(i,'shipToAddresses')"></i>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="name" placeholder="{{'Name' |translate}}" class="form-control"
+                                  type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Address' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="address" placeholder="{{'Address' |translate}}"
+                                  class="form-control" value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Country' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="country"
+                                  (ngModelChange)="onFocusForElement(country)" [disabled]="makeThisDisabled"
+                                  (change)="getStates($event.target.value)">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'State' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="state" [disabled]="makeThisDisabled">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let data of statesList" [value]="data">{{data}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'City' |translate}} </label>
+                              <div class="col-sm-8">
+                                <input formControlName="city" placeholder="{{'City' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Contact Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="contactName" placeholder="{{'Contact Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Email' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="email" placeholder="{{'Email ID' |translate}}"
+                                  class="form-control" value="" type="text"
+                                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="phoneNumber" placeholder="{{'Phone Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Pin' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input formControlName="pin" placeholder="{{'Pin' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Default Address' |translate}}</label>
+                              <div class="col-sm-8 mt-3">
+                                <input type="checkbox" formControlName="defaultAddress" class="form-control"
+                                  (click)="getDefaultEvent($event,'shipToAddresses',i)">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div *ngIf="selectedAddress=='Ship from Address'">
+                    <ng-container formArrayName="shipFromAddresses"
+                      *ngFor="let a of supplierForm.get('shipFromAddresses').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                        <fieldset class="row mx-3 mb-2">
+                          <p style="font-size: 12px;" class="ml-3">{{selectedAddress}} {{i + 1}}: </p>
+                          <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                            <i class="fa fa-trash" (click)="removeShipToLine(i,'shipFromAddresses')"></i>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="name" placeholder="{{'Name' |translate}}" class="form-control"
+                                  type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Address' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="address" placeholder="{{'Address' |translate}}"
+                                  class="form-control" value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Country' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="country"
+                                  (ngModelChange)="onFocusForElement(country)" [disabled]="makeThisDisabled"
+                                  (change)="getStates($event.target.value)">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'State' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="state" [disabled]="makeThisDisabled">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let data of statesList" [value]="data">{{data}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'City' |translate}} </label>
+                              <div class="col-sm-8">
+                                <input formControlName="city" placeholder="{{'City' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Contact Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="contactName" placeholder="{{'Contact Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Email' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="email" placeholder="{{'Email ID' |translate}}"
+                                  class="form-control" value="" type="text"
+                                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [readonly]="makeReadOnly">
+
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="phoneNumber" placeholder="{{'Phone Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Pin' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input formControlName="pin" placeholder="{{'Pin' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Default Address' |translate}}</label>
+                              <div class="col-sm-8 mt-3">
+                                <input type="checkbox" formControlName="defaultAddress" class="form-control"
+                                  (click)="getDefaultEvent($event,'shipFromAddresses',i)">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div *ngIf="selectedAddress=='Bill to Address'">
+                    <ng-container formArrayName="billToAddresses"
+                      *ngFor="let a of supplierForm.get('billToAddresses').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                        <fieldset class="row mx-3 mb-2">
+                          <p style="font-size: 12px;" class="ml-3">{{selectedAddress}} {{i + 1}}: </p>
+                          <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                            <i class="fa fa-trash" (click)="removeShipToLine(i,'billToAddresses')"></i>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="name" placeholder="{{'Name' |translate}}" class="form-control"
+                                  type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Address' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="address" placeholder="{{'Address' |translate}}"
+                                  class="form-control" value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Country' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="country"
+                                  (ngModelChange)="onFocusForElement(country)" [disabled]="makeThisDisabled"
+                                  (change)="getStates($event.target.value)">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'State' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="state" [disabled]="makeThisDisabled">
+                                  <option [value]="null">--Select--</option>
+                                  <option *ngFor="let data of statesList" [value]="data">{{data}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'City' |translate}} </label>
+                              <div class="col-sm-8">
+                                <input formControlName="city" placeholder="{{'City' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 p-0">
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Contact Name' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="contactName" placeholder="{{'Contact Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Email' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="email" placeholder="{{'Email ID' |translate}}"
+                                  class="form-control" value="" type="text"
+                                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [readonly]="makeReadOnly">
+
+                              </div>
+                            </div>
+                            <div class="form-group row" formGroupName="contactDetails">
+                              <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}}
+                              </label>
+                              <div class="col-sm-8">
+                                <input formControlName="phoneNumber" placeholder="{{'Phone Name' |translate}}"
+                                  class="form-control" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Pin' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input formControlName="pin" placeholder="{{'Pin' |translate}}" class="form-control"
+                                  value="" type="text" [readonly]="makeReadOnly">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Default Address' |translate}}</label>
+                              <div class="col-sm-8 mt-3">
+                                <input type="checkbox" formControlName="defaultAddress" class="form-control"
+                                  (click)="getDefaultEvent($event,'billToAddresses',i)">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'SUPPLIER BANK DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SUPPLIER BANK DETAILS' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">
+                        {{'Bank Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="bankName" name="bankName" formControlName="bankName"
+                          placeholder="{{'Bank Name' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="accountNumber" name="accountNumber" formControlName="accountNumber"
+                          placeholder="{{'Account Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Holder Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="accountHolderName" name="accountHolderName" formControlName="accountHolderName"
+                          placeholder="{{'Account Holder Name' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Type' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="accountType" name="accountType" formControlName="accountType"
+                          placeholder="{{'Account Type' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'IFSC Code' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="ifscCode" name="ifscCode" formControlName="ifscCode"
+                          placeholder="{{'IFSC Code' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Bank Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="bankAddress" name="bankAddress" formControlName="bankAddress"
+                          placeholder="{{'Bank Address' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'PAN' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="pan" name="pan" formControlName="panNumber" placeholder="{{'PAN' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'GST' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="gstNumber" name="gstNumber" formControlName="gstNumber"
+                          placeholder="{{'GST Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'User Creation Details' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'User Creation Details' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <!-- <div class="row">
+                  <div class="col-md-12">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" [(ngModel)]="addValuesCheck" [ngModelOptions]="{standalone: true}"
+                        [checked]="addValuesCheck" (change)="checkingaddValuesCheck($event.target.checked)">Add Details
+                    </label>
+                  </div>
+                </div> -->
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'First Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="supplierFirstName" name="supplierFirstName" formControlName="supplierFirstName"
+                          placeholder="{{'First Name' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('supplierFirstName', supplierForm), 'valiSucess': shouldShowSuccess('supplierFirstName')}"
+                          (focus)="onFocusForElement('supplierFirstName')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="text" [readonly]="readOnlyUserPanel">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Last Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="supplierLastName" name="supplierLastName" formControlName="supplierLastName"
+                          placeholder="{{'Last Name' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('supplierLastName', supplierForm), 'valiSucess': shouldShowSuccess('supplierLastName')}"
+                          (focus)="onFocusForElement('supplierLastName')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="text" [readonly]="readOnlyUserPanel">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'User ID' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="supplierUserID" name="supplierUserID" formControlName="supplierUserID"
+                          placeholder="{{'User ID' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('supplierUserID', supplierForm), 'valiSucess': shouldShowSuccess('supplierUserID')}"
+                          (focus)="onFocusForElement('supplierUserID')" (focusout)="onFocusOutForElement()"
+                          class="form-control" value="" type="text" [readonly]="readOnlyUserPanel">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}</label><!-- Email Changes -->
+                      <div class="col-sm-7">
+                        <input id="supplierEmailID" name="supplierEmailID" formControlName="supplierEmailID"
+                          placeholder="{{'Email ID' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('supplierEmailID', supplierForm), 'valiSucess': shouldShowSuccess('supplierEmailID')}"
+                          (focus)="onFocusForElement('supplierEmailID')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="text" [readonly]="readOnlyUserPanel">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Password' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="supplierPassword" name="supplierPassword" formControlName="supplierPassword"
+                          placeholder="{{'Password' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('supplierPassword', supplierForm), 'valiSucess': shouldShowSuccess('supplierPassword')}"
+                          (focus)="onFocusForElement('supplierPassword')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="password" [readonly]="readOnlyUserPanel">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="drop-status">
+            <div class="form-group row">
+              <label class="col-sm-1 col-form-label">Status: </label>
+              <div class="col-sm-3">
+                <select class="form-control" name="status" id="status" (focus)="onFocusForElement('status')"
+                  (focusout)="onFocusOutForElement()"
+                  [ngClass]="{'valiError': shouldShowErrors('status', supplierForm),'valiSucess': shouldShowSuccess('status')}"
+                  formControlName="status" required [disabled]="makeThisDisabled">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="panel portlet">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-12 text-right">
+                  <button class="btn btn-green mr-1" value="Save" (click)="save()" [disabled]="supplierForm.invalid">
+                    {{'Save' |translate}}
+                  </button>
+                  <button class="btn btn-white" value="Clear" (click)="clear()"> {{'Clear' |translate}} </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+              style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <td scope="col" *ngFor="let key of supplierKeys">{{key |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let supplier of suppliers; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer" (click)="edit(supplier)">{{supplier.supplierID}}</th>
+                  <td>{{supplier.supplierName}}</td>
+                  <td>{{supplier.supplierIDName}}</td>
+                  <!-- <td>{{supplier.serviceType}}</td> -->
+                <!--   <td>{{supplier.address1}}</td>
+                  <td>{{supplier.address2}}</td>
+                  <td>{{supplier.country}}</td>
+                  <td>{{supplier.state}}</td>
+                  <td>{{supplier.city}}</td> -->
+                  <td>{{supplier.gstNumber}}</td>
+                 <!--  <td>{{supplier.pin}}</td>
+                  <td>{{supplier.phoneNumber}}</td>
+                  <td>{{supplier.email}}</td> -->
+                  <td>{{supplier.businessHeadName}}</td>
+                  <td>{{supplier.businessHeadNumber}}</td>
+                  <td>{{supplier.businessHeadEmail}}</td>
+                  <td>{{supplier.spocName}}</td>
+                  <td>{{supplier.spocNumber}}</td>
+                  <td>{{supplier.spocEmail}}</td>
+                  <td>{{supplier.panNumber}}</td>
+                  <td>{{supplier.bankName}}</td>
+                  <td>{{supplier.accountNumber}}</td>
+                  <td>{{supplier.accountHolderName}}</td>
+                  <td>{{supplier.accountType}}</td>
+                  <td>{{supplier.ifscCode}}</td>
+                  <td>{{supplier.bankAddress}}</td>
+                  <td>{{supplier.termsOfPayment}}</td>
+                  <td>{{supplier.supplierType}}</td>
+                  <td>{{supplier.currency}}</td>
+                  <td>{{supplier.leadTime}}</td>
+                  <td>{{supplier.creditPeriod}}</td>
+                  <td>{{supplier.uom}}</td>
+                  <td>{{supplier.period}}</td>
+                  <td>{{supplier.rate}}</td>
+                  <td class="text-right">{{supplier.ratePerPolycover}}</td>
+                  <td class="text-right">{{supplier.ratePerLabel}}</td>
+                  <td class="text-right">{{supplier.ratePerCarbonBox}}</td>
+                  <td class="text-center">{{supplier.contractStartDate | date: 'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{supplier.contractEndDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{supplier.supplierFirstName}}</td>
+                  <td>{{supplier.supplierLastName}}</td>
+                  <td>{{supplier.supplierUserID}}</td>
+                  <td>{{supplier.supplierEmailID}}</td>
+                  <td>{{supplier.status}}</td>
+                  <td><span class="btn btn-pink btn-sm">
+                      <i class="fa fa-trash btn-sm" (click)="delete(supplier)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

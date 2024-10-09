@@ -1,0 +1,1747 @@
+<div id="inBody" [dir]="direction" *ngIf="permissionsList.includes('View')">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <a>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <form [formGroup]="headerForm">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'GOODS RECEIVING HEADER' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span>
+                  |
+                  <i class="material-icons fullscreen">
+                    unfold_less </i>
+                </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'GOODS RECEIVING HEADER' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body ">
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" [(ngModel)]="addValuesCheck" [ngModelOptions]="{standalone: true}"
+                      [checked]="addValuesCheck" (change)="checkingaddValuesCheck($event.target.checked)"
+                      [disabled]="statusCheck">{{'Add Details' |translate}}
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group row"
+                    *ngIf="!headerForm.controls.wareHouseTransferType.value && !headerForm.controls.returnOrderType.value">
+                    <label class="col-sm-5 col-form-label">
+                      {{'Supplier' |translate}}
+                    </label>
+                    <div class="col-sm-7" formGroupName="supplierMasterInfo" *ngIf="!id">
+                      <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                        title="Search product to retrive data of supplier"> info </i>
+                      <ng2-completer name="supplierIDName" [datasource]="supplierIDNames" [minSearchLength]="0"
+                        (selected)="onSupplierIDNameChange($event)" formControlName="supplierIDName"
+                        placeholder="{{'Supplier' |translate}}">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-sm-7" formGroupName="supplierMasterInfo" *ngIf="id">
+                      <input type="text" formControlName="supplierIDName"
+                        placeholder="{{'Supplier ID/Name' |translate}}" class="form-control" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Ship From Address' |translate}}</label>
+                    <div class="col-sm-7"
+                      *ngIf="!headerForm.controls.wareHouseTransferType.value && !headerForm.controls.returnOrderType.value">
+                      <select (focus)="onFocusForElement(shipFromAddress)" (focusout)="onFocusOutForElement()"
+                        formControlName="shipFromAddress" class="form-control">
+                        <option *ngFor="let ib of shipFromAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-7"
+                      *ngIf="headerForm.controls.wareHouseTransferType.value || headerForm.controls.returnOrderType.value">
+                      <input formControlName="shipFromAddress" class="form-control" readonly type="text">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Ship To Address' |translate}}</label>
+                    <div class="col-sm-7"
+                      *ngIf="!headerForm.controls.wareHouseTransferType.value && !headerForm.controls.returnOrderType.value">
+                      <select (focus)="onFocusForElement(shipToAddress)" (focusout)="onFocusOutForElement()"
+                        formControlName="shipToAddress" class="form-control">
+                        <option *ngFor="let ib of shipTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-7"
+                      *ngIf="headerForm.controls.wareHouseTransferType.value || headerForm.controls.returnOrderType.value">
+                      <input formControlName="shipToAddress" class="form-control" readonly type="text">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bill To Address' |translate}}</label>
+                    <div class="col-sm-7"
+                      *ngIf="!headerForm.controls.wareHouseTransferType.value && !headerForm.controls.returnOrderType.value">
+                      <select (focus)="onFocusForElement(billToAddress)" (focusout)="onFocusOutForElement()"
+                        formControlName="billToAddress" class="form-control">
+                        <option *ngFor="let ib of billTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-7"
+                      *ngIf="headerForm.controls.wareHouseTransferType.value || headerForm.controls.returnOrderType.value">
+                      <input formControlName="billToAddress" class="form-control" readonly type="text">
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                    <label class="col-sm-5 col-form-label">
+                      {{'Customers Supplier Name' |translate}}</label>
+                    <div class="col-sm-7 top-input">
+                      <input id="customersSupplierName" name="customersSupplierName" class="form-control" type="text"
+                        formControlName="customersSupplierName" [readonly]="putAwayToggle"
+                        placeholder="{{'Customers Supplier Name' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="headerForm.controls.wareHouseTransferType.value">
+                    <label class="col-sm-5 col-form-label">
+                      {{'WareHouse ID/Name:' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input" formGroupName="wareHouseTransferSourceInfo">
+                      <input type="text" class="form-control inputAddonBorderRadius" id="wareHouseIDName"
+                        name="wareHouseIDName" formControlName="wareHouseIDName"
+                        placeholder="{{'WareHouse ID/Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="headerForm.controls.returnOrderType.value">
+                    <label class="col-sm-5 col-form-label">
+                      {{'Customer ID/Name:' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input" formGroupName="customerMasterInfo">
+                      <input type="text" class="form-control inputAddonBorderRadius" id="customerIDName"
+                        name="customerIDName" formControlName="customerIDName"
+                        placeholder="{{'customer ID/Name' |translate}}" readonly>
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                    <label class="col-sm-5 col-form-label">
+                      {{'Customers Supplier Address' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input">
+                      <input id="customersSupplierAddress" name="customersSupplierAddress" class="form-control"
+                        type="text" formControlName="customersSupplierAddress" [readonly]="putAwayToggle"
+                        placeholder="{{'Customers Supplier Address' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label"> {{'Reference PO No' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input">
+                      <input type="text" class="form-control inputAddonBorderRadius" id="referencePONumber"
+                        [readonly]="putAwayToggle" name="referencePONumber" formControlName="referencePONumber"
+                        placeholder="{{'PO Reference No' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">
+                      {{'Receipt Date' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input">
+                      <input id="receiptDate" name="receiptDate" class="form-control" value="" type="date" readonly
+                        formControlName="receiptDate">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Number' | translate}}</label>
+                    <div class="col-sm-4" class="d-flex justify-content-end" style="position: relative; left: 44px;">
+                      <ejs-combobox #grRemote width="auto" [dataSource]="grNoteInvoices" [fields]="fields"
+                        (open)="onOpen1($event, 'dropdownObj1')" [query]="query" [(ngModel)]='dummyInv'
+                        [ngModelOptions]="{standalone: true}" [allowFiltering]="true"
+                        (filtering)="onFiltering($event, 'grNoteInvoices')" (change)="setInvoiceTo($event); onCreated()"
+                        [enablePersistence]="true"></ejs-combobox>
+                    </div>
+                    <div class="col-md-4" style="position: relative; left: 16px;">
+                      <input name="invoiceNumber" id="invoiceNumber" placeholder="{{'Invoice Number' | translate}}"
+                        class="form-control" type="text" formControlName="invoiceNumber" [readonly]="putAwayToggle"
+                        (keyup)="addLine('invoiceNumber', 'invoiceNumber')" (focusout)="setInvoiceTo('yes')">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Invoice Date' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input name="invoiceDate" id="invoiceDate" placeholder="{{'invoiceDate' |translate}}"
+                        class="form-control" type="date" formControlName="invoiceDate"
+                        (change)="addLine('invoiceDate','invoiceDate')" [readonly]="putAwayToggle">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'LR Number' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input placeholder="{{'LR Number' |translate}}" class="form-control" type="text"
+                        formControlName="lrNumber" (keyup)="addLine('lrNumber','lrNumber')" [readonly]="putAwayToggle">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row" *ngIf="id">
+                    <label class="col-sm-5 col-form-label">{{'WMPO Number' |translate}}
+                    </label>
+                    <div class="col-sm-7 top-input">
+                      <input name="fullWmpoNumber" id="fullWmpoNumber" formControlName="fullWmpoNumber"
+                        placeholder="{{'WMPO Number' |translate}}" class="form-control" required type="text" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Vehicle Number' |translate}}
+                    </label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="vehicleIDs" [minSearchLength]="0"
+                        placeholder="{{'Search' |translate}}" [(ngModel)]="dummyVehicle"
+                        [ngModelOptions]="{standalone: true}" (selected)="setSearchValueToText($event,'vehicleNumber')"
+                        [disabled]="statusCheck">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-5 pr-2">
+                      <input name="vehicleNumber" id="vehicleNumber" placeholder="{{'Vehicle Number' |translate}}"
+                        class="form-control" type="text" formControlName="vehicleNumber" [readonly]="putAwayToggle"
+                        (keyup)="addLine('vehicleNumber','vehicleNumber');setVehicleType()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Vehicle Type' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input name="vehicleType" id="vehicleType" placeholder="{{'Vehicle Type' |translate}}"
+                        class="form-control" type="text" formControlName="vehicleType"
+                        (keyup)="addLine('vehicleType','vehicleType')" [readonly]="putAwayToggle">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Container Number' |translate}}
+                    </label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="containerIDS" [minSearchLength]="0"
+                        placeholder="{{'Search' |translate}}" [(ngModel)]="dummyContainer"
+                        [ngModelOptions]="{standalone: true}"
+                        (selected)="setSearchValueToText($event,'containerNumber')" [disabled]="statusCheck">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-5 pr-2">
+                      <input name="containerNumber" id="containerNumber" placeholder="{{'Container Number' |translate}}"
+                        class="form-control" type="text" formControlName="containerNumber"
+                        (keyup)="addLine('containerNumber','containerNumber')" [readonly]="putAwayToggle">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Transporter' |translate}}
+                    </label>
+                    <div class="col-sm-2">
+                      <ng2-completer [(ngModel)]="spDummyID" [ngModelOptions]="{standalone: true}" [datasource]="spIDs"
+                        [minSearchLength]="0" placeholder="{{'Search' |translate}}"
+                        (selected)="setSearchValueToText($event,'serviceProviderID')" [disabled]="putAwayToggle">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" class="form-control col-form-label-sm" id="serviceProviderID"
+                        formControlName="serviceProviderID" placeholder="{{'Transporter' |translate}}"
+                        [readonly]="putAwayToggle" (focusout)="addLine('serviceProviderID','transport')">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bill Of Entry No' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="billOfEntryNumber" id="billOfEntryNumber" formControlName="billOfEntryNumber"
+                        placeholder="{{'Bill Of Entry No' |translate}}" class="form-control" type="text"
+                        [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Entry','headerForm')">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-3">
+
+
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bill Of Entry Date' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="billOfEntryDate" id="billOfEntryDate" formControlName="billOfEntryDate"
+                        placeholder="{{'billOfEntry Date' |translate}}" class="form-control" type="date"
+                        [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Entry','headerForm')">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bill Of Lading No' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="billOfLandingNumber" id="billOfLandingNumber" formControlName="billOfLandingNumber"
+                        placeholder="{{'Bill Of Lading No' |translate}}" class="form-control" type="text"
+                        [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Landing','headerForm')">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bill Of Lading Date' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="billOfLandingDate" id="billOfLandingDate" formControlName="billOfLandingDate"
+                        placeholder="{{'billOfLanding Date' |translate}}" class="form-control" type="date"
+                        [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Landing','headerForm')">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bond No' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="bondNumber" id="bondNumber" formControlName="bondNumber"
+                        placeholder="{{'Bond No' |translate}}" class="form-control" type="text"
+                        [readonly]="putAwayToggle" (focusout)="addLine('bondNumber','bondNumber')">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Bond Date' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input name="bondDate" id="bondDate" formControlName="bondDate"
+                        placeholder="{{'Bond Date' |translate}}" class="form-control" type="date"
+                        [readonly]="putAwayToggle" (focusout)="addLine('bondDate','bondDate')">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row" [hidden]="hidePanel">
+    <div class="col-md-12">
+      <div class="panel portlet">
+        <div class="formBox portlet-title">
+          <div class="row">
+            <div class="panel-heading formTitle  w-auto">
+              <h4> {{'GOODS RECEIVING' |translate}} </h4>
+              <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+                | <i class="material-icons fullscreen">
+                  unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+              <h4> {{'GOODS RECEIVING' |translate}}
+                <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+              </h4>
+            </div>
+          </div>
+          <div id="style-8" class="panel-body" [formGroup]="receivingForm">
+            <div class="row force-overflow">
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Product' |translate}}<i class="red">*</i>
+                  </label>
+                  <div class="col-sm-6" formGroupName="productMasterInfo"
+                    *ngIf="!putAwayToggle && pBySMapping == 'Yes'">
+                    <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                      title="Search product to retrive data of product"> info </i>
+                    <ng2-completer name="productIDName" [datasource]="productIDNames" [minSearchLength]="0"
+                      (selected)="onProductIDNameChange()" formControlName="productIDName"
+                      placeholder="{{'Product' |translate}}" (keypress)="getProductDetails()"
+                      [inputClass]="'form-control form-control-inline'">
+                    </ng2-completer>
+                  </div>
+
+                  <div class="col-sm-6" *ngIf="!putAwayToggle && pBySMapping != 'Yes'"
+                    formGroupName="productMasterInfo">
+                    <ejs-combobox #remote [dataSource]="productIDNames" [fields]="fields"
+                      (open)="onOpen($event,'dropdownObj')" [query]="query" [allowFiltering]="true"
+                      (keypress)="getProductDetails()" (filtering)="onFiltering($event,'includeExportDataForProudcts')"
+                      (change)="accessOrderID($event)" [enablePersistence]="true" [(ngModel)]='dummyProductIDName'
+                      [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                    <!-- <ng2-completer name="productIDName" [datasource]="productIDNames" [minSearchLength]="0"
+                      (selected)="onProductIDNameChange()" formControlName="productIDName"
+                      placeholder="{{'Product' |translate}}" (keypress)="getProductDetails()"
+                      [inputClass]="'form-control form-control-inline'">
+                    </ng2-completer> -->
+                  </div>
+                  <div class="col-sm-2">
+                    <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                      style="background: none !important; border: none !important;"><img
+                        src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner()"
+                        style="width: 33px; height: 28px; margin-left: -24px; margin-top: 6px;"></button>
+                  </div>
+                  <div class="col-sm-7" formGroupName="productMasterInfo" *ngIf="putAwayToggle">
+                    <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                      title="Search product to retrive data of product"> info </i>
+                    <input name="productIDName" readonly formControlName="productIDName" id="productIDName"
+                      placeholder="Product IDName" class="form-control" type="text">
+                  </div>
+                </div>
+                <div class="form-group row d-none" formGroupName="productMasterInfo">
+                  <label class="col-sm-4 col-form-label">{{'Product ID' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="productID" readonly formControlName="productID" id="productID"
+                      placeholder="{{'Product ID' |translate}}" class="form-control" type="text">
+                  </div>
+                </div>
+                <div class="form-group row" formGroupName="productMasterInfo">
+                  <label class="col-sm-4 col-form-label">{{'Product Name' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="productName" readonly formControlName="productName" id="productName"
+                      placeholder="{{'Product Name' |translate}}" class="form-control" type="text">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Product Description'| translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="productDescription" readonly formControlName="productDescription"
+                      id="productDescription" placeholder="{{'Product Description'| translate}}" class="form-control"
+                      type="text" readonly>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Brand Name'| translate}}
+                  </label>
+                  <div class="col-sm-7" *ngIf="isShow">
+                    <select class="form-control selectPanl" formControlName="brandName">
+                      <option [value]="null">--Select--</option>
+                      <option *ngFor="let unit of bransList" [value]="unit">
+                        {{unit}}</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-7" *ngIf="!isShow">
+                    <input name="brandName" readonly formControlName="brandName" id="brandName"
+                      placeholder="{{'brand Name' |translate}}" class="form-control" type="text" readonly>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Batch Number' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input name="batchNumber" id="batchNumber" formControlName="batchNumber"
+                      placeholder="{{'Batch Number' |translate}}" class="form-control" type="text"
+                      [readonly]="putAwayToggle">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'MFG Date' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input name="mfgDate" id="mfgDate" formControlName="mfgDate" placeholder="{{'MFG Date' |translate}}"
+                      class="form-control" type="date" [readonly]="putAwayToggle" [max]="getToday()"
+                      (change)="getExpiryDate($event.target.value)">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Expiry Date' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input name="expiryDate" id="expiryDate" formControlName="expiryDate"
+                      placeholder="{{'Expiry Date' |translate}}" class="form-control" type="date"
+                      [readonly]="putAwayToggle" [min]="getExpiryLimit()">
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="col-md-4">
+                <div class="form-group row" *ngIf="showImage">
+                  <label for="" class="col-sm-5 col-form-label">{{'Product Image' |translate}}</label>
+                  <div class="col-sm-7">
+                    <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                      alt="No Image">
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="headerForm.controls.receivedType.value !='Manual'">
+                  <label class="col-sm-5 col-form-label">{{'Order Quantity' |translate}}<i class="red">*</i>
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="orderedQuantity" id="orderedQuantity" class="form-control"
+                      formControlName="orderedQuantity" placeholder="{{'Order Quantity' |translate}}"
+                      (keyup)="receivableQuantityCal()" type="text" [readonly]="putAwayToggle"
+                      (focus)="onFocusForElement('orderedQuantity')" (focusout)="onFocusOutForElement()" min="0"
+                      oninput="validity.valid||(value='');">
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="headerForm.controls.receivedType.value !='Manual'">
+                  <label class="col-sm-5 col-form-label">{{'Shipped Quantity' |translate}}<i class="red">*</i>
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="shippedQuantity" id="shippedQuantity" class="form-control"
+                      formControlName="shippedQuantity" min="0" oninput="validity.valid||(value='');"
+                      placeholder="{{'Shipped Quantity' |translate}}" type="text" [readonly]="putAwayToggle"
+                      (focus)="onFocusForElement('shippedQuantity')" (focusout)="onFocusOutForElement()">
+                  </div>
+
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'GRN Date' |translate}} <i class="red">*</i> </label>
+                  <div class="col-sm-7">
+                    <input name="grnDate" id="grnDate" formControlName="grnDate" placeholder="{{'GRN Date' |translate}}"
+                      class="form-control" type="datetime-local" [readonly]="putAwayToggle" style="width:230px">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Supplier Received Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-4">
+                    <input name="supplierReceivedQuantity" id="supplierReceivedQuantity" class="form-control"
+                      (keyup)="validate('supplierReceivedQuantity','form');calculateReceivedQty();receivableQuantityCal()"
+                      formControlName="supplierReceivedQuantity" (focusout)="hideReturnOrReceive()"
+                      placeholder="{{'Supplier Received Quantity' |translate}}" type="text"
+                      [readonly]="putAwayToggle || hideReceive" min="0">
+                  </div>
+                  <div class="col-sm-3">
+                    <select class="form-control selectPanl" (change)="calculateReceivedQty()"
+                      formControlName="receivingUnit" style="margin-left:-12px">
+                      <option [value]="null">--Select--</option>
+                      <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                        {{unit.unitCode}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-end"
+                    style="margin-left: 49px;margin-top: -25px;height: 0px;">
+                    <div class="d-flex flex-column align-items-end">
+                      <button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                        *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Manual'"
+                        (click)="saveAllocationType('Manual')">Manual</button>
+                      <button class="btn-success" *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Auto'"
+                        [disabled]="!permissionsList.includes('Update') || statusCheck"
+                        (click)="saveAllocationType('Auto')">Auto</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Received Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-4">
+                    <input name="receivedQuantity" id="receivedQuantity" class="form-control" type="text"
+                      formControlName="receivedQuantity"
+                      [readOnly]="(uomAvailabilityCheck=='Yes') || (uomAvailabilityCheck!='Yes' && !noMatchingUnitError)"
+                      placeholder="{{'Received Quantity' |translate}}" min="0" oninput="validity.valid||(value='');"
+                      (focusout)="getCFCount()">
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="inventoryUnit" id="inventoryUnit" formControlName="inventoryUnit"
+                      placeholder="{{'Inventory Unit' |translate}}" class="form-control" type="text" readonly
+                      style="margin-left:-12px;">
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-end"
+                    *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Manual'"
+                    style="margin-left: 35px;margin-top: -25px;">
+                    <div class="d-flex flex-column align-items-end">
+                      <i class="fa fa-search" style="cursor: pointer;"
+                        (click)="openModalRecievedLocations(receivingForm,'Recieve')"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row"
+                  *ngIf="headerForm.controls.wareHouseTransferType.value || headerForm.controls.returnOrderType.value">
+                  <label class="col-sm-5 col-form-label">
+                    {{'Supplier ID/Name' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                      title="Search product to retrive data of supplier"> info </i>
+                    <ng2-completer name="supplierIDName" [datasource]="supplierIDNames" [minSearchLength]="0"
+                      formControlName="supplierIDName" placeholder="{{'Supplier ID/Name' |translate}}">
+                    </ng2-completer>
+                  </div>
+                </div>
+                <div class="form-group row d-none">
+                  <label class="col-sm-5 col-form-label">{{'Receivable Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="receivableQuantity" id="receivableQuantity" class="form-control" readonly type="text"
+                      formControlName="receivableQuantity" placeholder="{{'Receivable Quantity' |translate}}"
+                      [readonly]="putAwayToggle">
+                  </div>
+                </div>
+                <!-- <div class="form-group row" *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Manual'">
+                <label class="col-sm-5 col-form-label">{{'Receive Location Name' |translate}}<i class="red">*</i>
+                </label>
+                <div class="col-sm-5">
+                  <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                    title="Search location to retrive data of location"> info </i>
+                  <input type="text" [placeholder]="'Select'" name="receiveLocations" id="receiveLocations"
+                    [(ngModel)]="recieveShowValues" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="col-sm-2 mt-2"><i class="fa fa-search" style="cursor: pointer;"
+                    (click)="openModalRecievedLocations(receivingForm,'Recieve')"></i></div>
+              </div> -->
+                <!--   <div class="form-group row"> -->
+                <!--   <label class="col-md-5">{{'Receive Location AllocationType' |translate}}</label> -->
+                <!--  <div class="col-md-7"> -->
+                <!-- <button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                    *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Manual'"
+                    (click)="saveAllocationType('Manual')">Manual</button>
+                  <button class="btn-success" *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Auto'"
+                    [disabled]="!permissionsList.includes('Update') || statusCheck"
+                    (click)="saveAllocationType('Auto')">Auto</button> -->
+                <!--   </div>
+              </div> -->
+                <div class="form-group row d-none">
+                  <label class="col-sm-5 col-form-label">{{'Total Received Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <input name="totalReceivedQuantity" id="totalReceivedQuantity"
+                      placeholder="{{'Total Received Quantity' |translate}}" class="form-control" type="text"
+                      formControlName="totalReceivedQuantity" readonly>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Supplier Return Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-4">
+                    <input name="supplierReturnQuantity" id="supplierReturnQuantity" class="form-control"
+                      (keyup)="validate('supplierReturnQuantity','form');receivableQuantityCal();calculateReceivedQty('Return')"
+                      formControlName="supplierReturnQuantity" placeholder="{{'Supplier Returned Quantity' |translate}}"
+                      type="text" [readonly]="putAwayToggle || hideReturn" oninput="validity.valid||(value='');" min="0"
+                      (focusout)="hideReturnOrReceive('Return')">
+                  </div>
+                  <div class="col-sm-3">
+
+                    <select class="form-control selectPanl" (change)="calculateReceivedQty('Return')"
+                      formControlName="receivingUnit" style="margin-left:-14px">
+                      <option [value]="null">--Select--</option>
+                      <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                        {{unit.unitCode}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-end"
+                    style="margin-top: -27px;margin-left: 50px;height: 0px;">
+                    <div class="d-flex flex-column align-items-end">
+                      <button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                        *ngIf="locReturnAllocation.putawayReturnLocationAllocationType=='Manual'"
+                        (click)="saveAllocationType1('Manual')">Manual</button>
+                      <button class="btn-success" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                        *ngIf="locReturnAllocation.putawayReturnLocationAllocationType=='Auto'"
+                        (click)="saveAllocationType1('Auto')">Auto</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Returned Quantity' |translate}}
+                  </label>
+                  <div class="col-sm-4">
+                    <input name="returnQuantity" id="returnQuantity" placeholder="{{'Returned Quantity' |translate}}"
+                      class="form-control" type="text" formControlName="returnQuantity"
+                      (focusout)="getCFCount('Return')"
+                      [readOnly]="(uomAvailabilityCheck=='Yes') || (uomAvailabilityCheck!='Yes' && !noMatchingUnitError)">
+                  </div>
+                  <div class="col-sm-3">
+                    <select class="form-control selectPanl" formControlName="inventoryUnit" style="margin-left:-14px"
+                      (change)="receivableQuantityCal();calculateReceivedQty('Return')">
+                      <option [value]="null">--Select--</option>
+                      <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                        {{unit.unitCode}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12 d-flex justify-content-end"
+                    style="margin-left: 35px;margin-top: -25px;height: 0px;"
+                    *ngIf="locReturnAllocation.putawayReturnLocationAllocationType=='Manual'">
+                    <div class="d-flex flex-column align-items-end">
+                      <i class="fa fa-search" style="margin-left: 10px;cursor: pointer;"
+                        (click)="openModalRecievedLocations(receivingForm,'Return')"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Order Unit Price' |translate}}</label>
+                  <div class="col-sm-3 pr-0">
+                    <input id="orderUnitPrice" name="orderUnitPrice" formControlName="orderUnitPrice"
+                      (focusout)="getUnitPrice()" placeholder="{{'Unit Price' |translate}}" class="form-control"
+                      type="text" style="width: 137px;">
+                  </div>
+                  <div class="col-sm-4">
+                    <input id="currency" name="currency" formControlName="currency" [readOnly]="true"
+                      placeholder="{{'Currency' |translate}}" class="form-control" type="text"
+                      style="margin-left:24px;width:90px">
+                  </div>
+                </div>
+
+
+
+
+              </div>
+              <div class="col-md-4">
+
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Gross Amount' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input formControlName="grossAmount" readonly placeholder="{{'gross Amount' |translate}}"
+                      class="form-control" type="text" [value]="receivingForm.get('grossAmount').value | decimalFilter">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Discount' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input id="discount" (keyup)="calculate()" name="discount" formControlName="discount"
+                      placeholder="{{'Discount' |translate}}" class="form-control vblr" type="text"
+                      [readonly]="putAwayToggle">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Purchase Tax' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="taxIDs"
+                      [formControl]="receivingForm.controls['purchaseTaxes']" (focusout)="calculateTaxPercentage()">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Tax Amount' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input formControlName="taxAmount" readonly placeholder="{{'Amount' |translate}}"
+                      class="form-control" type="text" [value]="receivingForm.get('taxAmount').value | decimalFilter">
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Amount' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input formControlName="netAmount" readonly placeholder="{{'Amount' |translate}}"
+                      class="form-control" type="text" [value]="receivingForm.get('netAmount').value | decimalFilter">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Receiving Instruction' |translate}}
+                  </label>
+                  <div class="col-sm-7">
+                    <textarea id="receivingInstruction" name="receivingInstruction" rows="4"
+                      formControlName="receivingInstruction" placeholder="{{'Receiving Instruction' |translate}}"
+                      class="form-control" [readonly]="putAwayToggle"></textarea>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+              <div class="col-md-6" *ngIf="serialNumberCheck == 'Yes'">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">{{'Serial Numbers' |translate}}</label>
+                  <div class="col-sm-9">
+                    <textarea id="sNumber" name="sNumber" [(ngModel)]="sNumber" [ngModelOptions]="{standalone: true}"
+                      placeholder="{{'Serial Numbers' |translate}}" class="form-control" type="text"
+                      [readonly]="putAwayToggle" (focusout)="getSerialNumbers()"></textarea>
+                  </div>
+                </div>
+              </div>
+              <!-- Start  -->
+
+              <p style="cursor:pointer" class="ml-3" id="yourButtonId">Click to See More Details</p>
+              <div class="row w-100" id="yourParagraphId">
+                <div class="col-md-12 w-100">
+                  <div class="row w-100 ">
+                    <div class="col-md-4 text-left" style="position: relative;
+                    left: -17px;">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Invoice Number' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input name="invoiceNumber" id="invoiceNumber" formControlName="invoiceNumber"
+                            placeholder="{{'Invoice Number' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Invoice Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="invoiceDate" id="invoiceDate" formControlName="invoiceDate"
+                            placeholder="{{'Invoice Date' |translate}}" class="form-control" type="date"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label"> {{'Reference Invoice Number' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input name="referenceInvoiceNumber" id="referenceInvoiceNumber"
+                            formControlName="referenceInvoiceNumber"
+                            placeholder="{{'Reference Invoice Number' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'LR Number' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input name="lrNumber" id="lrNumber" formControlName="lrNumber"
+                            placeholder="{{'LR Number' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Transporter' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="transport" id="transport" formControlName="transport"
+                            placeholder="{{'Transporter' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Number' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="vehicleNumber" id="vehicleNumber" formControlName="vehicleNumber"
+                            placeholder="{{'Vehicle Number' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Vehicle Type' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="vehicleType" id="vehicleType" formControlName="vehicleType"
+                            placeholder="{{'Vehicle Type' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Container Number' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="containerNumber" id="containerNumber" formControlName="containerNumber"
+                            placeholder="{{'Container Number' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bill Of Entry No' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="billOfEntryNumber" id="billOfEntryNumber" formControlName="billOfEntryNumber"
+                            placeholder="{{'Bill Of Entry No' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Entry','receivingForm')">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bill Of Entry Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="billOfEntryDate" id="billOfEntryDate" formControlName="billOfEntryDate"
+                            placeholder="{{'billOfEntry Date' |translate}}" class="form-control" type="date"
+                            [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Entry','receivingForm')">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bill Of Lading No' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="billOfLandingNumber" id="billOfLandingNumber"
+                            formControlName="billOfLandingNumber" placeholder="{{'Bill Of Lading No' |translate}}"
+                            class="form-control" type="text" [readonly]="putAwayToggle"
+                            (focusout)="getConcatDateNumber('Landing','receivingForm')">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bill Of Lading Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="billOfLandingDate" id="billOfLandingDate" formControlName="billOfLandingDate"
+                            placeholder="{{'billOfLanding Date' |translate}}" class="form-control" type="date"
+                            [readonly]="putAwayToggle" (focusout)="getConcatDateNumber('Landing','receivingForm')">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bond No' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="bondNumber" id="bondNumber" formControlName="bondNumber"
+                            placeholder="{{'Bond No' |translate}}" class="form-control" type="text"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bond Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input name="bondDate" id="bondDate" formControlName="bondDate"
+                            placeholder="{{'Bond Date' |translate}}" class="form-control" type="date"
+                            [readonly]="putAwayToggle">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- End -->
+
+
+              <div class="col-md-12">
+                <div class="form-group row mt-3">
+                  <div class="col-sm-12 text-center mb-3">
+                    <button class="btn btn-green m-1" (click)="saveFirst()">{{'Save' |translate}}</button>
+                    <button class="btn btn-green m-1" (click)="update()"
+                      [disabled]="receivingForm.value.productMasterInfo.productIDName">{{'Confirm' |translate}}</button>
+                    <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-smart-modal customClass="nsm-centered" id="goodsrecievingForReceive" #recieveLocationsModal
+    [identifier]="'recieveLocationsModal'">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>{{'Receive Locations' |translate}}</h5>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-4 col-form-label">{{'Received Quantity' |translate}}</label>
+            <div class="col-sm-8">
+              {{lineQuantity}}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="float-right">
+              <div class="form-group row">
+                <ng2-completer name="locationIDName" [datasource]="receiveLocationValues" [minSearchLength]="0"
+                  placeholder="{{'Search LocationIDs' |translate}}" (selected)="recieveLocationsByLocationName($event)">
+                </ng2-completer>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <i class="fa fa-close" style="cursor: pointer;float:right;font-size:36px"
+              (click)="closeEvent('recieveLocationsModal')"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="wmsDataTables w-100">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label>Show</label>
+              </div>
+              <div class="col-md-1"><select [(ngModel)]="itemsPerPageForReceive" class="form-control"
+                  [ngModelOptions]="{standalone: true}"
+                  (change)="receiveLocForTablePagination(pageForTableForReceive=1)">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+              <div class="col-md-0.5 pl-0"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKeyForReceive" placeholder="Search..."
+                  [ngModelOptions]="{standalone: true}"
+                  (keyup)="receiveLocForTablePagination(pageForTableForReceive=1);">
+              </div>
+            </div>
+            <table id="example" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Include' |translate}}</th>
+                  <th scope="col">{{'Location Name' |translate}}</th>
+                  <th scope="col">{{'Quantity' |translate}}</th>
+                  <th scope="col">{{'Max Dimension' |translate}}</th>
+                  <th scope="col">{{'Max Weight' |translate}}</th>
+                  <th scope="col" style="width: 20px;">{{'Required Quantity' |translate}}</th>
+                  <th scope="col">{{'Remarks' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="receiveLocations.length>0">
+                <tr
+                  *ngFor="let i=index;let data of receiveLocations  | paginate: {id:'foo2',itemsPerPage: itemsPerPageForReceive,currentPage: pageForTableForReceive,totalItems: totalItemsForReceive}">
+                  <td scope="row">
+                    {{((pageForTableForReceive -1) * itemsPerPageForReceive)+i+1}}
+                  </td>
+                  <td><input type="checkbox" [checked]="data.isChecked" (click)="read($event,data)"
+                      [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}" [disabled]="statusCheck">
+                  </td>
+                  <td>{{data.locationName}}</td>
+                  <td>{{data.allowableQuantity}}</td>
+                  <td>{{data.allowableMaxDimension}} {{data.allowableMaxDimensionUom}}</td>
+                  <td>{{data.allowableWeight}} {{data.allowableWeightUom}}</td>
+                  <td *ngIf="!data.isEdit">
+                    <span>
+                      {{data.quantity}}
+                    </span>
+                  </td>
+                  <td *ngIf="data.isEdit"><span>
+                      <input type="text" class="form-control" #quantity [(ngModel)]="data.quantity"
+                        [ngModelOptions]="{standalone: true}" (keyup)="validateLocationDecimal('receiveLocations',i)"
+                        (focusout)="savequantity(quantity.value,data,'Receive')" [disabled]="statusCheck"></span>
+                  </td>
+                  <td><span *ngIf="data.isEdit">
+                      <input type="text" class="form-control" #packingRemarks [value]="data.packingRemarks"
+                        (focusout)="saveRemark(packingRemarks.value,data,'Receive')" [disabled]="statusCheck"></span>
+                    <span *ngIf="!data.isEdit">{{data.packingRemarks}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row" *ngIf="receiveLocations.length>0">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo2"
+                  (pageChange)="receiveLocForTablePagination((pageForTableForReceive = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" [hidden]="statusCheck">
+        <div class="text-center">
+          <button class="btn btn-green ml-1" (click)="saveRecieveLocations()"
+            [disabled]="!permissionsList.includes('Update')">{{'Save' |translate}}</button>
+          <button class="btn btn-white m-1" (click)="resetRecieveLocations('Recieve')">{{'Clear' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </ngx-smart-modal>
+  <ngx-smart-modal customClass="nsm-centered" id="goodsrecievingForReceive" #returnLocationsModal
+    [identifier]="'returnLocationsModal'">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>{{'Return Locations' |translate}}</h5>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-4 col-form-label">{{'Returned Quantity' |translate}}</label>
+            <div class="col-sm-8">
+              {{lineQuantity}}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="float-right">
+              <div class="form-group row">
+                <ng2-completer name="locationIDName" [datasource]="returnLocationValues" [minSearchLength]="0"
+                  placeholder="{{'Search LocationIDs' |translate}}" (selected)="returnLocationsByLocationName($event)">
+                </ng2-completer>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <i class="fa fa-close" style="cursor: pointer;float:right;font-size:36px"
+              (click)="closeEvent('returnLocationsModal')"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="wmsDataTables w-100">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label>Show</label>
+              </div>
+              <div class="col-md-1"><select [(ngModel)]="itemsPerPageForReturn" class="form-control"
+                  [ngModelOptions]="{standalone: true}"
+                  (change)="returnLocForTablePagination(pageForTableForReturn=1,'selectEntries')">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+              <div class="col-md-0.5 pl-0"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKeyForReturn" placeholder="Search..."
+                  [ngModelOptions]="{standalone: true}" (keyup)="returnLocForTablePagination(pageForTableForReturn=1);">
+              </div>
+            </div>
+            <table id="example" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Include' |translate}}</th>
+                  <th scope="col">{{'Location Name' |translate}}</th>
+                  <th scope="col">{{'Quantity' |translate}}</th>
+                  <th scope="col">{{'Max Dimension' |translate}}</th>
+                  <th scope="col">{{'Max Weight' |translate}}</th>
+                  <th scope="col" style="width: 20px;">{{'Required Quantity' |translate}}</th>
+                  <th scope="col">{{'Remarks' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="returnLocations.length>0">
+                <tr
+                  *ngFor="let i=index;let data of returnLocations  | paginate: {id:'foo3',itemsPerPage: itemsPerPageForReturn,currentPage: pageForTableForReturn,totalItems: totalItemsForReturn}">
+                  <td scope="row">
+                    {{((pageForTableForReturn -1) * itemsPerPageForReturn)+i+1}}
+                  </td>
+                  <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                      [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}" [disabled]="statusCheck">
+                  </td>
+                  <td>{{data.locationName}}</td>
+                  <td>{{data.allowableQuantity}}</td>
+                  <td>{{data.allowableMaxDimension}} {{data.allowableMaxDimensionUom}}</td>
+                  <td>{{data.allowableWeight}} {{data.allowableWeightUom}}</td>
+                  <td *ngIf="!data.isEdit">
+                    <span>
+                      {{data.quantity}}
+                    </span>
+                  </td>
+                  <td *ngIf="data.isEdit"><span>
+                      <input type="text" class="form-control" #quantity [(ngModel)]="data.quantity"
+                        [ngModelOptions]="{standalone: true}" (keyup)="validateLocationDecimal('returnLocations',i)"
+                        (focusout)="savequantity(quantity.value,data,'Return')" [disabled]="statusCheck"></span>
+                  </td>
+                  <td><span *ngIf="data.isEdit">
+                      <input type="text" class="form-control" #packingRemarks [value]="data.packingRemarks"
+                        (focusout)="saveRemark(packingRemarks.value,data,'Return')" [disabled]="statusCheck"></span>
+                    <span *ngIf="!data.isEdit">{{data.packingRemarks}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row" *ngIf="returnLocations.length>0">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo3"
+                  (pageChange)="returnLocForTablePagination((pageForTableForReturn = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" [hidden]="statusCheck">
+        <div class="text-center">
+          <button class="btn btn-green ml-1" (click)="saveReturnLocations()"
+            [disabled]="!permissionsList.includes('Update')">{{'Save' |translate}}</button>
+          <button class="btn btn-white m-1" (click)="resetRecieveLocations('Return')">{{'Clear' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </ngx-smart-modal>
+  <div class="row" *ngIf="hidePanel">
+    <!-- <div class="col-md-12"> -->
+    <div class="col-md-2">
+      <div class="form-group">
+        <ng2-completer [datasource]="productIDNamesForBarcodeDropdown" [minSearchLength]="0"
+          [(ngModel)]="dummyProductIDName" (selected)="getFilter()" (focusout)="getFilter()"
+          placeholder="{{'Product' |translate}}" (keypress)="getProductDetails('forEdit')"
+          [inputClass]="'form-control form-control-inline'">
+        </ng2-completer>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <button _ngcontent-phh-c380="" type="button" title="Barcode" (click)="openScanner('isEdit');"
+        style="background: none !important; border: none !important;"><img src="assets\subMenusIcons\Barcode Scan.svg"
+          alt="" style="width: 33px; height: 28px; margin-left: -24px"></button>
+    </div>
+    <div class="col-md-1"></div>
+    <!-- <div class="form-group row mt-3"> -->
+    <div class="col-sm-4 text-center mb-3">
+      <button class="btn btn-green m-1" (click)="saveFirst()">{{'Save'
+        |translate}}</button>
+      <button class="btn btn-green m-1" (click)="update()">{{'Confirm' |translate}}</button>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+  </div>
+  <div class="row" *ngIf="arrayForTable.length>0">
+    <div class="col-md-12">
+      <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label>Show</label>
+          </div>
+          <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="getGoodsReceiptByID(pageForTable=1)"
+              class="form-control" [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select></div>
+          <div class="col-md-0.5 pl-0"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1">
+            <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+              (keyup)="this.getGoodsReceiptByID(pageForTable=1);">
+          </div>
+        </div>
+        <table id="style-8" class="table table-striped">
+          <thead>
+            <tr>
+              <th>{{'Include' |translate}} <input type="checkbox" class="form-control" (click)="selectAllData($event)"
+                  [(ngModel)]="selectAllCheckboxValue" [ngModelOptions]="{standalone: true}">
+              </th>
+              <th>{{'Image' | translate}}</th>
+              <th>{{'Product ID' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+              left: -7px;" (click)="setDirection('ASC','Product ID')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+                left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product ID')"> </i>
+              </th>
+              <th>{{'Product Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+            left: -7px;" (click)="setDirection('ASC','Product Name')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Name')"> </i>
+              </th>
+              <th>{{'Product Description' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection('ASC','Product Description')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Description')"> </i>
+              </th>
+              <th>{{'GRN Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+          left: -7px;" (click)="setDirection('ASC','GRN Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+            left: -7px;" aria-hidden="true" (click)="setDirection('DESC','GRN Date')"> </i>
+              </th>
+              <th>{{'Brand Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection('ASC','Brand Name')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Brand Name')"> </i>
+              </th>
+
+              <th>{{'MFG Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+        left: -7px;" (click)="setDirection('ASC','MFG Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+          left: -7px;" aria-hidden="true" (click)="setDirection('DESC','MFG Date')"> </i>
+              </th>
+              <th>{{'Expiry Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+      left: -7px;" (click)="setDirection('ASC','Expiry Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+        left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Expiry Date')"> </i>
+              </th>
+              <th>{{'Batch No' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection('ASC','Batch No')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+      left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Batch No')"> </i>
+              </th>
+
+              <th *ngIf="serialNumberCheckFrmConfig == 'Yes'">{{'Serial Number' |translate}}<i class="fa fa-sort-asc"
+                  style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Serial Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Serial Number')"> </i>
+              </th>
+
+              <th>{{'Supplier IDName' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Supplier IDName')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Supplier IDName')"> </i>
+              </th>
+
+              <th>{{'Order Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Order Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Quantity')"> </i>
+              </th>
+              <th>{{'Supplier Receivable Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Order Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Quantity')"> </i>
+              </th>
+              <th>{{'Supplier Received Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Supplier Received Qty')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Supplier Received Qty')"> </i>
+              </th>
+              <th>{{'Received Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Received Qty')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Received Qty')"> </i>
+              </th>
+              <th>{{'Order Unit Price' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Order Unit Price')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Unit Price')"> </i>
+              </th>
+              <th>{{'Receive Location Names' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Receive Location Names')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Receive Location Names')"> </i>
+              </th>
+              <th>{{'Supplier Return Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Supplier Return Quantity')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Supplier Return Quantity')"> </i>
+              </th>
+              <th>{{'Returned Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Returned Qty')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Returned Qty')"> </i>
+              </th>
+
+              <th>{{'Return Location AllocationType' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Return Location AllocationType')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Return Location AllocationType')"> </i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i=index;let line of arrayForTable | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: pageForTable,totalItems: totalItems}">
+              <td><input type="checkbox" [checked]="line.isChecked" [(ngModel)]="line.isChecked"
+                  [disabled]="line.orderedQuantity==0 || line.orderedQuantity=='0'"
+                  (click)="onSelect($event.target.checked,i)"></td>
+              <td *ngIf="line.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + line.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{line.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!line.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(line.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td>{{line.productMasterInfo?.productID}}</td>
+              <td>{{line.productMasterInfo?.productName}}</td>
+              <td>{{line.productDescription}}</td>
+              <td><input [(ngModel)]="line.grnDate" [ngModelOptions]="{standalone: true}"
+                  placeholder="{{'GRN Date' |translate}}" class="form-control" type="datetime-local"
+                  [readonly]="putAwayToggle"></td>
+              <td>{{line.brandName}}</td>
+              <td>
+                <input [(ngModel)]="line.mfgDate" [ngModelOptions]="{standalone: true}"
+                  placeholder="{{'MFG Date' |translate}}" class="form-control" type="date" [readonly]="putAwayToggle"
+                  [max]="getToday()" (change)="getExpiryDateInTableView($event.target.value,i)">
+              </td>
+              <td>
+                <input [(ngModel)]="line.expiryDate" [ngModelOptions]="{standalone: true}"
+                  placeholder="{{'Expiry Date' |translate}}" class="form-control" type="date" [readonly]="putAwayToggle"
+                  [min]="getExpiryLimit(i)">
+              </td>
+              <td>
+                <input [(ngModel)]="line.batchNumber" [ngModelOptions]="{standalone: true}" placeholder="Batch Number"
+                  class="form-control" type="text" [readonly]="putAwayToggle" (focusout)="selectCheck(i)"
+                  style="width: 100px;">
+              </td>
+              <td *ngIf="serialNumberCheckFrmConfig == 'Yes'">
+                <span>
+                  <textarea id="serialNumbers" name="serialNumbers" [(ngModel)]="line.serialNumbers"
+                    [ngModelOptions]="{standalone: true}" placeholder="{{'Serial Numbers' |translate}}"
+                    class="form-control" type="text" (focusout)="selectCheck(i)"></textarea>
+                </span>
+              </td>
+              <td>
+                <div class="form-group row"
+                  *ngIf="headerForm.controls.wareHouseTransferType.value || headerForm.controls.returnOrderType.value">
+                  <ng2-completer name="supplierIDName" [datasource]="supplierIDNames" [minSearchLength]="0"
+                    [(ngModel)]="line.supplierIDName" (selected)="setSupplierName($event,i)"
+                    [ngModelOptions]="{standalone: true}" placeholder="{{'Supplier ID/Name' |translate}}">
+                  </ng2-completer>
+                </div>
+                <div
+                  *ngIf="!headerForm.controls.wareHouseTransferType.value && !headerForm.controls.returnOrderType.value">
+                  {{line.supplierIDName}}</div>
+              </td>
+              <td>{{line.orderedQuantity}}
+              </td>
+              <td>{{line.supplierReceivableQuantity | decimalwithTenDigits}}</td>
+              <td>
+                <input class="form-control" [(ngModel)]="line.supplierReceivedQuantity"
+                  [ngModelOptions]="{standalone: true}"
+                  (keyup)="validate('supplierReceivedQuantity','table',i);receivableQuantityCalForTable(i);calculateReceivedQtyFortable('',i)"
+                  placeholder="{{'Supplier Received Quantity' |translate}}" type="text"
+                  [readonly]="putAwayToggle || line.hideReceive" oninput="validity.valid||(value='')" min="0"
+                  (focusout)="hideReturnOrReceiveForTable(i);onSelect(true, i);">
+                <select class="form-control selectPanl" style="width: fit-content;"
+                  (change)="calculateReceivedQtyFortable('',i)" [(ngModel)]="line.receivingUnit"
+                  [ngModelOptions]="{standalone: true}">
+                  <option [value]="null">--Select--</option>
+                  <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                    {{unit.unitCode}}</option>
+                </select>
+              </td>
+              <td><span *ngIf="line.uomConversionAvailability=='Yes'">{{line.receivedQuantity}}</span>
+                <span *ngIf="line.uomConversionAvailability!='Yes'">
+                  <input [(ngModel)]="line.receivedQuantity" [ngModelOptions]="{standalone: true}"
+                    (keyup)="validate('receivedQuantity','table',i)" placeholder="{{'Received Quantity' |translate}}"
+                    type="text" oninput="validity.valid||(value='')" min="0" (focusout)="getCFCountForTable(line,i)"
+                    [readonly]="putAwayToggle || line.hideReceive">
+                </span>
+              </td>
+              <td> <input [(ngModel)]="line.orderUnitPrice" (focusout)="getUnitPriceForTable(line,i)"
+                  class="form-control" type="text">
+              </td>
+              <td>
+                <button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                  *ngIf="line.receiveLocationAllocationType=='Manual'"
+                  (click)="saveAllocationType('Manual',i)">Manual</button>
+
+                <i *ngIf="line.receiveLocationAllocationType=='Manual'" class="fa fa-table" style="cursor: pointer;"
+                  (click)="openModalRecievedLocationsforTable(i,'Recieve')"></i>
+
+                <button class="btn-success" *ngIf="line.receiveLocationAllocationType=='Auto'"
+                  [disabled]="!permissionsList.includes('Update') || statusCheck"
+                  (click)="saveAllocationType('Auto',i)">Auto</button>
+              </td>
+              <td>
+                <input [(ngModel)]="line.supplierReturnQuantity" [ngModelOptions]="{standalone: true}"
+                  class="form-control"
+                  (keyup)="validate('supplierReturnQuantity','table',i);receivableQuantityCalForTable(i);calculateReceivedQtyFortable('Return',i)"
+                  placeholder="{{'Supplier Returned Quantity' |translate}}" type="text"
+                  [readonly]="putAwayToggle || line.hideReturn" oninput="validity.valid||(value='');" min="0"
+                  (focusout)="hideReturnOrReceiveForTable(i,'Return');onSelect(true, i)">
+                {{line.receivingUnit}}
+              </td>
+              <td>
+                <span *ngIf="line.uomConversionAvailability=='Yes'">{{line.returnQuantity}}</span>
+                <span *ngIf="line.uomConversionAvailability!='Yes'">
+                  <input [(ngModel)]="line.returnQuantity" [ngModelOptions]="{standalone: true}"
+                    (keyup)="validate('returnQuantity','table',i)" placeholder="{{'Return Quantity' |translate}}"
+                    type="text" oninput="validity.valid||(value='')" min="0"
+                    (focusout)="getCFCountForTable(line,i,'Return')" [readonly]="putAwayToggle || line.hideReturn">
+                </span>
+              </td>
+              <td><button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                  *ngIf="line.returnLocationAllocationType=='Manual'"
+                  (click)="saveAllocationType1('Manual',i)">Manual</button>
+                <br>
+                <i *ngIf="line.returnLocationAllocationType=='Manual'" class="fa fa-table" style="cursor: pointer;"
+                  (click)="openModalRecievedLocationsforTable(i,'Return')"></i>
+
+                <button class="btn-success" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                  *ngIf="line.returnLocationAllocationType=='Auto'"
+                  (click)="saveAllocationType1('Auto',i)">Auto</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row" *ngIf="arrayForTable.length>0">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" id="foo" (pageChange)="getGoodsReceiptByID((pageForTable = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label>Show</label>
+          </div>
+          <div class="col-md-1"><select [(ngModel)]="itemsPerPageManagement"
+              (change)="getGoodsReceiptManagementByID(pageForTableManagement=1)" class="form-control"
+              [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select></div>
+          <div class="col-md-0.5 pl-0"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1">
+            <input type="text" [(ngModel)]="searchKeyManagement" placeholder="Search..."
+              [ngModelOptions]="{standalone: true}"
+              (keyup)="this.getGoodsReceiptManagementByID(pageForTableManagement=1);">
+          </div>
+        </div>
+        <table id="style-8" class="table table-striped">
+          <thead>
+            <tr>
+
+              <!--  <th>{{'S No' |translate}}</th> -->
+              <th>{{'S.No' |translate}}</th>
+              <th>{{'Image' | translate}}</th>
+              <th>{{'Include' |translate}}<input type="checkbox" class="form-control" (click)="selectAllData1($event)"
+                  [(ngModel)]="selectAllAllcateCheckboxValue" [ngModelOptions]="{standalone: true}"
+                  [disabled]="grManagementLines.length==0"></th>
+              <th>{{'Product ID' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                              left: -7px;" (click)="setDirection1('ASC','Product ID')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                  (click)="setDirection1('DESC','Product ID')"> </i></th>
+              <th>{{'Product Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection1('ASC','Product Name')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Name')"> </i></th>
+              <th>{{'Product Description' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                                            left: -7px;" (click)="setDirection1('ASC','Product Description')"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                                              left: -7px;" aria-hidden="true"
+                  (click)="setDirection1('DESC','Product Description')"> </i>
+              </th>
+              <th>{{'UOM' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection1('ASC','UOM')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','UOM')"> </i>
+              </th>
+              <th>{{'Brand Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Brand Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Brand Name')"> </i>
+              </th>
+              <th>{{'GRN Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','GRN Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','GRN Date')"> </i>
+              </th>
+              <th>{{'MFG Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','MFG Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','MFG Date')"> </i>
+              </th>
+              <th>{{'Expiry Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Expiry Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Expiry Date')"> </i>
+              </th>
+              <th>{{'Batch No' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Batch No')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Batch No')"> </i>
+              </th>
+              <th [hidden]="serialNumberCheckFrmConfig=='No'">{{'Serial Number' |translate}}<i class="fa fa-sort-asc"
+                  style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Serial Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Serial Number')"> </i>
+              </th>
+              <th>{{'Shipped Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Shipped Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Shipped Quantity')"> </i>
+              </th>
+              <th>{{'Order Unit Price' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Order Unit Price')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Order Unit Price')"> </i>
+              </th>
+              <th>{{'Gross Amount' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Gross Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Gross Amount')"> </i>
+              </th>
+              <th>{{'Tax Amount' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Tax Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Tax Amount')"> </i>
+              </th>
+              <th>{{'Discount' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Discount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Discount')"> </i>
+              </th>
+              <th>{{'Amount' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Amount')"> </i>
+              </th>
+              <th>{{'Supplier Received Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Supplier Received Qty')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Supplier Received Qty')"> </i>
+              </th>
+
+              <th>{{'Supplier Return Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Supplier Return Qty')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Supplier Return Qty')"> </i>
+              </th>
+              <th>{{'Supplier Receivable Qty' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Supplier Receivable Qty')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Supplier Receivable Qty')"> </i>
+              </th>
+              <th>{{'Total Supplier Received Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Total Supplier Received Quantity')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Total Supplier Received Quantity')"> </i>
+              </th>
+              <th>{{'Total Supplier Return Quantity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Total Supplier Return Quantity')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Total Supplier Return Quantity')"> </i>
+              </th>
+              <th>{{'Invoice No & Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Invoice No & Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Invoice No & Date')"> </i>
+              </th>
+              <th>{{'LR Number' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','LR Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','LR Number')"> </i>
+              </th>
+
+              <th>{{'Vehicle Number' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Vehicle Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Vehicle Number')"> </i>
+              </th>
+              <th>{{'Container Number' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Container Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Container Number')"> </i>
+              </th>
+              <th>{{'BOE No & Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','BOE No & Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','BOE No & Date')"> </i>
+              </th>
+              <th>{{'BOL No & Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','BOL No & Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','BOL No & Date')"> </i>
+              </th>
+              <th>{{'Bond Number' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Bond Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Bond Number')"> </i>
+              </th>
+              <th>{{'Bond Date' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Bond Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Bond Date')"> </i>
+              </th>
+              <th>{{'Receive Location Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Receive Location Name')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Receive Location Name')"> </i>
+              </th>
+              <th>{{'Receive Location AllocationType' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Receive Location AllocationType')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Receive Location AllocationType')"> </i>
+              </th>
+              <th>{{'Return Location Name' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Return Location Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Return Location Name')"> </i>
+              </th>
+              <th>{{'Return Location AllocationType' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Return Location AllocationType')" aria-hidden="true"></i> <i
+                  class="fa fa-sort-desc" style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Return Location AllocationType')"> </i>
+              </th>
+              <th>{{'Location Availablity' |translate}}<i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Location Availablity')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                  style="position: relative;
+    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Location Availablity')"> </i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i=index;let line of grManagementLines | paginate: {id:'foo1',itemsPerPage: itemsPerPageManagement,currentPage: pageForTableManagement,totalItems: totalItemsForManagement}">
+              <td>{{((pageForTableManagement-1) * itemsPerPageManagement)+i+1}}</td>
+              <td *ngIf="line.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + line.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{line.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!line.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(line.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td><input type="checkbox" [checked]="line.isChecked" (click)="onSelect1($event.target.checked,line)"
+                  [disabled]="line.locationFound != false"></td>
+              <td>{{line.productMasterInfo?.productID}}</td>
+              <td>{{line.productMasterInfo?.productName}}</td>
+              <td>{{line.productDescription}}</td>
+              <td class="text-center">{{line.receivingUnit}}</td>
+              <td class="text-center">{{line.brandName}}</td>
+              <td class="text-center">{{line.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td class="text-center">{{line.mfgDate | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-center">{{line.expiryDate | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-center">{{line.batchNumber}}</td>
+              <td [hidden]="serialNumberCheckFrmConfig=='No'">{{line.serialNumbers}}</td>
+              <td>{{line.shippedQuantity}}</td>
+              <td class="text-right">{{line.orderUnitPrice}} </td>
+              <td class="text-right">{{line.grossAmount | decimalFilter}} </td>
+              <td class="text-right">{{line.taxAmount | decimalFilter}}</td>
+              <td class="text-right">{{line.discount}}</td>
+              <td class="text-right">{{line.netAmount | decimalFilter}}</td>
+              <td>{{line.supplierReceivedQuantity}}</td>
+              <td>{{line.supplierReturnQuantity}}</td>
+              <td>{{line.supplierReceivableQuantity | decimalwithTenDigits}}</td>
+              <td>{{line.totalSupplierReceivedQuantity}}</td>
+              <td>{{line.totalSupplierReturnQuantity}}</td>
+              <td>{{line.invoiceNumber}} {{line.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{line.lrNumber}}</td>
+              <td><span *ngIf="line.vehicleInfo">{{line.vehicleInfo.vehicleNumber}}</span></td>
+              <td><span *ngIf="line.equipmentInfo">{{line.equipmentInfo.equipmentIDName ?
+                  line.equipmentInfo.equipmentIDName : line.equipmentInfo.equipmentID}}</span></td>
+              <td>{{line.billOfEntryNumber}} {{line.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{line.billOfLandingNumber}} {{line.billOfLandingDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{line.bondNumber}}</td>
+              <td>{{line.bondDate | date: 'dd/MM/yyyy'}}</td>
+              <td><span [hidden]="!line.receiveLocationHelpers" *ngFor="let loc of line.receiveLocationHelpers">
+                  {{loc.locationName}},
+                </span></td>
+              <td *ngIf="line.locationFound != false">{{line.receiveLocationAllocationType}}</td>
+              <td *ngIf="line.locationFound === false">
+                <button class="btn-secondary"
+                  [disabled]="!permissionsList.includes('Update') || statusCheck || line.receiveLocationsFound"
+                  *ngIf="line.receiveLocationAllocationType=='Manual'"
+                  (click)="saveAllocationTypeAllocate('Manual',i)">Manual</button>
+                <br>
+                <i *ngIf="line.receiveLocationAllocationType=='Manual' && !line.receiveLocationsFound"
+                  class="fa fa-table" style="cursor: pointer;"
+                  (click)="openModalRecievedLocationsforTable(i,'Recieve','Allocate')"></i>
+
+                <button class="btn-success" *ngIf="line.receiveLocationAllocationType=='Auto'"
+                  [disabled]="!permissionsList.includes('Update') || statusCheck || line.receiveLocationsFound"
+                  (click)="saveAllocationTypeAllocate('Auto',i)">Auto</button>
+              </td>
+
+              <td><span [hidden]="!line.returnLocationHelpers" *ngFor="let loc of line.returnLocationHelpers">
+                  {{loc.locationName}},
+                </span></td>
+              <td *ngIf="line.locationFound != false">{{line.returnLocationAllocationType}}</td>
+              <td *ngIf="line.locationFound === false"><button class="btn-secondary"
+                  [disabled]="!permissionsList.includes('Update') || statusCheck || line.returnLocationsFound"
+                  *ngIf="line.returnLocationAllocationType=='Manual'"
+                  (click)="saveAllocationTypeAllocate1('Manual',i)">Manual</button>
+                <br>
+                <i *ngIf="line.returnLocationAllocationType=='Manual' && !line.returnLocationsFound" class="fa fa-table"
+                  style="cursor: pointer;" (click)="openModalRecievedLocationsforTable(i,'Return','Allocate')"></i>
+
+                <button class="btn-success"
+                  [disabled]="!permissionsList.includes('Update') || statusCheck || line.returnLocationsFound"
+                  *ngIf="line.returnLocationAllocationType=='Auto'"
+                  (click)="saveAllocationTypeAllocate1('Auto',i)">Auto</button>
+              </td>
+              <td *ngIf="line.locationFound != false"><button class="btn btn-green" disabled>Allocated</button>
+              </td>
+              <td *ngIf="line.locationFound === false">Not Allocate</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row" *ngIf="grManagementLines.length>0">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" id="foo1"
+              (pageChange)="getGoodsReceiptManagementByID((pageForTableManagement = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="float-right">
+        <button class="btn btn-green" (click)="allocateLocation()" [disabled]="showAllocate">Allocate</button>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center mt-4">
+    <div class="col-sm-12">
+      <button class="btn btn-green" (click)="showPopup()" [disabled]="grManagementLines.length==0 || statusCheck">
+        Close PO
+      </button>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" identifier="closePOPopup" #closePOPopup>
+  <div class="mb-3">
+    <h6 *ngIf="closePOPopup.hasData()">{{closePOPopup.getData()}}</h6>
+  </div>
+  <div class="text-right">
+    <button class="btn btn-green mr-1" (click)="[closePO(), closePOPopup.close()]"> YES
+    </button>
+    <button class="btn btn-white" (click)="closePOPopup.close()"> No </button>
+  </div>
+</ngx-smart-modal>
+
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

@@ -1,0 +1,207 @@
+<div id="inBody" [formGroup]="overAllForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'OVER ALL INVENTORY' |translate}}</h4>
+                  <div class="float-right"><span><i aria-hidden="true" class="fa fa-angle-up"></i></span>
+                    |
+                    <i class="material-icons fullscreen"> unfold_less </i>
+                  </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'OVER ALL INVENTORY' |translate}}<div class="float-right"><i class="material-icons fullscreen">
+                        close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Organization' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="organizationValuesIDs" formControlName="organizationIDName"
+                          (focusout)="getWareHouses()">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="wareHouseValuesIds" formControlName="wareHouseIDName">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="supplierIDNameIdValues" [(ngModel)]="supplierIDNames"
+                          (focusout)="fetchAllProductBySupplier()" [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product Category' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="productCategoryValuesIds" name="Product Categories"
+                          formControlName="productCategoryNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="productValuesIds" name="product" formControlName="productIDNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row mt-1">
+                    <label class="col-sm-8 col-form-label"> </label>
+                    <div class="col-sm-4 text-right">
+                      <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                      <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="overAll">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table id="example" class="table table-striped">
+          <thead>
+            <tr>
+              <th rowspan="2">{{'Products' |translate}}</th>
+              <th scope="col" *ngFor="let data of headers" [attr.colspan]="4">{{data |translate}}
+              </th>
+              <th colspan="4">{{'Total' |translate}}</th>
+            </tr>
+            <tr>
+              <ng-container *ngFor="let data of headers">
+                <th>{{'Quantity Inventory Unit' |translate}}</th>
+                <th>{{'Available Quantity' |translate}}</th>
+                <th>{{'Reserved Quantity' |translate}}</th>
+                <th>{{'On Order' |translate}}</th>
+              </ng-container>
+              <th>{{'Quantity Inventory Unit' |translate}}</th>
+              <th>{{'Available Quantity' |translate}}</th>
+              <th>{{'Reserved Quantity' |translate}}</th>
+              <th>{{'On Order' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prod of overAll.overallInventoryResponse.overallInventoryProductHelpers">
+              <td>{{prod.productMasterInfo.productIDName}}</td>
+              <!-- <ng-container *ngFor="let data of prod.overallInventoryOrganizationWareHouseInfos;let i=index">
+                <td><span *ngIf="getValue(data,i)">{{data.quantityInventoryUnit}}</span></td>
+                <td><span *ngIf="getValue(data,i)">{{data.availableQuantity}}</span></td>
+                <td><span *ngIf="getValue(data,i)">{{data.reservedQuantity}}</span></td>
+                <td><span *ngIf="getValue(data,i)">{{data.onOrderQuantity}}</span></td>
+              </ng-container> -->
+
+              <ng-container *ngFor="let data of prod.dummyOrgWareInfos">
+                <td>{{data.quantityInventoryUnit}}</td>
+                <td>{{data.availableQuantity | decimalFilter}}</td>
+                <td>{{data.reservedQuantity | decimalFilter}}</td>
+                <td>{{data.onOrderQuantity| decimalFilter}}</td>
+              </ng-container>
+              <td>{{prod.totalQuantityInventoryUnit}}</td>
+              <td>{{prod.totalAvailableQuantity | decimalFilter}}</td>
+              <td>{{prod.totalReservedQuantity | decimalFilter}}</td>
+              <td>{{prod.totalOnOrderQuantity | decimalFilter}}</td>
+            </tr>
+            <tr>
+              <td>Grand Total</td>
+              <ng-container *ngFor="let data of headers">
+                <td>{{overAll.organizationWareHouseQuantityHelperMap[data].quantityInventoryUnit}}</td>
+                <td>{{overAll.organizationWareHouseQuantityHelperMap[data].availableQuantity}}</td>
+                <td>{{overAll.organizationWareHouseQuantityHelperMap[data].reservedQuantity}}</td>
+                <td>{{overAll.organizationWareHouseQuantityHelperMap[data].onOrderQuantity}}</td>
+
+              </ng-container>
+              <td>{{overAll.overallInventoryResponse.grandTotalQuantityInventoryUnit}}</td>
+              <td>{{overAll.overallInventoryResponse.grandTotalAvailableQuantity}}</td>
+              <td>{{overAll.overallInventoryResponse.grandTotalReservedQuantity}}</td>
+              <td>{{overAll.overallInventoryResponse.grandTotalOnOrderQuantity}}</td>
+            </tr>
+
+          </tbody>
+          <!-- <tbody>
+            <tr *ngFor="let prod of columnNames">
+              <td>{{prod.productMasterInfo.productIDName}}</td>
+              <ng-container *ngFor="let data of overAll.overallInventoryResponseList;let i=index">
+                <td>
+                  <span *ngIf="i!=prod.overAllElementIndex">0 {{prod.inventoryUnit}}</span>
+                  <span *ngIf="i==prod.overAllElementIndex">{{prod.quantityInventoryUnit}} {{prod.inventoryUnit}}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="i!=prod.overAllElementIndex">0 {{prod.inventoryUnit}}</span>
+                  <span *ngIf="i==prod.overAllElementIndex">{{prod.availableQuantity}} {{prod.inventoryUnit}}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="i!=prod.overAllElementIndex">0 {{prod.inventoryUnit}}</span>
+                  <span *ngIf="i==prod.overAllElementIndex">{{prod.reservedQuantity}} {{prod.inventoryUnit}}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="i!=prod.overAllElementIndex">0 {{prod.inventoryUnit}}</span>
+                  <span *ngIf="i==prod.overAllElementIndex">{{prod.onOrderQuantity}} {{prod.inventoryUnit}}
+                  </span>
+                </td>
+              </ng-container>
+              <td>{{overAll.productQuantityHelperMap[prod.productMasterInfo.productIDName+'#'+prod.inventoryUnit]?.quantityInventoryUnit}}</td>
+              <td>{{overAll.productQuantityHelperMap[prod.productMasterInfo.productIDName+'#'+prod.inventoryUnit]?.availableQuantity}}</td>
+              <td>{{overAll.productQuantityHelperMap[prod.productMasterInfo.productIDName+'#'+prod.inventoryUnit]?.reservedQuantity}}</td>
+              <td>{{overAll.productQuantityHelperMap[prod.productMasterInfo.productIDName+'#'+prod.inventoryUnit]?.onOrderQuantity}}</td>
+
+             </tr>
+          </tbody> -->
+          <!-- <tr>
+            <td>Grand Total</td>
+            <ng-container *ngFor="let data of overAll.overallInventoryResponseList">
+              <td>{{data.netTotalQuantityInventoryUnit}}</td>
+              <td>{{data.netTotalAvailableQuantity}}</td>
+              <td>{{data.netTotalReservedQuantity}}</td>
+              <td>{{data.netTotalOnOrderQuantity}}</td>
+            </ng-container>
+            <td>{{overAll.grandTotalQuantityInventoryUnit}}</td>
+            <td>{{overAll.grandTotalAvailableQuantity}}</td>
+            <td>{{overAll.grandTotalReservedQuantity}}</td>
+            <td>{{overAll.grandTotalOnOrderQuantity}}</td>
+          </tr> -->
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

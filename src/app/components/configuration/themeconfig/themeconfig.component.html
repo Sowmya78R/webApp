@@ -1,0 +1,343 @@
+<div id="inBody" [formGroup]="themeConfigScreenForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel portlet">
+        <div class="formBox portlet-title">
+          <div class="row">
+            <div class="panel-heading formTitle w-auto">
+              <h4>{{'Theme Config' |translate}}</h4>
+              <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+                | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+              <h4>{{'Theme Config' |translate}}
+                <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+              </h4>
+            </div>
+          </div>
+          <div id="style-8" class="panel-body scrollbar" style="height: 114px;">
+            <div class="row force-overflow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Organization' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                        <ng2-completer class="'form-control form-control-inline'" [datasource]="organizationValuesIDs"
+                          [minSearchLength]="0" placeholder="{{'Organization' |translate}}" (selected)="getWareHouses($event)">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Warehouse' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                        <ng2-completer class="'form-control form-control-inline'" [datasource]="wareHouseValuesIds"
+                          [minSearchLength]="0" placeholder="{{'Warehouse' |translate}}" (selected)="getWareHousesInfo($event)">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Copy From Organization' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                        <ng2-completer class="'form-control form-control-inline'" [datasource]="suppierValueDetailsIds"
+                          [minSearchLength]="0" placeholder="{{'Organization' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Copy From WareHouse' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                        <ng2-completer class="'form-control form-control-inline'" [datasource]="suppierValueDetailsIds"
+                          [minSearchLength]="0" placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button class="btn btn-green mr-2" (click)="save()">{{'Save' |translate}}</button>
+            <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <p class="maintainTableHeader">{{'Theme Config' |translate}}</p>
+        <table id="example" class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">{{'Process Name' |translate}}</th>
+              <th scope="col">{{'Action' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{'Home Page Header Image' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload hidden multiple (change)="uploadFiles($event,'Home Page Header Image')">
+                    <i (click)="upload.click()" class="upload fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of homePageTextArray;let i=index"
+                      [hidden]="homePageTextArray.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" [hidden]="homePageTextArray.length==0"
+                        (click)="deleteImageMethod(data,'Home Page Header Image')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+            <td>{{'Home Page Header Image Only' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload7 hidden multiple (change)="uploadFiles($event,'Home Page Header Image Only')">
+                    <i (click)="upload7.click()" class="upload fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of homePageHeaderImageOnly;let i=index"
+                      [hidden]="homePageHeaderImageOnly.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" [hidden]="homePageHeaderImageOnly.length==0"
+                        (click)="deleteImageMethod(data,'Home Page Header Image Only')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Home Page Footer Image' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload2 hidden multiple (change)="uploadFiles($event,'Home Page Footer Image')">
+                    <i (click)="upload2.click()" class="upload1 fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of homePageFooterArr;let i=index"
+                      [hidden]="homePageFooterArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Home Page Footer Image')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Home Page Title' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Home Page Title')"
+                  [(ngModel)]="homeTitle" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Home page Side Title Heading' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control"
+                  (focusout)="uploadFiles($event,'Home page Side Title Heading')" [(ngModel)]="homepageSideTitleHeading"
+                  [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Home Page Text' |translate}}</td>
+              <td>
+                <!-- <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Home Page Text')"
+                  [(ngModel)]="homePageText" [ngModelOptions]="{standalone: true}" id=""> -->
+                <textarea name="" id="" cols="30" rows="4" class="form-control"
+                  (focusout)="uploadFiles($event,'Home Page Text')" [(ngModel)]="homePageText"
+                  [ngModelOptions]="{standalone: true}"></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Home Page Title color' |translate}}</td>
+              <td>
+                <!-- <input type="color" name="" id="style2"
+                  [(ngModel)]="homeTitleColor" style="width: 30px;height: 1px;border: none;" [ngModelOptions]="{standalone: true}" id=""> -->
+                <!-- <input type="color" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedColor"
+                  (input)="colorChanged()" (focusout)="uploadFiles($event,'Home Page Title color')" style="width: 30px;height: 1px;border: none;"> -->
+                <div class="colorPicker">
+                  <input type="color" id="style2" [ngModelOptions]="{standalone: true}" [(ngModel)]="homeTitleColor"
+                    (input)="uploadFiles($event,'Home Page Title color')" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Menu Page Logo' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload3 hidden multiple (change)="uploadFiles($event,'Menu Page Logo')">
+                    <i (click)="upload3.click()" class="upload1 fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of homePageTittleArr;let i=index"
+                      [hidden]="homePageTittleArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Menu Page Logo')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Menu Page Footer Image' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload4 hidden multiple (change)="uploadFiles($event,'Menu Page Footer Image')">
+                    <i (click)="upload4.click()" class="upload1 fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of menuPageFooterArr;let i=index"
+                      [hidden]="menuPageFooterArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Menu Page Footer Image')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Organization Font Color' |translate}}</td>
+              <td>
+                <div class="colorPicker">
+                  <input type="color" id="style2" [ngModelOptions]="{standalone: true}" [(ngModel)]="menuPageTitle"
+                    (input)="uploadFiles($event,'Organization Font Color')" />
+                </div>
+                <!-- <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Menu Page Title')" id=""
+                  [(ngModel)]="menuPageTitle" [ngModelOptions]="{standalone: true}"> -->
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Header Menu Font Color' |translate}}</td>
+              <td>
+                <div class="colorPicker">
+                  <input type="color" id="style2" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="headerMenuFontColor" (input)="uploadFiles($event,'Header Menu Font Color')" />
+                </div>
+                <!-- <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Menu Page Title')" id=""
+                  [(ngModel)]="menuPageTitle" [ngModelOptions]="{standalone: true}"> -->
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Footer Menu Font Color' |translate}}</td>
+              <td>
+                <div class="colorPicker">
+                  <input type="color" id="style2" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="footerMenuFontColor" (input)="uploadFiles($event,'Footer Menu Font Color')" />
+                </div>
+                <!-- <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Menu Page Title')" id=""
+                  [(ngModel)]="menuPageTitle" [ngModelOptions]="{standalone: true}"> -->
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Menu Page Title Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Menu Page Title Color')"
+                  id="" [(ngModel)]="menuPageTitleColor" [ngModelOptions]="{standalone: true}">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Menu Font Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Menu Font Color')" id=""
+                  [(ngModel)]="menuFontColor" [ngModelOptions]="{standalone: true}">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Save Button' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Save Button')" id=""
+                  [(ngModel)]="saveButton" [ngModelOptions]="{standalone: true}">
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Clear Button' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Clear Button')"
+                  [(ngModel)]="clearButton" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Table Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Table Color')"
+                  [(ngModel)]="tableColor" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Table Header Font Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control"
+                  (focusout)="uploadFiles($event,'Table Header Font Color')" [(ngModel)]="tableHeaderFontColor"
+                  [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Panel Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Panel Color')"
+                  [(ngModel)]="panelColor" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Panel Font Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Panel Font Color')"
+                  [(ngModel)]="panelFontColor" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+
+            </tr>
+            <tr>
+              <td>{{'Delete And Scroll Color' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" [(ngModel)]="deleteAndScrollColor"
+                  [ngModelOptions]="{standalone: true}" (focusout)="uploadFiles($event,'Delete And Scroll Color')"
+                  id="">
+              </td>
+              <!--  <td class="text-center">  <div class="input-container col-md-1 mt-1">
+                <input type="file"  (change)="uploadFiles($event,'Delete And Scroll Color')">
+              </div></td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

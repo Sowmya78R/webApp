@@ -1,0 +1,45 @@
+<body *ngIf="configService.selectedUsers.length>0">
+  <table class="w-100">
+    <tbody>
+      <tr>
+        <td>
+          <div class="content">
+            <div class="row" id="container">
+              <div class="col-md-12">
+                <div class="m-3">
+                  <table class="w-100 m-2" style="border: none !important;">
+                    <tbody style="border: none !important;">
+                      <tr style="border: none !important;">
+                        <td style="border: none !important;">
+                          <div class="row m-2">
+                            <div class="col-md-4" *ngFor="let user of configService.selectedUsers;let i=index"
+                              style="border: 1px solid;">
+                              {{user.userIDName}}<br>
+                              <!-- Dont Change Width and height of image-->
+                              <img [src]="'data:image/jpg;base64,'+ user.resource"
+                                style="width: 300px;height: 150px;border-radius: 10px;margin-top:5px" alt="No Preivew available"><br>
+                              <p style="text-align: center;"></p>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">
+  </div>
+</body>

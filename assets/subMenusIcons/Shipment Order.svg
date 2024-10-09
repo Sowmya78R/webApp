@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1000" height="1000" viewBox="0 0 1000 1000" xml:space="preserve">
+<desc>Created with Fabric.js 3.5.0</desc>
+<defs>
+</defs>
+<rect width="6" height="30" x="15" y="21" fill="#0068dd"/>
+<g transform="matrix(-14.2045 0 0 14.2045 499.9985 499.9985)" id="935875">
+<g style="" vector-effect="non-scaling-stroke">
+		<g transform="matrix(1 0 0 1 -20.4994 16.0018)" id="delivery">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(244,178,176); fill-rule: nonzero; opacity: 1;" transform=" translate(-11.5006, -48.0017)" d="M 4.422 34.422 l 16.164 16.164 c 0.552 0.686 0.555 1.944 0 2.828 l -8 8 C 12.211 61.789 11.702 62 11.172 62 H 4 c -1.105 0 -2 -0.895 -2 -3.043 V 35.425 C 2 34.161 3.528 33.528 4.422 34.422 z" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1 0 0 1 6 -22.5)" id="delivery">
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(244,178,176); fill-rule: nonzero; opacity: 1;" x="-13" y="-7.5" rx="0" ry="0" width="26" height="15"/>
+</g>
+		<g transform="matrix(1 0 0 1 0 0)" id="delivery">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(179,64,74); fill-rule: nonzero; opacity: 1;" transform=" translate(-32, -32)" d="M 61.214 31.527 c -1.131 -0.677 -2.5 -0.706 -3.698 -0.059 L 56 32.371 V 17 c 0 -0.553 -0.448 -1 -1 -1 h -3 V 2 c 0 -0.553 -0.448 -1 -1 -1 H 25 c -0.552 0 -1 0.447 -1 1 v 14 h -3 c -0.552 0 -1 0.447 -1 1 v 11.157 c -1.086 0.158 -2.161 0.429 -3.202 0.846 c -0.062 0.025 -0.123 0.057 -0.179 0.094 c -1.534 1.012 -3.061 2.023 -4.587 3.036 c -1.508 1 -3.017 2 -4.533 3 L 6.864 35.45 l -1.735 -1.735 C 4.434 33.021 3.4 32.813 2.493 33.19 C 1.586 33.566 1 34.443 1 35.425 v 23.532 C 1 61.938 2.55 63 4 63 h 7.171 c 0.801 0 1.555 -0.312 2.122 -0.879 l 8 -8 c 0.053 -0.053 0.1 -0.111 0.14 -0.175 c 0.785 -1.25 0.756 -2.964 -0.068 -3.987 c -0.022 -0.028 -0.046 -0.055 -0.072 -0.08 l -2.875 -2.875 l 2.993 -2.96 h 25.172 c 3.118 -0.011 6.12 -0.876 8.679 -2.501 l 6.026 -3.794 C 62.36 37.075 63 35.921 63 34.661 C 63 33.366 62.333 32.194 61.214 31.527 z M 26 3 h 24 v 13 H 26 V 3 z M 33 18 h 10 v 4 H 33 V 18 z M 22 18 h 9 v 5 c 0 0.553 0.448 1 1 1 h 12 c 0.552 0 1 -0.447 1 -1 v -5 h 9 v 15.549 c -2.483 1.418 -5.318 2.05 -8.121 1.816 C 45.95 35.087 46 34.8 46 34.5 c 0 -1.93 -1.57 -3.5 -3.5 -3.5 H 32.193 l -4.991 -1.997 c -1.677 -0.671 -3.439 -1.006 -5.202 -1.006 V 18 z M 19.789 52.797 l -7.91 7.91 C 11.69 60.896 11.438 61 11.171 61 H 4 c -0.902 0 -1 -1.429 -1 -2.043 V 35.425 c 0 -0.243 0.162 -0.347 0.258 -0.387 c 0.042 -0.018 0.102 -0.035 0.17 -0.035 c 0.088 0 0.189 0.029 0.286 0.126 l 16.117 16.116 C 20.051 51.563 20.074 52.268 19.789 52.797 z M 60.223 36.056 l -6.03 3.797 c -2.244 1.424 -4.877 2.183 -7.614 2.191 H 21 c -0.263 0 -0.516 0.104 -0.703 0.289 l -3.293 3.257 l -8.649 -8.649 l 0.093 -0.046 c 0.036 -0.018 0.07 -0.038 0.103 -0.06 c 1.534 -1.012 3.061 -2.023 4.587 -3.036 c 1.496 -0.991 2.993 -1.983 4.496 -2.976 c 2.851 -1.113 5.98 -1.101 8.825 0.037 l 5.17 2.068 C 31.747 32.976 31.873 33 32 33 h 10.5 c 0.827 0 1.5 0.673 1.5 1.5 S 43.327 36 42.5 36 L 32 35.999 v 2 L 42.5 38 c 0.819 0 1.564 -0.295 2.161 -0.768 c 3.628 0.548 7.371 -0.177 10.571 -2.075 l 3.27 -1.948 c 0.535 -0.287 1.166 -0.275 1.687 0.036 C 60.705 33.552 61 34.068 61 34.661 C 61 35.229 60.71 35.75 60.223 36.056 z" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</svg>

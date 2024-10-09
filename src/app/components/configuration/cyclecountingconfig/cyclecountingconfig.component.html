@@ -1,0 +1,267 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <ul>
+            <li><a> <i class="material-icons align-middle"> open_in_browser
+                </i>Upload Excel<input id="upfile" class="hidden" type="file" accept=".xlsx">
+              </a>
+            </li>
+            <li><a> <i class="material-icons align-middle"> get_app
+                </i> Log File </a>
+            </li>
+            <li value="Download Excel"><a> <i class="material-icons align-middle"> get_app
+                </i> Download Excel </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <form [formGroup]="cycleCountingForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title" style="height:215px">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'CYCLE COUNTING CONFIG' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'CYCLE COUNTING CONFIG' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">{{'Cycle Code' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-8">
+                        <input id="cycleCode" name="cycleCode" placeholder="{{'Enter CycleCode' |translate}}" class="form-control"
+                          formControlName="cycleCode" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Status' |translate}}</label>
+                      <div class="col-sm-8" *ngIf="status!='Confirmed'">
+                        <select class="form-control" id="status" name="status" formControlName="status">
+                          <option value="Created">Created</option>
+                          <option value="Confirmed">Confirmed</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-8" *ngIf="status=='Confirmed'">
+                        <input type="text" class="form-control" id="status" name="status" formControlName="status"
+                        readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Criteria Type' |translate}}</label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="criteriaType" name="criteriaType"
+                          (change)="getCriteria($event.target.value)" formControlName="criteriaType">
+                          <option value=null>-Select--</option>
+                          <option *ngFor="let ccCriteria of cycleCountingCriterias" [value]="ccCriteria.viewValue">
+                            {{ccCriteria.viewValue}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="cycleCountingForm.controls.criteriaType.value=='Supplier'">
+                      <label class="col-sm-3 col-form-label">Supplier</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="supplierIDNameIdValues" [(ngModel)]="supplierIDNames"
+                          (focusout)="fetchAllProductBySupplier()" [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <div class="col-md-6" *ngIf="cycleCountingForm.controls.criteriaType.value!='Warehouse'">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="dropdownList" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}"
+                          (focusout)="setUserstoForm($event)" [disabled]="status === 'Confirmed'">
+                        </ng-multiselect-dropdown>
+                      </div>
+                      <div class="col-md-6" *ngIf="cycleCountingForm.controls.criteriaType.value=='Warehouse'">
+                        <input type="text" readonly class="form-control" [(ngModel)]="selected"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div class="col-md-6">
+                        <button class="btn btn-green" (click)="openPopup()">{{'Schedule' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button class="btn btn-green" (click)="save()" [disabled]="!cycleCountingForm.valid || status=='Confirmed'">{{'Save' |translate}}</button>
+            <button class="btn btn-white ml-2" (click)="overAllClear()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <ngx-smart-modal customClass="nsm-centered" id="ccConfig" #ccConfig [identifier]="'ccConfig'">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h5 class="text-center text-primary">{{'Schedule Details' |translate}}</h5>
+        </div>
+      </div>
+      <div class="row" [formGroup]="cycleCountingScheduleForm">
+        <div id="style-8" class="panel-body scrollbar" style="height:270px">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'Scheduled Job' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <!-- <select name="scheduleJob" class="form-control" id="scheduleJob" formControlName="scheduleJob">
+                    <option value="Days">Days</option>
+                    <option value="Weeks">Weeks</option>
+                    <option value="Months">Months</option>
+                  </select> -->
+                  <input type="text" name="scheduleJob" class="form-control" id="scheduleJob"
+                  formControlName="scheduleJob" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'Recurrence' |translate}}</label>
+                <div class="col-sm-8">
+                  <input type="text" name="recurrence" class="form-control" id="recurrence"
+                    formControlName="recurrence">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'Start Date' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <input type="datetime-local" name="startDateTime" class="form-control" id="startDateTime"
+                    formControlName="startDateTime">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'End Date' |translate}}</label>
+                <div class="col-sm-8">
+                  <input type="datetime-local" name="endDateTime" class="form-control" id="endDateTime"
+                    formControlName="endDateTime">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="text-center">
+                    <div class="form-check form-check-inline ml-5">
+                      <input class="form-check-input" [checked]="ccScheduleLocal.noEndDate" type = "checkbox"
+                        (click)="getValue($event)" [disabled]="status === 'Confirmed'">
+                      <label class="form-check-label" for="inlineRadio1">{{'No End Date' |translate}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row ml-3">
+            <div class="col-md-12 mt-3">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('monday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.mondayValue"  [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Monday</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('tuesday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.tuesdayValue"  [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Tuesday</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('wednesday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.wednesdayValue" [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Wednesday</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-2">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('thursday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.thursdayValue" [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Thursday</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-2">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('friday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.fridayValue" [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Friday</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-2">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('saturday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.saturdayValue" [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Saturday</label>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-2">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type = "checkbox" (click)="getWeekValue('sunday',$event.target.checked)"
+                      [checked]="ccWeekDayScheduleLocal.sundayValue" [disabled]="status === 'Confirmed'">
+                    <label class="form-check-label" for="inlineRadio1">Sunday</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="status!='Confirmed'">
+            <div class="col-md-12 mt-4">
+              <div class="text-center">
+                <button class="btn btn-green" (click)="closePopup()" [disabled]="!cycleCountingScheduleForm.valid">Save</button>
+                <button class="btn btn-white ml-3" (click)="clearPopupDetails()">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ngx-smart-modal>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Cycle Code' |translate}}</th>
+                <th scope="col">{{'Criteria Type' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of configData; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <th style="cursor:pointer;" (click)="edit(detail)">{{detail.cycleCode}}</th>
+                <td>{{detail.criteriaType}}</td>
+                <td>{{detail.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

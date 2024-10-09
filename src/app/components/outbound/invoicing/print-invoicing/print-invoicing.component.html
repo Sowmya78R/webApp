@@ -1,0 +1,764 @@
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <div class="content">
+            <div class="row" id="container">
+              <div class="col-md-12">
+                <div class="m-3">
+                  <table border="1" class="w-100">
+                    <tr>
+                      <td style="width:180px;border-right-color:white">
+                        <img id="logoImage" style="height: 90px;border-radius: 10px;margin-top:5px"
+                          class="img-responsive img-rounded">
+                        <!-- <img src="assets/inMenusIcons/Asset.svg" class="img-fluid img-responsive" alt=""> -->
+                      </td>
+                      <td class="d-flex justify-content-center text-center" style="border: none !important;">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="col-sm-12">
+                              <p style="font-size: 20px;color: black;" *ngIf="invoiceData.shipFromAddress">
+                                {{invoiceData.shipFromAddress.name}}</p>
+                            </div>
+                            <div class="col-sm-10">
+                              <p style="color:black" *ngIf="invoiceData.shipFromAddress">
+                                {{invoiceData.shipFromAddress.address}}
+                              </p>
+                            </div>
+                            <div class="col-sm-10 text-right" style="margin-left: 300px;">
+                              <p style="color:black"> Date: {{invoiceData.invoiceDate | date: 'dd/MM/yyyy'}}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <span>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="text-right">
+                    <span>
+                      Date: {{invoiceData.invoiceDate | date: 'dd/MM/yyyy'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span> -->
+                      </td>
+                    </tr>
+                  </table>
+                  <table border="1" class="w-100">
+                    <tr>
+                      <td class="text-center" style="border-right-color:white">
+                        <div class="row" style="position:relative ;width:460px">
+
+                        </div>
+                      </td>
+                      <td class="text-center" style="border-right-color:white">
+                        <div class="row" style="position:relative ;width:460px">
+                          <div class="col-md-12">
+                            <p style="font-size: 12px;font-weight: 500;color: black;"> Invoice</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="text-center" style="border-left-color:white">
+                        <div class="row" style="position:relative ;width:460px">
+                          <div class="col-md-12">
+                            <p style="font-size: 12px;font-weight: 500;color: black;"></p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-12" style="position: relative;top: -10px !important;">
+                                <div class="form-group row m-0">
+                                  <label class="col-sm-3 col-form-label">Name:
+                                  </label>
+                                  <div class="col-sm-9">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.name}}</span>
+                                  </div>
+
+                                  <!-- <div class="col-sm-9">
+                        <span class="mt-2">{{configService.getOrganization().organizationName}}</span>
+                      </div> -->
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Address:
+                                  </label>
+                                  <label class="col-sm-9 col-form-label"
+                                    *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.address}}</label>
+
+                                  <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{invoiceData.shippingAddress}}</span> -->
+
+                                  <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{invoiceData.address1}}</span> -->
+                                  <!-- {{editCustomerDetails.shipingAddress}}
+                          {{wareHouseDetails.contactName}}, {{wareHouseDetails.address}}
+                          {{editCustomerDetails.address}}
+                          {{editCustomerDetails.address1}} -->
+
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">State:
+                                  </label>
+                                  <div class="col-sm-9">
+                                    <!-- <span class="mt-2">{{orgData.state}}</span> -->
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.state}}</span>
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Phone No
+                                  </label>
+                                  <div class="col-sm-9">
+                                    <!-- <span class="mt-2">{{orgData.phoneNumber}}</span> -->
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.contactDetails.phoneNumber}}</span>
+
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Email ID
+                                  </label>
+                                  <div class="col-sm-9">
+                                    <!-- <span class="mt-2" style="word-wrap: break-word;">{{orgData.emailID}}</span> -->
+                                    <span class="mt-2" style="word-wrap: break-word;"
+                                      *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.contactDetails.email}}</span>
+
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">GSTIN
+                                  </label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="editSourceCustomerDetails">{{editSourceCustomerDetails.gstNumber}}</label>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">PAN
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="editSourceCustomerDetails">{{editSourceCustomerDetails.panNumber}}</span>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+
+
+                            <!-- <div class="col-md-6">
+                    <div class="form-group row m-0 d-none">
+                      <label class="col-sm-6 col-form-label">Pin Code:
+                      </label>
+                      <div class="col-sm-6">
+                        <span class="mt-2">{{orgData.pincode}}</span>
+                      </div>
+                    </div>
+
+                  </div> -->
+
+
+
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12" style="position: relative;top: -10px !important;">
+                            <div class="form-group row m-0">
+                              <label class="col-sm-4 col-form-label">Invoice No</label>
+                              <label class="col-sm-6 col-form-label">{{invoiceData.fullInvoiceNumber}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">Invoice Date</label>
+                              <label class="col-sm-6 col-form-label">{{invoiceData.invoiceDate | date:
+                                'dd/MM/yyyy'}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">Dispatch Date</label>
+                              <div class="col-sm-5 mt-2">
+                                {{dispatchDate | date: 'dd/MM/yyyy'}}
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">Dispatch Time</label>
+                              <div class="col-sm-5 mt-2">
+                                {{dispatchDate | date: 'HH:mm:ss'}}
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">Transporter Code</label>
+                              <div class="col-sm-5 mt-2">
+                                {{invoiceData.serviceProviderInfo?.serviceProviderID}}
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">Transporter Name</label>
+                              <div class="col-sm-5 mt-2">
+                                {{invoiceData.serviceProviderInfo?.serviceProviderName}}
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-4 col-form-label">LR No</label>
+                              <div class="col-sm-5 mt-2">
+                                {{invoiceData.waybillNumber}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12" style="position: relative;top: -20px !important;">
+                            <!-- <div class="form-group row m-0">
+                  <label class="col-sm-5 col-form-label" *ngIf="invoiceData.orderType=='Sales Order'">Customer Code:
+                  </label>
+                  <label class="col-sm-5 col-form-label" *ngIf="invoiceData.orderType=='WareHouseTransfer'">Customer
+                    Code: </label>
+                  <label class="col-sm-5 col-form-label" *ngIf="invoiceData.orderType=='Purchase Returns'">Supplier
+                    Code: </label>
+
+                  <div class="col-sm-6">
+                    <span class="mt-2"
+                      *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.customerID}}</span>
+                    <span class="mt-2"
+                      *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.wareHouseID}}</span>
+                    <span class="mt-2"
+                      *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.supplierID}}</span>
+                  </div>
+                </div> -->
+                            <div class="form-group row m-0">
+                              <label class="col-sm-5 col-form-label">DC Number:
+                              </label>
+                              <div class="col-sm-6">
+                                <span
+                                  class="mt-2">{{invoiceData.wmsoNumberPrefix}}/{{invoiceData.wareHouseInfo?.wareHouseID}}/{{invoiceData.wmsoNumber}}/{{invoiceData.financialYearName}}</span>
+                                <!-- <span
+                          class="mt-2">{{invoiceData.wmsoNumberPrefix}}/{{((invoiceData.orderType=='WareHouseTransfer'
+                          || invoiceData.orderType=='WareHouseTransfer Returns') ?
+                          invoiceData.wareHouseTransferDestinationInfo?.wareHouseID :
+                          invoiceData.wareHouseInfo.wareHouseID)}}/{{invoiceData.wmsoNumber}}/{{invoiceData.financialYearName}}</span> -->
+                              </div>
+                            </div>
+
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-5 col-form-label">DC Date
+                              </label>
+                              <div class="col-sm-6">
+                                <span class="mt-2"> {{invoiceData.salesOrderDate | date: 'dd/MM/yyyy'}}</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-5 col-form-label">City Code</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-5 col-form-label">Vehicle No</label>
+                              <div class="col-sm-6">
+                                <span class="mt-2"
+                                  *ngIf="invoiceData.vehicleInfo">{{invoiceData.vehicleInfo?.vehicleNumber}}</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-5 col-form-label">Driver Name</label>
+                              <div class="col-sm-6">
+                                <span class="mt-2">
+                                  {{invoiceData.driverName}}</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-5 col-form-label">Contact</label>
+                              <div class="col-sm-6">
+                                <span class="mt-2"> {{invoiceData.driverPhoneNumber}}</span>
+                              </div>
+                            </div>
+                            <!-- <div class="form-group row m-0" style="margin-top: -10px !important;">
+                  <label class="col-sm-5 col-form-label">Invoice Number
+                  </label>
+                  <div class="col-sm-6">
+                    <span class="mt-2">{{invoiceData.fullInvoiceNumber}}</span>
+                  </div>
+                </div>
+                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                  <label class="col-sm-5 col-form-label">Invoice Date
+                  </label>
+                  <div class="col-sm-6">
+                    <span class="mt-2">{{invoiceData.invoiceDate | date: 'dd/MM/yyyy'}}</span>
+                  </div>
+                </div>
+              -->
+                            <!-- <div class="form-group row m-0" style="margin-top: -10px !important;">
+                  <label class="col-sm-5 col-form-label">Tax Payable Under Reverse Charge
+                  </label>
+                  <div class="col-sm-6">
+                    <span class="mt-2">No</span>
+                  </div>
+                </div> -->
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-12" style="position: relative;top: -10px !important;">
+                                <div class="form-group row m-0">
+                                  <label class="col-sm-4 col-form-label"
+                                    style="font-size: 12px;font-weight: 500;color: black;">Bill
+                                    To :</label>
+                                </div>
+                                <div class="form-group row m-0">
+                                  <label class="col-sm-3 col-form-label">Name:</label>
+                                  <label class="col-sm-9 col-form-label"
+                                    *ngIf="invoiceData.billToAddress">{{invoiceData.billToAddress.name}}</label>
+
+                                  <!-- <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.customerName}}</label>
+                      <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.wareHouseName}}</label>
+                      <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.supplierName}}</label> -->
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Address:
+                                  </label>
+                                  <label class="col-sm-9 col-form-label"
+                                    *ngIf="invoiceData.billToAddress">{{invoiceData.billToAddress.address}}</label>
+
+                                  <!-- <label class="col-sm-9 col-form-label" *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.shipingAddress}}</label>
+                      <label class="col-sm-9 col-form-label" *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.address}}</label>
+                      <label class="col-sm-9 col-form-label" *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.address1}}</label> -->
+
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">State:
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.billToAddress">{{invoiceData.billToAddress.state}}</span>
+
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.state}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.state}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.state}}</span> -->
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Phone No
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.billToAddress">{{invoiceData.billToAddress.contactDetails.phoneNumber}}</span>
+
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.phoneNumber}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.phoneNumber}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.phoneNumber}}</span> -->
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Email ID</label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.billToAddress">{{invoiceData.billToAddress.contactDetails.email}}</label>
+                                  <!-- <label class="col-sm-6 col-form-label"
+                        *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.email}}</label>
+                      <label class="col-sm-6 col-form-label"
+                        *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.email}}</label>
+                      <label class="col-sm-6 col-form-label"
+                        *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.email}}</label> -->
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">GSTIN
+                                  </label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.gstNumber}}</label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='WareHouseTransfer' || invoiceData.orderType=='WareHouseTransfer Returns'">{{wareHouseTransdetails.gstNumber}}</label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.gstNumber}}</label>
+                                  <!-- editCustomerDetails
+                        supplierDetails -->
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">PAN
+                                  </label>
+                                  <div class="col-sm-4">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.panNumber}}</span>
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='WareHouseTransfer' || invoiceData.orderType=='WareHouseTransfer Returns'">{{wareHouseTransdetails.panNumber}}</span>
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.pan}}</span>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- <div class="form-group row m-0 d-none">
+                      <label class="col-sm-7 col-form-label">State Code:
+                      </label>
+                      <div class="col-sm-4">
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.pinCode}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.pin}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.pin}}</span>
+
+                      </div>
+                    </div> -->
+                          </div>
+                        </div>
+
+                      </td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-12" style="position: relative;top: -10px !important;">
+                                <div class="form-group row m-0">
+                                  <label class="col-sm-4 col-form-label"
+                                    style="font-size: 12px;font-weight: 500;color: black;">Ship
+                                    To :</label>
+                                </div>
+                                <div class="form-group row m-0">
+                                  <label class="col-sm-3 col-form-label">Name:
+                                  </label>
+                                  <div class="col-sm-9">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipToAddress">{{invoiceData.shipToAddress.name}}</span>
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.customerName}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.wareHouseName}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.supplierName}}</span> -->
+
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Address:
+                                  </label>
+                                  <label class="col-sm-9 col-form-label"
+                                    *ngIf="invoiceData.shipToAddress">{{invoiceData.shipToAddress.address}}</label>
+                                  <!-- <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.shipingAddress}}</label>
+                      <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.address}}</label>
+                      <label class="col-sm-9 col-form-label"
+                        *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.address1}}</label> -->
+
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">State:
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipToAddress">{{invoiceData.shipToAddress.state}}</span>
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.state}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.state}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.state}}</span> -->
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Phone No
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipToAddress">{{invoiceData.shipToAddress.contactDetails.phoneNumber}}</span>
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.phoneNumber}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.phoneNumber}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.phoneNumber}}</span> -->
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">Email ID
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.shipToAddress">{{invoiceData.shipToAddress.contactDetails.email}}</span>
+                                    <!-- <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.email}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.email}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.email}}</span> -->
+                                  </div>
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">GSTIN
+                                  </label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.gstNumber}}</label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='WareHouseTransfer' || invoiceData.orderType=='WareHouseTransfer Returns'">{{wareHouseTransdetails.gstNumber}}</label>
+                                  <label class="col-sm-6 col-form-label"
+                                    *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.gstNumber}}</label>
+
+                                </div>
+                                <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                  <label class="col-sm-3 col-form-label">PAN
+                                  </label>
+                                  <div class="col-sm-6">
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.panNumber}}</span>
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='WareHouseTransfer' || invoiceData.orderType=='WareHouseTransfer Returns'">{{wareHouseTransdetails.panNumber}}</span>
+                                    <span class="mt-2"
+                                      *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.pan}}</span>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                    <div class="form-group row m-0 d-none">
+                      <label class="col-sm-8 col-form-label">State Code:
+                      </label>
+                      <div class="col-sm-4">
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.pinCode}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='WareHouseTransfer'">{{wareHouseTransdetails.pin}}</span>
+                        <span class="mt-2"
+                          *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.pin}}</span>
+
+                      </div>
+                    </div>
+
+                  </div> -->
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12" style="position: relative;top: -60px;">
+                            <div class="form-group row m-0">
+                              <label class="col-sm-6 col-form-label">Terms Of Delivery</label>
+                              <div class="col-sm-3">
+                                <span class="mt-2">NA</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-6 col-form-label">Other Terms/Remarks/comments</label>
+                              <div class="col-sm-3">
+                                <span class="mt-2">NA</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-6 col-form-label">Customer Code</label>
+                              <div class="col-sm-6">
+                                <span class="mt-2"
+                                  *ngIf="invoiceData.orderType=='Sales Order'">{{editCustomerDetails.customerID}}</span>
+                                <span class="mt-2"
+                                  *ngIf="invoiceData.orderType=='WareHouseTransfer' || invoiceData.orderType=='WareHouseTransfer Returns'">{{wareHouseTransdetails.wareHouseID}}</span>
+                                <span class="mt-2"
+                                  *ngIf="invoiceData.orderType=='Purchase Returns'">{{supplierDetails.supplierID}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <table border="1" class="w-100 text-center mt-2">
+                    <tr>
+                      <td class="text-center"> Sr.No </td>
+                      <td class="text-center"> Temp.</td>
+                      <td class="text-center"> HSN/SAC Code</td>
+                      <td class="text-center"> SKU Code</td>
+                      <td class="text-center"> Description </td>
+                      <td class="text-center"> Spec.</td>
+                      <td class="text-center"> Brand</td>
+                      <td class="text-center"> Base UOM </td>
+                      <td class="text-center"> Rate</td>
+                      <td class="text-center"> UOM - 1 (Pack Size)</td>
+                      <td class="text-center"> Rate/Pack</td>
+                      <td class="text-center"> Billed Qty</td>
+                      <td class="text-center"> QTY in Base UOM</td>
+                      <td class="text-center"> Basic Value</td>
+                      <td class="text-center"> Tax Rate (%)</td>
+                      <td [hidden]="finalSalesobjectArray.length==0" *ngFor="let details of finalSalesobjectArray"
+                        class="text-center">
+                        {{details}}</td>
+                      <td class="text-center"> Total</td>
+                    </tr>
+                    <tbody>
+                      <tr *ngFor="let invoiceLine of productDetails; let i = index">
+                        <td>
+                          {{i + 1}}
+                        </td>
+                        <td>{{getSingleObject}}</td>
+                        <td>
+                          {{invoiceLine.hsnCode}}
+                        </td>
+                        <td>
+                          {{invoiceLine.productMasterInfo.productID}}
+                        </td>
+                        <td>
+                          {{invoiceLine.productMasterInfo.productName}}
+                        </td>
+                        <td>{{invoiceLine.productDescription}}</td>
+                        <td>{{invoiceLine.brandName}}</td>
+                        <td>{{invoiceLine.inventoryUnit}}</td>
+                        <td>{{invoiceLine.unitPrice | decimalFilter}}</td>
+                        <td class="text-center">
+                          {{invoiceLine.shipmentUnit}}
+                        </td>
+                        <td>{{invoiceLine.orderUnitPrice | decimalFilter}}</td>
+                        <td class="text-right">
+                          {{invoiceLine.customerDispatchQuantity | decimalFilter}}
+                        </td>
+                        <td>{{invoiceLine.dispatchQuantity | decimalFilter}}</td>
+                        <td>{{invoiceLine.grossAmount | decimalFilter}}</td>
+                        <td>{{invoiceLine.totalTaxPercentage}}</td>
+                        <td class="text-right" [hidden]="finalSalesobjectArray.length==0"
+                          *ngFor="let prod of finalSalesobjectArray">
+                          <ng-container *ngFor="let details of getArray(prod,i)">
+                            <span *ngIf="details.taxName==prod">{{details.taxAmount | decimalFilter}}</span>
+                            <span *ngIf="details.taxName!=prod">0</span>
+                          </ng-container>
+                          <ng-container *ngIf="getArray(prod,i).length==0">0</ng-container>
+                        </td>
+                        <td>{{invoiceLine.netAmount | decimalFilter}}</td>
+                      </tr>
+                    </tbody>
+                    <tr>
+                      <td colspan="14">Total</td>
+                      <td>{{toatTax}}</td>
+                      <td class="text-right" *ngFor="let details of finalTotalArray">{{details.totalTaxAmount | decimalFilter}}</td>
+                      <td>{{totalNetAmount | decimalFilter}}</td>
+                    </tr>
+                  </table>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-left">
+                        <p class="ml-2 Heading">Total Invoice Value : {{totalNetAmountobj | decimalFilter}}</p>
+                        <p class="ml-2 Heading">Total Amount In Words : {{newTotalNetAmountobj | decimalFilter}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <table border="1" class="w-100 text-center mt-3">
+                    <tr>
+                      <td class="text-center">
+                        HSN Code
+                      </td>
+                      <td class="text-center">
+                        Amount
+                      </td>
+                      <td class="text-center">
+                        Tax %
+                      </td>
+                      <td class="text-center">
+                        Tax Value
+                      </td>
+                      <!-- <td>
+            Cess %
+          </td>
+          <td>
+            Cess value
+          </td> -->
+                    </tr>
+                    <tr *ngFor="let data of hsnCodeArray">
+                      <td>{{data.hsnCode}}</td>
+                      <td class="text-right">{{data.grossAmount | decimalFilter}}</td>
+                      <td class="text-right">{{data.totalTaxPercentage | decimalFilter}}</td>
+                      <td class="text-right">{{data.totalTaxAmount | decimalFilter}}</td>
+                      <!-- <td>{{data.hsnCode}}</td>
+          <td>{{data.hsnCode}}</td> -->
+                    </tr>
+                    <tr>
+                      <td>Total </td>
+                      <td class="text-right">{{totalValue | decimalFilter}}</td>
+                      <td class="text-right">{{toatTax | decimalFilter}}</td>
+                      <td class="text-right">{{toatTaxAmount | decimalFilter}}</td>
+                    </tr>
+                  </table>
+                  <!-- style="margin-top: 1000px; -->
+                  <table border="1" class="w-100 text-center">
+                    <tr>
+                      <td class="text-center">
+                        Product ID
+                      </td>
+                      <td class="text-center">
+                        Product Name
+                      </td>
+                      <td class="text-center">
+                        Batch Number
+                      </td>
+                      <td class="text-center">
+                        MFG Date
+                      </td>
+                      <td class="text-center">
+                        Exp Date
+                      </td>
+                      <td class="text-center">
+                        Brand Name
+                      </td>
+                      <td class="text-center">
+                        Quantity
+                      </td>
+                    </tr>
+                    <tr *ngFor="let product of invoiceData.invoiceOrderLines;let i= index">
+                      <td id="{{product.dummyValue}}">{{product.productMasterInfo.productID}}</td>
+                      <td>{{product.productMasterInfo.productName}}</td>
+                      <td>{{product.batchNumber}}</td>
+                      <td class="text-center">{{product.mfgDate | date : 'dd/MM/yyyy' }}</td>
+                      <td class="text-center">{{product.expiryDate | date : 'dd/MM/yyyy'}}</td>
+                      <td>{{product.brandName}}</td>
+                      <td class="text-right">{{product.customerDispatchQuantity|decimalFilter}}</td>
+                    </tr>
+                  </table>
+
+
+                  <!-- <footer>
+        <md-toolbar class="md-hue-2 md-scroll-shrink">
+          <div layout="row" layout-align="center center" flex>
+            Powered by Webocity Technologies
+          </div>
+        </md-toolbar>
+      </footer> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">
+    <div style="border:1px solid black;">
+      <span class="d-flex justify-content-center Heading"
+        *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.name}}
+      </span>
+      <br>
+      <span class="d-flex justify-content-center Heading" style="margin-top: -20px !important;"
+        *ngIf="invoiceData.shipFromAddress">{{invoiceData.shipFromAddress.address}}</span>
+    </div>
+    <p class="mt-2 Heading">Tax Invoice number {{invoiceData.fullInvoiceNumber}} is generated does not require
+      signature
+    </p>
+  </div>
+</body>

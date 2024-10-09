@@ -1,0 +1,354 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="row mb-2">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4 offset-md-4">
+      <div class="udcBtns float-right">
+        <!--  <ul>
+          <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF'
+              |translate}}</a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="top-input-label">
+          <form #datesForm="ngForm">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">{{'From' |translate}}</label>
+                  <div class="col-sm-7 top-input">
+                    <input type="date" class="form-control" [(ngModel)]="fromDate" [ngModelOptions]="{standalone: true}"
+                      style="width:128px">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">{{'To' |translate}}
+                  </label>
+                  <div class="col-sm-7 top-input">
+                    <input type="date" class="form-control" [(ngModel)]="toDate" [ngModelOptions]="{standalone: true}"
+                      style="width:128px">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <div class="dsplInLine">
+                    <select class="form-control" [disabled]="!permissionsList.includes('Update')"
+                      [(ngModel)]="orderType" [ngModelOptions]="{standalone: true}">
+                      <!--  <option [ngValue]=null>All</option> -->
+                      <option *ngFor="let data of orderTypeDropdown">{{data}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10 mt-1">
+                    <label class="radio-inline ml-2">
+                      <input type="radio" value="All" class="m-1" [(ngModel)]="status" name="status">
+                      All
+                    </label>
+                    <label class="radio-inline ml-2" style="color:grey">
+                      <input type="radio" value="Open" class="m-1" [(ngModel)]="status" name="status">
+                      Open
+                    </label>
+                    <label class="radio-inline ml-2" style="color:green">
+                      <input type="radio" value="Closed" class="m-1" [(ngModel)]="status" name="status">
+                      Closed
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <div class="col-sm-12 top-input">
+                    <input type="button" class="btn btn-green" style="margin-right: 5px;" value="Filter"
+                      (click)="filterDataFromDates()">
+                    <input type="button" class="btn btn-white" value="Reset" (click)="reset()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="headerItemsPerPage"
+                (change)="fetchAllD(pageHeader=1,$event,'heaader')" class="form-control shortWidth"
+                [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+              <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="headerSearchKey" placeholder="Search..."
+                [ngModelOptions]="{standalone: true}" (keyup)="this.fetchInvoicesHeader(pageHeader=1);">
+            </div>
+          </div>
+          <table id="example" class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th>S.No <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                left: -7px;" aria-hidden="true"></i></th>
+                <th>{{'SO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','SO Number','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','SO Number','header')"></i></th>
+                <th>{{'Invoice Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Invoice Number','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Invoice Number','header')"> </i></th>
+                <th>{{'Customer/Supplier/Warehouse' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Customer/Supplier/WareHouse','header')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Customer/Supplier/WareHouse','header')"></i>
+                </th>
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers Customer Name' |translate}} <i
+                    class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Customers Customer Name','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Customers Customer Name','header')"></i> </th>
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers Customer Address' |translate}}<i
+                    class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Customers Customer Address','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Customers Customer Address','header')">
+                  </i>
+                </th>
+                <th>{{'Total Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Total Amount','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Total Amount','header')"></i> </th>
+                <th>{{'Status' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Status','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Status','header')"></i> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let order of invoicesData | paginate: {itemsPerPage: headerItemsPerPage,currentPage: pageHeader,totalItems: headerTotalItems}">
+                <td class="text-left">{{((pageHeader-1) * headerItemsPerPage)+i+1}}</td>
+                <th style="cursor:pointer" (click)="editInvoice(order._id)">{{order.fullWmsoNumber}}</th>
+                <td>{{order.fullInvoiceNumber}}</td>
+                <td><span *ngIf="order.customerMasterInfo">{{order.customerMasterInfo.customerName}}</span>
+                  <span *ngIf="order.supplierMasterInfo">{{order.supplierMasterInfo.supplierName}}</span>
+                  <span
+                    *ngIf="order.wareHouseTransferDestinationInfo">{{order.wareHouseTransferDestinationInfo.wareHouseName}}</span>
+                </td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">
+                  {{order.customersCustomerName}}</td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">
+                  {{order.customersCustomerAddress}}</td>
+                <!-- <td>{{order.deliveryExpDate | date: 'dd/MM/yyyy'}}</td> -->
+                <td class="text-right">{{order.totalNetAmount | decimalFilter}}</td>
+                <td [ngStyle]="{'color':(order.status=='Open') ?'grey':'green'}">{{order.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="fetchInvoicesHeader((pageHeader = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{'SO Number' |translate}}</th>
+                <th>{{'SO Line No' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'Product Description' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Brand Name' |translate}}</th>
+                <th>{{'Batch Number' |translate}}</th>
+                <th>{{'Shipment Quantity' |translate}}</th>
+                <th>{{'Expected Delivery Date' |translate}}</th>
+                <th>{{'Dispatch Date' |translate}}</th>
+                <th>{{'Amount' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of filteredInvoiceLines; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{order.fullWmsoNumber}}</td>
+                <td>{{order.wmsoLineNumber}}</td>
+                <td>{{order.productMasterInfo.productID}}</td>
+                <td>{{order.productMasterInfo.productName}}</td>
+                <td>{{order.productDescription}}</td>
+                <td class="text-center">{{order.shipmentUnit}}</td>
+                <td>{{order.brandName}}</td>
+                <td>{{order.batchNumber}}</td>
+                <td>{{order.customerDispatchQuantity | decimalFilter}}</td>
+                <td class="text-center">{{order.expectedDeliveryDate| date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{order.dispatchDate| date: 'dd/MM/yyyy'}}</td>
+                <td class="text-right">{{order.netAmount | decimalFilter }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+                class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+              <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="this.fetchAllInvoices(page=1, itemsPerPage);">
+            </div>
+          </div>
+          <table id="example" class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Image</th>
+                <th>{{'SO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+              left: -7px;" (click)="setDirection1('ASC','SO Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+              left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','SO Line No')"></i> </th>
+
+                <th>{{'SO Line No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection1('ASC','SO Line No')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','SO Line No')"></i> </th>
+
+                <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Product ID')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product ID')"></i> </th>
+
+                <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Product Name')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Name')"></i> </th>
+
+                <th>{{'Product Description' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                      left: -7px;" (click)="setDirection1('ASC','Product Description')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Description')"></i> </th>
+
+                <th>{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                        left: -7px;" (click)="setDirection1('ASC','UOM')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                        left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','UOM')"></i> </th>
+
+                <th>{{'Brand Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                          left: -7px;" (click)="setDirection1('ASC','Brand Name')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                          left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Brand Name')"></i> </th>
+
+                <th>{{'Batch Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                            left: -7px;" (click)="setDirection1('ASC','Batch Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                            left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Batch Number')"></i> </th>
+
+                <th>{{'Shipment Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                              left: -7px;" (click)="setDirection1('ASC','Shipment Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                              left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Shipment Quantity')"></i>
+                </th>
+                <th>{{'Expected Delivery Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                                left: -7px;" (click)="setDirection1('ASC','Expected Delivery Date')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                                left: -7px;" aria-hidden="true"
+                    (click)="setDirection1('DESC','Expected Delivery Date')"></i> </th>
+                <th>{{'Dispatch Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                                  left: -7px;" (click)="setDirection1('ASC','Dispatch Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                                  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Dispatch Date')"></i>
+                </th>
+
+                <th>{{'Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection1('ASC','Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Amount')"></i> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let order of filteredInvoiceLines| paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="order.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + order.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{order.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!order.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(order.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{order.fullWmsoNumber}}</td>
+                <td>{{order.wmsoLineNumber}}</td>
+                <td>{{order.productMasterInfo.productID}}</td>
+                <td>{{order.productMasterInfo.productName}}</td>
+                <td>{{order.productDescription}}</td>
+                <td class="text-center">{{order.shipmentUnit}}</td>
+                <td>{{order.brandName}}</td>
+                <td>{{order.batchNumber}}</td>
+                <td>{{order.customerDispatchQuantity | decimalFilter}}</td>
+                <td class="text-center">{{order.expectedDeliveryDate| date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{order.dispatchDate| date: 'dd/MM/yyyy'}}</td>
+                <td class="text-right">{{order.netAmount | decimalFilter }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo" (pageChange)="fetchAllInvoices((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

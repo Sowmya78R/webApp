@@ -1,0 +1,321 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" *ngIf="configPermissionsList.includes('Update')">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <button type="button" (click)="generatePDF()" title="Print PDF"
+            style="background: none !important;border: none !important;">
+            <img src="assets\printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+          </button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="userConfigForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'USER PROFILE' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'USER PROFILE' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'First Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="firstName" name="lastName" formControlName="firstName" placeholder="{{'First Name' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('firstName', userConfigForm), 'valiSucess': shouldShowSuccess('firstName')}"
+                          (focus)="onFocusForElement('firstName')" (focusout)="onFocusOutForElement();setName()"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Last Name' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="lastName" name="lastName" formControlName="lastName" placeholder="{{'Last Name' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('lastName', userConfigForm), 'valiSucess': shouldShowSuccess('lastName')}"
+                          (focus)="onFocusForElement('lastName')" (focusout)="onFocusOutForElement();setName()"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'User ID' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="userID" name="userID" formControlName="userID" placeholder="{{'User ID' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('userID', userConfigForm), 'valiSucess': shouldShowSuccess('userID')}"
+                          (focus)="onFocusForElement('userID')" (focusout)="onFocusOutForElement();setName()"
+                          class="form-control" required value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'User IDName' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="userIDName" name="userIDName" formControlName="userIDName" type="text" [readonly]="userIDName">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Password' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="password" name="password" formControlName="password" placeholder="{{'Password' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('password', userConfigForm), 'valiSucess': shouldShowSuccess('password')}"
+                          (focus)="onFocusForElement('password')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="password" [readonly]="userIDName">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row" *ngIf="role === 'ROLE_CLIENT'">
+                      <label class="col-sm-5 col-form-label">{{'Role' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select id="rolesList" name="rolesList" formControlName="rolesList" placeholder="Role"
+                          (ngModelChange)="onFocusForElement('rolesList')" (focusout)="onFocusOutForElement()"
+                          class="form-control">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let role of roles" [ngValue]="role.roleName">{{role.roleName}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Created By' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input id="createdBy" name="createdBy" formControlName="createdBy" readonly
+                          [ngClass]="{'valiError': shouldShowErrors('createdBy', userConfigForm), 'valiSucess': shouldShowSuccess('createdBy')}"
+                          (focus)="onFocusForElement('createdBy')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Created By' |translate}}" class="form-control" required value="" type="text">
+                        <!-- <select id="createdBy" name="rolesList" formControlName="createdBy" placeholder="{{'Created By' |translate}}"
+                        [ngClass]="{'valiError': shouldShowErrors('createdBy', userConfigForm), 'valiSucess': shouldShowSuccess('createdBy')}"
+                        (ngModelChange)="onFocusForElement('createdBy')" (focusout)="onFocusOutForElement()"
+                        class="form-control">
+                        <option [ngValue]="null">--Select--</option>
+                        <option *ngFor="let create of creates" [ngValue]="createdBy.value">{{create.viewValue}}
+                        </option>
+                      </select>  -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Created On' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="createdOn" name="createdOn" formControlName="createdOn" placeholder="{{'createdOn' |translate}}"
+                          (focus)="onFocusForElement('createdOn')" [readonly]="true" (focusout)="onFocusOutForElement()"
+                          class="form-control" value="" type="date">
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Organization IDName' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7" formGroupName="organizationInfo">
+                        <select class="form-control selectPanl" formControlName="organizationIDName"
+                          (change)="frameParentOrg($event.target.value)">
+                          <option [value]="null">--Select--</option>
+                          <option *ngFor="let unit of orgData" [value]="unit.organizationIDName">
+                            {{unit.organizationIDName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="['ROLE_SUPER_ADMIN'].includes(role)">
+                      <label class="col-sm-5 col-form-label">{{'Business Unit' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="businessUnit" name="businessUnit" formControlName="businessUnit"
+                          placeholder="{{'Business Unit' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="['ROLE_SUPER_ADMIN'].includes(role)">
+                      <label class="col-sm-5 col-form-label">{{'Users Limit' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="usersCreationLimit" name="usersCreationLimit" formControlName="usersCreationLimit"
+                          placeholder="{{'Users Limit' |translate}}" class="form-control" type="number">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row drop-status ">
+              <label class="col-sm-1 col-form-label">{{'Status:' |translate}}</label>
+              <div class="col-sm-3">
+                <select class="form-control" formControlName="status" name="status"
+                  [ngClass]="{'valiError': shouldShowErrors('status', userConfigForm), 'valiSucess': shouldShowSuccess('status')}"
+                  (focus)="onFocusForElement('status')" (focusout)="onFocusOutForElement()">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'CONTACT DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'CONTACT DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Address' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input id="address" name="address" formControlName="address" placeholder="{{'Address' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('address', userConfigForm), 'valiSucess': shouldShowSuccess('address')}"
+                          (focus)="onFocusForElement('address')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Country' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <select id="country" name="country" formControlName="country"
+                          [ngClass]="{'valiError': shouldShowErrors('country', userConfigForm), 'valiSucess': shouldShowSuccess('country')}"
+                          (focusout)="onFocusOutForElement()" (ngModelChange)="onFocusForElement('country')"
+                          placeholder="Country" class="form-control">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="state" name="state" formControlName="state" placeholder="{{'State' |translate}}" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'City' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="city" name="city" formControlName="city" placeholder="{{'City' |translate}}" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="email" name="email" formControlName="email" placeholder="{{'Email ID' |translate}}"
+                          [readonly]="isReadMode" (focus)="onFocusForElement('email')"
+                          (focusout)="onFocusOutForElement()" class="form-control" required value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Phone No' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
+                          [ngClass]="{'valiError': shouldShowErrors('phoneNumber', userConfigForm), 'valiSucess': shouldShowSuccess('phoneNumber')}"
+                          (focus)="onFocusForElement('phoneNumber')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Phone Number' |translate}}" class="form-control" required value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Pin' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="pin" name="pin" formControlName="pin" placeholder="{{'Pin' |translate}}" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="userConfigForm.invalid">
+                  {{'SAVE' |translate}}</button>
+                <button class="btn btn-white" value="Clear" (click)="clear()">{{'CLEAR' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Include</th>
+                  <th>{{'User IDName' |translate}}</th>
+                  <th>{{'Organization IDName' |translate}}</th>
+                  <th>{{'First Name' |translate}}</th>
+                  <th>{{'Last Name' |translate}}</th>
+                  <th>{{'Role' |translate}}</th>
+                  <th>{{'Created On' |translate}}</th>
+                  <th>{{'Created By' |translate}}</th>
+                  <th>{{'Phone Number' |translate}}</th>
+                  <th>{{'Email ID' |translate}}</th>
+                  <th>{{'Address' |translate}}</th>
+                  <th>{{'Country' |translate}}</th>
+                  <th>{{'State' |translate}}</th>
+                  <th>{{'City' |translate}}</th>
+                  <th>{{'Pin' |translate}}</th>
+                  <th>{{'Status' |translate}}</th>
+                  <th>{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <td><input type="checkbox" [checked]="user.isChecked" (click)="read($event,user)"
+                    [(ngModel)]="user.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                  <td>{{user.userIDName}}</td>
+                  <td><span *ngIf="user.organizationInfo">{{user.organizationInfo.organizationIDName}}</span></td>
+                  <td>{{user.firstName}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td *ngIf="user.rolesList">{{user.rolesList[0].roleName}}</td>
+                  <td>{{user.createdOn | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{user.createdBy}}</td>
+                  <td>{{user.phoneNumber}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.address}}</td>
+                  <td>{{user.country}}</td>
+                  <td>{{user.state}}</td>
+                  <td>{{user.city}}</td>
+                  <td>{{user.pin}}</td>
+                  <td>{{user.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-pencil btn-sm" (click)="edit(user)"></i><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(user)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

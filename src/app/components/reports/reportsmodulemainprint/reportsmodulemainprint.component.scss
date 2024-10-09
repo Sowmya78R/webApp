@@ -1,0 +1,29 @@
+// table,td,tr,th{
+//   border:1px solid black!important;
+//   color:black!important;
+//   text-align: center!important;
+//   padding:5px;
+//   font-weight: normal!important;
+//   margin:5px;
+// }
+@media print {
+  @page {
+    size: landscape;
+  }
+}
+
+// table,thead{
+//   text-align: center!important;
+//   font-weight: normal!important;
+//   font-size: 12px!important;
+// }
+tr,
+td {
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+}
+
+// table,h6{
+//   text-align: center!important;
+// }

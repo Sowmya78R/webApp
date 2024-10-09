@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta content="text/html; charset=utf-8">
+  <title>Welcome to Data Labs India</title>
+</head>
+
+<body style="margin:0px; background-color:#f7f4f0">
+  <table width="75%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="margin:auto;">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#ffffff"
+                style="padding: 0px 20px; ">
+                <tr>
+                  <td style="padding: 10px"><img src="$logoUrl" width="200" height="80" border="0" alt="" /></td>
+                  <td>
+                    <h4><a href="$loginUrl"
+                        style="color:#444284; text-decoration:none; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; float:right;margin-right:20px;">Home</a>
+                    </h4>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#bcbcbc"
+                style="border-top:  2px solid rgb(226, 223, 223) ; margin-top: 1px;">
+
+
+                <tr>
+                  <td width="10%"></td>
+                  <td width="80%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="20">
+                      <tr>
+                        <td>
+                          <center>
+                            <img src="$thumbIconURL" width="45" height="45" border="0" alt="" />
+                          </center>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="100%">
+                          <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:30px;">
+                            Welcome To Data Labs India!
+                          </center>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="100%">
+                          <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:16px;">
+                            User name: <span>$username</span>
+                          </center>
+                          <br />
+                          <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:16px;">
+                            Password: <span>$password</span>
+                          </center>
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <center>
+                            <a href="$loginUrl"><img src="$loginButtonUrl" width="260" height="50" border="0"
+                                alt="" /></a>
+                          </center>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="10%"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#f7f4f0">
+                <tr>
+                  <td>
+                    <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:14px;">
+                      Having trouble? Please contact <b>Data Labs India</b> support at <b>phone</b> or <b>email</b>.
+                    </center>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 0px;">
+                    <center>
+                      <img src="$logoNewUrl" height="70px" width="230">
+                    </center>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:12px;">
+                      Copyright 2019 Data Labs India I All rights reserved.
+                    </center>
+                    <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:12px;">
+                      <b>www.datalabsindia.com</b>
+                    </center>
+                    <center style=" font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:12px;">
+                      <u>Privacy Policy</u> I <u>Terms and Conditions</u>
+                    </center>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr></tr>
+  </table>
+</body>
+
+</html>

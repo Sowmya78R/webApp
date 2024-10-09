@@ -1,0 +1,181 @@
+<body>
+  <table class="w-100">
+    <tbody>
+      <tr>
+        <td>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="m-3">
+                <table border="1" class="w-100">
+                  <tr>
+                    <td style="width:180px;border: none !important;">
+                      <img id="logoImage" style="width:150px;height: 90px;border-radius: 10px;margin-top:5px;"
+                        class="img-responsive">
+                    </td>
+                    <td class="d-flex justify-content-center text-center" style="border: none !important;">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-sm-10">
+                              <p style="font-size: 20px;color: black;" *ngIf="grnManagement.shipToAddress">
+                                {{grnManagement.shipToAddress.name}}
+                              </p>
+                            </div>
+                            <div class="col-sm-10">
+                              <p style="color: black;" *ngIf="grnManagement.shipToAddress">
+                                {{grnManagement.shipToAddress.address}}
+                              </p>
+                            </div>
+                            <!-- <div class="col-sm-10">
+                    <p style="color:black" *ngIf="grnManagement.shipToAddress">{{grnManagement.shipToAddress.name}},{{grnManagement.shipToAddress.address}}</p>
+                  </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table border="1" class="w-100">
+                  <tr>
+                    <td class="" style="border-right-color:white;color: black;font-size: 20px;border: none !important;">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group row" style="position: relative;left:270px">
+                            <label class="col-sm-12 col-form-label text-center">Goods Receipt Note </label>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="row" style="margin-top: -21px !important;">
+                        <div class="col-md-12">
+                          <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label">Plant ID:
+                            </label>
+                            <label class="col-sm-4 col-form-label">{{grnManagement.wareHouseInfo?.wareHouseID}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Plant Name:
+                            </label>
+                            <label
+                              class="col-sm-6 col-form-label">{{grnManagement.wareHouseInfo?.wareHouseName}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Posting Date:
+                            </label>
+                            <label class="col-sm-6 col-form-label">{{grnManagement.createdDate | date:
+                              'dd/MM/yyyy'}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Entered By:
+                            </label>
+                            <label class="col-sm-4 col-form-label">{{grnManagement.closedBy}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label">Vendor Code:
+                            </label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="!grnManagement.wareHouseTransferType && !grnManagement.returnOrderType">{{grnManagement.supplierMasterInfo?.supplierID}}</label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="grnManagement.wareHouseTransferType">{{grnManagement.wareHouseTransferSourceInfo?.wareHouseID}}</label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="grnManagement.returnOrderType">{{grnManagement.customerMasterInfo?.customerID}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Vendor Name:
+                            </label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="!grnManagement.wareHouseTransferType && !grnManagement.returnOrderType">{{grnManagement.supplierMasterInfo?.supplierName}}</label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="grnManagement.wareHouseTransferType">{{grnManagement.wareHouseTransferSourceInfo?.wareHouseName}}</label>
+                            <label class="col-sm-4 col-form-label"
+                              *ngIf="grnManagement.returnOrderType">{{grnManagement.customerMasterInfo?.customerName}}</label>
+
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Goods Receipt No:
+                            </label>
+                            <label class="col-sm-4 col-form-label">{{grnManagement.fullWmpoNumber}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Po Number:
+                            </label>
+                            <label class="col-sm-4 col-form-label">{{grnManagement.fullWmpoNumber}}</label>
+                          </div>
+                          <div class="form-group row m-0" style="margin-top: -10px !important;">
+                            <label class="col-sm-3 col-form-label">Po Date:
+                            </label>
+                            <label class="col-sm-4 col-form-label">{{grnManagement.receiptDate | date:
+                              'dd/MM/yyyy'}}</label>
+                          </div>
+
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table border="1" class="w-100 mt-2">
+                  <tr>
+                    <td class="text-center"> Sr No </td>
+                    <td class="text-center"> Temp.</td>
+                    <td class="text-center"> HSN Code</td>
+                    <td class="text-center"> Material</td>
+                    <td class="text-center"> Description</td>
+                    <td class="text-center"> Batch </td>
+                    <td class="text-center"> Entry Qty </td>
+                    <td class="text-center"> Entry Unit </td>
+                    <td class="text-center"> SKU Qty</td>
+                    <td class="text-center"> SKU Unit </td>
+                    <td class="text-center"> Base Amt </td>
+                    <td class="text-center"> GST </td>
+                    <td class="text-center"> Total </td>
+                  </tr>
+                  <tr *ngFor="let data of grManagementLines;let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{data.storageInstruction}}</td>
+                    <td>{{data.hsnCode}}</td>
+                    <td>{{data.productMasterInfo?.productID}}</td>
+                    <td>{{data.productMasterInfo?.productName}}</td>
+                    <td>{{data.batchNumber}}</td>
+                    <td class="text-right">{{data.supplierReceivedQuantity| decimalFilter}}</td>
+                    <td class="text-center">{{data.receivingUnit}}</td>
+                    <td class="text-right">{{data.receivedQuantity | decimalFilter}}</td>
+                    <td class="text-center">{{data.inventoryUnit}}</td>
+                    <td class="text-right">{{data.grossAmount| decimalFilter}}</td>
+                    <td class="text-right">{{data.taxAmount| decimalFilter}}</td>
+                    <td class="text-right">{{data.netAmount| decimalFilter}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">
+    <div style="border:1px solid black;">
+      <span class="d-flex justify-content-center Heading"
+      *ngIf="grnManagement.shipToAddress">{{grnManagement.shipToAddress?.name}}
+    </span>
+    <br>
+    <span class="d-flex justify-content-center Heading" style="margin-top: -16px !important;"
+      *ngIf="grnManagement.shipToAddress">{{grnManagement.shipToAddress?.address}}</span>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,75 @@
+  <div class="row mt-3 d-none">
+    <form [formGroup]="abcAnalysisFirstDashboardsForm">
+    <div class="col-md-12">
+      <div class="row top-input-label ">
+        <div class="col-md-12">
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">From Date
+            </label>
+            <div class="col-sm-12">
+              <input type="date" name="fromDate" class="form-control" id="fromDate" formControlName="fromDate">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">To Date
+            </label>
+            <div class="col-sm-12">
+              <input type="date" name="toDate" class="form-control" id="toDate" formControlName="toDate">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+  <div class="row">
+  <div class="col-md-12 mt-4">
+    <h6 class="text-uppercase text-primary text-center">ABC Analysis</h6>
+    <div class="text-right">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div id="chart">
+      <div id="chart-container">
+        <canvas #myCanvas id="canvas" baseChart [chartType]="chartType" [datasets]="chartData" [labels]="chartLabels"
+          [colors]="chartColors" [options]="chartOptions"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="purchaseAnalyticsOrder" #purchaseAnalyticsOrder
+  [identifier]="'purchaseAnalyticsOrder'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables w-100">
+        <div class="row ">
+          <div class="col-md-12">
+            <div class="text-right">
+              <i class="fa fa-download tableDownload" (click)="exportAsXLSX()"></i>
+            </div>
+          </div>
+        </div>
+        <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Period</th>
+              <th scope="col">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of periodWisePurchaseOrderList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.period}}</td>
+              <td>{{data.quantity}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

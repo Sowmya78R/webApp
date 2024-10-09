@@ -1,0 +1,182 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form #putawayStrategyForm="ngForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 " *ngIf="permissionsList.includes('Update')">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+                <input id="upfile" #import (click)="import.value = null" class="hidden" type="file"
+                accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" #import (click)="import.value = null" class="hidden" type="file"
+                    accept=".xlsx" (change)="uploadExcel($event)">
+                </a>
+              </li>
+             <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                                    </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                                        (change)="uploadExcel($event)">
+                                </a>
+                            </li> 
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PUTAWAY STRATEGY ATTRIBUTES' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PUTAWAY STRATEGY ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-10">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Putaway Strategy Name' |translate}}<i
+                          class="red">*</i></label>
+                      <div class="col-sm-7 input-group">
+
+                        <input id="putawayStrategyName" name="putawayStrategyName" #putawayStrategyName="ngModel"
+                          [(ngModel)]="putawayStrategyData.putawayStrategyName"
+                          placeholder="{{'Putaway Strategy Name' |translate}}" class="form-control"
+                          [ngClass]="{'valiError': shouldShowErrors(putawayStrategyName), 'valiSucess': shouldShowSuccess(putawayStrategyName)}"
+                          (focus)="onFocusForElement(putawayStrategyName)" (focusout)="onFocusOutForElement()"
+                          [readonly]="isReadMode" required [readonly]="makeReadOnly" type="text">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'ZONE DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'ZONE DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Zone Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search zone to retrive data of zone">
+                          info </i>
+                        <select class="form-control" id="zoneName" name="zoneName" #zoneName="ngModel"
+                          [(ngModel)]="putawayStrategyData.zoneInfo.zoneName"
+                          (ngModelChange)="getZoneSelected($event); onFocusForElement(zoneName)"
+                          (focusout)="onFocusOutForElement()" required [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let zone of zones" [ngValue]="zone.zoneName">
+                            {{zone.zoneName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">{{'Sequence Number' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-6 ">
+                        <input id="sequenceNumber" name="sequenceNumber" #sequenceNumber="ngModel"
+                          [(ngModel)]="putawayStrategyData.zoneInfo.sequenceNumber"
+                          placeholder="{{'Sequence Number' |translate}}" class="form-control"
+                          [ngClass]="{'valiError': shouldShowErrors(sequenceNumber), 'valiSucess': shouldShowSuccess(sequenceNumber)}"
+                          (focus)="onFocusForElement(sequenceNumber)" (focusout)="onFocusOutForElement()" required
+                          [readonly]="makeReadOnly" type="number">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group row">
+
+            <div class="col-sm-12 text-right mb-3">
+              <button class="btn btn-green mr-2" value="Save" (click)="save(putawayStrategyForm)"
+                [disabled]="putawayStrategyForm.invalid">{{'Save' |translate}}</button>
+              <button class="btn btn-white" value="Clear"
+                (click)="clearPutawayStrategyData(putawayStrategyForm)">{{'Clear' |translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S.No' |translate}}</td>
+                  <td scope="col">{{'Putaway Strategy Name' |translate}}</td>
+                  <td scope="col">{{'Zone Name' |translate}}</td>
+                  <td scope="col">{{'Sequence Number' |translate}}</td>
+                  <td scope="col">{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of putawayStrategiesWithZones; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer" (click)="editPutawayStrategyDetails(detail)">
+                    {{detail.putawayStrategyName}}</th>
+                  <td>{{detail.zoneName}}</td>
+                  <td>{{detail.sequenceNumber}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

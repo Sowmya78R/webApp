@@ -1,0 +1,25 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction" style="min-height: unset !important;">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="udcBtns float-right" *ngIf="permissionsList.includes('Update')">
+          <a (click)="upfile.click()"><img src="assets/Export.png" title="Upload Excel" alt=""
+            style="width: 25px;height: 23px;margin-right: 16px;">
+          <input id="upfile" #upfile (click)="upfile.value = null" value=""
+            style="background: none !important;border: none !important;" class="hidden" type="file" accept=".xlsx"
+            (change)="uploadExcel($event)">
+        </a>
+          <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File" alt=""
+              style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

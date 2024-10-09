@@ -1,0 +1,248 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="cycleCountingForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'CYCLE COUNTING REPORT' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'CYCLE COUNTING REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row ">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search wareHouse to retrive data of wareHouse"> info </i>
+                        <ng2-completer name="wareHouseName" formControlName="wareHouseName"
+                          [datasource]="warehouseNameValues" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Zone' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Zone to retrive data of Zone"> info </i>
+                        <ng2-completer name="zoneName" formControlName="zoneName" [datasource]="zoneNameValues"
+                          [minSearchLength]="0" placeholder="{{'Zone' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Rack' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Rack to retrive data of Rack"> info </i>
+                        <ng2-completer name="rackName" formControlName="rackName" [datasource]="rackNameValues"
+                          [minSearchLength]="0" placeholder="{{'Rack' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Level' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search level to retrive data of level"> info </i>
+                        <ng2-completer name="levelName" formControlName="levelName" [datasource]="levelNameValues"
+                          [minSearchLength]="0" placeholder="{{'Level' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <div class="col-md-4">
+                   
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Location' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search location to retrive data of location"> info </i>
+                        <ng2-completer name="locationName" formControlName="locationName"
+                          [datasource]="locationNameValues" [minSearchLength]="0"
+                          placeholder="{{'Location' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Confirmed By' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="confirmedBy" formControlName="confirmedBy" [datasource]="executiveIDs"
+                          [minSearchLength]="0" placeholder="Select">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Counter User' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="executiveIDName" formControlName="executiveIDName"
+                          [datasource]="executiveIDs" [minSearchLength]="0" placeholder="Select">
+                        </ng2-completer>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Submit From' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search cyclecounting from particular date"> info </i>
+                        <input type="date" formControlName="confirmedDateFrom" id="confirmedDateFrom"
+                          name="confirmedDateFrom" class="form-control" onkeydown="return false">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Submit To' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search cyclecounting to particular date"> info </i>
+                        <input type="date" formControlName="confirmedDateTo" id="confirmedDateTo" name="confirmedDateTo"
+                          class="form-control" onkeydown="return false">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Cycle Counting Number' |translate}}</th>
+                <th>{{'Cycle Counting Criteria' |translate}}</th>
+                <th>{{'Product ID/Name' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Serial Number' |translate}}</th>
+                <th>{{'Batch Number' |translate}}</th>
+                <th>{{'Adjusted Quantity' |translate}}</th>
+                <th>{{'Quantity Inventory Unit' |translate}}</th>
+                <th>{{'Counter User' |translate}}</th>
+                <th>{{'Confirmed By' |translate}}</th>
+                <th>{{'Confirmed Date' |translate}}</th>
+                <th>{{'Available Quantity' |translate}}</th>
+                <th>{{'Warehouse Name' |translate}}</th>
+                <th>{{'Zone Name' |translate}}</th>
+                <th>{{'Rack Name' |translate}}</th>
+                <th>{{'Location Name' |translate}}</th>
+                <th>{{'Level Name' |translate}}</th>
+                <th>{{'variance' |translate}}</th>
+                <th>{{'variance%' |translate}}</th>
+                <th>{{'Planned Date' |translate}}</th>
+                <th>{{'Actual Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of cycleCountingData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{report.cycleCountingCode}}</td>
+                <td>{{report.criteriaType}}</td>
+                <td>{{report.productMasterInfo.productIDName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.serialNumber}}</td>
+                <td>{{report.batchNumber}}</td>
+                <td>{{report.adjustedQuantity | decimalwithThreeDigits}} </td>
+                <td>{{report.quantityInventoryUnit}}</td>
+                <td>{{report.counterUser}}</td>
+                <td>{{report.confirmedBy}}</td>
+                <td class="text-center">{{report.confirmedDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.availableQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.wareHouseInfo.wareHouseName}}</td>
+                <td>{{report.zoneInfo?.zoneName}}</td>
+                <td>{{report.rackInfo?.rackName}}</td>
+                <td>{{report.locationInfo?.locationName}}</td>
+                <td>{{report.levelInfo?.levelName}}</td>
+                <td>{{report.variance}}</td>
+                <td>{{report.variancePercentage | decimalwithThreeDigits}}</td>
+                <td class="text-center">{{report.plannedScheduleDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-center">{{report.actualCycleCountingDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

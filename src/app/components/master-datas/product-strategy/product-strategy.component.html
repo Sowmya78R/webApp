@@ -1,0 +1,179 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form #productStrategyForm="ngForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 " *ngIf="permissionsList.includes('Update')">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'PRODUCT STRATEGY ATTRIBUTES' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT STRATEGY ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6 ">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Category' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search  product Category to retrive data of productCategory"> info </i>
+                        <select class="form-control" id="productCategory" name="productCategory"
+                          #productCategory="ngModel"
+                          [(ngModel)]="productStrategyData.productCategoryInfo.productCategoryName"
+                          (ngModelChange)="getSelectedValue('productCategory', $event); onFocusForElement(productCategory)"
+                          [ngClass]="{'valiError': shouldShowErrors(productCategory), 'valiSucess': shouldShowSuccess(productCategory)}"
+                          (focusout)="onFocusOutForElement()" required [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Putaway Strategy Name' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search  putaway Strategy to retrive data of putaway Strategy"> info </i>
+                        <select class="form-control" id="putawayStrategyName" name="putawayStrategyName"
+                          #putawayStrategyName="ngModel" #ngModel
+                          [(ngModel)]="productStrategyData.putawayStrategyInfo.putawayStrategyName"
+                          (ngModelChange)="getSelectedValue('putawayStrategyName', $event); onFocusForElement('putawayStrategyName')">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let putawayStrategy of putawayStrategies"
+                            [ngValue]="putawayStrategy.putawayStrategyName">
+                            {{putawayStrategy.putawayStrategyName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Picking Strategy Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search  pickingStrategy to retrive data of pickingStrategy"> info </i>
+                        <select class="form-control" id="pickingStrategyName" name="pickingStrategyName"
+                          #pickingStrategyName="ngModel"
+                          [(ngModel)]="productStrategyData.pickingStrategyInfo.pickingStrategyName"
+                          (ngModelChange)="getSelectedValue('pickingStrategyName', $event); onFocusForElement(pickingStrategyName)"
+                          [ngClass]="{'valiError': shouldShowErrors(pickingStrategyName), 'valiSucess': shouldShowSuccess(pickingStrategyName)}"
+                          (focusout)="onFocusOutForElement()" required>
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let pickingStrategy of pickingStrategies"
+                            [ngValue]="pickingStrategy.pickingStrategyName">
+                            {{pickingStrategy.pickingStrategyName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Picking Strategy Type' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="pickingStrategyType" name="pickingStrategyType"
+                          #pickingStrategyType="ngModel" [(ngModel)]="productStrategyData.pickingStrategyType"
+                          (ngModelChange)="getSelectedValue('pickingStrategyType', $event);
+                           onFocusForElement(pickingStrategyType)" [ngClass]="{'valiError': shouldShowErrors(pickingStrategyType),
+                          'valiSucess': shouldShowSuccess(pickingStrategyType)}" (focusout)="onFocusOutForElement()"
+                          required>
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let pickingStrategy of strategyTypeDropdown"
+                            [ngValue]="pickingStrategy.pickingStrategyType">
+                            {{pickingStrategy.pickingStrategyType}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-2" (click)="save(productStrategyForm)"
+                  [disabled]="productStrategyForm.invalid">{{'SAVE' |translate}}</button>
+                <button class="btn btn-white" (click)="clearProductStrategyData(productStrategyForm)">{{'CLEAR'
+                  |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S.No' |translate}}</td>
+                  <td scope="col">{{'Category' |translate}}</td>
+                  <td scope="col">{{'Putaway Strategy Name' |translate}}</td>
+                  <td scope="col">{{'Picking Strategy Name' |translate}}</td>
+                  <td scope="col">{{'Picking Strategy Type' |translate}}</td>
+                  <td scope="col">{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of productStrategies; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer" (click)="editProductStrategyDetails(detail)">
+                    {{detail.productCategoryInfo?.productCategoryName}}</th>
+                  <td>{{detail.putawayStrategyInfo?.putawayStrategyName}}</td>
+                  <td>{{detail.pickingStrategyInfo?.pickingStrategyName}}</td>
+                  <td>{{detail.pickingStrategyType}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

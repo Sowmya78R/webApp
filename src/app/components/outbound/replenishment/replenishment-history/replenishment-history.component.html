@@ -1,0 +1,62 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th scope="col">{{'Image' | translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'Product Description' |translate}}</th>
+                <th>{{'Brand Name' |translate}}</th>
+                <th>{{'Source Location' |translate}}</th>
+                <th>{{'Destination Location' |translate}}</th>
+                <th>{{'Replenishment Quantity' |translate}}</th>
+                <th>{{'Start Date' |translate}}</th>
+                <th>{{'End Date' |translate}}</th>
+                <th>{{'Status' |translate}}</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of replenishments; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td *ngIf="detail.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + detail.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{detail.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!detail.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(detail.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td class="text-right">{{detail.productMasterInfo.productID}}</td>
+                <td>{{detail.productMasterInfo.productName}}</td>
+                <td>{{detail.productDescription}}</td>
+                <td>{{detail.brandName}}</td>
+                <td>{{detail.sourceBulkLocationInfo.locationName}}</td>
+                <td>{{detail.destinationEachLocationInfo.locationName}}</td>
+                <td>{{detail.replenishmentQuantity | decimalFilter}}</td>
+                <td>{{detail.startDate | date: 'short'}}</td>
+                <td>{{detail.endDate | date: 'short'}}</td>
+                <td><select class="form-control" id="status" style="width: 100px;" name="status"
+                  [disabled]="detail.status === 'Closed'"
+                    [(ngModel)]="detail.status" (change)="onStatusChange($event.target.value, detail._id)">
+                    <option value="Open">Incomplete</option>
+                    <option value="Closed">Completed</option>
+                  </select></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

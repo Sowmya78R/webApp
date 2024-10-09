@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-md-12">
+    <table border="1" class="w-100 mt-3">
+      <tr>
+        <div class="row">
+          <div class="col-md-4">
+            <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+          </div>
+          <div class="col-md-4">
+            <div class="roundedNeckBox">
+              <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+              <p style="color:black">{{wareHouseAddressOnly}}</p>
+            </div>
+          </div>
+        </div>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-center">
+          <h6>Picking Planning</h6>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                    <div class="col-sm-5">
+                      <p class="mt-1">{{wmsService.pickingfieldsData.wmsoNumber}}</p>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">Employee :</label>
+                    <div class="col-sm-5">
+                      <p class="mt-1"> {{wmsService.pickingfieldsData.executiveIDName}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">Zone :</label>
+                    <div class="col-sm-5">
+                      <p class="mt-1">{{wmsService.pickingfieldsData.zoneName}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">Location :</label>
+                    <div class="col-sm-5">
+                      <p class="mt-1">{{wmsService.pickingfieldsData.locationName}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table class="mt-1" border="1">
+      <thead>
+        <tr>
+          <th scope="col">S.No </th>
+          <th scope="col">SO Number</th>
+          <th scope="col">Picking No</th>
+          <th scope="col">Assigned To</th>
+          <th scope="col">Product ID</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Product Description</th>
+          <th scope="col">Brand Name</th>
+          <th scope="col">UOM</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Expiry Date</th>
+          <th scope="col">MFG Date</th>
+          <th scope="col">Batch Number</th>
+          <th scope="col">Zone Name</th>
+          <th scope="col">Rack Name</th>
+          <th scope="col">Level Name</th>
+          <th scope="col">Column Name</th>
+          <th scope="col">Location Name</th>
+          <th scope="col">Invoice Number</th>
+          <th scope="col">Invoice Date</th>
+          <th scope="col">BOE No</th>
+          <th scope="col">BOE Date</th>
+          <th scope="col">Bond Number</th>
+          <th scope="col">Bond Date</th>
+          <th scope="col">Ex Bond Number</th>
+          <th scope="col">Ex Bond Date</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">Planned Completion Date</th>
+        </tr>
+      </thead>
+      <tbody [hidden]=" wmsService.pickingTableData.length==0"
+        *ngFor="let data of wmsService.pickingTableData ;let i=index">
+        <tr>
+          <th>{{i + 1}}</th>
+          <td>{{data.wmsoNumber}}</td>
+          <td>{{data.pickingNumber}}</td>
+          <td *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+            {{data.wareHouseTeamInfo.executiveIDName}}</td>
+          <td
+            *ngIf="data.wareHouseTeamInfo==null ||(data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">
+            {{data.executiveIDName}} </td>
+          <td>{{data.productMasterInfo?.productID}}</td>
+          <td>{{data.productMasterInfo?.productName}}</td>
+          <td>{{data.productDescription}}</td>
+          <td>{{data.brandName}}</td>
+          <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+          <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+          <td>{{data.customerMasterInfo?.customerName}}</td>
+          <td style="text-align: center !important;"><span *ngFor="let expdata of data.expiryDates">{{expdata | date:
+              'dd/MM/yyyy'}}<br></span></td>
+          <td style="text-align: center !important;"><span *ngFor="let mfgDate of data.mfgDates">{{mfgDate | date:
+              'dd/MM/yyyy'}}<br></span></td>
+          <td>{{data.batchNumber}}</td>
+          <td>{{data.zoneInfo?.zoneName}}</td>
+          <td>{{data.rackInfo?.rackName}}</td>
+          <td>{{data.levelInfo?.levelName}}</td>
+          <td>{{data.columnInfo?.columnName}}</td>
+          <td>{{data.locationInfo?.locationName}}</td>
+          <td>{{data.invoiceNumber}}</td>
+          <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{data.billOfEntryNumber}}</td>
+          <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{data.bondNumber}}</td>
+          <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{data.exBondNumber}}</td>
+          <td>{{data.exBondDate | date: 'dd/MM/yyyy'}}</td>
+          <td style="text-align: center !important;">{{data.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Total Quantity Inventory Unit' |translate}}</th>
+                  <th scope="col">{{'Total Available Quantity' |translate}}</th>
+                  <th scope="col">{{'Total Reserved Quantity' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>{{quantityInventoryUnit | decimalFilter}}</td>
+                  <td>{{availbleQuantity | decimalFilter}}</td>
+                  <td>{{reservedQuantity | decimalFilter}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

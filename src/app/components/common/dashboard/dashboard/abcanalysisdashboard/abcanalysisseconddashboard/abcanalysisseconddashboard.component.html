@@ -1,0 +1,291 @@
+
+  <div class="row mt-3 d-none" [dir]="direction">
+    <form [formGroup]="abcAnalsisSecondDashboardForm">
+    <div class="col-md-12">
+      <div class="row top-input-label ">
+        <div class="col-md-12">
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">{{'From Date' |translate}}
+            </label>
+            <div class="col-sm-12">
+              <input type="date" name="fromDate" class="form-control" id="fromDate" formControlName="fromDate">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">{{'To Date' |translate}}
+            </label>
+            <div class="col-sm-12">
+              <input type="date" name="toDate" class="form-control" id="toDate" formControlName="toDate">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="sideViewBaar">
+            <li>
+              <a href="">+</a>
+            </li>
+            <li>
+              <a href="">A</a>
+
+            </li>
+            <li>
+              <a href="">B</a>
+
+            </li>
+            <li>
+              <a href="">C</a>
+
+            </li>
+            <li>
+              <a href="">-</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-12 mt-4">
+              <h6 class="text-center">{{'ABC Analysis Second Dashboard' |translate}}</h6>
+              <div class="text-right">
+              </div>
+            </div>
+          </div>
+          <ul class="topViewBaar">
+            <li>
+              <a>X</a>
+            </li>
+            <li>
+              <a>Y</a>
+            </li>
+            <li>
+              <a>Z</a>
+            </li>
+          </ul>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div id="style-8" class="abcAnalysisBoxModalwithLeft abcScrollbar pink">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar green">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModalwithLeft abcScrollbar yellow">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-1">
+              <div id="style-8" class="abcAnalysisBoxModal abcScrollbar orange">
+                <div class="col-md-12 text-left">
+                  <p class="text-left">
+                    <a class="text-left">
+                      <i class="" aria-hidden="true"></i>
+                      Aliquam sit cumque reiciendis adipisci ni</a>
+                    <i class="fa fa-plus bg-primary" style="color:white;padding:5px;border-radius:5px;cursor:pointer"
+                      *ngIf="isViewToggle==false" (click)="expandToggle1()" aria-hidden="true"></i>
+                    <i class="fa fa-minus bg-primary" *ngIf="isViewToggle==true"
+                      style="color:white;padding:5px;border-radius:5px;cursor:pointer" (click)="expandToggle1()"></i>
+                    <a class="text-left"><span [hidden]="!isViewToggle">
+                        <p style="list-style: disc;color:black;">
+                          Lorem ipsum dolor sit amet consectetur
+                        </p>
+                      </span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ngx Pop Modal -->
+  <ngx-smart-modal customClass="nsm-centered" id="purchaseAnalyticsOrder" #purchaseAnalyticsOrder
+    [identifier]="'purchaseAnalyticsOrder'">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables w-100">
+          <div class="row ">
+            <div class="col-md-12">
+              <div class="text-right">
+                <i class="fa fa-download tableDownload" (click)="exportAsXLSX()"></i>
+              </div>
+            </div>
+          </div>
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Period</th>
+                <th scope="col">Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of periodWisePurchaseOrderList;let i = index">
+               <td class="text-left">{{i+1}}</td>
+                <td>{{data.period}}</td>
+                <td>{{data.quantity}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ngx-smart-modal>

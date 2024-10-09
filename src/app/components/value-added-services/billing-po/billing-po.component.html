@@ -1,0 +1,807 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="top-input-label">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer name="supplierIDName" id="supplierIDName" [(ngModel)]="supplierIDName"
+                    [datasource]="supplierIDNames" [minSearchLength]="0" placeholder="{{'Supplier' |translate}}"
+                    (selected)="getSelectedSupplierIDName()" [disabled] = "makeThisDisabledforSupplier" >
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Supplier ID' |translate}}</label>
+                <div class="col-sm-7">
+                  <input type="type" name="supplierID" readonly [(ngModel)]="supplierMasterInfo.supplierID"
+                    placeholder="{{'Supplier ID' |translate}}" class="form-control" id="supplierID">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Supplier Name' |translate}}</label>
+                <div class="col-sm-7">
+                  <input type="type" name="supplierName" readonly [(ngModel)]="supplierMasterInfo.supplierName"
+                    placeholder="{{'Supplier Name' |translate}}" class="form-control" id="supplierName">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'Pallet Position Billing/Ambient' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'Pallet Position Billing/Ambient' |translate}} <i class="material-icons rotetIcon"> unfold_less
+                  </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-sm" [formGroup]="palletPositionHiredForm">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="font-weight-bold">{{'Pallet Position Hired' |translate}}</div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'UOM' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select formControlName="uom" class="form-control" id="uom">
+                            <option [value]=null>Select</option>
+                            <option>Pallet</option>
+                            <option>SqFt</option>
+                            <option>SqMt</option>
+                            <option>CuSqFt</option>
+                            <option>CuSqMt</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Rate' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" (keyup)="populateAmountPPH()" formControlName="rate" id="rate"
+                            class="form-control" placeholder="{{'Rate' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Period' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select id="period" class="form-control" name="period" formControlName="period"
+                            (change)="onChangePopulateTotalNoOfDaysBooked($event.target.value, 'pallet')">
+                            <option [value]="null">Select</option>
+                            <option>1 Day</option>
+                            <option>1 Week</option>
+                            <option>1 Fortnight</option>
+                            <option>1 Month</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Total No Of Days Booked' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" (keyup)="populateAmountPPH()" class="form-control"
+                            formControlName="totalNoOfDaysBooked" id="totalNoOfDaysBooked"
+                            placeholder="{{'Total Number Of Days Booked' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Pallet Position Booked' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" (keyup)="populateAmountPPH()" class="form-control"
+                            formControlName="palletPositionBooked" id="palletPositionBooked"
+                            placeholder="{{'Pallet Position Booked' |translate}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm mt-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Contract Start Date' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="date" class="form-control" formControlName="contractStartDate"
+                            id="contractStartDate">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Contract End Date' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="date" class="form-control" formControlName="contractEndDate"
+                            id="contractEndDate">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" readonly class="form-control" formControlName="amount" id="amount"
+                            placeholder="{{'Amount' |translate}}" value="{{palletPositionHiredForm.controls.amount.value | decimalFilter}} ">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm" [formGroup]="additionalPalletPositionHiredForm">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="font-weight-bold">{{'Additonal Pallet Position Hired' |translate}}</div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'UOM' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select formControlName="uom" class="form-control" id="auom">
+                            <option [value]=null>Select</option>
+                            <option>Pallet</option>
+                            <option>SqFt</option>
+                            <option>SqMt</option>
+                            <option>CuSqFt</option>
+                            <option>CuSqMt</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Rate' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" formControlName="rate" (keyup)="populateAmountPPH()" id="arate"
+                            class="form-control" placeholder="{{'Rate' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Period' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select id="period" class="form-control" name="period" formControlName="period"
+                            (change)="onChangePopulateTotalNoOfDaysBooked($event.target.value, 'additional')">
+                            <option [value]="null">Select</option>
+                            <option>1 Day</option>
+                            <option>1 Week</option>
+                            <option>1 Fortnight</option>
+                            <option>1 Month</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Total No Of Days Booked' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="totalNoOfDaysBooked"
+                            (keyup)="populateAmountAPPH()" id="atotalNoOfDaysBooked"
+                            placeholder="{{'Total Number Of Days Booked' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Pallet Position Booked' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="palletPositionBooked"
+                            (keyup)="populateAmountAPPH()" id="apalletPositionBooked"
+                            placeholder="{{'Pallet Position Booked' |translate}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm mt-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Contract Start Date' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="date" class="form-control" formControlName="contractStartDate"
+                            id="acontractStartDate">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Contract End Date' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="date" class="form-control" formControlName="contractEndDate"
+                            id="acontractEndDate">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="amount" id="aamount"
+                            placeholder="{{'Amount' |translate}}" value="{{additionalPalletPositionHiredForm.controls.amount.value | decimalFilter}} ">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" [formGroup]="flatRateForm">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Flat Rate' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+
+                <div class="formTitleHover">
+                  <h4> {{'Flat Rate' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=true checked
+                          class="m-1"><span class="mb-5">{{'Loading' |translate}}</span>
+                      </label>
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=false
+                          class="m-1">{{'Unloading' |translate}}</label>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="flatRateForm.value.loadingFlag else unLoading">
+                    <div class="col-md-6" formGroupName="loading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="vehicleType" id="lvehicleType"
+                            (change)="onVehicleTypeChange('flatRateLoading')">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                              {{vehicle.vehicleType}}</option>
+                            <!--changed typeVehicle to vehicleType, becz data not getting in typeVehicle field.-->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Rate' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" (keyup)="populateAmountFRLoading()"
+                            formControlName="vehicleRate" id="vehicleRate" placeholder="{{'Vehicle Rate' |translate}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" formGroupName="loading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'No of Vehicles' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" (keyup)="populateAmountFRLoading()"
+                            formControlName="noOfVehicles" id="noOfVehicles" placeholder="{{'No of Vehicles' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" readonly formControlName="amount" id="amountf"
+                            placeholder="{{'Amount' |translate}}" value="{{flatRateForm.get('loading').controls.amount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #unLoading>
+                    <div class="col-md-6" formGroupName="unloading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="vehicleType" id="uvehicleType"
+                            (change)="onVehicleTypeChange('flatRateUnLoading')">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                              {{vehicle.vehicleType}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Rate' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" (keyup)="populateAmountFRUnLoading()"
+                            formControlName="vehicleRate" id="vehicleRate" placeholder="{{'Vehicle Rate' |translate}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" formGroupName="unloading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'No of Vehicles' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" (keyup)="populateAmountFRUnLoading()"
+                            formControlName="noOfVehicles" id="noOfVehicles" placeholder="{{'No of Vehicles' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" readonly formControlName="amount" id="amountf2"
+                            placeholder="{{'Amount' |translate}}" value="{{flatRateForm.get('unloading').controls.amount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" [formGroup]="variableRateForm">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Variable Rate' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'Variable Rate' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=true
+                          class="m-1"><span class="mb-5">{{'Loading' |translate}}</span>
+                      </label>
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=false
+                          class="m-1">Unloading</label>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="variableRateForm.value.loadingFlag; else unLoadingV">
+                    <div class="col-md-6" formGroupName="loading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="vehicleType" id="vvehicleType">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                              {{vehicle.vehicleType}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Rate Per Hour Staff' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="ratePerHourStaff" id="ratePerHourStaff"
+                            (change)="populateAmountVRLoading()">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let team of warehouseTeams" [value]="team.rate">
+                              {{team.rate}}</option>
+                          </select>
+                          <!-- <input type="text" class="form-control" formControlName="ratePerHourStaff"
+                            (keyup)="populateAmountVRLoading()" id="ratePerHourStaff" placeholder="{{'Rate Per Hour Staff' |translate}}"> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" formGroupName="loading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'No of Hours Occupied Staff' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="noOfHoursOccupiedStaff"
+                            (keyup)="populateAmountVRLoading()" id="noOfHoursOccupiedStaff"
+                            placeholder="{{'No of Hours Occupied Staff' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" readonly class="form-control" formControlName="amount" id="amountv"
+                            placeholder="{{'Amount' |translate}}" value="{{variableRateForm.get('loading').controls.amount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #unLoadingV>
+                    <div class="col-md-6" formGroupName="unloading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="vehicleType" id="unvehicleType">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                              {{vehicle.vehicleType}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Rate Per Hour Staff' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control" formControlName="ratePerHourStaff" id="ratePerHourStaffu"
+                            (change)="populateAmountVRUnLoading()">
+                            <option [value]=null>Select</option>
+                            <option *ngFor="let team of warehouseTeams" [value]="team.rate">
+                              {{team.rate}}</option>
+                          </select>
+                          <!-- <input type="text" class="form-control" formControlName="ratePerHourStaff"
+                            (keyup)="populateAmountVRUnLoading()" id="uratePerHourStaff"
+                            placeholder="{{'Rate Per Hour Staff' |translate}}"> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" formGroupName="unloading">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'No of Hours Occupied Staff' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" formControlName="noOfHoursOccupiedStaff"
+                            (keyup)="populateAmountVRUnLoading()" id="noOfHoursOccupiedStaffu"
+                            placeholder="{{'No of Hours Occupied Staff' |translate}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" readonly formControlName="amount" id="amountv"
+                            placeholder="{{'Amount' |translate}}"value="{{variableRateForm.get('unloading').controls.amount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" [formGroup]="mechanicalRateForm">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Mechanical Rate' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'Mechanical Rate' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+
+              <div id="style-8" class="panel-body scrollbar" [formGroup]="mechanicalRateForm">
+                <div class="row force-overflow">
+                  <div class="col-md-12">
+                    <div class="text-center">
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=true
+                          class="m-1"><span class="mb-5">{{'Loading' |translate}}</span>
+                      </label>
+                      <label class="radio-inline"><input type="radio" formControlName="loadingFlag" [value]=false
+                          class="m-1">{{'Unloading' |translate}}</label>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="mechanicalRateForm.value.loadingFlag; else unLoadingM">
+                    <div class="col-sm-6">
+                      <p class="font-weight-bold">Total Amount: {{loadingTotal |
+                        currency:'INR'}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <button class="btn btn-green float-right" (click)="addMechanicalRateLine('loading')">+
+                        ADD</button>
+                    </div>
+                    <ng-container formArrayName="loading"
+                      *ngFor="let a of mechanicalRateForm.get('loading').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                        <fieldset class="row mx-3 mb-2">
+                          <legend>Mechanical Rate {{i + 1}}: </legend>
+                          <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                            <i class="fa fa-trash" (click)="removeMechanicalRateListLine('i')"></i>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="vehicleType" id="mvehicleType">
+                                  <option [value]=null>Select</option>
+                                  <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                                    {{vehicle.vehicleType}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Equipment Type' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="equipmentType" id="equipmentTypem"
+                                  (change)="onEquipmentTypeChange('mechanicalRateLoading')">
+                                  <option [value]=null>Select</option>
+                                  <option *ngFor="let equipment of equipments" [value]="equipment.equipmentType">
+                                    {{equipment.equipmentType}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'No of Hours Occupied Equipment' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" formControlName="noOfHoursOccupiedEquipment"
+                                  (keyup)="populateAmountMRLoading(i)" id="noOfHoursOccupiedEquipmentm"
+                                  placeholder="{{'No of Hours Occupied Equipment' |translate}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Rate Per Hours Equipment' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" formControlName="ratePerHourEquipment"
+                                  (keyup)="populateAmountMRLoading(i)" id="ratePerHourEquipmentm"
+                                  placeholder="{{'Rate Per Hours Equipment' |translate}}">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" readonly formControlName="amount" id="amountm"
+                                  placeholder="{{'Amount' |translate}}"  value="{{a.controls.amount.value | decimalFilter}}">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #unLoadingM>
+                    <div class="col-sm-6">
+                      <p class="font-weight-bold">Total Amount: {{unLoadingTotal |
+                        currency:'INR'}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <button class="btn btn-green float-right" (click)="addMechanicalRateLine()">+ ADD</button>
+                    </div>
+                    <ng-container formArrayName="unloading"
+                      *ngFor="let a of mechanicalRateForm.get('unloading').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                        <fieldset class="row mx-3 mb-2">
+                          <legend>Mechanical Rate {{i + 1}}: </legend>
+                          <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                            <i class="fa fa-trash" (click)="removeMechanicalRateListLine(i)"></i>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="vehicleType" id="muvehicleType">
+                                  <option [value]=null>Select</option>
+                                  <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleType">
+                                    {{vehicle.vehicleType}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Equipment Type' |translate}}</label>
+                              <div class="col-sm-8">
+                                <select class="form-control" formControlName="equipmentType" id="equipmentTypee"
+                                  (change)="onEquipmentTypeChange('mechanicalRateUnLoading')">
+                                  <option [value]=null>Select</option>
+                                  <option *ngFor="let equipment of equipments" [value]="equipment.equipmentType">
+                                    {{equipment.equipmentType}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'No of Hours Occupied Equipment' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" formControlName="noOfHoursOccupiedEquipment"
+                                  (keyup)="populateAmountMRUnLoading(i)" id="noOfHoursOccupiedEquipmente"
+                                  placeholder="{{'No of Hours Occupied Equipment' |translate}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Rate Per Hours Equipment' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" formControlName="ratePerHourEquipment"
+                                  (keyup)="populateAmountMRUnLoading(i)" id="ratePerHourEquipmente"
+                                  placeholder="{{'Rate Per Hours Equipment' |translate}}">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" readonly formControlName="amount" id="amounte"
+                                  placeholder="{{'Amount' |translate}}"  value="{{a.controls.amount.value | decimalFilter}}">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </ng-container>
+                    </ng-container>
+
+                  </ng-template>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Packing Material' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Packing Material' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow" [formGroup]="packingMaterialForm">
+                  <div class="col-md-6">
+                    <p class="font-weight-bold">Total Amount: {{packingTotal |
+                      currency:'INR'}}</p>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <button class="btn btn-green" (click)="addPackingMaterialLine()"
+                      >+ ADD</button>
+                  </div>
+                  <ng-container formArrayName="packingMaterialList"
+                    *ngFor="let a of packingMaterialForm.get('packingMaterialList').controls; let i = index">
+                    <ng-container [formGroupName]="i">
+                      <fieldset class="row mx-3 mb-2">
+                        <legend>Packing Type {{i + 1}}: </legend>
+                        <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                          <i class="fa fa-trash" (click)="removePackingMaterialLine(i)"></i>
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Packing Type' |translate}}</label>
+                            <div class="col-sm-8">
+                              <select formControlName="packingType" class="form-control" id="packingType">
+                                <option [value]=null>Select</option>
+                                <option>Polycover</option>
+                                <option>Labelling</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Size Of Packing Type' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" formControlName="sizeOfPackingType"
+                                (keyup)="populateAmountPackingMaterial(i)" id="sizeOfPackingType"
+                                placeholder="{{'Size Of Packing Type' |translate}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Rate per Packing Type' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" formControlName="ratePerPackingType"
+                                (keyup)="populateAmountPackingMaterial(i)" id="ratePerPackingType"
+                                placeholder="{{'Rate per Packing Type' |translate}}">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" readonly class="form-control" formControlName="amount" id="amountp"
+                                placeholder="{{'Amount' |translate}}"  value="{{a.controls.amount.value | decimalFilter}}">
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'Labour Charges' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Labour Charges' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow" [formGroup]="labourChargesForm">
+                  <div class="col-md-6">
+                    <p class="font-weight-bold">Total Amount: {{labourChargesTotal |
+                      currency:'INR'}}</p>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <button class="btn btn-green" (click)="addLabourChargesLine()">+ ADD</button>
+                  </div>
+                  <ng-container formArrayName="labourChargesList"
+                    *ngFor="let a of labourChargesForm.get('labourChargesList').controls; let i = index">
+                    <ng-container [formGroupName]="i">
+                      <fieldset class="row mx-3 mb-2">
+                        <legend>Packing Type {{i + 1}}: </legend>
+                        <div class="col-sm-12 text-right" *ngIf="permissionsList.includes('Delete')">
+                          <i class="fa fa-trash" (click)="removeLabourChargesLine(i)"></i>
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Packing Type' |translate}}</label>
+                            <div class="col-sm-8">
+                              <select formControlName="packingType" class="form-control" id="packingType">
+                                <option [value]=null>Select</option>
+                                <option>Polycover</option>
+                                <option>Labelling</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Rate Per Staff/Hr' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" formControlName="ratePerHourStaff"
+                                id="ratePerHourStaff" (keyup)="populateAmountLabourCharges(i)"
+                                placeholder="{{'Rate Per Staff/Hr' |translate}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'No of Hours Occupied Staff' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" formControlName="noOfHoursOccupiedStaff"
+                                id="noOfHoursOccupiedStaff" (keyup)="populateAmountLabourCharges(i)"
+                                placeholder="No of Hourse Occupied Staff">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" readonly formControlName="amount" id="amountl"
+                                placeholder="{{'Amount' |translate}}" value="{{a.controls.amount.value | decimalFilter}}">
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm mb-3">
+        <div class="topcolor" style="background-color:white;padding:10px;border-radius:10px;">
+          <div class="row pt-1">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-8 col-form-label"><b>Total Amount: {{totalAmount | currency: 'INR'}}</b></label>
+              </div>
+            </div>
+            <div class="col-md-6 text-right">
+              <button class="btn btn-green mr-2"
+                (click)="save()">{{'Save' |translate}}</button>
+              <button class="btn btn-white mr-2" (click)="clear()">{{'Clear' |translate}}</button>
+              <button class="btn btn-green mr-1"
+                (click)="updateRaisePO()">{{'Raise PO' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,363 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <form [formGroup]="damagedStockForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Damaged Stock' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Damaged Stock' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" formControlName="orderType"
+                          (change)="fetchAllPutawaysBySupplierID($event.target.value)">
+                          <option *ngFor="let data of orderTypeDropdown" [value]="data">{{data}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Order Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer id="fullWmpoNumber" name="fullWmpoNumber" formControlName="fullWmpoNumber"
+                          [minSearchLength]="0" placeholder="{{'WMPO Number' |translate}}" [datasource]="WMPOs"
+                          (selected)="setWmpoNumber($event)">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" formGroupName="supplierMasterInfo"
+                    [hidden]="!damagedStockForm.controls.supplierMasterInfo.value.supplierIDName">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier ID' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="supplierID" [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="supplierName"
+                          [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" formGroupName="wareHouseTransferSourceInfo"
+                    [hidden]="!damagedStockForm.controls.wareHouseTransferSourceInfo.value.wareHouseIDName">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse ID' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="wareHouseID" [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="wareHouseName"
+                          [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Customers customer Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="customersSupplierName"
+                          [readonly]="readOnlyMode" placeholder="{{'Customers customer Name' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Customers customer Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" formControlName="customersSupplierAddress"
+                          [readonly]="readOnlyMode" placeholder="{{'Customers customer Address' |translate}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label"> </label>
+                <div class="col-sm-8 text-right mb-3">
+                  <button class="btn btn-green mr-1" (click)="generate()" [disabled]="!damagedStockForm.controls.wmpoNumber.value ||
+                  damagedStockForm.controls.confirmed.value">{{'Create'
+                    |translate}}</button>
+                  <button class="btn btn-green mr-1" (click)="confirm()" [disabled]="!damagedStockForm.controls._id.value ||
+                  damagedStockForm.controls.confirmed.value">{{'Confirm'
+                    |translate}}</button>
+                  <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <table class="table table-striped">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Select' |translate}}</th>
+                <th [hidden]="damagedStockForm.controls.confirmed.value || !barcodePermissionUser">Barcode</th>
+                <th scope="col">{{'PO Line No' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Total Putaway Qty' |translate}}</th>
+                <th scope="col">{{'Balance Quantity' |translate}}</th>
+                <th scope="col">{{'Return Quantity' |translate}}</th>
+                <th scope="col">{{'Total Return Quantity' |translate}}</th>
+                <th scope="col">{{'Select Location' |translate}}</th>
+                <th scope="col">{{'Bond Number' |translate}}</th>
+                <th scope="col">{{'Bond Date' |translate}}</th>
+                <th scope="col">{{'MFG Date' |translate}}</th>
+                <th scope="col">{{'Expiry Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i=index;let data of linesArray">
+                <td class="text-left">{{i+1}}</td>
+                <td><input type="checkbox" [checked]="data.isChecked" (click)="onSelect($event.target.checked,data)"
+                    [disabled]="damagedStockForm.controls.confirmed.value">
+                </td>
+                <td [hidden]="damagedStockForm.controls.confirmed.value || !barcodePermissionUser"><input type="text" class="form-control" [(ngModel)]="data.forBarcode"
+                    (keypress)="isProductAvailable(($event ? $event.target.value : null),data)">
+                  <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                    style="background: none !important; border: none !important;"><img
+                      src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner(data,'product')"
+                      style="height: 28px; margin-top: 6px;"></button>
+                </td>
+                <td>{{data.wmsPOLineNumber}}</td>
+                <td>{{data.productMasterInfo.productID}}</td>
+                <td>{{data.productMasterInfo.productName}}</td>
+                <td>{{data.brandName}}</td>
+                <td>{{data.inventoryUnit}}</td>
+                <td>{{data.quantity}}</td>
+                <td>{{data.balancePutawayQuantity}}</td>
+                <td><span *ngIf="!data.isEdit">{{data.returnPutawayQuantity}}</span>
+                  <span *ngIf="data.isEdit"><input type="text" class="form-control" #returnPutawayQuantity
+                      [(ngModel)]="data.returnPutawayQuantity" (keyup)="validateDecimal('returnPutawayQuantity',i)"
+                      [ngModelOptions]="{standalone: true}" [disabled]="damagedStockForm.controls.confirmed.value"
+                      (focusout)="savequantity(returnPutawayQuantity.value,data,'returnPutawayQuantity')"></span>
+                </td>
+                <td>{{data.totalReturnPutawayQuantity}}</td>
+                <td>
+                  <button class="btn-secondary" *ngIf="data.returnLocationAllocationType=='Manual'"
+                    (click)="saveAllocationType('Manual',i)">Manual</button>
+
+                  <i class="fa fa-table" *ngIf="data.returnLocationAllocationType=='Manual'" style="cursor: pointer"
+                    (click)="openModalRecievedLocations(data,i)"></i>
+
+                  <button class="btn-success" *ngIf="data.returnLocationAllocationType=='Auto'"
+                    (click)="saveAllocationType('Auto',i)">Auto</button>
+                </td>
+                <td>{{data.bondNumber}}</td>
+                <td>{{data.bondDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                <td>{{data.mfgDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                <td>{{data.expiryDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ngx-smart-modal customClass="nsm-centered" id="goodsrecievingForReceive" #returnLocationsModal
+      [identifier]="'returnLocationsModal'">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>{{'Return Locations' |translate}}</h5>
+            </div>
+            <div class="col-md-4">
+              <label class="col-sm-4 col-form-label">{{'Return Quantity' |translate}}</label>
+              <div class="col-sm-8">
+                {{lineQuantity}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <i class="fa fa-close" style="cursor:pointer;float: left !important;
+              margin-left: 500px;
+              font-size: 36px;" (click)="closeEvent('returnLocationsModal')"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="wmsDataTables w-100">
+            <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+              <div class="row">
+                <div class="col-md-0.5 pr-0">
+                  <label>Show</label>
+                </div>
+                <div class="col-md-1"><select [(ngModel)]="itemsPerPageForReturn" class="form-control"
+                    [ngModelOptions]="{standalone: true}"
+                    (change)="returnLocForTablePagination(pageForTableForReturn=1,'selectEntries')">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select></div>
+                <div class="col-md-0.5 pl-0"><label>Entries</label>
+                </div>
+                <div class="col-md-9"></div>
+                <div class="col-md-1">
+                  <input type="text" [(ngModel)]="searchKeyForReturn" placeholder="Search..."
+                    [ngModelOptions]="{standalone: true}"
+                    (keyup)="returnLocForTablePagination(pageForTableForReturn=1);">
+                </div>
+              </div>
+              <table id="example" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Include' |translate}}</th>
+                    <th scope="col">{{'Location Name' |translate}}</th>
+                    <th scope="col">{{'Quantity' |translate}}</th>
+                    <th scope="col">{{'Max Dimension' |translate}}</th>
+                    <th scope="col">{{'Max Weight' |translate}}</th>
+                    <th scope="col" style="width: 20px;">{{'Required Quantity' |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="returnLocations.length>0">
+                  <tr
+                    *ngFor="let i=index;let data of returnLocations  | paginate: {id:'foo3',itemsPerPage: itemsPerPageForReturn,currentPage: pageForTableForReturn,totalItems: totalItemsForReturn}">
+                    <td scope="row">
+                      {{((pageForTableForReturn -1) * itemsPerPageForReturn)+i+1}}
+                    </td>
+                    <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                        [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"
+                        [disabled]="damagedStockForm.controls.confirmed.value">
+                    </td>
+                    <td>{{data.locationName}}</td>
+                    <td>{{data.allowableQuantity}}</td>
+                    <td>{{data.allowableMaxDimension}} {{data.allowableMaxDimensionUom}}</td>
+                    <td>{{data.allowableWeight}} {{data.allowableWeightUom}}</td>
+                    <td *ngIf="!data.isEdit">
+                      <span>
+                        {{data.quantity}}
+                      </span>
+                    </td>
+                    <td *ngIf="data.isEdit"><span>
+                        <input type="text" class="form-control" #quantity [(ngModel)]="data.quantity"
+                          [ngModelOptions]="{standalone: true}" (keyup)="validateLocationDecimal('returnLocations',i)"
+                          (focusout)="savequantity1(quantity.value,data,'Return')"
+                          [disabled]="damagedStockForm.controls.confirmed.value"></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row">
+                <div class="col-md-12" style="text-align: end;">
+                  <pagination-controls class="pagi" id="foo3"
+                    (pageChange)="returnLocForTablePagination((pageForTableForReturn = $event))">
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="!damagedStockForm.controls.confirmed.value">
+          <div class="text-center">
+            <button class="btn btn-green ml-1" (click)="saveReturnLocations()">{{'Save' |translate}}</button>
+            <button class="btn btn-white m-1" (click)="resetRecieveLocations('Return')">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </ngx-smart-modal>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px">
+              <select [(ngModel)]="itemsPerPageForHeader" (change)="fetchDamagedStock(pageForTableForHeader=1)"
+                class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+            </div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="searchKeyForHeader" placeholder="Search..."
+                [ngModelOptions]="{standalone: true}" (keyup)="fetchDamagedStock(pageForTableForHeader=1)">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Damaged Stock Order' |translate}}</th>
+                <th scope="col">{{'Order Number' |translate}}</th>
+                <th scope="col">{{'Supplier/Warehouse' |translate}}</th>
+                <th scope="col">{{'Order Type' |translate}}</th>
+                <th scope="col">Status</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let data of finalArray | paginate: {id:'foo1',itemsPerPage: itemsPerPageForHeader,currentPage: pageForTableForHeader,totalItems: totalItemsForHeader}">
+                <td class="text-left">{{((pageForTableForHeader -1) * itemsPerPageForHeader)+i+1}}</td>
+                <th (click)="edit(data)" style="cursor:pointer;">{{data.putawayDamagedStockNumber}}</th>
+                <td>{{data.fullWmpoNumber}}</td>
+                <td><span [hidden]="!data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                  <span
+                    [hidden]="!data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo?.wareHouseIDName}}</span>
+                </td>
+                <td>{{data.orderType}}</td>
+                <td>{{data.confirmed}}</td>
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm">
+                    <i _ngcontent-lty-c40="" class="fa fa-trash btn-sm" (click)="delete(data)"></i>
+                  </span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo1"
+                (pageChange)="fetchDamagedStock((pageForTableForHeader = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

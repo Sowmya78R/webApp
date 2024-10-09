@@ -1,0 +1,110 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <!-- <div class="row" *ngIf="permissionsList.includes('Update')">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <ul>
+            <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                  (change)="uploadExcel($event)">
+              </a>
+            </li>
+            <li value="Log File" [hidden]="failureRecords.length==0"><a (click)="downloadLogFile()"> <i
+                  class="material-icons align-middle"> get_app
+                </i> Log File </a>
+            </li>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel'
+                |translate}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <form [formGroup]="stateForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'State' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i></div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'State' |translate}} <div class="float-right"><i class="material-icons fullscreen">
+                      close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div class="panel-body " id="style-8">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Country' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-7">
+                      <select class="form-control selectPanl" formControlName="countryName">
+                        <option [value]="null">--Select--</option>
+                        <option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" [(ngModel)]="stateName" placeholder="State Name"
+                      [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right">
+              <button class="btn btn-green m-1" (click)="save()" [disabled]="stateForm.invalid">{{'Save'
+                |translate}}</button>
+              <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td>{{'S.No' |translate}}</td>
+                  <td>{{'Country Name' |translate}}</td>
+                  <td>{{'State Name'|translate}}</td>
+                  <td>{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of statesData;let i = index">
+                  <td class="text-left">{{i+1}}</td>
+                  <!-- style="cursor: pointer;" (click)="edit(data)"  -->
+                  <td>{{data.countryName}}</td>
+                  <td>{{data.stateNames}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(data)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

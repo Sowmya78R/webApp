@@ -1,0 +1,221 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <form [formGroup]="productCategoryGroupForm">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="udcBtns float-right">
+              <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+              <!-- <ul>
+                <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                    </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                      (change)="uploadExcel($event)">
+                  </a>
+                </li>
+                <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                      class="material-icons align-middle"> description
+                    </i> Log File </a>
+                </li>
+                <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                    </i>{{'Download Excel' |translate}}</a>
+                </li>
+              </ul> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel portlet">
+              <div class="formBox portlet-title">
+                <div class="row">
+                  <div class="panel-heading formTitle w-auto">
+                    <h4>{{'Product Category Group' |translate}}</h4>
+                    <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                          class="fa fa-angle-up"></i></span>
+                      |
+                      <i class="material-icons fullscreen"> unfold_less </i>
+                    </div>
+                  </div>
+                  <div class="formTitleHover">
+                    <h4>{{'Product Category Group' |translate}} <div class="float-right"><i class="material-icons fullscreen">
+                          close </i>
+                      </div>
+                    </h4>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row force-overflow">
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Product Category Name' |translate}}</label>
+                        <div class="col-sm-7">
+                          <ng2-completer [datasource]="productCategoriesIDa" id="productCategoryName"
+                            [minSearchLength]="0" formControlName="productCategoryName"
+                            placeholder="{{'Product Category Name' |translate}}" (selected)="getSelectedCategory($event)">
+                          </ng2-completer>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Sub-Category 1' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="subCategory1ListIDs" name="Sub-Category1"
+                            [formControl]="productCategoryGroupForm.controls['dummySub1']"
+                            (ngModelChange)="onFocusForElement('Sub-Category ');getSub2DropdownDisable();"
+                            (focusout)="onFocusOutForElement();" placeholder="{{'Product Category Name' |translate}}">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Sub Category 2' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            name="Sub-Category 1" [formControl]="productCategoryGroupForm.controls['dummySub2']"
+                            [data]="subCategory2ListIDs"
+                            (ngModelChange)="onFocusForElement('Sub-Category 2');getSub3DropdownDisable()"
+                            (focusout)="onFocusOutForElement();" name="Sub-Category 1" [disabled]="isSub2Disable"
+                            placeholder="{{'Product Category Name' |translate}}">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Sub Category 3' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="subCategory3ListIDs" name="Sub-Category 1"
+                            [formControl]="productCategoryGroupForm.controls['dummySub3']"
+                            (ngModelChange)="onFocusForElement('Sub-Category 2')" (focusout)="onFocusOutForElement();"
+                            name="Sub-Category 3" placeholder="{{'Product Category Name' |translate}}" [disabled]="isSub3Disable">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                        <button class="btn btn-green m-1" (click)="save()">{{'Save' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="wmsDataTables">
+              <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr>
+                    <td scope="col">{{'S.No' |translate}}</td>
+                    <td scope="col">{{'Product Category Name' |translate}}</td>
+                    <td scope="col">{{'Sub Category 1' |translate}}</td>
+                    <td scope="col">{{'Sub Category 2' |translate}}</td>
+                    <td scope="col">{{'Sub Category 3' |translate}}</td>
+                    <!-- <th scope="col">Action</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let data of productCategoryGroupsResponseList; let i = index">
+                    <tr *ngFor="let sub of data.childProductSubCategories; let x = index;">
+                      <td *ngIf="x == 0" [attr.rowspan]="data.childProductSubCategories.length"
+                        class="text-left">{{i +1}} </td>
+                      <td *ngIf="x == 0" [attr.rowspan]="data.childProductSubCategories.length"
+                        style="text-align: center;">
+                        <!-- (click)="edit(data)" -->
+                        <span style="cursor: pointer;">
+                          {{data.productCategoryName}} <i class="fa fa-trash btn-blue"
+                            (click)="delete(data)"></i></span>
+                      </td>
+                      <td> {{sub.productSubCategoryName}} <i class="fa fa-trash btn-blue" (click)="delete(data,sub)"></i>
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of sub?.childProductSubCategories;let n=index">
+                          <div
+                            [ngStyle]="{'border-bottom': (i !=(sub.childProductSubCategories.length-1))?'1px solid lightgrey':''}">
+                            <span> {{item.productSubCategoryName}} <i class="fa fa-trash btn-blue"
+                                (click)="delete1(data,x,n)"></i>
+                            </span>
+                          </div>
+                        </ng-container>
+
+
+                        <!-- <ng-container *ngFor="let dot of sub?.childProductSubCategories;let s=index;">
+                          <span  [ngStyle]="{'border-bottom': (s !=(sub.childProductSubCategories.length-1))?'1px solid lightgrey':''}">
+                            {{dot.productSubCategoryName}}
+                          </span>
+                        </ng-container> -->
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of sub?.childProductSubCategories;let m=index">
+                          <div
+                            [ngStyle]="{'border-bottom': (i !=(sub.childProductSubCategories.length-1))?'1px solid lightgrey':''}">
+                            <div *ngFor="let itemJr of item?.childProductSubCategories;let n=index">
+                              <span
+                                *ngIf="itemJr.childProductSubCategories && (n)!=(itemJr.childProductSubCategories.length-1)">,</span>
+                              {{itemJr.productSubCategoryName}}
+                              <i class="fa fa-trash btn-blue" (click)="delete1(data,x,m,n)"></i>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <!-- <ng-container *ngFor="let dot of sub.childProductSubCategories">
+                          <span *ngFor="let dotjr of dot.childProductSubCategories">
+                            {{dotjr.productSubCategoryName}}
+                          </span>
+                        </ng-container> -->
+                      </td>
+                      <!-- <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                            (click)="delete(data)"></i></span>
+                      </td> -->
+                    </tr>
+                  </ng-container>
+                  <!-- <tr *ngFor="let data of productCategoryGroupsResponseList;let i = index">
+                   <td class="text-left">{{i+1}}</td>
+                    <th (click)="edit(data)">{{data.productCategoryName}}</th>
+                    <td><span *ngFor="let details of productSubCategory1Names">{{details}}</span></td>
+                    <td>{{data.productSubCategory2Names}}</td>
+                    <td>{{data.productSubCategory3Names}}</td>
+                    <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                      class="fa fa-trash btn-blue"
+                    <th> <span style="cursor: pointer;" (click)="edit(data)">
+                      {{data.productCategoryName}}</span></th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+
+                    <td><span class="btn btn-pink btn-sm"><i
+                      class="fa fa-trash btn-blue"
+                      (click)="delete(data)"></i></span>
+                </td>
+                  </tr> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

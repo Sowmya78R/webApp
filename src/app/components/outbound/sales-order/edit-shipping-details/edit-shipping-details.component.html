@@ -1,0 +1,122 @@
+<form [formGroup]="editShippingDetailsForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="panel portlet">
+    <div class="formBox portlet-title">
+      <div class="row">
+        <div class="panel-heading formTitle">
+          <h4>{{'SHIPPING FROM' |translate}}</h4>
+          <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span> | <i
+              class="material-icons fullscreen">
+              unfold_less </i> </div>
+        </div>
+        <div class="formTitleHover">
+          <h4>{{'SHIPPING FROM' |translate}}
+            <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+          </h4>
+        </div>
+      </div>
+      <div id="style-8" class="panel-body scrollbar">
+        <div class="row force-overflow">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Name' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <input id="name" name="name" [readOnly]="isReadMode" formControlName="name"
+                  placeholder="{{'Name' |translate}}" class="form-control vblr" type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Contact Name' |translate}}
+              </label>
+              <div class="col-sm-7" formGroupName="contactDetails">
+                <input id="contactName" name="contactName" [readOnly]="isReadMode" formControlName="contactName"
+                  placeholder="{{'Contact Name' |translate}}" class="form-control vblr" type="text">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Address' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <input id="address3" name="address" [readOnly]="isReadMode" formControlName="address"
+                  placeholder="{{'Address' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Country' |translate}}</label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl" id="country2" name="country2" formControlName="country">
+                  <option>Select Country</option>
+                  <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+              <div class="col-sm-7">
+                <input id="state2" name="state2" [readOnly]="isReadMode" formControlName="state"
+                  placeholder="{{'State' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+
+            <p class="ml-3 mt-4" [hidden]="statusCheck"><a (click)="redirectToWareHouseData()" class="red"><u>{{'Edit
+                  More Shipping details' |translate}}</u></a>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'City' |translate}}</label>
+              <div class="col-sm-7">
+                <input id="city2" name="city2" [readOnly]="isReadMode" formControlName="city"
+                  placeholder="{{'City' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'PIN' |translate}}</label>
+              <div class="col-sm-7">
+                <input id="pin2" name="pin2" formControlName="pin" placeholder="{{'PIN' |translate}}"
+                  class="form-control vbrg" type="text" [readOnly]="isReadMode">
+              </div>
+            </div>
+            <div formGroupName="contactDetails">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Email' |translate}}
+                </label>
+                <div class="col-sm-7">
+                  <input id="email3" name="email3" [readOnly]="isReadMode" formControlName="email"
+                    placeholder="{{'Email' |translate}}" class="form-control" type="text">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Phone No' |translate}}
+                </label>
+                <div class="col-sm-7">
+                  <input id="phoneNumber" name="phoneNumber" [readOnly]="isReadMode" formControlName="phoneNumber"
+                    placeholder="{{'Phone No' |translate}}" class="form-control vbrg" type="text">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="!isEditShippingDetails">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center  mb-3">
+                <button class="btn btn-green" (click)="update()" [disabled]="statusCheck">{{'Update'
+                  |translate}}</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="isEditShippingDetails">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center mb-3">
+                <button class="btn btn-green mr-2" (click)="save()" [disabled]="statusCheck">{{'Save'
+                  |translate}}</button>
+                <button class="btn btn-white" (click)="cancel()" [disabled]="statusCheck">{{'Clear'
+                  |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

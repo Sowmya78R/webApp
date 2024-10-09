@@ -1,0 +1,88 @@
+<div class="container-fluid" style="padding: 0px;">
+  <div id="ccsloginBG">
+    <div class="container h-100">
+      <div class="row h-50 justify-content-center align-items-center">
+        <div class="col-md-9">
+          <div class="row ccsloginDiv">
+            <div class="col-md-3">
+              <a>
+                <!-- <img src="assets/logo_white.png" width="100%" height="" class="img-responsive"
+									alt="" /> -->
+              </a>
+              <div class="ccsheading_left">
+                <!-- 	<h6>Warehouse Management System</h6> -->
+              </div>
+              <div class="ccsheading_left_para">
+                <!-- 	<p>{{loginPageText || defaultText}}</p>
+                -->
+                <p style="position: relative;
+    top: 151px;
+    font-size: 15px;
+    width: 200px;
+    left: -26px;">{{defaultText}}</p>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="row ">
+                <form [formGroup]="signinGroup" (ngSubmit)="loginCTA()">
+                  <div class="col-md-5 ">
+                    <div class="ccsloginDiv1">
+                      <div class="">
+                        <h6>
+                          SIGN IN
+                        </h6>
+                      </div>
+                      <div class="ccsloginInput">
+                        <div class="form-group ccsloginInput_label">
+                          <label for="" class="">USERNAME</label>
+                          <div class="input-group">
+
+                            <input type="text" formControlName="username"
+                              [ngClass]="{'valiError': shouldShowErrors('username', signinGroup)}"
+                              placeholder="Username" (focus)="onFocusForElement('username')"
+                              (focusout)="onFocusOutForElement()">
+                            <img src="assets/user_icon.png" width="20" height="20" />
+                          </div>
+                          <div class="text-danger" *ngIf="shouldShowErrors('username', signinGroup)">
+                          </div>
+                        </div>
+                        <div class="form-group ccsloginInput_label_password">
+                          <label for="">PASSWORD</label>
+                          <div class="input-container">
+                            <input [type]="passwordType" class=" valiSucess " id="" placeholder="Password"
+                              formControlName="password" (focus)="onFocusForElement('password')"
+                              [ngClass]="{'valiError': shouldShowErrors('password', signinGroup)}"
+                              (focusout)="onFocusOutForElement()">
+                            <!-- <img src="assets/password_icon.png" width="16" height="20" /> -->
+                            <i class="fa fa-eye" id="showeye" title="Show Password" *ngIf="passwordType=='password'"
+                              (click)="showPassword()"
+                              style="cursor:pointer;color:grey;position:relative;left:180px;top:-19px;"></i>
+                            <i class="fa fa-eye-slash" title="Hide Password" *ngIf="passwordType=='text'"
+                              (click)="showPassword()"
+                              style="cursor:pointer;color:grey;position:relative;left:180px;top:-19px;"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class=" p-0 mb-1 ccsforget text-right">
+                        <a class="ccsforget_create"></a>
+                        <a routerLink="/forgotPassword" class="ccsforgot_password"> Forgot password ? </a>
+                      </div>
+                      <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-loginGreen"
+                          [disabled]="isButtonDisabled(signinGroup)">Login</button>
+                      </div>
+                      <h6 class="text-center text-danger mt-4 "> {{errorResponse}}</h6>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1243 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row m0">
+      <div class="col-md-12 ">
+        <div class="pull-right mt-3">
+        </div>
+      </div>
+    </div>
+    <ngx-smart-modal customClass="nsm-centered" identifier="closePOPopup" #closePOPopup>
+      <div class="mb-3">
+        <h6 *ngIf="closePOPopup.hasData()">{{closePOPopup.getData()}}</h6>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-green mr-1" (click)="[raiseSOContinue(), closePOPopup.close()]"> YES
+        </button>
+        <button class="btn btn-white" (click)="closePOPopup.close()"> No </button>
+      </div>
+    </ngx-smart-modal>
+    <div class="row">
+      <div class="col-md-12 pr0">
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+          <div class="panel-body">
+            <form [formGroup]="soHeaderForm">
+              <div class="panel portlet">
+                <div class="formBox portlet-title">
+                  <div class="row">
+                    <div class="panel-heading formTitle" style="width:fit-content">
+                      <h4>{{'SALES ORDER HEADER' |translate}}</h4>
+                      <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                            aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                          unfold_less </i> </div>
+                    </div>
+                    <div class="formTitleHover">
+                      <h4>{{'SALES ORDER HEADER' |translate}}
+                        <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                      </h4>
+                    </div>
+                  </div>
+
+                  <div class="row force-overflow">
+                    <div class="col-md-4">
+                      <div class="form-group row" *ngIf="soHeaderForm.controls.orderType.value=='Sales Order'"
+                        formGroupName="customerMasterInfo">
+                        <label class="col-sm-5 pr-0 col-form-label">{{'Customer' |translate}}</label>
+                        <div class="col-sm-7" *ngIf="!id">
+                          <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                            title="Search customer to retrive data of customer"> info </i>
+                          <ng2-completer name="customerIDName" formControlName="customerIDName"
+                            [datasource]="dataService" [minSearchLength]="0"
+                            [inputClass]="'form-control form-control-inline'" placeholder="{{'Customer' |translate}}"
+                            (selected)="onCustomerIDNameChange($event)">
+                          </ng2-completer>
+                        </div>
+                        <div class="col-sm-7" *ngIf="id">
+                          <input type="text" class="form-control" readonly formControlName="customerIDName">
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="soHeaderForm.controls.orderType.value=='Sales Order'"
+                        formGroupName="customerMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Customer Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="customerName" name="customerName" formControlName="customerName" readonly
+                            placeholder="{{'Customer Name' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ship To Address' |translate}}
+                        </label>
+                        <div class="col-sm-7" *ngIf="soHeaderForm.controls.orderType.value=='Sales Order'">
+                          <select (focus)="onFocusForElement(shipToAddress)" (focusout)="onFocusOutForElement()"
+                            formControlName="shipToAddress" class="form-control">
+                            <option *ngFor="let ib of sourceToDropdowns" [value]="ib.name">{{ib.name}}</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-7"
+                          *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='Purchase Returns' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                          <input type="text" readonly formControlName="shipToAddress" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Bill To Address' |translate}}
+                        </label>
+                        <div class="col-sm-7" *ngIf="soHeaderForm.controls.orderType.value=='Sales Order'">
+                          <select (focus)="onFocusForElement(billToAddress)" (focusout)="onFocusOutForElement()"
+                            formControlName="billToAddress" class="form-control">
+                            <option *ngFor="let ib of billToDropdowns" [value]="ib.name">{{ib.name}}</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-7"
+                          *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='Purchase Returns' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                          <input type="text" readonly formControlName="billToAddress" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ship from Address' |translate}}
+                        </label>
+                        <div class="col-sm-7" *ngIf="soHeaderForm.controls.orderType.value=='Sales Order'">
+                          <select (focus)="onFocusForElement(shipFromAddress)" (focusout)="onFocusOutForElement()"
+                            formControlName="shipFromAddress" class="form-control">
+                            <option *ngFor="let ib of sourceFromDropdowns" [value]="ib.name">{{ib.name}}</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-7"
+                          *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='Purchase Returns' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                          <input type="text" readonly formControlName="shipFromAddress" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none"
+                        *ngIf="soHeaderForm.controls.orderType.value=='Sales Order' && selectedHideFields!='Customer IdName'"
+                        formGroupName="customerMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Customer ID' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="addressLine1" name="customerID" formControlName="customerID" readonly
+                            placeholder="{{'Customer ID' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+
+                      <div class="form-group row"
+                        *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                        formGroupName="wareHouseTransferDestinationInfo">
+                        <label class="col-sm-5 pr-0 col-form-label">{{'WareHouse ID/Name' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input id="wareHouseIDName" name="wareHouseIDName" formControlName="wareHouseIDName" readonly
+                            placeholder="{{'WareHouse IDName' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none"
+                        *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                        formGroupName="wareHouseTransferDestinationInfo">
+                        <label class="col-sm-5 col-form-label">{{'WareHouse ID' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="wareHouseID" name="wareHouseID" formControlName="wareHouseID" readonly
+                            placeholder="{{'wareHouseID' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+
+
+
+                      <div class="form-group row" *ngIf="soHeaderForm.controls.orderType.value=='Purchase Returns'"
+                        formGroupName="supplierMasterInfo">
+                        <label class="col-sm-5 pr-0 col-form-label">{{'Supplier ID/Name' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input id="supplierIDName" name="supplierIDName" formControlName="supplierIDName" readonly
+                            placeholder="{{'Supplier IDName' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+
+
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'SO Reference No A' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="addressLine2" name="soReferenceA" formControlName="soReferenceA"
+                            placeholder="{{'SO Reference No A' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'SO Reference No B' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="soReferenceB" name="soReferenceB" formControlName="soReferenceB"
+                            placeholder="{{'SO Reference No B' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+
+
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Shipment Time Slot' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <select id="shipmentTimeSlot" name="shipmentTimeSlot" formControlName="shipmentTimeSlot"
+                            placeholder="Terms of Payments" class="form-control"
+                            (ngModelChange)="onFocusForElement('shipmentTimeSlot')">
+                            <option [ngValue]="null">--Select--</option>
+                            <option *ngFor="let timeSlot of shipmentTimeSlots"
+                              [ngValue]="timeSlot.shipmentTimeSlotName">
+                              {{timeSlot.shipmentTimeSlotName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Closed By' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input type="text" name="" class="form-control" formControlName="closedBy" id="">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Closed Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input type="date" name="" class="form-control" formControlName="closedDate" id="">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row" *ngIf="selectedHideFields!='Reference SO No'">
+                        <label class="col-sm-5 col-form-label">{{'Reference SO No' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="referenceSoNumber" name="referenceSoNumber" formControlName="referenceSoNumber"
+                            placeholder="{{'Reference SO No' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="orderType" name="orderType" formControlName="orderType"
+                            placeholder="{{'Order Type' |translate}}" class="form-control" [readOnly]="true"
+                            type="text">
+                        </div>
+                      </div>
+
+                      <div class="form-group row"
+                        *ngIf="soHeaderForm.controls.orderType.value=='WareHouseTransfer' || soHeaderForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                        formGroupName="wareHouseTransferDestinationInfo">
+                        <label class="col-sm-5 col-form-label">{{'WareHouse Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="wareHouseName" name="wareHouseName" formControlName="wareHouseName" readonly
+                            placeholder="{{'WareHouse Name' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="soHeaderForm.controls.orderType.value=='Purchase Returns'"
+                        formGroupName="supplierMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Supplier Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="supplierIDName" name="supplierIDName" formControlName="supplierIDName" readonly
+                            placeholder="{{'Supplier Name' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Order Date' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="soOrderDate" name="soOrderDate" formControlName="soOrderDate"
+                            placeholder="{{'Order Date' |translate}}" class="form-control" type="date"
+                            (change)="getExpDate(soHeaderForm.controls.soOrderDate.value)">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 pr-0 col-form-label">{{'Mode of Transport' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="modeOfTransport" name="modeOfTransport" formControlName="modeOfTransport"
+                            placeholder="{{'Mode of Transport' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Delivery Expected Date' |translate}}<i
+                            class="red">*</i>
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="deliveryExpDate" name="deliveryExpDate" formControlName="deliveryExpDate"
+                            [ngClass]="{'valiError': shouldShowErrors('deliveryExpDate', soHeaderForm),'valiSucess': shouldShowSuccess('deliveryExpDate','soHeaderForm')}"
+                            placeholder="{{'Delivery Expected Date' |translate}}"
+                            (change)="addLineDate(soHeaderForm,soLineForm)" class="form-control" type="date">
+                        </div>
+                      </div>
+
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Currency' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <select class="form-control" id="currency" name="currency" formControlName="currency">
+                            <option [ngValue]="null" [selected]="true">--Select--</option>
+                            <option *ngFor="let currency of currencies" [ngValue]="currency.currency">
+                              {{currency.currency}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Invoice Type' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="invoiceType" name="invoiceType" formControlName="invoiceType"
+                            placeholder="{{'Invoice Type' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Tax Group' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <select class="form-control" id="taxGroup" name="taxGroup"
+                            (ngModelChange)="onFocusForElement('taxGroup')" formControlName="taxGroup">
+                            <option [ngValue]="null" [selected]="true">--Select--</option>
+                            <option *ngFor="let taxGroup of taxGroups" [ngValue]="taxGroup.taxGroup">
+                              {{taxGroup.taxGroup}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 pr-0 col-form-label">{{'Terms of Payments' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="termsOfPayments" name="termsOfPayments" formControlName="termsOfPayment"
+                            placeholder="{{'Terms of Payment' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Order Taken By' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="orderTakenBy" name="orderTakenBy" formControlName="orderTakenBy"
+                            placeholder="{{'Order Taken By' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4">
+
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Payment Mode' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <select class="form-control" id="paymentMode" name="paymentMode" formControlName="paymentMode"
+                            (ngModelChange)="onFocusForElement('paymentMode')">
+                            <option [ngValue]="null" [selected]="true">--Select--</option>
+                            <option *ngFor="let paymentMode of paymentModes" [ngValue]="paymentMode.paymentModeName">
+                              {{paymentMode.paymentModeName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ex Bond Number' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input id="exBondNumber" name="exBondNumber" formControlName="exBondNumber"
+                            placeholder="{{'Ex Bond Number' |translate}}"
+                            (change)="addLineDate(soHeaderForm,soLineForm,'exBondNumber')" class="form-control"
+                            type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ex Bond Date' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input id="exBondDate" name="exBondDate" formControlName="exBondDate"
+                            placeholder="{{'Ex Bond Date' |translate}}"
+                            (change)="addLineDate(soHeaderForm,soLineForm,'exBondDate')" class="form-control"
+                            type="date">
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                        <label class="col-sm-5 col-form-label">{{'Customers Customer Address' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="customersCustomerAddress" name="customersCustomerAddress"
+                            formControlName="customersCustomerAddress"
+                            placeholder="{{'Customers Customer Address' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                        <label class="col-sm-5 col-form-label">{{'Customers Customer Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="customersCustomerName" name="customersCustomerName"
+                            formControlName="customersCustomerName"
+                            placeholder="{{'Customers Customer Name' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+                      <!-- <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Address2' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="address2" name="address2" formControlName="address2"
+                            (focus)="onFocusForElement('address2')" (focusout)="onFocusOutForElement()"
+                            placeholder="{{'Address2' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div> -->
+                    </div>
+                    <!-- <div class="col-md-12">
+                        <div class="form-group row">
+                          <div class="col-sm-12 text-center mb-3">
+                            <button class="btn btn-green mr-1" (click)="save()"
+                              [disabled]="soHeaderForm.invalid || !permissionsList.includes('Update')"> SAVE
+                            </button>
+                            <button class="btn btn-white" (click)="clear()"> CLEAR </button>
+                          </div>
+                        </div>
+                      </div> -->
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2 mt0">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+          <ngx-smart-modal customClass="nsm-centered" id="goodsrecievingForSalesorder" #pickupLocationsModal
+            [identifier]="'pickupLocationsModal'">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-3">
+                    <h5>{{'Locations' |translate}}</h5>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group row">
+                      <ng2-completer [datasource]="batchNumberIDs" [minSearchLength]="0"
+                        placeholder="Search BatchNumber's" (selected)="returnLocationsByBatchNumber($event)">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group row" *ngIf="serialNumberCheckFrmConfig=='Yes'">
+                      <ng2-completer [datasource]="serialNumberIDs" [minSearchLength]="0"
+                        placeholder="Search SerialNumber's" (selected)="returnLocationsBySerialNumber($event)">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group row">
+                      <ng2-completer name="locationIDName" [datasource]="pickupLocationValues" [minSearchLength]="0"
+                        placeholder="Search LocationIDs" (selected)="returnLocationsByLocationName($event)">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <i class="fa fa-close" style="cursor: pointer;float:right;font-size:36px"
+                      (click)="closeEvent('pickupLocationsModal')"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="wmsDataTables p-2">
+                  <div id="style-8" class="wmsDataTables"
+                    style="min-height:auto;overflow-y: hidden;">
+                    <div class="row">
+                      <div class="col-md-0.5 pr-0">
+                        <label>Show</label>
+                      </div>
+                     <div class="col-md-1"><select [(ngModel)]="itemsPerPageForReceive"
+                          class="form-control" [ngModelOptions]="{standalone: true}"
+                          (change)="receiveLocForTablePagination(pageForTableForReceive=1,'fromEntries')">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select></div>
+                      <div class="col-md-0.5 pl-0"><label>Entries</label>
+                      </div>
+                      <div class="col-md-9"></div>
+                      <div class="col-md-1">
+                        <input type="text" [(ngModel)]="searchKeyForReceive" placeholder="Search..."
+                          [ngModelOptions]="{standalone: true}" (keyup)="receiveLocForTablePagination(pageForTableForReceive=1);">
+                      </div>
+                    </div>
+                    <table id="example" class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">{{'S.No' |translate}}</th>
+                          <th scope="col">{{'Include' |translate}}</th>
+                          <th scope="col">{{'Location Name' |translate}}</th>
+                          <th scope="col">{{'Availablity Quantity' |translate}}</th>
+                          <th scope="col">{{'Brand Name' |translate}}</th>
+                          <th scope="col">{{'Batch Number' |translate}}</th>
+                          <th scope="col" [hidden]="serialNumberCheckFrmConfig =='No'">{{'Serial Number'
+                            |translate}}</th>
+                          <th scope="col">{{'BOE No' |translate}}</th>
+                          <th scope="col">{{'BOE Date' |translate}}</th>
+                          <th scope="col">{{'Bond Number' |translate}}</th>
+                          <th scope="col">{{'Bond Date' |translate}}</th>
+                          <th scope="col" style="width: 20px;">{{'Picked Quantity' |translate}}</th>
+
+                          <th scope="col" style="width: 20px;">{{'Packing Remarks' |translate}}</th>
+                          <th scope="col" style="width: 20px;">{{'Mfg Date' |translate}}</th>
+                          <th scope="col" style="width: 20px;">{{'Received Date' |translate}}</th>
+                          <th scope="col" style="width: 20px;">{{'Expiry Date' |translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="pickupLocations.length>0">
+                        <tr
+                          *ngFor="let i=index;let data of pickupLocations  | paginate: {id:'foo2',itemsPerPage: itemsPerPageForReceive,currentPage: pageForTableForReceive,totalItems: totalItemsForReceive}">
+                          <td scope="row">
+                            {{((pageForTableForReceive -1) * itemsPerPageForReceive)+i+1}}
+                          </td>
+                          <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                              [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"
+                              [disabled]="statusCheck"></td>
+                          <td>{{data.locationInfo.locationName}}</td>
+                          <td>{{data.quantityInventoryUnit}} {{data.inventoryUnit}}</td>
+                          <td>{{data.brandName}} </td>
+                          <td>{{data.batchNumber}}</td>
+                          <td [hidden]="serialNumberCheckFrmConfig =='No'">{{data.serialNumber}}</td>
+                          <td>{{data.billOfEntryNumber}}</td>
+                          <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{data.bondNumber}}</td>
+                          <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+                          <td *ngIf="!data.isEdit">
+                            <span>
+                              {{data.pickedQuantity}}
+                            </span>
+                          </td>
+                          <td *ngIf="data.isEdit"><span>
+                              <input type="text" class="form-control" #pickedQuantity [(ngModel)]="data.pickedQuantity"
+                                (keyup)="validateLocationDecimal(i)"
+                                (focusout)="savequantity(pickedQuantity.value,data)" [readonly]="statusCheck"
+                                [ngModelOptions]="{standalone: true}">
+                            </span>
+                          </td>
+                          <td> {{data.packingRemarks}}</td>
+                          <td> {{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                          <td> {{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                          <td> {{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row" *ngIf="pickupLocations.length>0">
+                      <div class="col-md-12" style="text-align: end;">
+                        <pagination-controls class="pagi" id="foo2"
+                          (pageChange)="receiveLocForTablePagination((pageForTableForReceive = $event))">
+                        </pagination-controls>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12" [hidden]="statusCheck">
+                <div class="float-right">
+                  <button class="btn btn-green" (click)="savePickupLocations()">{{'Save'
+                    |translate}}</button>
+                  <button class="btn btn-white" (click)="resetRecieveLocations()">{{'Clear'
+                    |translate}}</button>
+                </div>
+              </div>
+            </div>
+          </ngx-smart-modal>
+          <div class="panel-body" *ngIf="showTableType=='No'">
+            <form [formGroup]="soLineForm">
+              <div class="panel portlet">
+                <div class="formBox portlet-title">
+                  <div class="row">
+                    <div class="panel-heading formTitle" style="width:fit-content">
+                      <h4>{{'SALES ORDER LINES' |translate}}</h4>
+                      <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                            aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i>
+                      </div>
+                    </div>
+                    <div class="formTitleHover">
+                      <h4>{{'SALES ORDER LINES' |translate}}
+                        <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="row force-overflow">
+                    <div class="col-md-4">
+                      <div class="form-group row" formGroupName="productMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Product ID/Name' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-6" *ngIf="pByCMapping == 'Yes'">
+                          <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                            title="Search product to retrive data of product"> info </i>
+                          <ng2-completer name="productIDName" formControlName="productIDName"
+                            [inputClass]="'form-control form-control-inline'" [datasource]="productsDataService"
+                            [minSearchLength]="0" (keypress)="getProductDetails()"
+                            placeholder="{{'ProductIDName' |translate}}" (selected)="onProductIDNameChange($event)">
+                          </ng2-completer>
+                        </div>
+                        <div class="col-sm-6" *ngIf="pByCMapping != 'Yes'">
+                          <ejs-combobox #remote [dataSource]="productsDataService" [fields]="fields"
+                            (open)="onOpen($event,'dropdownObj')" [query]="query" [(ngModel)]='dummyProductIDName'
+                            [allowFiltering]="true" (keypress)="getProductDetails()" (filtering)='onFiltering($event)'
+                            (change)="accessOrderID($event)" [enablePersistence]="true"
+                            [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                          <!-- <ng2-completer name="productIDName" formControlName="productIDName"
+                            [inputClass]="'form-control form-control-inline'" [datasource]="productsDataService"
+                            [minSearchLength]="0" (keypress)="getProductDetails()"
+                            placeholder="{{'ProductIDName' |translate}}" (selected)="onProductIDNameChange($event)">
+                          </ng2-completer> -->
+                        </div>
+                        <div class="col-md-1">
+                          <button type="button" title="Barcode"
+                            style="background: none !important; border: none !important;"><img
+                              src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner()"
+                              style="width: 33px; height: 28px; margin-left: -24px"></button>
+                        </div>
+                      </div>
+                      <div class="form-group row d-none" formGroupName="productMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Product ID' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="fullName" name="productID" formControlName="productID"
+                            placeholder="{{'Product ID' |translate}}" class="form-control" [readOnly]="true"
+                            [ngClass]="{'valiError': shouldShowErrors('productID', soLineForm)}"
+                            (focus)="onFocusForElement('productID')" (focusout)="onFocusOutForElement()" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none" formGroupName="productMasterInfo">
+                        <label class="col-sm-5 col-form-label">{{'Product Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="productName" name="productName" formControlName="productName"
+                            placeholder="{{'Product Name' |translate}}" class="form-control" [readOnly]="true"
+                            [ngClass]="{'valiError': shouldShowErrors('productName', soLineForm)}"
+                            (focus)="onFocusForElement('productName')" (focusout)="onFocusOutForElement()" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group d-none">
+                        <label class="col-sm-5 col-form-label">{{'Storage Unit' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <select class="form-control selectPanl"
+                            [ngClass]="{'valiError': shouldShowErrors('storageUnit', soLineForm)}"
+                            (ngModelChange)="onFocusForElement('storageUnit')" (focusout)="onFocusOutForElement()"
+                            id="storageUnit" name="storageUnit" formControlName="storageUnit">
+                            <option [ngValue]="null">--Select--</option>
+                            <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                              {{unit.unitCode}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-5 col-form-label">{{'Unit Price' |translate}}</label>
+                        <div class="col-sm-7">
+                          <input id="unitPrice" name="unitPrice" [readOnly]="true"
+                            value="{{soLineForm.controls.unitPrice.value | decimalFilter}}"
+                            [ngClass]="{'valiError': shouldShowErrors('unitPrice', soLineForm)}"
+                            (focus)="onFocusForElement('unitPrice')" (focusout)="onFocusOutForElement()"
+                            formControlName="unitPrice" placeholder="{{'Unit Price' |translate}}" class="form-control"
+                            type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Brand Name' |translate}}</label>
+                        <div class="col-sm-7">
+                          <select class="form-control col-form-label-sm" formControlName="brandName"
+                            (change)="removeLocationsWhenManual()">
+                            <option value="">Select Brand</option>
+                            <option *ngFor="let brand of brandList" [ngValue]="brand">
+                              {{brand}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Delivery Expected Date' |translate}}<i
+                            class="red">*</i>
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="expectedDeliveryDate" name="expectedDeliveryDate"
+                            formControlName="expectedDeliveryDate" [ngClass]="{'valiError': shouldShowErrors('expectedDeliveryDate', soLineForm),
+                              'valiSucess': shouldShowSuccess('expectedDeliveryDate','soLineForm')}"
+                            placeholder="{{'Delivery Expected Date' |translate}}" class="form-control" type="date">
+                        </div>
+                      </div>
+
+
+
+                      <!-- <div class="form-group row" *ngIf="locAllocation.pickingLocationAllocationType=='Manual'">
+                        <label class="col-sm-5 col-form-label">{{'PickUp Locations' |translate}}</label>
+                        <div class="col-sm-5">
+                          <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                            title="Search location to retrive data of location"> info </i>
+                          <input type="text" [placeholder]="'Select'" [(ngModel)]="returnShowValues"
+                            [ngModelOptions]="{standalone: true}">
+                        </div>
+                        <div class="col-sm-2 mt-2"><i class="fa fa-search" style="margin-left: 20px;cursor: pointer;"
+                            (click)="openModalRecievedLocations(soLineForm)"></i></div>
+                      </div> -->
+                      <!--  <div class="form-group row">
+                        <label class="col-md-5">{{'Location Allocation Type' |translate}}</label>
+                        <div class="col-md-7">
+                          <button class="btn-secondary" *ngIf="locAllocation.pickingLocationAllocationType=='Manual'"
+                            (click)="saveAllocationType('Manual')" [disabled]="statusCheck">Manual</button>
+                          <button class="btn-success" *ngIf="locAllocation.pickingLocationAllocationType=='Auto'"
+                            (click)="saveAllocationType('Auto')" [disabled]="statusCheck">Auto</button>
+                        </div>
+                      </div> -->
+
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ex Bond Number' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="exBondNumber" name="exBondNumber" formControlName="exBondNumber"
+                            placeholder="{{'Ex Bond Number' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Ex Bond Date' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="exBondDate" name="exBondDate" formControlName="exBondDate"
+                            placeholder="{{'Ex Bond Date' |translate}}" class="form-control" type="date">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-md-5">{{'Created By' |translate}}</label>
+                        <div class="col-md-7">
+                          <input type="text" name="" class="form-control" formControlName="createdBy" id="">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-md-5">{{'Created Date' |translate}}</label>
+                        <div class="col-md-7">
+                          <input type="text" name="" class="form-control" formControlName="createdDate" id="">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row" *ngIf="showImage">
+                        <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                        <div class="col-sm-8">
+                          <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                            alt="No Image">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Available Quantity' |translate}}
+                        </label>
+                        <div class="col-sm-4">
+                          <input id="availableQuantity" name="availableQuantity" [readOnly]="true"
+                            [ngClass]="{'valiError': shouldShowErrors('availableQuantity', soLineForm)}"
+                            (focus)="onFocusForElement('availableQuantity')" (focusout)="onFocusOutForElement()"
+                            formControlName="availableQuantity" placeholder="{{'Available Quantity' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                        <div class="col-md-3" style="margin-left: -14px;">
+                          <input id="inventoryUnit" name="inventoryUnit"
+                            [ngClass]="{'valiError': shouldShowErrors('inventoryUnit', soLineForm)}"
+                            (focus)="onFocusForElement('inventoryUnit')" (focusout)="onFocusOutForElement()"
+                            formControlName="inventoryUnit" placeholder="Inventory Unit" class="form-control"
+                            type="text" readonly>
+                        </div>
+                      </div>
+                      <!-- class Name for sliding sideInputBox -->
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Customer Order Quantity' |translate}}<i
+                            class="red">*</i>
+                        </label>
+                        <div class="col-sm-4">
+                          <input id="orderQuantity" name="orderQuantity" formControlName="orderQuantity"
+                            [ngClass]="{'valiError': shouldShowErrors('orderQuantity', soLineForm)}"
+                            (focus)="onFocusForElement('orderQuantity')"
+                            (keyup)="validateDecimal('orderQuantity');calculateReceivedQty()"
+                            (focusout)="onFocusOutForElement()" placeholder="{{'Ordered Quantity' |translate}}"
+                            class="form-control" type="text" oninput="validity.valid||(value='');" min="0">
+                        </div>
+                        <div class="col-sm-3" style="margin-left: -14px;">
+                          <select class="form-control " (change)="calculateReceivedQty()"
+                            formControlName="shipmentUnit">
+                            <option [value]="null">--Select--</option>
+                            <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                              {{unit.unitCode}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end"
+                          style="margin-left: 32px;margin-top: -25px;height: 0px;">
+                          <div class="d-flex flex-column align-items-end">
+                            <button class="btn-secondary" *ngIf="locAllocation.pickingLocationAllocationType=='Manual'"
+                              (click)="saveAllocationType('Manual')" [disabled]="statusCheck">Manual</button>
+                            <button class="btn-success" *ngIf="locAllocation.pickingLocationAllocationType=='Auto'"
+                              (click)="saveAllocationType('Auto')" [disabled]="statusCheck">Auto</button>
+                          </div>
+                        </div>
+                        <!-- class Name for select option 
+                          selectPanl -->
+
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Order Unit Price' |translate}}</label>
+                        <div class="col-sm-4">
+                          <input id="orderUnitPrice" name="orderUnitPrice" [readOnly]="true"
+                            value="{{soLineForm.controls.orderUnitPrice.value | decimalFilter}}"
+                            [ngClass]="{'valiError': shouldShowErrors('orderUnitPrice', soLineForm)}"
+                            (focus)="onFocusForElement('orderUnitPrice')" (focusout)="onFocusOutForElement()"
+                            formControlName="orderUnitPrice" placeholder="{{'Unit Price' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                        <div class="col-sm-3" style="margin-left: -14px;">
+                          <input type="text" formControlName="currency" class="form-control" readonly>
+                        </div>
+                        <!--  <div class="col-sm-1" *ngIf="locAllocation.pickingLocationAllocationType=='Manual'" style="margin-top: -26px;
+                        margin-left: 433px"> -->
+                        <div class="col-md-12 d-flex justify-content-end"
+                          *ngIf="locAllocation.pickingLocationAllocationType=='Manual'"
+                          style="margin-left: 27px;margin-top: -23px;height: 0px;">
+                          <div class="d-flex flex-column align-items-end">
+                            <i class="fa fa-search" style="margin-left: 20px;cursor: pointer;"
+                              (click)="openModalRecievedLocations()"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'Quantity' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-4">
+                          <input id="quantity" name="quantity" formControlName="quantity"
+                            [ngClass]="{'valiError': shouldShowErrors('quantity', soLineForm)}"
+                            placeholder="{{'Quantity' |translate}}" class="form-control" type="text"
+                            [readOnly]="showQuantity" (focusout)="calUnitPrice()">
+                        </div>
+                        <div class="col-sm-3" style="margin-left: -14px;">
+                          <input id="inventoryUnit" name="inventoryUnit"
+                            [ngClass]="{'valiError': shouldShowErrors('inventoryUnit', soLineForm)}"
+                            (focus)="onFocusForElement('inventoryUnit')" (focusout)="onFocusOutForElement()"
+                            formControlName="inventoryUnit" placeholder="Inventory Unit" class="form-control"
+                            type="text" readonly>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{ 'Sales Tax' | translate }}</label>
+                        <div class="col-sm-7">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="taxIDs" [formControl]="soLineForm.controls['saleTaxes']" [disabled]="true">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input formControlName="taxAmount" readonly placeholder="{{'Tax Amount' |translate}}"
+                            class="form-control" type="text"
+                            value="{{soLineForm.controls.taxAmount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Gross Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input formControlName="grossAmount" readonly placeholder="{{'Gross Amount' |translate}}"
+                            class="form-control" type="text"
+                            value="{{soLineForm.controls.grossAmount.value | decimalFilter}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Discount' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <input id="discount" name="discount" formControlName="discount"
+                            (keyup)="validateDecimal('discount');calculate()" placeholder="{{'Discount' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <input id="netAmount" name="netAmount" formControlName="netAmount"
+                            value="{{soLineForm.controls.netAmount.value | decimalFilter}}"
+                            [ngClass]="{'valiError': shouldShowErrors('netAmount', soLineForm)}" [readOnly]="true"
+                            (focus)="onFocusForElement('netAmount')" (focusout)="onFocusOutForElement()"
+                            placeholder="{{'Amount' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'Remarks' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <input id="remarks" name="remarks" formControlName="remarks"
+                            [ngClass]="{'valiError': shouldShowErrors('remarks', soLineForm)}"
+                            (focus)="onFocusForElement('remarks')" (focusout)="onFocusOutForElement()"
+                            placeholder="{{'Remarks' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Shipment Instruction' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <textarea id="dispathInstruciton" name="dispathInstruciton"
+                            formControlName="dispathInstruciton" rows="4"
+                            placeholder="{{'Shipment Instruction' |translate}}" class="form-control"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <div class="col-sm-12 text-center mb-3">
+                          <button class="btn btn-green mr-1" (click)="checkAvailablity()"
+                            [disabled]="soHeaderForm.invalid || (isButtonDisabled(soLineForm) && salesOrderLinesAll.length==0) || statusCheck">
+                            SAVE </button>
+                          <button class="btn btn-white mr-1" (click)="raiseSO()" [disabled]="statusCheck || !this.id">
+                            RAISE
+                            SO </button>
+                          <button class="btn btn-white mr-1" (click)="lineClear()">{{'CLEAR' |translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="showTableType=='Yes'" style="margin-top:-40px">
+      <div class="col-md-2">
+        <div class="form-group">
+          <ng2-completer [minSearchLength]="0" placeholder="{{'Product' |translate}}"
+            [inputClass]="'form-control form-control-inline'">
+          </ng2-completer>
+        </div>
+      </div>
+
+      <div class="col-md-1">
+        <button type="button" title="Barcode" style="background: none !important; border: none !important;"><img
+            src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner()"
+            style="width: 33px; height: 28px; margin-left: -24px"></button>
+      </div>
+      <div class="col-md-9">
+        <div class="float-right">
+          <button class="btn btn-green mr-1" (click)="copyAvailabletoOrder()"> Available Qty = Customer Order Quantity
+          </button>
+          <button class="btn btn-green mr-1" (click)="checkAvailablity('table')"
+            [disabled]="!soHeaderForm.controls.deliveryExpDate.value"> Save </button>
+          <button class="btn btn-white" (click)="raiseSO()" [disabled]="statusCheck || !this.id"> RAISE SO </button>
+        </div>
+      </div>
+    </div>
+    <div class="row " *ngIf="showTableType=='Yes'">
+      <div class="col-md-12 m0 tableBG">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th *ngIf="pByCMapping=='Yes'">Include</th>
+                <th *ngIf="pByCMapping=='No'">Include <input type="checkbox" class="form-control"
+                    (click)="selectAllData1($event)" [(ngModel)]="selectAllAllcateCheckboxValue"
+                    [ngModelOptions]="{standalone: true}"></th>
+                <th>{{'Product IDName' |translate}}</th>
+                <th>{{'Brand' |translate}}</th>
+                <th>{{'Expected Delivery Date'}}</th>
+                <th>{{'Available Quantity'}}</th>
+                <th>{{'Customer Order Quantity' |translate}}</th>
+                <th>{{'Quantity' |translate}}</th>
+                <th>{{'Unit Price' |translate}}</th>
+                <th>{{'Discount' |translate}}</th>
+                <th>{{'Gross Amount' | translate}}</th>
+                <th>{{'Tax Amount' | translate}}</th>
+                <th>{{'Amount' |translate}}</th>
+                <th>{{'Pickup Allocation Type' | translate}}</th>
+                <th>{{'Location Names' |translate}}</th>
+                <th>{{'Remarks' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of soArrayLines; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td><input type="checkbox" [checked]="product.isChecked" disabled></td>
+                <td>{{product.productMasterInfo.productIDName}}</td>
+                <td>{{product.brandName}} </td>
+                <td *ngIf="!statusCheck">
+                  <input [(ngModel)]="product.expectedDeliveryDate" [ngModelOptions]="{standalone: true}"
+                    placeholder="{{'Delivery Expected Date' |translate}}" class="form-control" type="date">
+
+                </td>
+                <td *ngIf="statusCheck">{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.availableQuantity}} {{product.inventoryUnit}}</td>
+                <td>
+                  <input class="form-control" [(ngModel)]="product.orderQuantity" [ngModelOptions]="{standalone: true}"
+                    (keyup)="validate('orderQuantity','table',i);calculateReceivedQtyForTable(product,i)"
+                    placeholder="{{'Customer Order Quantity' |translate}}" type="text"
+                    oninput="validity.valid||(value='')" min="0" [readonly]="statusCheck">
+                  <select class="form-control selectPanl" (change)="calculateReceivedQtyForTable(product,i)"
+                    [(ngModel)]="product.shipmentUnit" [ngModelOptions]="{standalone: true}" [disabled]="statusCheck">
+                    <option [value]="null">--Select--</option>
+                    <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                      {{unit.unitCode}}</option>
+                  </select>
+                </td>
+                <td><span *ngIf="product.showQuantity">{{product.quantity}}</span>
+                  <span *ngIf="!product.showQuantity">
+                    <input [(ngModel)]="product.quantity" [ngModelOptions]="{standalone: true}"
+                      placeholder="{{'Quantity' |translate}}" class="form-control" type="text"
+                      [readOnly]="product.showQuantity" (focusout)="calUnitPrice('table',product,i)"></span>
+                  {{product.inventoryUnit}}
+                </td>
+                <td class="text-right">{{product.orderUnitPrice | decimalFilter}}</td>
+                <td>{{product.discount}}</td>
+                <td class="text-right">{{product.grossAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}}</td>
+                <td> <button class="btn-secondary" [disabled]="!permissionsList.includes('Update') || statusCheck"
+                    *ngIf="product.pickingLocationAllocationType=='Manual'"
+                    (click)="saveAllocationType('Manual',i)">Manual</button>
+                  <br>
+                  <i *ngIf="product.pickingLocationAllocationType=='Manual'" class="fa fa-table"
+                    style="cursor: pointer;" (click)="openModalRecievedLocations(product,i)"></i>
+
+                  <button class="btn-success" *ngIf="product.pickingLocationAllocationType=='Auto'"
+                    [disabled]="!permissionsList.includes('Update') || statusCheck"
+                    (click)="saveAllocationType('Auto',i)">Auto</button>
+                </td>
+                <td><span *ngFor="let prod of product.inventoryHelpers">{{prod.locationInfo.locationName}}
+                    <br></span></td>
+                <td>{{product.remarks}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+           <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                (change)="findSalesOrderByID(page=1,itemsPerPage)" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="findSalesOrderByID(page=1,itemsPerPage)">
+            </div>
+          </div>
+          <table id="style-8" class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Sr.No','header')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Sr.No','header')"></i> </th>
+                <th>{{'Image'|translate}}</th>
+                <th>{{'WMSO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                        left: -7px;" (click)="setDirection('ASC','WMSO Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                            left: -7px;" aria-hidden="true" (click)="setDirection('DESC','WMSO Number')"></i>
+                </th>
+                <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                              left: -7px;" (click)="setDirection('ASC','Product ID')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product ID')"></i>
+                </th>
+                <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                                    left: -7px;" (click)="setDirection('ASC','Product Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;
+                                        left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Product Name')"></i>
+                </th>
+                <th>{{'Product Description' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                      left: -7px;" (click)="setDirection('ASC','Product Description')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;
+                          left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Description')"></i>
+                </th>
+                <th>{{'Brand' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Brand')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Brand')"></i>
+                </th>
+                <th>{{'Batch Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                left: -7px;" (click)="setDirection('ASC','Batch Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Batch Number')"></i>
+                </th>
+                <th>{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','UOM')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','UOM')"></i>
+                </th>
+                <th>{{'Customer Order Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Customer Order Quantity')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Customer Order Quantity')"></i>
+                </th>
+                <th [hidden]="serialNumberAllocation=='No'">{{'Serial Number' |translate}} <i class="fa fa-sort-asc"
+                    style="position: relative;left: -7px;" (click)="setDirection('ASC','Serial Number')"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Serial Number')"></i>
+                </th>
+                <th>{{'Unit Price' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Unit Price')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Unit Price')"></i>
+                </th>
+                <th>{{'Discount' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Discount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Discount')"></i>
+                </th>
+                <th>{{'Gross Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Gross Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Gross Amount')"></i>
+                </th>
+                <th>{{'Tax Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;  left: -7px;"
+                    (click)="setDirection('ASC','Tax Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Tax Amount')"></i>
+                </th>
+                <th>{{'Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Amount')"></i>
+                </th>
+                <th>{{'Location Names' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Location Names')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Location Names')"></i>
+                </th>
+                <th>{{'Ex Bond Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Ex Bond Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Ex Bond Number')"></i>
+                </th>
+                <th>{{'Ex Bond Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Ex Bond Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc"
+                    style="position: relative;                                                                                                                                      left: -7px;"
+                    aria-hidden="true" (click)="setDirection('DESC','Ex Bond Date')"></i>
+                </th>
+                <th>{{'Expected Delivery Date' |translate}} <i class="fa fa-sort-asc"
+                    style="position: relative;left: -7px;" (click)="setDirection('ASC','Expected Delivery Date')"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc"
+                    style="position: relative;                                                                                                                                      left: -7px;"
+                    aria-hidden="true" (click)="setDirection('DESC','Expected Delivery Date')"></i>
+                </th>
+
+                <th>{{'Remarks' |translate}} <i class="fa fa-sort-asc" style="position: relative;left: -7px;"
+                    (click)="setDirection('ASC','Remarks')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc"
+                    style="position: relative;                                                                                                                      left: -7px;"
+                    aria-hidden="true" (click)="setDirection('DESC','Remarks')"></i>
+                </th>
+                <th>Action </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of salesOrderLinesAll | paginate: {id:'foo1',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td>{{((page - 1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{product.wmsoLineNumber}}</td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}} </td>
+                <td><span *ngFor="let batchno of product.batchNumbers">{{batchno}}<br></span></td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td *ngIf="product.isEdit">
+                  <input class="form-control" [(ngModel)]="product.orderQuantity" [ngModelOptions]="{standalone: true}"
+                    (focusout)="calculateReceivedQtyForTable(product,i,'secTable')"
+                    (keyup)="validate('orderQuantity','table',i,'secTable')" [disabled]="statusCheck"
+                    placeholder="{{'Customer Order Quantity' |translate}}" type="text"
+                    oninput="validity.valid||(value='')" min="0">
+                </td>
+                <td *ngIf="!product.isEdit">
+                  {{product.orderQuantity}}
+                </td>
+                <td [hidden]="serialNumberAllocation=='No'"><span [hidden]="product.inventoryHelpers.length==0"
+                    *ngFor="let prod of product.inventoryHelpers;let j=index">{{prod.serialNumber}}
+                    <span *ngIf="prod.serialNumber && (j)!=(product.inventoryHelpers.length-1)">,</span>
+                  </span></td>
+                <td class="text-right">{{product.orderUnitPrice | decimalFilter}}</td>
+                <td>{{product.discount}}</td>
+                <td class="text-right">{{product.grossAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}}</td>
+                <td><span *ngFor="let prod of product.inventoryHelpers">{{prod.locationInfo.locationName}}
+                    <br></span></td>
+                <td>{{product.exBondNumber}}</td>
+                <td>{{product.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>
+                  <span *ngIf="!product.isEdit">{{product.expectedDeliveryDate | date:'dd/MM/yyyy'}}</span>
+                  <span *ngIf="product.isEdit"><input type="date" class="form-control" #expectedDeliveryDate
+                      [value]="product.expectedDeliveryDate"
+                      (focusout)="saveETADate(expectedDeliveryDate.value,product,'expectedDeliveryDate',i)"></span>
+                </td>
+                <td>{{product.remarks}}</td>
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm" *ngIf="!statusCheck">
+                    <i _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="showEdit(product)"></i>
+                    <i [hidden]="statusCheck" _ngcontent-lty-c40="" class="fa fa-trash btn-blue"
+                      (click)="delete(product)"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row" *ngIf="salesOrderLinesAll.length>0">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo1" (pageChange)="findSalesOrderByID((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+          <div class="">
+            <div class="text-center">
+              <p style="font-size:12px;color:black;text-align: center;margin-top:-50px">Total Amount:
+                {{totalAmountWithDecimal}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 pb-3" [hidden]="true">
+      <div class="wmsDataTables  row">
+        <div class="col-md-9">
+          <h5>{{'Terms and conditions' |translate}}</h5>
+          <p> {{termsAndConditions}}</p>
+        </div>
+        <div class="col-md-3 text-center mt-3 ">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

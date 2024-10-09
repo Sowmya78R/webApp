@@ -1,0 +1,150 @@
+<form [formGroup]="editProductLinesForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="panel portlet">
+    <div class="formBox portlet-title">
+      <div class="row">
+        <div class="panel-heading formTitle">
+          <h4>{{'EDIT PRODUCT DETAILS' |translate}}</h4>
+          <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span> | <i
+              class="material-icons fullscreen"> unfold_less </i> </div>
+        </div>
+        <div class="formTitleHover">
+          <h4>{{'EDIT PRODUCT DETAILS' |translate}}
+            <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+          </h4>
+        </div>
+      </div>
+      <div id="style-8" class="panel-body scrollbar">
+        <div class="row force-overflow">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Product ID' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <input id="productID" [readOnly]="true" formControlName="productID"
+                  (focus)="onFocusForElement('productID')" (focusout)="onFocusOutForElement()" name="productID"
+                  placeholder="{{'Product ID' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Product Name' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <input id="productName1" [readOnly]="true" formControlName="productName"
+
+                  (focus)="onFocusForElement('productName')" (focusout)="onFocusOutForElement()" name="productName"
+                  placeholder="{{'Product Name' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Product Type' |translate}}</label>
+              <div class="col-sm-7">
+                <select class="form-control" id="productType" name="productType" formControlName="productType"
+                  (ngModelChange)="onFocusForElement('productType')" (focusout)="onFocusOutForElement()">
+                  <option [ngValue]="null" [selected]="true">--Select--</option>
+                  <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                    {{productType.value}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row" formGroupName="productCategoryInfo">
+              <label class="col-sm-5 col-form-label">{{'Product Category' |translate}}</label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl" id="productCategory" name="productCategory"
+                  formControlName="productCategoryName"
+
+                  (ngModelChange)="onFocusForElement('productCategory')" (focusout)="onFocusOutForElement()">
+                  <option [ngValue]="null" [selected]="true">--Select--</option>
+                  <option *ngFor="let productCategory of productCategories"
+                    [ngValue]="productCategory.productCategoryName">{{productCategory.productCategoryName}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'UPC EAN Number' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <input id="eanNumber" [readOnly]="isReadMode" formControlName="upcEANNumber"
+
+                  (focus)="onFocusForElement('upcEANNumber')" (focusout)="onFocusOutForElement()" name="eanNumber"
+                  placeholder="{{'EAN Number' |translate}}" class="form-control" type="text">
+              </div>
+            </div>
+            <p class="ml-3 mt-4" [hidden]="statusCheck"><a (click)="redirectToProductMasterData()" class="red"><u>{{'Edit More Product details' |translate}}</u></a>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Inventory Unit' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl"
+                  (ngModelChange)="onFocusForElement('inventoryUnit')" (focusout)="onFocusOutForElement()"
+                  id="inventoryUnit1" name="inventoryUnit" formControlName="inventoryUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                    {{unit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Receiving Unit' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl"
+                  (ngModelChange)="onFocusForElement('receivingUnit')" (focusout)="onFocusOutForElement()"
+                  id="receivingUnit" name="receivingUnit" formControlName="receivingUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                    {{unit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Picking Unit' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl"
+                  (ngModelChange)="onFocusForElement('pickingUnit')" (focusout)="onFocusOutForElement()" id="pickingUnit"
+                  name="pickingUnit" formControlName="pickingUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                    {{unit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Shipment Unit' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl"
+                  [ngClass]="{'my-error': shouldShowErrors('shipmentUnit', editProductLinesForm)}"
+                  (ngModelChange)="onFocusForElement('shipmentUnit')" (focusout)="onFocusOutForElement()"
+                  id="shipmentUnit" name="shipmentUnit" formControlName="shipmentUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                    {{unit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="!isEditProduct">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center  mb-3">
+                <button class="btn btn-green" (click)="update()" [disabled]="statusCheck">{{'Update' |translate}}</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="isEditProduct">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center mb-3">
+                <button class="btn btn-green mr-2" (click)="save()" [disabled]="editProductLinesForm.invalid || statusCheck">{{'Save' |translate}}
+                </button>
+                <button class="btn btn-white" (click)="cancel()" [disabled]="statusCheck">{{'Cancel' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

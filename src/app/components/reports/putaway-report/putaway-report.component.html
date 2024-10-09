@@ -1,0 +1,432 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="getAllPutAwayForDownload()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="putawayForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'PUTAWAY REPORT' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PUTAWAY REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Purchase Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Sales Returns </option>
+                          <option>WareHouseTransfer Returns </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="putawayForm.controls.orderType.value=='Purchase Order'">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="supplierIDNames" [minSearchLength]="0" placeholder="{{'Supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="putawayForm.controls.orderType.value=='Sales Returns '">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer">info</i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="putawayForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Warehouse to retrive data of Warehouse"> info </i>
+                        <ng2-completer name="wareHouseTransferSourceInfoWareHouseIDName"
+                          formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="warehouseNameValues" [minSearchLength]="0"
+                          placeholder="{{'Warehouse Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Assigned' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="levelName" formControlName="executiveIDName" [minSearchLength]="0"
+                          placeholder="{{'Assigned' |translate}}" [datasource]="wareHouseListValuesIDs">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Completed By' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="levelName" [minSearchLength]="0" formControlName="completedBy"
+                          placeholder="{{'Completed By' |translate}}" [datasource]="wareHouseListValuesIDs">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label5">{{'Status' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select name="" id="" class="form-control extraLongWidth" formControlName="status">
+                          <option [ngValue]=null [selected]=true>--Select--</option>
+                          <option value="Open">Open</option>
+                          <option value="Closed">Closed</option>
+                        </select>
+                      </div>
+                    </div> -->
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" *ngIf="putawayForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Warehouse to retrive data of Warehouse"> info </i>
+                        <ng2-completer name="wareHouseTransferSourceInfoWareHouseIDName"
+                          formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="warehouseNameValues" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Zone' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Zone to retrive data of Zone"> info </i>
+                        <ng2-completer name="zoneName" formControlName="zoneName" [datasource]="zoneNameValues"
+                          [minSearchLength]="0" placeholder="{{'Zone' |translate}}"
+                          (selected)="getSelectedValue($event,'zone')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Rack' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Rack to retrive data of Rack"> info </i>
+                        <ng2-completer name="rackName" formControlName="rackName" [datasource]="rackNameValues"
+                          [minSearchLength]="0" placeholder="{{'Rack' |translate}}"
+                          (selected)="getSelectedValue($event,'rack')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Level' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Level to retrive data of Level"> info </i>
+                        <ng2-completer name="levelName" formControlName="levelName" [datasource]="levelNameValues"
+                          [minSearchLength]="0" placeholder="{{'Level' |translate}}"
+                          (selected)="getSelectedValue($event,'level')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Location' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Location to retrive data of Location"> info </i>
+                        <ng2-completer name="locationName" formControlName="locationName"
+                          [datasource]="locationNameValues" [minSearchLength]="0"
+                          placeholder="{{'Location' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Created From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" formControlName="fromDate" class="form-control extraLongWidth" id="fromDate"
+                          name="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Created To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" formControlName="toDate" class="form-control extraLongWidth" id="toDate"
+                          name="toDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Status</label>
+                      <div class="col-sm-8 mt-2">
+                        <label class="radio-inline ml-2">
+                          <input type="radio" value="All" class="m-1" formControlName="status" name="status">
+                          ALL
+                        </label>
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input type="radio" value="Open" class="m-1" formControlName="status" name="status">
+                          Open
+                        </label>
+                        <label class="radio-inline ml-2" style="color:green">
+                          <input checked type="radio" value="Closed" class="m-1" formControlName="status" name="status">
+                          Closed
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--  <div class="col-md-12">
+                  <div class="form-group row mt-1">
+                    <label class="col-sm-4 col-form-label"> </label>
+                    <div class="col-sm-8 text-right">
+                      <button class="btn btn-green m-1" (click)="generate()"> GENERATE </button>
+                      <button class="btn btn-white" (click)="clear()"> CLEAR </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12"style="position:relative:top:-50px;">
+                  <div class="form-group row">
+                    <label class="col-sm-1 col-form-label">Status</label>
+                    <div class="col-sm-2">
+                      <select name="" id="" class="form-control">
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+          <div  class="wmsDataTables">
+              <div class="row">
+                <div class="col-md-0.5 pr-0">
+                  <label class="mt-1">Show</label>
+                </div>
+                  <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage"
+                    (change)="fetchAllD(1,$event)" class="form-control"
+                          [ngModelOptions]="{standalone: true}">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                      </select></div>
+                      <div class="col-md-1 mt-1"><label>Entries</label> 
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1" style="left: -20px;">
+                      <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                          [ngModelOptions]="{standalone: true}"
+                          (keyup)="generate(page, itemsPerPage);">
+                  </div>
+              </div>
+              <table class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+                  <thead>
+                      <tr style="background-color:'blueviolet'">
+                          <th *ngFor="let key of putAwayReport">{{key |translate}}<i class="fa fa-sort-asc"
+                                  (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i
+                                  class="fa fa-sort-desc" aria-hidden="true"
+                                  (click)="setDirection('DESC',key)"></i></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr
+                          *ngFor="let i=index;let report of putawayData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                          <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                          <td>{{report.putawayNumber}}</td>
+                          <td>{{report.wmpoNumber}}</td>
+                          <td><span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo.supplierIDName}}</span>
+                            <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                            <span
+                              *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                          </td>
+                          <td>{{report.productMasterInfo.productID}}</td>
+                          <td>{{report.productMasterInfo.productName}}</td>
+                          <td>{{report.productDescription}}</td>
+                          <td>{{report.brandName}}</td>
+                          <td class="text-center">{{report.inventoryUnit}}</td>
+                          <td>{{report.quantity | decimalwithThreeDigits}}</td>
+                          <td>{{report.totalActualPutawayQuantity}}</td>
+                          <td>{{report.balancePutawayQuantity}}</td>
+                          <td class="text-center">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                          <td class="text-center">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{report.batchNumber}}</td>
+                          <td>{{report.zoneInfo?.zoneName}}</td>
+                          <td>{{report.rackInfo?.rackName}}</td>
+                          <td>{{report.levelInfo?.levelName}}</td>
+                          <td>{{report.columnInfo?.columnName}}</td>
+                          <td>{{report.locationName}}</td>
+                          <td>{{report.invoiceNumber}}</td>
+                          <td>{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{report.billOfEntryNumber}}</td>
+                          <td>{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{report.bondNumber}}</td>
+                          <td>{{report.bondDate | date: 'dd/MM/yyyy'}}</td>
+                          <td class="text-center">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                          <td class="text-center">{{report.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                          <td class="text-center">{{report.endTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                          <td class="text-center">{{report.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                          <td [ngStyle]="{'color':(report.status=='Open') ?'grey':'green'}">{{report.status}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <div class="row mt-2">
+                <div class="col-md-12" style="text-align: end;">
+                  <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+                  </pagination-controls>
+                </div>
+              </div>
+          </div>
+
+      </div>
+  </div>
+ <!--    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped"
+            style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Putaway No' |translate}}</th>
+                <th>{{'WMPO Number' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'Product Description' |translate}}</th>
+                <th>{{'Brand Name' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Putaway Quantity' |translate}}</th>
+                <th>{{'Total Actual Putaway Quantity' |translate}}</th>
+                <th>{{'Balanced Putaway Quantity' |translate}}</th>
+                <th>{{'Expiry Date' |translate}}</th>
+                <th>{{'Manufacture Date' |translate}}</th>
+                <th>{{'Batch Number' |translate}}</th>
+                <th>{{'Zone Name' |translate}}</th>
+                <th>{{'Rack Name' |translate}}</th>
+                <th>{{'Level Name' |translate}}</th>
+                <th>{{'Column Name' |translate}}</th>
+                <th>{{'Location Name' |translate}}</th>
+                <th>{{'Invoice Number' |translate}}</th>
+                <th>{{'Invoice Date' |translate}}</th>
+                <th>{{'BOE No' |translate}}</th>
+                <th>{{'BOE Date' |translate}}</th>             
+                <th>{{'Bond Number' |translate}}</th>
+                <th>{{'Bond Date' |translate}}</th>
+                <th>{{'Created On' |translate}}</th>
+                <th>{{'Start Time' |translate}}</th>
+                <th>{{'End Time' |translate}}</th>
+                
+                <th>{{'Planned Completion Date' |translate}}</th>
+                <th>{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of putawayData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{report.putawayNumber}}</td>
+                <td>{{report.wmpoNumber}}</td>
+                <td><span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td>{{report.productDescription}}</td>
+                <td>{{report.brandName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.quantity | decimalwithThreeDigits}}</td>
+                <td>{{report.totalActualPutawayQuantity}}</td>
+                <td>{{report.balancePutawayQuantity}}</td>
+                <td class="text-center">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.batchNumber}}</td>
+                <td>{{report.zoneInfo?.zoneName}}</td>
+                <td>{{report.rackInfo?.rackName}}</td>
+                <td>{{report.levelInfo?.levelName}}</td>
+                <td>{{report.columnInfo?.columnName}}</td>
+                <td>{{report.locationName}}</td>
+                <td>{{report.invoiceNumber}}</td>
+                <td>{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.billOfEntryNumber}}</td>
+                <td>{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.bondNumber}}</td>
+                <td>{{report.bondDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-center">{{report.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-center">{{report.endTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-center">{{report.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td [ngStyle]="{'color':(report.status=='Open') ?'grey':'green'}">{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

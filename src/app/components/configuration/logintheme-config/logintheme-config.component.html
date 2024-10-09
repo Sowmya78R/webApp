@@ -1,0 +1,145 @@
+<div id="inBody" [formGroup]="loginThemeConfiForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel portlet">
+        <div class="formBox portlet-title">
+          <div class="row">
+            <div class="panel-heading formTitle w-auto">
+              <h4>{{'Theme Config' |translate}}</h4>
+              <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+                | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+              <h4>{{'Theme Config' |translate}}
+                <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+              </h4>
+            </div>
+          </div>
+          <div id="style-8" class="panel-body ">
+            <div class="row force-overflow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'URL' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer class="'form-control form-control-inline'" [datasource]="applicationUrlList"
+                          [minSearchLength]="0" placeholder="{{'URL' |translate}}" formControlName="applicationURL">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label"> {{'Copy URL' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <!-- <ng2-completer class="'form-control form-control-inline'" [datasource]="organizationValuesIDs"
+                          [minSearchLength]="0" placeholder="Organization" (selected)="getWareHouses($event)">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="text-right">
+        <button class="btn btn-green mr-2" (click)="save()">{{'Save' |translate}}</button>
+        <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <p class="maintainTableHeader">{{'Login Theme Config' |translate}}</p>
+        <table id="example" class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">{{'Process Name' |translate}}</th>
+              <th scope="col">{{'Action' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{'Login Page Logo' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload hidden multiple (change)="uploadFiles($event,'Login Page Logo')">
+                    <i (click)="upload.click()" class="upload fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of loginPageLogoArr;let i=index"
+                      [hidden]="loginPageLogoArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Login Page Logo')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Login Page Background Image' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload1 hidden multiple
+                      (change)="uploadFiles($event,'Login Page Background Image')">
+                    <i (click)="upload1.click()" class="upload fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of loginPageBackgroundImgArr;let i=index"
+                      [hidden]="loginPageBackgroundImgArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Login Page Background Image')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Login Page Title' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Login Page Title')"
+                  [(ngModel)]="loginPageTitle" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Login Page Text' |translate}}</td>
+              <td>
+                <input type="text" name="" class="form-control" (focusout)="uploadFiles($event,'Login Page Text')"
+                  [(ngModel)]="loginPageText" [ngModelOptions]="{standalone: true}" id="">
+              </td>
+            </tr>
+            <tr>
+              <td>{{'Login Page Image' |translate}}</td>
+              <td class="text-center">
+                <div class="row">
+                  <div class="input-container col-md-1 mt-1">
+                    <input type="file" #upload3 hidden multiple (change)="uploadFiles($event,'Login Page Image')">
+                    <i (click)="upload3.click()" class="upload fa fa-upload"></i>
+                  </div>
+                  <div class="col-sm-7">
+                    <div class="form-group row" *ngFor="let data of loginPageImgArr;let i=index"
+                      [hidden]="loginPageImgArr.length==0">
+                      <span style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times mt-2 ml-2" (click)="deleteImageMethod(data,'Login Page Image')">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

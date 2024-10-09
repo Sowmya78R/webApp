@@ -4,11 +4,11 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://dev.fruisce.in/wms/'
+  //apiUrl: 'https://dev.fruisce.in/wms/'
   // apiUrl: 'https://ccs.fruisce.com/wms/'
     // apiUrl: 'https://pbwdocumentation@indelox.com/wms/'
   // apiUrl: 'https://ccspl.fruisce.com/wms/'
-  // apiUrl: 'https://test.fruisce.in/wms/'
+   apiUrl: 'https://test.fruisce.in/wms/'
   //  apiUrl: 'https://sps-test.fruisce.com/wms/'
     // apiUrl: 'https://indelox.fruisce.com/wms/'
       // apiUrl: 'https://explore.fruisce.com/wms/'

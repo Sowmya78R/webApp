@@ -1,0 +1,96 @@
+<div id="inBody" [formGroup]="financialYearConfigForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel portlet">
+        <div class="formBox portlet-title">
+          <div class="row">
+
+            <div class="panel-heading formTitle w-auto">
+              <h4>{{'Financial year Config' |translate}}</h4>
+              <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                    aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+              <h4>{{'Financial year Config' |translate}}
+                <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+              </h4>
+            </div>
+          </div>
+          <div id="style-8" class="panel-body scrollbar"style="height: 114px;">
+            <div class="row force-overflow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Period' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                       <input type="text" name="" class="form-control" id="" formControlName="financialYearName">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Financial From Date' |translate}}</label>
+                      <div class="col-sm-9">
+                       <input type="date" name="" formControlName="financialYearStartDate" id="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Financial To Date' |translate}}</label>
+                      <div class="col-sm-9">
+                       <input type="date" class="form-control" formControlName="financialYearEndDate">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button class="btn btn-green mr-2"(click)="save()">{{'Save' |translate}}</button>
+            <button class="btn btn-white"(click)="clear()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:-10px;">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <p class="maintainTableHeader">{{'Financial Config' |translate}}</p>
+        <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Period Name' |translate}}</th>
+              <th scope="col">{{'Financial From Date' |translate}}</th>
+              <th scope="col">{{'Financial To Date' |translate}}</th>
+              <th scope="col">{{'Action' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of financialResponseList; let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.financialYearName}}</td>
+              <td>{{data.financialYearStartDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.financialYearEndDate | date: 'dd/MM/yyyy'}}</td>
+               <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm" (click)="edit(data)"></i><i
+                class="fa fa-trash btn-blue"(click)="delete(data)"></i></span></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+

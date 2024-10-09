@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+// @import '~ngx-org-chart/_theming.scss';
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css';
 
 .nsm-dialog {
   max-width: 550px !important;
@@ -196,6 +200,10 @@
 .my-error {
   border: 1px solid red !important;
 }
+
+@import "~ngx-smart-modal/ngx-smart-modal";
+@import "~ng-zorro-antd/style/index.min.css";
+@import "~ngx-toastr/toastr";
 
 .completer-dropdown {
   overflow-y: scroll;
@@ -1719,7 +1727,7 @@ table.dataTable tbody td {
   text-align: center;
   text-decoration: none !important;
   cursor: pointer;
-//   *cursor: hand;
+  *cursor: hand;
   color: #333333 !important;
   border: 1px solid transparent;
   border-radius: 2px;

@@ -1,0 +1,444 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4 offset-md-4">
+      <div class="udcBtns float-right">
+       
+        <!-- <ul>
+          <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+          </li>
+          <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="top-input-label mt-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'SO Number' |translate}}</label>
+                  <div class="col-sm-7">
+                    <ng2-completer id="fullWmsoNumber" name="fullWmsoNumber" [minSearchLength]="0" [(ngModel)]="fullWmsoNumber"
+                      [ngModelOptions]="{standalone: true}" placeholder="{{'WMSO Number' |translate}}"
+                      [datasource]="uniqueArrayList" (selected)="setWmsoNumber($event)">
+                    </ng2-completer>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-6 col-form-label">{{'Search Employee' |translate}}</label>
+                  <div class="col-sm-2">
+                    <ng-multiselect-dropdown [placeholder]="'Select Employee'" [settings]="dropdownSettings"
+                      [data]="wareHouseTeamsListIDs" [(ngModel)]="forSearchEmp" [ngModelOptions]="{standalone: true}">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 text-center" style="position: relative;left: 32px;">
+                <button class="btn-primary mt-1 mr-1" [disabled]="!forSearchEmp && !fullWmsoNumber"
+                  (click)="getDataForFilters()">{{'Filter' |translate}}</button>
+                <button class="btn-info mt-1" (click)="resetOnly()">{{'Reset' |translate}}</button>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="emptyBackGroun mt-2">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Assign Employee' |translate}}</label>
+              <div class="col-sm-7">
+                <ng-multiselect-dropdown [placeholder]="'Assign Employee'" [settings]="dropdownSettings"
+                  [data]="wareHouseTeamsListIDs" [(ngModel)]="assignedEmployeeIDName"
+                  [ngModelOptions]="{standalone: true}">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-7 col-form-label">{{'Planned Completion Date' |translate}}</label>
+              <div class="col-sm-5">
+                <input type="datetime-local" class="form-control" [(ngModel)]="completionDate"
+                  [ngModelOptions]="{standalone: true}" style="width:169px;">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 text-right"  style="position: relative;left: 28px;">
+            <button class="btn btn-primary mr-1" (click)="multiStart('startDate')">{{'Start' |translate}}</button>
+            <button class="btn btn-primary mr-1" (click)="multiStart('status')">{{'Complete' |translate}}</button>
+            <button class="btn btn-primary mr-1" (click)="assignEmployeeforMulti()"
+              [disabled]="selectedDocuments.length==0">{{'Assign' |translate}}</button>
+          </div>
+          <div class="col-md-3 text-right">
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+            style="background: none !important;border: none !important;">
+            <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+          </button>
+          <button type="button" (click)="generatePDF()" title="Print PDF"
+            style="background: none !important;border: none !important;">
+            <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+          </button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table  class="table table-striped" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+          <thead>
+            <tr>
+              <th scope="col">
+                {{ 'S.No' | translate }}
+              </th>
+            
+              <th scope="col">
+                {{ 'Image' | translate }}
+              </th>
+            
+              <th scope="col">
+                {{ 'Include' | translate }}
+                <input type="checkbox" class="form-control" (click)="selectAllData($event)"
+                       [disabled]="makeThisDisable" [(ngModel)]="selectAllCheckboxValue"
+                       [ngModelOptions]="{standalone: true}">
+              </th>
+            
+              <th scope="col">
+                {{ 'SO Number' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','SO Number')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','SO Number')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Action' | translate }}
+              </th>
+            
+              <th scope="col">
+                {{ 'Start Date' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Start Date')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Start Date')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Planned Completion Date' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Planned Completion Date')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Planned Completion Date')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Assigned By' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Assigned By')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Assigned By')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Assigned To' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Assigned To')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Assigned To')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Product ID Name' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Product ID Name')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Product ID Name')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Product Description' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Product Description')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Product Description')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Brand Name' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Brand Name')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Brand Name')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'UOM' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','UOM')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','UOM')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Order Qty' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Order Qty')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Order Qty')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Picked Qty' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Picked Qty')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Picked Qty')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Packed Qty' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Packed Qty')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Packed Qty')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Packing Type' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Packing Type')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Packing Type')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Packing Material' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Packing Material')" aria-hidden="true"></i>
+                <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Packing Material')" aria-hidden="true"></i>
+              </th>
+            
+              <th scope="col">
+                {{ 'Created Date' | translate }}
+                <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                   (click)="setDirection('ASC','Created Date')" aria-hidden="true"></i>
+                   <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                   (click)="setDirection('DESC','Created Date')" aria-hidden="true"></i>
+          </tr>
+          </thead>
+          <tbody 
+          
+            *ngFor="let i=index;let data of packingData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+            <tr>
+            <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td class="text-center"><input type="checkbox" [disabled]="makeThisDisable" [checked]="data.isChecked"
+                  (change)="onDocumentSelect($event,data)"></td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td><span *ngIf="data.packingInfo?.startDate && data.packingInfo?.endDate">Completed</span>
+                <span *ngIf="data.packingInfo?.startDate && !data.packingInfo.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="!data.packingInfo.startDate"><button class="btn btn-primary"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>
+              <td>{{data.packingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td><input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                  [disabled]="makeThisDisable" *ngIf="data.packingInfo.status === 'Open'; else closed3"
+                  [(ngModel)]="data.packingInfo.plannedCompletionDate">
+                <ng-template #closed3>
+                  {{data.packingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+                </ng-template>
+              </td>
+              <td>{{data.packingInfo.assignedBy}} {{data.packingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>
+                <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                  [data]="wareHouseTeamsListIDs" [(ngModel)]="data.packingInfo.assignedTo"
+                  [ngModelOptions]="{standalone: true}" (focusout)="intoEmployee(data,'Assign')"
+                  [disabled]="makeThisDisable">
+                </ng-multiselect-dropdown>
+              </td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td class="text-center">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity | decimalwithThreeDigits}}</td>
+              <td> <input type="text" class="form-control" id="packedQuantity" [readonly]="makeThisDisable"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed" [(ngModel)]="data.packingInfo.packedQuantity"
+                  placeholder="packed quantity">
+                <ng-template #closed>
+                  {{data.packingInfo?.packedQuantity | decimalwithThreeDigits}}
+                </ng-template>
+              </td>
+              <td> <select class="form-control" id="packingType" style="width: 108px;" name="packingType"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed1" [(ngModel)]="data.packingInfo.packingType"
+                  [disabled]="makeThisDisable">
+                  <option value="mechanical">mechanical</option>
+                  <option value="manual">manual</option>
+                </select>
+                <ng-template #closed1>
+                  {{data.packingInfo.packingType}}
+                </ng-template>
+              </td>
+              <td><input type="text" class="form-control" id="packingMeterial"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed2" [readonly]="makeThisDisable"
+                  [(ngModel)]="data.packingInfo.packingMeterial" placeholder="packing Meterial">
+                <ng-template #closed2>
+                  {{data.packingInfo.packingMeterial}}
+                </ng-template>
+              </td>
+              <td>{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table  class="table table-striped" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Image' | translate}}</th>
+              <th scope="col">{{'Include' |translate}}<input type="checkbox" class="form-control"
+                  (click)="selectAllData($event)" [disabled]="makeThisDisable" [(ngModel)]="selectAllCheckboxValue"
+                  [ngModelOptions]="{standalone: true}">
+              </th>
+              <th scope="col">{{'SO Number' |translate}}</th>
+              <th>{{'Action' |translate}}</th>
+              <th scope="col">{{'Start Date' |translate}}</th>
+              <th scope="col">{{'Planned Completion Date' |translate}}</th>
+              <th scope="col">{{'Assigned By' |translate}}</th>
+              <th scope="col">{{'Assigned To' |translate}}</th>
+              <th scope="col">{{'Product ID Name' |translate}}</th>
+              <th scope="col">{{'Product Description' |translate}}</th>
+              <th scope="col">{{'Brand Name' |translate}}</th>
+              <th scope="col">{{'UOM' |translate}}</th>
+              <th scope="col">{{'Order Qty' |translate}}</th>
+              <th scope="col">{{'Picked Qty' |translate}}</th>
+              <th scope="col">{{'Packed Qty' |translate}}</th>
+              <th scope="col">{{'Packing Type' |translate}}</th>
+              <th scope="col">{{'Packing Material' |translate}}</th>
+              <th scope="col">{{'Created Date' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of packingData;let i=index">
+              <td class="text-left">{{i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td class="text-center"><input type="checkbox" [disabled]="makeThisDisable" [checked]="data.isChecked"
+                  (change)="onDocumentSelect($event,data)"></td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td><span *ngIf="data.packingInfo?.startDate && data.packingInfo?.endDate">Completed</span>
+                <span *ngIf="data.packingInfo?.startDate && !data.packingInfo.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="!data.packingInfo.startDate"><button class="btn btn-primary"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>
+              <td>{{data.packingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td><input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                  [disabled]="makeThisDisable" *ngIf="data.packingInfo.status === 'Open'; else closed3"
+                  [(ngModel)]="data.packingInfo.plannedCompletionDate">
+                <ng-template #closed3>
+                  {{data.packingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+                </ng-template>
+              </td>
+              <td>{{data.packingInfo.assignedBy}} {{data.packingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>
+                <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                  [data]="wareHouseTeamsListIDs" [(ngModel)]="data.packingInfo.assignedTo"
+                  [ngModelOptions]="{standalone: true}" (focusout)="intoEmployee(data,'Assign')"
+                  [disabled]="makeThisDisable">
+                </ng-multiselect-dropdown>
+              </td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td class="text-center">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity | decimalwithThreeDigits}}</td>
+              <td> <input type="text" class="form-control" id="packedQuantity" [readonly]="makeThisDisable"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed" [(ngModel)]="data.packingInfo.packedQuantity"
+                  placeholder="packed quantity">
+                <ng-template #closed>
+                  {{data.packingInfo?.packedQuantity | decimalwithThreeDigits}}
+                </ng-template>
+              </td>
+              <td> <select class="form-control" id="packingType" style="width: 108px;" name="packingType"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed1" [(ngModel)]="data.packingInfo.packingType"
+                  [disabled]="makeThisDisable">
+                  <option value="mechanical">mechanical</option>
+                  <option value="manual">manual</option>
+                </select>
+                <ng-template #closed1>
+                  {{data.packingInfo.packingType}}
+                </ng-template>
+              </td>
+              <td><input type="text" class="form-control" id="packingMeterial"
+                  *ngIf="data.packingInfo.status === 'Open'; else closed2" [readonly]="makeThisDisable"
+                  [(ngModel)]="data.packingInfo.packingMeterial" placeholder="packing Meterial">
+                <ng-template #closed2>
+                  {{data.packingInfo.packingMeterial}}
+                </ng-template>
+              </td>
+              <td>{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+</div>

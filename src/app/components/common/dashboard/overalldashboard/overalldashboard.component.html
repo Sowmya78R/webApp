@@ -1,0 +1,306 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12 col-lg-12 col-xl-12">
+    <div class="row">
+      <div class="DashboardOrders ml-3">
+        <ul *ngIf="permissionsList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4 "></li>
+          <li>
+            <p>{{'Purchase Orders' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{headerCountList.activePurchaseOrderCount}}</a></p>
+        </ul>
+        <ul *ngIf="salesReturnsCountList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4 "></li>
+          <li>
+            <p>{{'Sales Returns' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{salesReturnCountList.activeReturnOrderCount}}</a></p>
+        </ul>
+        <ul *ngIf="warehouseTransferCountList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4 "></li>
+          <li>
+            <p>{{'Warehouse Transfers' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{transferHeaderCountList.activePurchaseOrderCount}}</a></p>
+        </ul>
+
+        <ul *ngIf="salesOrderList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>{{'Sales Orders' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{salesOrderCountList.activeSalesOrderCount}}</a></p>
+        </ul>
+        <ul *ngIf="purchaseReturnsCountList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>{{'Purchase Returns' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{purchaseReturnCountList.activeSalesOrderCount}}</a></p>
+        </ul>
+        <ul *ngIf="warehouseCountList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>{{'Warehouse Deliveries' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{transferHeaderCountList.activeSalesOrderCount}}</a></p>
+        </ul>
+        <ul *ngIf="purchaseReturnsCountList.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>{{'Warehouse Transfer Returns' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{wTReturnCountList.activeReturnOrderCount}}</a></p>
+        </ul>
+        <!-- <ul *ngIf="expiredProducts.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>Expired Products</p>
+          </li>
+          <p><a class="ml-2">{{headerCountList.expirtyProductCount}}</a></p>
+        </ul>
+        <ul *ngIf="totalInventoryQuantity.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li style="width:151px">
+            <p>Total Inventory Quantity</p>
+          </li>
+          <p><a class="ml-2">{{headerCountList.totalQuantityInventory}}</a></p>
+        </ul> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="IncomingPurchaseOrders.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Incoming Purchase Orders' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of purchaseOrderLines">
+              <div class="col-sm-6">
+                {{product.fullWmpoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="salesReturnsList.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Incoming Sales Returns' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of purchaseReturnLines">
+              <div class="col-sm-6">
+                {{product.fullWmpoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="warehouseTransfersList.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Warehouse Transfers' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of warehouseTransferLines">
+              <div class="col-sm-6">
+                {{product.fullWmpoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity | decimalwithThreeDigits}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="Putaway.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6 style="position:relative;top:15px">{{'Putaway' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <ngx-charts-pie-chart [view]="pview" [scheme]="pcolorScheme" [results]="putawayChartData"
+              [gradient]="pgradient" [legend]="pshowLegend" [legendPosition]="plegendPosition">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="outgoingShipment.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Outgoing Shipments' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of shipmentOrderLines">
+              <div class="col-sm-6">
+                {{product.fullWmsoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="purchaseReturnsList.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Outgoing Purchase Returns' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of salesReturnLines">
+              <div class="col-sm-6">
+                {{product.fullWmsoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity | decimalwithThreeDigits}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="WarehouseDeliveriesList.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6>{{'Outgoing Shipments Transfers' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <div class="row" *ngFor="let product of warehouseDeliveriesLines">
+              <div class="col-sm-6">
+                {{product.fullWmsoNumber}}
+                {{product.productIDName}}
+              </div>
+              <div class="col-sm-6">
+                {{product.quantity | decimalwithThreeDigits}}
+                {{product.deliveryDate | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xl-3" *ngIf="Picking.includes('View')">
+        <div class="dashBoardSecond">
+          <div class="heading text-center mt-2">
+            <h6 style="position: relative;top: 15px;">{{'Picking' |translate}}</h6>
+          </div>
+          <div id="style-8" class="panel-body scrollbar">
+            <ngx-charts-pie-chart [view]="pview" [scheme]="pcolorScheme" [results]="pickingChartData"
+              [gradient]="pgradient" [legend]="pshowLegend" [legendPosition]="plegendPosition">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--  <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-6" style="position:relative;left:-30px" *ngIf="Putaway.includes('View')">
+            <div class="wareHouseBG1 text-center">
+              <h6 style="position:relative;top:15px">Putaway</h6>
+              <ngx-charts-pie-chart [view]="pview" [scheme]="pcolorScheme" [results]="putawayChartData"
+                [gradient]="pgradient" [legend]="pshowLegend" [legendPosition]="plegendPosition">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="Picking.includes('View')">
+            <div class="wareHouseBG1 text-center">
+              <h6 style="position: relative;
+              top: 15px;">Picking</h6>
+              <ngx-charts-pie-chart [view]="pview" [scheme]="pcolorScheme" [results]="pickingChartData"
+                [gradient]="pgradient" [legend]="pshowLegend" [legendPosition]="plegendPosition">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-xl-6" *ngIf="salesSummaryList.includes('View')">
+        <div class="wareHouseBGNew">
+          <div class="heading text-center">
+            <h6 class="py-2 my-2">{{'Sales Summary' |translate}}</h6>
+          </div>
+          <div style="display: block;" class="mb-2">
+            <apx-chart [series]="salesSummary?.series" [chart]="salesSummary?.chart"
+              [dataLabels]="salesSummary?.dataLabels" [plotOptions]="salesSummary?.plotOptions"
+              [legend]="salesSummary?.legend" [fill]="salesSummary?.fill" [stroke]="salesSummary?.stroke"
+              [tooltip]="salesSummary?.tooltip" [xaxis]="salesSummary?.xaxis"></apx-chart>
+            <!--  <canvas baseChart [datasets]="salesSummaryData" [labels]="salesSummaryLabels" [options]="barChartOptions"
+            [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-6" *ngIf="topSellingProductslist.includes('View')">
+        <div class="wareHouseBGNew">
+          <div class="heading text-center">
+            <h6 class="py-2 my-2">{{'Top Selling Product' |translate}}</h6>
+          </div>
+          <div style="display: block;">
+            <apx-chart [series]="topSellingProduct?.series" [chart]="topSellingProduct?.chart"
+              [dataLabels]="topSellingProduct?.dataLabels" [plotOptions]="topSellingProduct?.plotOptions"
+              [legend]="topSellingProduct?.legend" [fill]="topSellingProduct?.fill" [stroke]="topSellingProduct?.stroke"
+              [tooltip]="topSellingProduct?.tooltip" [xaxis]="topSellingProduct?.xaxis"></apx-chart>
+            <!--  <canvas baseChart [datasets]="topSellingProducts" [labels]="labelsForTopSellingProducts"
+            [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-none">
+      <div class="col-md-12 col-lg-12 col-xl-12 dashBoardSecond mt-3  mb-5">
+        <div class="heading">
+          <h6>{{'Inventory Summary' |translate}}</h6>
+        </div>
+        <div id="scrolTable" class="wmsDataTables" style="padding: 0px; box-shadow: none;">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th *ngFor="let headerName of header">{{headerName}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventory of yearMonthWiseInventory">
+                <td>{{inventory.name}}</td>
+                <td>{{inventory.january.quantity}}</td>
+                <td>{{inventory.febuary.quantity}}</td>
+                <td>{{inventory.march.quantity}}</td>
+                <td>{{inventory.april.quantity}}</td>
+                <td>{{inventory.may.quantity}}</td>
+                <td>{{inventory.june.quantity}}</td>
+                <td>{{inventory.july.quantity}}</td>
+                <td>{{inventory.august.quantity}}</td>
+                <td>{{inventory.september.quantity}}</td>
+                <td>{{inventory.october.quantity}}</td>
+                <td>{{inventory.november.quantity}}</td>
+                <td>{{inventory.december.quantity}}</td>
+              </tr>6
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'Process Barcode Config' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'Process Barcode Config' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group row mt-3">
+                    <label class="mt-1">{{'Process' |translate}}</label>
+                    <div class="col-sm-6 mb-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="dropdownList" [(ngModel)]="selectedProcess" [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                  <button class="btn btn-green mr-2" value="Save" (click)="save()">{{'SAVE' |translate}}
+                  </button>
+                  <button class="btn btn-white" value="Clear" (click)="clear()">{{'CLEAR' |translate}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th>{{'Process Name' |translate}}</th>
+                <th>{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="overAllRecords.length>0">
+              <tr *ngFor="let receipt of overAllRecords[0].processBarcodeConfigurationLines; let i = index;">
+                <td>{{receipt.processName}}</td>
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                      class="fa fa-trash btn-blue" (click)="delete(receipt.processName)"></i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

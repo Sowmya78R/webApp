@@ -1,0 +1,550 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row mb-2">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2 mt0">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+          <div class="panel-body">
+            <div class="panel portlet">
+              <div class="formBox portlet-title">
+                <div class="row">
+                  <div class="panel-heading formTitle" style="width:fit-content">
+                    <h4>{{'SHIPMENT ORDER HEADER' |translate}}</h4>
+                    <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                          aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                        unfold_less </i> </div>
+                  </div>
+                  <div class="formTitleHover">
+                    <h4>{{'SHIPMENT ORDER HEADER' |translate}}
+                      <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                    </h4>
+                  </div>
+                  <form #editShipmentDetails="ngForm">
+                    <div class="row">
+                      <div class="col-md-12 text-right">
+                        <label class="checkbox-inline">
+                          <input type="checkbox" [(ngModel)]="addValuesCheck" [ngModelOptions]="{standalone: true}"
+                            [checked]="addValuesCheck" (change)="checkingaddValuesCheck($event.target.checked)">{{'Add
+                          Details' |translate}}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'WMSO Number' |translate}}
+                          </label>
+                          <div class="col-sm-7 top-input">
+                            <input name="fullWmsoNumber" placeholder="{{'WMSO Number' |translate}}" readonly
+                              [(ngModel)]="header.fullWmsoNumber" class="form-control" type="text" id="fullWmsoNumber"
+                              name="fullWmsoNumber" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">{{'Invoice Number' |translate}}
+                          </label>
+                          <div class="col-sm-4" style="position: relative; left: 27px;">
+                            <ejs-combobox #grRemote [dataSource]="grNoteInvoices" [fields]="fields"
+                              (open)="onOpen1($event,'dropdownObj1')" [query]="query" [(ngModel)]='dummyInv'
+                              [ngModelOptions]="{standalone: true}" [allowFiltering]="true"
+                              (filtering)="onFiltering($event,'grNoteInvoices')" (change)="setInvoiceTo($event)"
+                              [enablePersistence]="true" [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                          </div>
+                          <div class="col-md-4">
+                            <input name="invoiceNumber" id="invoiceNumber" placeholder="{{'Invoice Number' |translate}}"
+                              class="form-control" type="text" [(ngModel)]="header.invoiceNumber"
+                              [ngModelOptions]="{standalone: true}" [readonly]="raisedStatus"
+                              (keyup)="addLine('invoiceNumber','invoiceNumber')" (focusout)="setInvoiceTo('yes')">
+                          </div>
+                        </div>
+                        <!--  <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Invoice Number' |translate}}
+                          </label>
+                          <div class="col-sm-2">
+                            <ejs-combobox #grRemote [dataSource]="grNoteInvoices" [fields]="fields"
+                              (open)="onOpen1($event,'dropdownObj1')" [query]="query" [(ngModel)]='dummyInv'
+                              [ngModelOptions]="{standalone: true}" [allowFiltering]="true"
+                              (filtering)="onFiltering($event,'grNoteInvoices')" (change)="setInvoiceTo($event)"
+                              [enablePersistence]="true" [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                          </div>
+                          <div class="col-md-5 pr-2">
+                            <input name="invoiceNumber" id="invoiceNumber" placeholder="{{'Invoice Number' |translate}}"
+                              class="form-control" type="text" [(ngModel)]="header.invoiceNumber"
+                              [ngModelOptions]="{standalone: true}" [readonly]="raisedStatus"
+                              (keyup)="addLine('invoiceNumber','invoiceNumber')" (focusout)="setInvoiceTo('yes')">
+                          </div>
+                        </div> -->
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Invoice Date' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="invoiceDate" name="invoiceDate" [(ngModel)]="header.invoiceDate"
+                              (change)="addLine('invoiceDate', 'invoiceDate')" [ngModelOptions]="{standalone: true}"
+                              placeholder="{{'Invoice Date' |translate}}" class="form-control" type="date"
+                              [disabled]="raisedStatus">
+                          </div>
+                        </div>
+
+                        <div class="form-group row mt-2" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                          <label class="col-sm-5 col-form-label">
+                            {{'Customers Customer Name' |translate}}
+                          </label>
+                          <div class="col-sm-7 top-input">
+                            <input id="customersCustomerName" name="customersCustomerName" [readonly]="raisedStatus"
+                              [(ngModel)]="header.customersCustomerName"
+                              placeholder="{{'customersCustomerName' |translate}}" class="form-control" type="text"
+                              [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group row" *ngIf="header.orderType=='Sales Order'">
+                          <label class="col-sm-5 col-form-label"> {{'CustomerID/Name:' |translate}} </label>
+                          <div class="col-sm-7 top-input">
+                            <input type="text" class="form-control inputAddonBorderRadius" readonly
+                              [(ngModel)]="header.customerMasterInfo.customerIDName" id="customerID"
+                              placeholder="{{'Customer ID' |translate}}" name="customerIDName"
+                              [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Mode of Transport' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="modeOfTransport" name="modeOfTransport" [(ngModel)]="header.modeOfTransport"
+                              [ngModelOptions]="{standalone: true}" placeholder="{{'Transportation mode' |translate}}"
+                              class="form-control" type="text"
+                              (focusout)="addLine('modeOfTransport', 'modeOfTransport')" [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Transporter' |translate}}
+                          </label>
+                          <div class="col-sm-2">
+                            <ng2-completer [(ngModel)]="spDummyID" [ngModelOptions]="{standalone: true}"
+                              [datasource]="dataService" [minSearchLength]="0" placeholder="{{'Search' |translate}}"
+                              [disabled]="raisedStatus"
+                              (selected)="setSearchValueToText($event,'serviceProviderIDName')">
+                            </ng2-completer>
+                          </div>
+                          <div class="col-md-5 pr-0">
+                            <input id="serviceProviderIDName" name="serviceProviderIDName" [readonly]="raisedStatus"
+                              [(ngModel)]="header.serviceProviderIDName" [ngModelOptions]="{standalone: true}"
+                              placeholder="Transporter ID Name" class="form-control" type="text"
+                              (focusout)="addLine('serviceProviderIDName', 'serviceProviderIDName')">
+                          </div>
+                        </div>
+                        <div class="form-group row"
+                          *ngIf="header.orderType=='WareHouseTransfer' || header.orderType=='WareHouseTransfer Returns'">
+                          <label class="col-sm-5 col-form-label"> {{'WareHouseID/Name:' |translate}} </label>
+                          <div class="col-sm-7 top-input">
+                            <input type="text" class="form-control inputAddonBorderRadius" readonly
+                              [(ngModel)]="header.wareHouseTransferDestinationInfo.wareHouseIDName" id="wareHouseIDName"
+                              placeholder="{{'WareHouse ID' |translate}}" name="wareHouseIDName"
+                              [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        <div class="form-group row" *ngIf="header.orderType=='Purchase Returns'">
+                          <label class="col-sm-5 col-form-label"> {{'Supplier/Name:' |translate}} </label>
+                          <div class="col-sm-7 top-input">
+                            <input type="text" class="form-control inputAddonBorderRadius" readonly
+                              [(ngModel)]="header.supplierMasterInfo.supplierIDName" id="supplierIDName"
+                              placeholder="{{'Supplier IDName' |translate}}" name="supplierIDName"
+                              [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+
+                        <div class="form-group row mt-2" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                          <label class="col-sm-5 col-form-label">
+                            {{'Customers Customer Address' |translate}}
+                          </label>
+                          <div class="col-sm-7 top-input">
+                            <input id="customersCustomerAddress" name="customersCustomerAddress"
+                              [(ngModel)]="header.customersCustomerAddress"
+                              placeholder="{{'customersCustomerAddress' |translate}}" class="form-control" type="text"
+                              [ngModelOptions]="{standalone: true}" [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">
+                            {{'Order Date:' |translate}}
+                          </label>
+                          <div class="col-sm-7 top-input">
+                            <input id="gdcDateTime" name="" [(ngModel)]="header.orderDate"
+                              placeholder="{{'Order Date' |translate}}" class="form-control" type="date" readonly
+                              name="orderDate" [ngModelOptions]="{standalone: true}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Vehicle Number' |translate}}
+                          </label>
+                          <div class="col-sm-2">
+                            <ng2-completer [datasource]="vehicleIDs" [minSearchLength]="0"
+                              placeholder="{{'Search' |translate}}" [(ngModel)]="dummyVehicle"
+                              [ngModelOptions]="{standalone: true}"
+                              (selected)="setSearchValueToText($event,'vehicleNumber')" [disabled]="raisedStatus">
+                            </ng2-completer>
+                          </div>
+                          <div class="col-md-5 pr-0">
+                            <input id="vehicleNumber" name="vehicleNumber" [(ngModel)]="header.vehicleNumber"
+                              [ngModelOptions]="{standalone: true}" placeholder="{{'Vehicle Number' |translate}}"
+                              class="form-control" type="text"
+                              (focusout)="addLine('vehicleNumber', 'vehicleNumber');setVehicleType()"
+                              [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Vehicle Type' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="vehicleType" name="vehicleType" [(ngModel)]="header.vehicleType"
+                              [readonly]="raisedStatus" [ngModelOptions]="{standalone: true}"
+                              placeholder="{{'Vehicle Type' |translate}}" class="form-control" type="text">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group row d-none">
+                          <label class="col-sm-5 col-form-label">{{'Payment Status:' |translate}} </label>
+                          <div class="col-sm-7 top-input">
+                            <select class="form-control" id="paymentStatus" name="paymentStatus"
+                              [disabled]="raisedStatus" [(ngModel)]="header.paymentStatus" name="paymentStatus"
+                              [ngModelOptions]="{standalone: true}">
+                              <option [ngValue]="null" [selected]="true">--Select--</option>
+                              <option *ngFor="let payment of paymentStatus" [ngValue]="payment">
+                                {{payment}}</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'WayBill Number' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="waybillNumber" name="waybillNumber" [(ngModel)]="header.waybillNumber"
+                              [ngModelOptions]="{standalone: true}" placeholder="{{'WayBill Number' |translate}}"
+                              class="form-control" type="text" (focusout)="addLine('waybillNumber', 'wayBillNumber')"
+                              [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Driver Name' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="driverName" name="driverName" [(ngModel)]="header.driverName"
+                              [ngModelOptions]="{standalone: true}" placeholder="{{'Driver Name' |translate}}"
+                              class="form-control" type="text" [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Driver PhoneNo' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input id="driverPhoneNumber" name="driverPhoneNumber"
+                              [(ngModel)]="header.driverPhoneNumber" [ngModelOptions]="{standalone: true}"
+                              placeholder="{{'Driver Phone Number' |translate}}" class="form-control" type="text"
+                              [readonly]="raisedStatus">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-11">
+        <button class="btn btn-green mr-1 float-right" (click)="setShippedQty()"
+          [disabled]="(updatedFShipmentOrderLines.length==0) || raisedStatus">
+          {{'Picked Quantity = ShippedQty' |translate}} </button>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn btn-green mr-1 float-right" (click)="update()" [disabled]="raisedStatus">
+          {{'Update' |translate}} </button>
+      </div>
+    </div>
+    <!-- *ngIf="this.wmsService.passingVisibleData === true" -->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+            <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(pageHeader=1,$event,'header')"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="{{'Search' |translate}}"
+                [ngModelOptions]="{standalone: true}" (keyup)="fetchShipmentOrderByID(pageHeader=1);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th>Image</th>
+                <th scope="col">{{'Include' |translate}}<input type="checkbox" class="form-control"
+                    [(ngModel)]="selectAllLinesVariable" [ngModelOptions]="{standalone: true}"
+                    [disabled]="updatedFShipmentOrderLines.length==0"
+                    (click)="selectAllData($event,'updatedFShipmentOrderLines')">
+                </th>
+                <th *ngIf="barcodePermissionUser">{{'Barcode'|translate}}</th>
+                <th scope="col">{{'WMSO Line Number' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Batch Numbers' |translate}} </th>
+                <th scope="col">{{'Customer Order Quantity' |translate}}</th>
+                <th scope="col">{{'Picked Quantity' |translate}}</th>
+                <th scope="col">{{'Shipped Quantity' |translate}}</th>
+                <th scope="col">{{'Total Customer Shipped Quantity' |translate}}</th>
+                <th scope="col" [hidden]="serialNumberAllocation=='No'">{{'Serial Number' |translate}}</th>
+                <th scope="col">{{'Order Unit Price' |translate}}</th>
+                <th scope="col">{{'Discount' |translate}}</th>
+                <th scope="col">{{'Gross Amount' |translate}}</th>
+                <th scope="col">{{'Tax Amount' |translate}}</th>
+                <th scope="col">{{'Amount' |translate}}</th>
+                <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+                <th scope="col">{{'Dispatch Date' |translate}}</th>
+                <th scope="col">{{'BOE No' |translate}}</th>
+                <th scope="col">{{'BOE Date' |translate}}</th>
+                <th scope="col">{{'Bond Number' |translate}}</th>
+                <th scope="col">{{'Bond Date' |translate}}</th>
+                <th scope="col">{{'Ex Bond Number' |translate}}</th>
+                <th scope="col">{{'Ex Bond Date' |translate}}</th>
+                <th scope="col">{{'Remarks' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of updatedFShipmentOrderLines | paginate: {id:'foo1',itemsPerPage: itemsPerPage,currentPage: pageHeader,totalItems: totalItems}">
+                <td>{{((pageHeader-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td><input type="checkbox" [checked]="product.isChecked"
+                    (click)="onSelect($event.target.checked,i,product)">
+                </td>
+                <td *ngIf="barcodePermissionUser"><input type="text" class="form-control"
+                    [(ngModel)]="product.forPBarcode"
+                    (keypress)="isProductAvailable(($event ? $event.target.value : null),product,i)">
+                  <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                    style="background: none !important; border: none !important;"><img
+                      src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner(product,i)"
+                      style="height: 28px; margin-top: 6px;"></button>
+                </td>
+                <td>{{product.wmsoLineNumber}}</td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td>{{product.batchNumber}}</td>
+                <td>{{product.orderQuantity}}</td>
+                <td>{{product.customerQuantity | decimalwithTenDigits}}</td>
+                <td><input [(ngModel)]="product.customerDispatchQuantity" (focusout)="calculateTransferQty(product,i)"
+                    placeholder="Shipped Quantity" class="form-control" type="text"
+                    (keyup)="validateDecimal('customerDispatchQuantity',i)">
+                </td>
+                <td>{{product.totalCustomerDispatchQuantity}}</td>
+                <td [hidden]="serialNumberAllocation=='No'">{{product.serialNumber}}</td>
+                <td>{{product.orderUnitPrice | decimalwithThreeDigits}}</td>
+                <td><input [(ngModel)]="product.discount" (focusout)="calculate(product,i)"
+                    (keyup)="validateDecimal('discount',i)" placeholder="{{'Discount' |translate}}" class="form-control"
+                    type="text"></td>
+                <td class="text-right">{{product.grossAmount | decimalwithThreeDigits}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}} {{product.currency}}</td>
+                <td>{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>
+                  <input [(ngModel)]="product.dispatchDate" class="form-control" type="date"
+                    (change)="selectCheck(i,product)">
+                </td>
+                <td>{{product.referenceBillOfEntryNumber}}</td>
+                <td>{{product.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.referenceBondNumber}}</td>
+                <td>{{product.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.exBondNumber}}</td>
+                <td>{{product.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.remarks}}</td>
+                <td>{{product.status}}</td>
+              </tr>
+            </tbody>
+            <div class="row mt-2" *ngIf="updatedFShipmentOrderLines.length>0">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo1"
+                  (pageChange)="fetchShipmentOrderByID((pageHeader = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+            <div class="col-md-1"><select [(ngModel)]="itemsPerPageManagement"
+                (change)="fetchAllD(pageManagement=1,$event)" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKeyManagement" placeholder="{{'Search' |translate}}"
+                [ngModelOptions]="{standalone: true}" (keyup)="fetchManagementLines(pageManagement=1);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc"
+                    (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of updatedTShipmentOrderLines | paginate: {id:'foo',itemsPerPage: itemsPerPageManagement,currentPage: pageManagement,totalItems: totalItemsManagement}">
+                <td>{{((pageManagement-1) * itemsPerPageManagement)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{product.wmsoLineNumber}}</td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td>{{product.batchNumber}}</td>
+                <td>{{product.orderQuantity}}</td>
+                <td>{{product.customerDispatchQuantity | decimalwithTenDigits}}</td>
+                <td [hidden]="serialNumberAllocation =='No'">{{product.serialNumber}}</td>
+                <td>{{product.orderUnitPrice |decimalwithThreeDigits}}</td>
+                <td>{{product.discount}}</td>
+                <td class="text-right">{{product.grossAmount |decimalwithThreeDigits}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}} {{product.currency}}</td>
+                <td class="text-center">{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{product.dispatchDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.invoiceNumber}} {{product.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.vehicleInfo?.vehicleNumber}}</td>
+                <td>{{product.vehicleType}}</td>
+                <td>{{product.wayBillNumber}}</td>
+                <td>{{product.referenceBillOfEntryNumber}}</td>
+                <td>{{product.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.referenceBondNumber}}</td>
+                <td>{{product.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.exBondNumber}}</td>
+                <td>{{product.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.remarks}}</td>
+              </tr>
+            </tbody>
+            <div class="row mt-2" *ngIf="updatedTShipmentOrderLines.length>0">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo"
+                  (pageChange)="fetchManagementLines((pageManagement = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" [hidden]="true">
+      <div class="col-md-12 mt-1">
+        <div class="text-center">
+          <div class="row ">
+            <div class="col-md-12">
+              <h6 class="text-center">Total Amount: {{totalNetAmount}} {{ currency}}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mt-1">
+        <div class="text-center">
+          <button class="btn btn-green mb-1 maintainTableHeader" (click)="confirmShipment()"
+            [disabled]="isShipmentConfirmed || raisedStatus"> {{'Confirm Shipment Order ' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" identifier="backOrderPopup" #backOrderPopup>
+  <div class="mb-3">
+    <h6 *ngIf="backOrderPopup.hasData()">{{backOrderPopup.getData()}}</h6>
+  </div>
+  <div class="text-right">
+    <button class="btn btn-green mr-1" (click)="[confirmBackOrder(true), backOrderPopup.close()]"> YES
+    </button>
+    <button class="btn btn-white" (click)="[confirmBackOrder(false), backOrderPopup.close()]"> No </button>
+  </div>
+</ngx-smart-modal>
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

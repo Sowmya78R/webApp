@@ -1,0 +1,232 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4 offset-md-4">
+      <div class="udcBtns float-right">
+       
+        <!-- <ul>
+          <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+          </li>
+          <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="top-input-label mt-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'WMSO Number' |translate}}</label>
+                  <div class="col-sm-7">
+                    <ng2-completer id="fullWmsoNumber" name="fullWmsoNumber" [minSearchLength]="0" [(ngModel)]="fullWmsoNumber"
+                      [ngModelOptions]="{standalone: true}" placeholder="{{'WMSO Number' |translate}}"
+                      [datasource]="uniqueArrayList" (selected)="setWmsoNumber($event)">
+                    </ng2-completer>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-6 col-form-label">{{'Search Employee' |translate}}</label>
+                  <div class="col-sm-6">
+                    <ng-multiselect-dropdown [placeholder]="'Select Employee'" [settings]="dropdownSettings"
+                      [data]="wareHouseTeamsListIDs" [(ngModel)]="forSearchEmp" [ngModelOptions]="{standalone: true}">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 text-center" style="position: relative;left: 32px;">
+                <button class="btn-primary mt-1 mr-1" [disabled]="!forSearchEmp && !fullWmsoNumber"
+                  (click)="getDataForFilters()">{{'Filter' |translate}}</button>
+                <button class="btn-info mt-1" (click)="resetOnly()">{{'Reset' |translate}}</button>
+              </div>
+              <div class="col-md-3 text-right">
+                               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="emptyBackGroun mt-2">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Assign Employee' |translate}}</label>
+              <div class="col-sm-7">
+                <ng-multiselect-dropdown [placeholder]="'Assign Employee'" [settings]="dropdownSettings"
+                  [data]="wareHouseTeamsListIDs" [(ngModel)]="assignedEmployeeIDName"
+                  [ngModelOptions]="{standalone: true}">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-7 col-form-label">{{'Planned Completion Date' |translate}}</label>
+              <div class="col-sm-5">
+                <input type="datetime-local" class="form-control" [(ngModel)]="completionDate"
+                  [ngModelOptions]="{standalone: true}"style="width:169px">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 text-right" style="position: relative;left: 28px;">
+            <button class="btn btn-primary mr-1" (click)="multiStart('startDate')">{{'Start' |translate}}</button>
+            <button class="btn btn-primary mr-1" (click)="multiStart('status')">{{'Complete' |translate}}</button>
+            <button class="btn btn-primary mr-1" (click)="assignEmployeeforMulti()"
+              [disabled]="selectedDocuments.length==0">{{'Assign' |translate}}</button>
+          </div>
+          <div class="col-md-3 text-right">
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+            style="background: none !important;border: none !important;">
+            <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+          </button>
+          <button type="button" (click)="generatePDF()" title="Print PDF"
+            style="background: none !important;border: none !important;">
+            <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+          </button> 
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table  class="table table-striped" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Image' | translate}}</th>
+              <th scope="col">{{'Include' |translate}}<input type="checkbox" class="form-control"
+                  (click)="selectAllData($event)" [disabled]="makeThisDisable" [(ngModel)]="selectAllCheckboxValue"
+                  [ngModelOptions]="{standalone: true}">
+              </th>
+              <th scope="col">{{'WMSO Number' |translate}}</th>
+
+              <th>{{'Action' |translate}}</th>
+              <th scope="col">{{'Start Date' |translate}}</th>
+              <!--  <th scope="col">End Date</th> -->
+              <th scope="col">{{'Planned Completion Date' |translate}}</th>
+              <th scope="col">{{'Assigned By' |translate}}</th>
+              <th scope="col">{{'Assigned To' |translate}}</th>
+              <th scope="col">{{'Product ID Name' |translate}}</th>
+              <th scope="col">{{'Product Description' |translate}}</th>
+              <th scope="col">{{'Brand Name' |translate}}</th>
+              <th scope="col">{{'UOM' |translate}}</th>
+              <th scope="col">{{'Order Quantity' |translate}}</th>
+              <th scope="col">{{'Picked Quantity' |translate}}</th>
+              <th scope="col">{{'Convertion Type' |translate}}</th>
+              <th scope="col">{{'Repacked Quantity' |translate}}</th>
+              <th scope="col">{{'Gain weight (loss/gain)' |translate}}</th>
+              <th scope="col">{{'Packing Type' |translate}}</th>
+              <th scope="col">{{'Packing Material' |translate}}</th>
+              <th scope="col">{{'Created Date' |translate}}</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rePackingData;let i=index">
+              <td class="text-left">{{i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td class="text-center"><input type="checkbox" [disabled]="makeThisDisable" [checked]="data.isChecked"
+                  (change)="onDocumentSelect($event,data)"></td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td><span *ngIf="data.rePackingInfo?.startDate && data.rePackingInfo?.endDate">Completed</span>
+                <span *ngIf="data.rePackingInfo?.startDate && !data.rePackingInfo.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="!data.rePackingInfo.startDate"><button class="btn btn-primary"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>
+              <td>{{data.rePackingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <!--  <td>{{data.rePackingInfo?.endDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+              <!-- <td>{{data.rePackingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+              <td><input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                  [disabled]="makeThisDisable" *ngIf="data.rePackingInfo.status === 'Open'; else closed3"
+                  [(ngModel)]="data.rePackingInfo.plannedCompletionDate">
+                <ng-template #closed3>
+                  {{data.rePackingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+                </ng-template>
+              </td>
+              <td>{{data.rePackingInfo.assignedBy}} {{data.rePackingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>
+                <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                  [data]="wareHouseTeamsListIDs" [(ngModel)]="data.rePackingInfo.assignedTo"
+                  [disabled]="makeThisDisable" [ngModelOptions]="{standalone: true}"
+                  (focusout)="intoEmployee(data,'Assign')">
+                </ng-multiselect-dropdown>
+              </td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td> {{data.brandName}} </td>
+              <td class="text-center"> {{data.inventoryUnit}} </td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.convertionType}}</td>
+              <td>
+                <input type="text" class="form-control" id="repackedQty"
+                  *ngIf="data.rePackingInfo.status === 'Open'; else closed" [(ngModel)]="data.rePackingInfo.repackedQty"
+                  placeholder="RePacked Quantity" [disabled]="makeThisDisable">
+                <ng-template #closed>
+                  {{data.rePackingInfo.repackedQty | decimalwithThreeDigits}}
+                </ng-template>
+              </td>
+              <td>
+                <input type="text" class="form-control" [readonly]="makeThisDisable" id="grossWeight"
+                  *ngIf="data.rePackingInfo.status === 'Open'; else closed3"
+                  [(ngModel)]="data.rePackingInfo.grossWeight" placeholder="Gain Weight (Loss/Gain)">
+                <ng-template #closed3>
+                  {{data.rePackingInfo.grossWeight}}
+                </ng-template>
+              </td>
+              <td> <select class="form-control" id="packingType" style="width: 108px;" name="packingType"
+                  *ngIf="data.rePackingInfo.status === 'Open'; else closed1"
+                  [(ngModel)]="data.rePackingInfo.packingType" [disabled]="makeThisDisable">
+                  <option [value]="null">Select</option>
+                  <option value="mechanical">mechanical</option>
+                  <option value="manual">manual</option>
+                </select>
+                <ng-template #closed1>
+                  {{data.rePackingInfo.packingType}}
+                </ng-template>
+              </td>
+              <td><input type="text" class="form-control" id="packingMeterial"
+                  *ngIf="data.rePackingInfo.status === 'Open'; else closed2"
+                  [(ngModel)]="data.rePackingInfo.packingMeterial" placeholder="packing Metarial"
+                  [readonly]="makeThisDisable">
+                <ng-template #closed2>
+                  {{data.rePackingInfo.packingMeterial}}
+                </ng-template>
+              </td>
+              <td>{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

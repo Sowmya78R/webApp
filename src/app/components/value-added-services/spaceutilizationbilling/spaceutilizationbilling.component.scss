@@ -1,0 +1,12 @@
+.custom-dropdown {
+    width: 100%; /* Adjust width as needed */
+    max-width: 400px; /* Adjust max-width as needed */
+  }
+  
+.custom-font-size .multiselect-dropdown .dropdown-btn {
+  width: 272pt !important; 
+}
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret{
+  position: absolute!important;
+  right:-140px!important
+} 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8">
+<title>Account Locked</title>
+<style>
+td > center > b > a[href] {
+color: #5669e6 !important;
+text-decoration: none !important;
+}
+
+td > center > b > span > a[href] {
+color: #b9b7b6 !important;
+text-decoration: none !important;
+}
+</style>
+<style>
+.undoreset a, .undoreset a:hover { text-decoration: none !important; }
+
+</style>
+</head>
+
+<body bgcolor="#f7f4f0" x-ms-format-detection="none">
+<table width="100%" border="0" style="margin:auto; border-spacing:50px !important; border-collapse: separate !important;" cellpadding="0" bgcolor="#f7f4f0">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         	<td>$header</td>
+        </tr>
+        <tr>
+          <td><table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#ffffff">
+              
+            
+              <tr>
+                <td width="%"></td>
+                <td width="90%"><table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#ffffff">
+                    <tr>
+                    	<td>
+                    		</br>
+                    	</td>
+                    </tr>
+                    <tr>
+                      <td width="100%"><center style="color:#7686f2; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:24px;">
+                          We're sorry you're having trouble.
+                        </center></td>
+                    </tr>
+                    <tr>
+                      <td width="100%"><center style="color:#000000; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:14px;">
+                          Your Attorney account has been locked due to a number of invalid login attempts. Select the link below to create a new password for your 
+                        </center>
+                        <center style="color:#000000; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; font-size:14px;">
+                        	account. This link  expires in 24 hours.
+                        </center>
+                       
+                        </td>
+                    </tr>
+                   
+                   <tr>
+                   	<td>
+                   		 <center>
+                          <b> <a style="color:#5669e6; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; text-decoration: none;" href="$url" target="_blank"> $url</a></b>
+                        </center>
+                   	</td>
+                   </tr>
+                    
+                    <tr>
+                    	<td>
+                    		</br>
+                    		</br>
+                    	</td>
+                    </tr>                    
+                  </table></td>
+                <td width="5%"></td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td>$footer</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr></tr>
+</table>
+</body>
+</html>

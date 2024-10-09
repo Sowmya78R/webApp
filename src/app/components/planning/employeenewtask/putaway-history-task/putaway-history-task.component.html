@@ -1,0 +1,130 @@
+<div id="inBody">
+  <div class="row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3 text-right">
+      <div class="udcBtns">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label class="mt-1">Show</label>
+          </div>
+          <div class="" style="top:-10px">
+            <select [(ngModel)]="itemsPerPage" (change)="getCallOnPageLoad(page=1)" class="form-control shortWidth"
+              [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+          <div class="col-md-1 mt-1"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1" style="left: -20px;">
+            <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+              (keyup)="getCallOnPageLoad(page=1)">
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr style="background-color:'blueviolet'">
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th>{{'Image'|translate}}</th>
+              <th scope="col">{{'WMPO Number' |translate}}</th>
+              <th scope="col">{{'Putaway Number' |translate}}</th>
+              <th scope="col">{{'Status' |translate}}</th>
+              <th scope="col">{{'Start Date' |translate}}</th>
+              <th scope="col">{{'End Date' |translate}}</th>
+              <th scope="col">{{'Planned Completion Date' |translate}}</th>
+              <th scope="col">{{'Assigned By' |translate}}</th>
+              <th scope="col">{{'Assigned To' |translate}}</th>
+              <th scope="col">{{'Product ID' |translate}}</th>
+              <th scope="col">{{'Product Name' |translate}}</th>
+              <th scope="col">{{'Product Description' |translate}}</th>
+              <th scope="col">{{'Brand Name' |translate}}</th>
+              <th scope="col">{{'UOM' |translate}}</th>
+              <th scope="col">{{'Quantity' |translate}}</th>
+              <th scope="col">{{'Actual Putaway Quantity'}}</th>
+              <th scope="col">{{'Zone Name' |translate}}</th>
+              <th scope="col">{{'Rack Name' |translate}}</th>
+              <th scope="col">{{'Level Name' |translate}}</th>
+              <th scope="col">{{'Column Name' |translate}}</th>
+              <th scope="col">{{'Location Name' |translate}}</th>
+              <th scope="col">{{'Invoice Number' |translate}}</th>
+              <th scope="col">{{'Invoice Date' |translate}}</th>
+              <th scope="col">{{'BOE No' |translate}}</th>
+              <th scope="col">{{'BOE Date' |translate}}</th>
+              <th scope="col">{{'Bond Number' |translate}}</th>
+              <th scope="col">{{'Bond Date' |translate}}</th>
+              <th scope="col">{{'Created Date' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i=index;let data of putAwaysList | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+              <td class="text-left">{{((page -1) * itemsPerPage)+i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td>{{data.fullWmpoNumber}}</td>
+              <td>{{data.fullPutawayNumber}}</td>
+              <td>{{data.status}}</td>
+              <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
+              <td>{{data.putawayExecutive}} <br> {{data.assignedDate| date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>
+                <span *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+                  {{data.wareHouseTeamInfo.executiveIDName}}
+                </span>
+              </td>
+              <td>{{data.productMasterInfo?.productID}}</td>
+              <td>{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td class="text-center">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+              <td>{{data.actualPutawayQuantity}} </td>
+              <!-- <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{data.customersSupplierName}}</td>
+              <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{data.customersSupplierAddress}}</td> -->
+              <td>{{data.zoneInfo?.zoneName}}</td>
+              <td>{{data.rackInfo?.rackName}}</td>
+              <td>{{data.levelInfo?.levelName}}</td>
+              <td>{{data.columnInfo?.columnName}}</td>
+              <td>{{data.locationInfo?.locationName}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.billOfEntryNumber}}</td>
+              <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.bondNumber}}</td>
+              <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-center">{{data.createdDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2" *ngIf="putAwaysList.length>0">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" id="foo" (pageChange)="getCallOnPageLoad((page = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

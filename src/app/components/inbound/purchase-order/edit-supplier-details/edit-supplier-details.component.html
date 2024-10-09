@@ -1,0 +1,147 @@
+<form #editSupplierDetails="ngForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+   <div class="panel portlet">
+      <div class="formBox portlet-title">
+         <div class="row">
+            <div class="panel-heading formTitle">
+               <h4>{{'EDIT SUPPILER DETAILS' |translate}}</h4>
+               <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+               <h4>{{'EDIT SUPPILER DETAILS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+               </h4>
+            </div>
+         </div>
+         <div id="style-8" class="panel-body scrollbar">
+            <div class="row force-overflow">
+               <div class="col-md-6">
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Supplier ID' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="supplierID" name="supplierID" [readOnly]="isReadMode"
+                           [(ngModel)]="editSupplierData.supplierID" placeholder="{{'Supplier ID' |translate}}"
+                           (focus)="onFocusForElement('supplierID')"
+                            (focusout)="onFocusOutForElement()"
+                           #supplierID="ngModel" class="form-control vblr" required type="text" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Supplier Name' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="supplierName1" name="supplierName1" [readOnly]="isReadMode"
+                           (focus)="onFocusForElement('supplierName')"
+                          (focusout)="onFocusOutForElement()"
+                           #supplierName="ngModel" [(ngModel)]="editSupplierData.supplierName"
+                           placeholder="{{'Supplier Name' |translate}}" class="form-control" required type="text" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Supplier Type' |translate}}</label>
+                     <div class="col-sm-7">
+                        <select class="form-control" id="supplierType" name="supplierType"
+                           [(ngModel)]="editSupplierData.supplierType" required
+                           (ngModelChange)="onFocusForElement('supplierType')" [disabled]="isReadMode"
+                           (focusout)="onFocusOutForElement()"
+                           #supplierType="ngModel">
+                           <option [ngValue]="null">--Select--</option>
+                           <option *ngFor="let supplierType of supplierTypes" [ngValue]="supplierType">
+                              {{supplierType}}</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="email" name="email" [(ngModel)]="editSupplierData.email"
+                           (focus)="onFocusForElement('email')"
+                           (focusout)="onFocusOutForElement()" #email="ngModel" placeholder="{{'Email' |translate}}" class="form-control"
+                           required type="text" [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Country' |translate}}</label>
+                     <div class="col-sm-7">
+                        <select id="country" name="country" [(ngModel)]="editSupplierData.country"
+                           (ngModelChange)="onFocusForElement('country')"
+                           (focusout)="onFocusOutForElement()"
+                           #country="ngModel" placeholder="Country" class="form-control" required
+                           [disabled]="isReadMode">
+                           <option [ngValue]="null">--Select--</option>
+                           <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}
+                           </option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <p class="ml-3 mt-4" [hidden]="raisedPOCheck"><a (click)="redirectToSupplierMasterData()" class="red "><u>{{'Edit More Suppiler details' |translate}}</u></a></p>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="state" name="state" [(ngModel)]="editSupplierData.state"
+                           (focus)="onFocusForElement('state')"
+                           (focusout)="onFocusOutForElement()" #state="ngModel" placeholder="{{'State' |translate}}" class="form-control"
+                           required type="text" [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'City' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="city" name="city" [(ngModel)]="editSupplierData.city"
+                           (focus)="onFocusForElement('city')"
+                           (focusout)="onFocusOutForElement()" #city="ngModel" placeholder="{{'City' |translate}}" class="form-control"
+                           required type="text" [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'SPOC Name' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="spocName" name="spocName" [(ngModel)]="editSupplierData.spocName"
+                           (focus)="onFocusForElement('spocName')"
+                           (focusout)="onFocusOutForElement()" #spocName="ngModel" placeholder="{{'SPOC Name' |translate}}"
+                           class="form-control" required type="text" [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'SPOC Number' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="spocNumber" name="spocNumber" [(ngModel)]="editSupplierData.spocNumber"
+                           (focus)="onFocusForElement('spocNumber')"
+                          (focusout)="onFocusOutForElement()"
+                           #spocNumber="ngModel" placeholder="{{'SPOC Number' |translate}}" class="form-control" required type="text"
+                           [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'SPOC Email' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="spocEmail" name="spocEmail" [(ngModel)]="editSupplierData.spocEmail"
+                           (focus)="onFocusForElement('spocEmail')"
+                           (focusout)="onFocusOutForElement()"
+                           #spocEmail="ngModel" placeholder="{{'SPOC Email' |translate}}" class="form-control" required type="text"
+                           [readOnly]="isReadMode" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="!isEditSupplier">
+               <div class="form-group row">
+                  <div class="col-sm-12 text-center mb-3">
+                     <button class="btn btn-green" (click)="update()" [disabled]="raisedPOCheck">{{'Update' |translate}}</button>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="isEditSupplier">
+               <div class="form-group row">
+                  <div class="col-sm-12 text-center mb-3">
+                     <button class="btn btn-green mr-2" (click)="save()">{{'Save' |translate}}</button>
+                     <button class="btn btn-white" (click)="cancel()">{{'Cancel' |translate}}</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>

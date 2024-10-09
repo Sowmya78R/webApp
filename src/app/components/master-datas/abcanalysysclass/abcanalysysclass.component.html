@@ -1,0 +1,141 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" *ngIf="permissionsList.includes('Update')">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                </i>{{'Download Excel' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="abcAnalysisClassForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'ABC Class Analysis' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i></div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'ABC Class Analysis' |translate}} <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div class="panel-body scrollbar" id="style-8">
+              <div class="row force-overflow">
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Class Name' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" name="" class="form-control" formControlName="className"[readonly]="isReadMode"
+                        placeholder="{{'Class Name' |translate}}" id="" [readOnly]="makeReadOnly">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Class Description' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="" class="form-control" formControlName="classDescription"
+                        placeholder="{{'Class Description' |translate}}" id="" [readOnly]="makeReadOnly">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Value' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" name="" class="form-control" formControlName="value"
+                       placeholder="{{'Value' |translate}}" id="" oninput="validity.valid||(value='');" min="0" [readOnly]="makeReadOnly">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Type' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <select name="" id=""class="form-control" formControlName="type" [disabled] = "makeThisDisabled">
+                        <option [selected]="true">{{'--Select--' |translate}}</option>
+                        <option value="ABC">ABC</option>
+                        <option value="XYZ">XYZ</option>
+                        <option value="Inventory Ageing">Inventory Ageing</option>
+                      </select>
+                    <!--   <input type="text" name="type" class="form-control" formControlName="value" placeholder="Value" id=""> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="form-group row drop-status">
+            <label class="col-sm-2 col-form-label">{{'Status:' |translate}}</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="status" name="status" formControlName="status" [disabled] = "makeThisDisabled">
+             <option value="Active" [selected] = "true">{{'Active' |translate}}</option>
+             <option value="InActive">{{'InActive' |translate}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right">
+              <button class="btn btn-green m-1" (click)="save()" [disabled]="abcAnalysisClassForm.invalid">{{'Save' |translate}}</button>
+              <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td>{{'S.No' |translate}}</td>
+                  <td>{{'Class Name' |translate}}</td>
+                  <td>{{'Class Description'|translate}}</td>
+                  <td>{{'Value' |translate}}</td>
+                  <td>{{'Status' |translate}}</td>
+                  <td>{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of abcAnalysisClassesList;let i = index">
+                  <td class="text-left">{{i +1}}</td>
+                  <th style="cursor: pointer;"(click)="edit(data)">{{data.className}}</th>
+                  <td>{{data.classDescription}}</td>
+                  <td class="text-center">{{data.value}}</td>
+                  <td>{{data.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                    class="fa fa-trash btn-blue" (click)="delete(data)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

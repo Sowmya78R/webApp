@@ -1,0 +1,339 @@
+<div id="inBody" [dir]="direction" [formGroup]="PRForm">
+  <div class="col-md-12">
+   <!--  <div class="row mb-2">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+         </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'PURCHASE REQUEST' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  |
+                  <i class="material-icons fullscreen"> unfold_less </i>
+                </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'PURCHASE REQUEST' |translate}} <div class="float-right"><i class="material-icons fullscreen">
+                      close </i>
+                  </div>
+                </h4>
+              </div>
+            </div>
+            <div class="panel-body scrollbar" id="style-8" style="height:auto">
+              <div class="row force-overflow">
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Product Category' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select Product Catgeory'" [settings]="dropdownSettings"
+                        [data]="categoriesList" [formControl]="PRForm.controls['productCategoryNames']"
+                        placeholder="product Category Name" (ngModelChange)="getCategoryName()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Product' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="productIDs" [formControl]="PRForm.controls['productIDNames']">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Include Inventory' |translate}}</label>
+                    <div class="col-md-7 mt-3">
+                      <input type="checkbox" class="form-control" [(ngModel)]="includeCheck"
+                        [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Sub Category-1' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 1'" [settings]="dropdownSettings"
+                        [data]="subList1" [formControl]="PRForm.controls['subcatgory1']"
+                        (focusout)="getExistingCategory()" [disabled]="isSub1Disable">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Exp Delivery From' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="datetime-local" class="form-control" [formControl]="PRForm.controls['dateFrom']">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Exp Delivery To' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="datetime-local" class="form-control" [formControl]="PRForm.controls['dateTo']">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Sub Category-2' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 2'" [settings]="dropdownSettings"
+                        [data]="subList2" [formControl]="PRForm.controls['subcatgory2']"
+                        (focusout)="getSub3DropdownDisable()" [disabled]="isSub2Disable">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="wareHouseIDs" [formControl]="PRForm.controls['destinationWareHouseIDNames']">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="orderTypeDropdown" [formControl]="PRForm.controls['orderTypes']">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                 
+                
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Sub Category-3' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 3'" [settings]="dropdownSettings"
+                        [data]="subList3" [formControl]="PRForm.controls['subcatgory3']" [disabled]="isSub3Disable"
+                        (focusout)="getDropdownDatas()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Customer' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="customerIDs" [formControl]="PRForm.controls['customerIDNames']">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>                  
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                    <div class="col-sm-8">
+                      <ng2-completer [datasource]="supplierIDNamesMasters" [minSearchLength]="0"
+                        (selected)="getSupplier($event)" [formControl]="PRForm.controls['supplierIDName']"
+                        placeholder="{{'supplierIDName' |translate}}"  [inputClass]="'form-control form-control-inline'">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-right">
+          <button class="btn btn-green m-1" (click)="getDataForFilters()">{{'Filter' |translate}}</button>
+          <button class="btn btn-white"  (click)="clear()">{{'Clear' |translate}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'Brand' |translate}}</th>
+                <th scope="col">{{'Received Quantity' | translate}}</th>
+                <th scope="col">{{'Incoming Order Quantity' |translate}}</th>
+                <th scope="col">{{'Inventory Unit' |translate}}</th>
+                <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                <th scope="col">{{'Customer Order Qty' |translate}}</th>
+                <th scope="col">{{'Shipment Unit' |translate}}</th>
+                <th scope="col">{{'Order Quantity' |translate}}</th>
+                <th scope="col">{{'Quantity to Order' |translate}}</th>
+                <th scope="col">{{'Estimated Delivery Date' |translate}}</th>
+                <th scope="col">{{'Customer / Warehouse' |translate}}</th>
+                <th scope="col">{{'Order ID' |translate}}</th>
+                <th scope="col">{{'Order Line Number' |translate}}</th>
+                <th scope="col">{{'Order Type' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="overAll">
+              <tr *ngFor="let data of table1Array">
+                <td>{{data.productMasterInfo.productID}}</td>
+                <td>{{data.productMasterInfo.productName}}</td>
+                <td>{{data.productDescription}}</td>
+                <td>{{data.brandName}}</td>
+                <td>{{data.receivedQuantity | decimalwithTenDigits}}</td>
+                <td>{{data.incomingOrderQuantity | decimalwithTenDigits}}</td>
+                <td>{{data.inventoryUnit}}</td>
+                <td>{{data.quantityInventoryUnit | decimalwithTenDigits}}</td>
+                <td>{{data.customerOrderQuantity | decimalwithTenDigits}}</td>
+                <td>{{data.shipmentUnit}}</td>
+                <td>{{data.quantity | decimalwithTenDigits}}</td>
+                <td>{{data.quantityToOrder | decimalwithTenDigits}}</td>
+                <td>{{data.expectedDeliveryDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{(data.orderType=='Sales Order' ? data.customerMasterInfo.customerIDName:
+                  data.wareHouseTransferDestinationInfo.wareHouseIDName)}}
+                </td>
+                <td>{{data.fullOrderNumber}}</td>
+                <td>{{data.orderNumber}}</td>
+                <td>{{data.orderType}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <table class=w-100>
+      <tr>
+        <td colspan="4"></td>
+        <td style="position: relative;left: 10px;">  <label class="col-sm-4 col-form-label" style="position: relative;
+          left: 461px">{{'Supplier' |translate}}</label></td>
+        <td><input type="search" name="" id="" style="position: relative;left: 415px"></td>
+        <td><label class="col-sm-6 col-form-label" style="position: relative;
+          left: 250px;">{{'Expected Delivery Date' |translate}}</label></td>
+        <td><input type="date" class="form-control" [(ngModel)]="expectedDeliveryDate"
+          [ngModelOptions]="{standalone: true}" (change)="setDeliveryDate($event)"style="position: relative;
+          left: 100px;
+          width: 125px;"></td>
+        <td>  <button class="btn-primary btn-sm" style="margin-right: -58px;" (click)="createPO()"
+          [disabled]="!supplierIDName">
+          {{'Generate PO' |translate}}</button></td>
+        <td> <button type="button" (click)="generatePDF()" title="Print PDF"
+          style="background: none !important;border: none !important;">
+          <img src="assets/printpdf.png" alt="" style="    width: 33px;
+          position: relative;
+          height: 30px;
+          left: 57px;">
+        </button></td>
+        <td></td>
+
+      </tr>
+    </table>
+   <!--  <div class="row">
+      <div class="col-md-3">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+          <div class="col-sm-7" *ngIf="overAll">
+            <input type="text" readonly [(ngModel)]="supplierIDName" [ngModelOptions]="{standalone: true}">
+            <!-- <ng2-completer [datasource]="overAll.supplierIDNames" [minSearchLength]="0" [(ngModel)]="supplierIDName"
+              [ngModelOptions]="{standalone: true}" placeholder="{{'supplierIDName' |translate}}" >
+            </ng2-completer>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row">
+          <label class="col-sm-6 col-form-label">{{'Expected Delivery Date' |translate}}</label>
+          <div class="col-sm-6">
+            <input type="date" class="form-control" [(ngModel)]="expectedDeliveryDate"
+              [ngModelOptions]="{standalone: true}" (change)="setDeliveryDate($event)">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button class="btn-primary btn-sm" style="margin-right: 14px;" (click)="createPO()"
+          [disabled]="!supplierIDName">
+          {{'Generate PO' |translate}}</button>
+      </div>
+      <div class="col-md-3">
+        <button type="button" (click)="generatePDF()" title="Print PDF"
+          style="background: none !important;border: none !important;">
+          <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;position: relative;left: 285px;">
+        </button>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger1"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th scope="col">{{'Select' |translate}}<input type="checkbox" class="form-control" (click)="selectAllData($event)"
+                    [(ngModel)]="selectAllCheckboxValue" [ngModelOptions]="{standalone: true}"></th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'Brand' |translate}}</th>
+                <th scope="col">{{'Inventory Unit' |translate}}</th>
+                <th scope="col">{{'Quantity To be Ordered' |translate}}</th>
+                <th scope="col">{{'Shipment Unit' |translate}}</th>
+                <th scope="col">{{'Customer Order Quantity' |translate}}</th>
+                <th scope="col">{{'Order Quantity' |translate}}</th>
+                <th scope="col">{{'Order Unit' |translate}}</th>
+                <th scope="col">{{'Estimated Delivery Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="overAll && overAll.purchaseRequisitionHelpers && overAll.purchaseRequisitionHelpers.length>0">
+              <tr *ngFor="let data of overAll.purchaseRequisitionHelpers;let i=index">
+                <td><input type="checkbox" class="form-control" [checked]="data.select"
+                    (click)="setSelect($event.target.checked,data,i)" style="position: relative;
+                  left: 26px;">
+                </td>
+                <td>{{data.productMasterInfo.productID}}</td>
+                <td>{{data.productMasterInfo.productName}}</td>
+                <td>{{data.productDescription}}</td>
+                <td>{{data.brandName}}</td>
+                <td>{{data.inventoryUnit}}</td>
+                <td>{{data.quantityToOrder | decimalwithTenDigits}}</td>
+                <td>{{data.shipmentUnit}}</td>
+                <td>{{data.customerQuantityToOrder | decimalwithTenDigits}}</td>
+                <td>{{data.actualQuantityToOrder | decimalwithTenDigits}}</td>
+                <td><select [(ngModel)]="data.orderUnit" [ngModelOptions]="{standalone: true}"
+                    (change)="unitChange($event,data,i)">
+                    <option [value]="null">--Select--</option>
+                    <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                      {{unit.unitCode}}</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="date" [(ngModel)]="data.expectedDeliveryDate" class="form-control"
+                    [ngModelOptions]="{standalone: true}">
+                </td>
+              </tr>
+            </tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{totalquantityToOrder | decimalwithTenDigits}}</td>
+                <td></td>
+                <td>{{totalcustomerQuantityToOrder | decimalwithTenDigits}}</td>
+                <td>{{totalactualQuantityToOrder| decimalwithTenDigits}}</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

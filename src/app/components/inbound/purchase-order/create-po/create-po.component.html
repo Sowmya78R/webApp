@@ -1,0 +1,888 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row mb-2">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF'
+                |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 pr0">
+        <form>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle" style="width:fit-content">
+                  <h4>{{'PURCHASE ORDER HEADER' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span>
+                    | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'PURCHASE ORDER HEADER' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <!-- *ngIf="productHeaderData.receiptType=='Purchase Order'" -->
+                    <div class="form-group row"
+                      *ngIf="!productHeaderData.wareHouseTransferType && !productHeaderData.returnOrderType">
+                      <label class="col-sm-5 pr-0 col-form-label">{{'Supplier' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7" *ngIf="!id">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search supplier to retrive data of supplier"> info </i>
+                        <ng2-completer name="supplierIDName"
+                          [(ngModel)]="productHeaderData.supplierMasterInfo.supplierIDName" #supplierIDName="ngModel"
+                          [datasource]="dataService" [minSearchLength]="0" placeholder="{{'Supplier' |translate}}"
+                          [inputClass]="'form-control form-control-inline'"
+                          [ngClass]="{'valiError': shouldShowErrors(supplierIDName), 'valiSucess': shouldShowSuccess(supplierIDName)}"
+                          (selected)="onSupplierIDNameChange($event)" [disabled]="makeReadOnly">
+                        </ng2-completer>
+                      </div>
+                      <div class="col-sm-7" *ngIf="id">
+                        <input type="text" class="form-control" readonly name="supplierIDName"
+                          [(ngModel)]="productHeaderData.supplierMasterInfo.supplierIDName" #supplierIDName="ngModel">
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="!productHeaderData.wareHouseTransferType && !productHeaderData.returnOrderType">
+                      <label class="col-sm-5 col-form-label">{{'Supplier Name' |translate}}</label>
+                      <div class="col-sm-7 iHelp">
+                        <input id="supplierName" [readOnly]="isReadOnly"
+                          [(ngModel)]="productHeaderData.supplierMasterInfo.supplierName" name="supplierName"
+                          placeholder="{{'Supplier Name' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Currency' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="currency" name="currency"
+                          [(ngModel)]="productHeaderData.currency" #currency="ngModel"
+                          [disabled]="makeReadOnly || raisedPOCheck" (change)="onFocusForElement(currency)">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let currency of currencies" [ngValue]="currency.currency">
+                            {{currency.currency}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-5 col-form-label">{{'Ship From Address' |translate}}</label>
+                      <div class="col-sm-7"
+                        *ngIf="!productHeaderData.wareHouseTransferType && !productHeaderData.returnOrderType">
+                        <select id="shipFromAddress" (focus)="onFocusForElement(shipFromAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.shipFromAddress.name"
+                          name="shipFromAddress" class="form-control " required type="text" #shipFromAddress="ngModel"
+                          (change)="setJsonFrom($event)">
+                          <option *ngFor="let ib of shipFromAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-7"
+                        *ngIf="productHeaderData.wareHouseTransferType || productHeaderData.returnOrderType">
+                        <input id="shipFromAddress" (focus)="onFocusForElement(shipFromAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.shipFromAddress.name"
+                          name="shipFromAddress" class="form-control " readonly type="text" #shipFromAddress="ngModel">
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-group row" *ngIf="productHeaderData.wareHouseTransferType">
+                      <label class="col-sm-5 pr-0 col-form-label">{{'WareHouseIDName' |translate}} <i
+                          class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input [(ngModel)]="productHeaderData.wareHouseTransferSourceInfo.wareHouseIDName"
+                          name="wareHouseIDName" #wareHouseIDName="ngModel" readonly placeholder="WareHouse"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="productHeaderData.returnOrderType">
+                      <label class="col-sm-5 pr-0 col-form-label">{{'Customer' |translate}} <i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input [(ngModel)]="productHeaderData.customerMasterInfo.customerIDName" name="customerIDName"
+                          #customerIDName="ngModel" readonly placeholder="Customer" class="form-control" type="text">
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Confirmed By' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="confirmedBy" [(ngModel)]="productHeaderData.confirmedBy" #confirmedBy="ngModel"
+                          name="confirmedBy" placeholder="{{'Confirmed By' |translate}}" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Confirmed Date' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="confirmedDate" [(ngModel)]="productHeaderData.confirmedDate" #confirmedDate="ngModel"
+                          name="confirmedDate" placeholder="{{'Receipt Date' |translate}}" class="form-control"
+                          type="date">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Ship To Address' |translate}}</label>
+                      <div class="col-sm-7"
+                        *ngIf="!productHeaderData.wareHouseTransferType && !productHeaderData.returnOrderType">
+                        <select id="shipToAddress" (focus)="onFocusForElement(shipToAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.shipToAddress.name"
+                          name="shipToAddress" class="form-control " required type="text" #shipToAddress="ngModel"
+                          (change)="setJsonto($event)">
+                          <option *ngFor="let ib of shipTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-7"
+                        *ngIf="productHeaderData.wareHouseTransferType || productHeaderData.returnOrderType">
+                        <input id="shipToAddress" (focus)="onFocusForElement(shipToAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.shipToAddress.name"
+                          name="shipToAddress" class="form-control " readonly type="text" #shipToAddress="ngModel">
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-5 col-form-label">{{'Bill To Address' |translate}}</label>
+                      <div class="col-sm-7"
+                        *ngIf="!productHeaderData.wareHouseTransferType && !productHeaderData.returnOrderType">
+                        <select id="billToAddress" (focus)="onFocusForElement(billToAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.billToAddress.name"
+                          name="billToAddress" class="form-control " required type="text" #billToAddress="ngModel"
+                          (change)="setBillTo($event)">
+                          <option *ngFor="let ib of billTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-7"
+                        *ngIf="productHeaderData.wareHouseTransferType || productHeaderData.returnOrderType">
+                        <input id="billToAddress" (focus)="onFocusForElement(billToAddress)"
+                          (focusout)="onFocusOutForElement()" [(ngModel)]="productHeaderData.billToAddress.name"
+                          name="billToAddress" class="form-control " readonly type="text" #billToAddress="ngModel">
+                      </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="productHeaderData.wareHouseTransferType">
+                      <label class="col-sm-5 col-form-label">{{'WareHouse Name' |translate}}</label>
+                      <div class="col-sm-7 iHelp">
+                        <input [(ngModel)]="productHeaderData.wareHouseTransferSourceInfo.wareHouseName"
+                          name="wareHouseName" #wareHouseName="ngModel" readonly
+                          placeholder="{{'WareHouse Name' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="productHeaderData.returnOrderType">
+                      <label class="col-sm-5 col-form-label">{{'Customer Name' |translate}}</label>
+                      <div class="col-sm-7 iHelp">
+                        <input [(ngModel)]="productHeaderData.customerMasterInfo.customerName" name="customerName"
+                          #customerName="ngModel" readonly placeholder="{{'WareHouse Name' |translate}}"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Receipt Date/Return Date' |translate}}<i
+                          class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input id="receiptDate" [(ngModel)]="productHeaderData.receiptDate" #receiptDate="ngModel"
+                          name="receiptDate" placeholder="{{'Receipt Date' |translate}}" class="form-control"
+                          type="date" [readOnly]="isReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Closed By' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="closedBy" [(ngModel)]="productHeaderData.closedBy" #closedBy="ngModel"
+                          name="closedBy" placeholder="{{'Closed By' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Closed Date' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="closedDate" [(ngModel)]="productHeaderData.closedDate" #closedDate="ngModel"
+                          name="closedDate" placeholder="{{'Closed Date' |translate}}" class="form-control" type="date">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Receipt Type' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input [(ngModel)]="productHeaderData.receiptType" readonly
+                          placeholder="{{'Purchase Order' |translate}}" [ngModelOptions]="{standalone: true}"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'PO Delivery Date' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="poDeliveryDate" [(ngModel)]="productHeaderData.poDeliveryDate" name="poDeliveryDate"
+                          #poDeliveryDate="ngModel" placeholder="{{'PO Delivery Date' |translate}}"
+                          [disabled]="raisedPOCheck" (change)="addLine('poDeliveryDate','eta')"
+                          [ngClass]="{'valiError': shouldShowErrors(poDeliveryDate), 'valiSucess': shouldShowSuccess(poDeliveryDate)}"
+                          class="form-control" type="date" required>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'PO Reference No' |translate}}</label>
+                      <div class="col-sm-7 iHelp">
+                        <input id="referencePONumber" [(ngModel)]="productHeaderData.referencePONumber"
+                          name="referencePONumber" placeholder="{{'PO Reference No' |translate}}" class="form-control"
+                          type="text" [disabled]="raisedPOCheck">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'PO Reference No A' |translate}}</label>
+                      <div class="col-sm-7 iHelp">
+                        <input id="poReferenceNoA" [(ngModel)]="productHeaderData.poReferenceA" name="poReferenceNoA"
+                          placeholder="{{'PO Reference No A' |translate}}" class="form-control" type="text"
+                          [disabled]="raisedPOCheck">
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'PO Reference No B' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="poReferenceNoB" [(ngModel)]="productHeaderData.poReferenceB" name="poReferenceNoB"
+                          placeholder="{{'PO Reference No B' |translate}}" class="form-control" type="text"
+                          [disabled]="raisedPOCheck">
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Terms of payments' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="termsOfPayment"
+                          [ngClass]="{'valiError': shouldShowErrors(termsOfPayment), 'valiSucess': shouldShowSuccess(termsOfPayment)}"
+                          (focus)="onFocusForElement(termsOfPayment)" (focusout)="onFocusOutForElement()"
+                          [(ngModel)]="productHeaderData.termsOfPayment" name="termsOfPayment" [readOnly]="isReadOnly"
+                          placeholder="{{'Terms of payment' |translate}}" class="form-control " type="text"
+                          #termsOfPayment="ngModel">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Tax Group' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" [(ngModel)]="productHeaderData.taxGroup.taxGroup"
+                          #taxGroup="ngModel" name="taxGroup" (change)="onFocusForElement(taxGroup)"
+                          (focusout)="onFocusOutForElement()" [disabled]="raisedPOCheck">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let taxGroup of taxGroups">
+                            {{taxGroup.taxGroup}}</option>
+                        </select>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2 mt0">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+         
+          <div class="">
+            <form>
+              <div class="panel portlet">
+                <div class="formBox portlet-title">
+                  <div class="row">
+                    <div class="panel-heading formTitle" style="width:fit-content">
+                      <h4>{{'PURCHASE ORDER LINES' |translate}}</h4>
+                      <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                            aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i>
+                      </div>
+                    </div>
+                    <div class="formTitleHover">
+                      <h4>{{'PURCHASE ORDER LINES' |translate}}
+                        <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="row force-overflow">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Product' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-7" *ngIf="pBySMapping == 'Yes'">
+                          <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                            title="Search product to retrive data of product"> info </i>
+                          <ng2-completer name="productIDName" [(ngModel)]="createPOLines.productIDName"
+                            [datasource]="productDataService" #productIDName="ngModel"
+                            [ngClass]="{'valiError': shouldShowErrors(productIDName), 'valiSucess': shouldShowSuccess(productIDName)}"
+                            [minSearchLength]="0" (selected)="onProductIDNameChange($event,null,'fromHtml')"
+                            placeholder="{{'Product' |translate}}" (keypress)="getProductDetails()"
+                            [disabled]="makeThisDisabled || raisedPOCheck"
+                            [inputClass]="'form-control form-control-inline'">
+                          </ng2-completer>
+                        </div>
+                        <div class="col-sm-7" *ngIf="pBySMapping != 'Yes'" [hidden]="makeThisDisabled || raisedPOCheck">
+                          <ejs-combobox #remote [dataSource]="productsIDNamesforScroll" [fields]="fields"
+                            (open)="onOpen($event,'dropdownObj')" [query]="query" [(ngModel)]='dummyProductIDName'
+                            [allowFiltering]="true" (keypress)="getProductDetails()" (filtering)='onFiltering($event)'
+                            (change)="accessOrderID($event)" [enablePersistence]="true"
+                            [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                        </div>
+                        <div class="col-sm-7" *ngIf="pBySMapping != 'Yes' && (makeThisDisabled || raisedPOCheck)">
+                          <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                            title="Search product to retrive data of product"> info </i>
+                          <ng2-completer name="productIDName" [(ngModel)]="createPOLines.productIDName"
+                            [datasource]="productDataService" #productIDName="ngModel"
+                            [ngClass]="{'valiError': shouldShowErrors(productIDName), 'valiSucess': shouldShowSuccess(productIDName)}"
+                            [minSearchLength]="0" (selected)="onProductIDNameChange($event,null,'fromHtml')"
+                            placeholder="{{'Product' |translate}}" (keypress)="getProductDetails()"
+                            [disabled]="makeThisDisabled || raisedPOCheck"
+                            [inputClass]="'form-control form-control-inline'">
+                          </ng2-completer>
+                        </div>
+                        <div class="col-sm-1">
+                          <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                            style="background: none !important; border: none !important;"><img
+                              src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner()"
+                              style="width: 33px; height: 28px; margin-left: -24px; margin-top: 6px;"></button>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Product Name' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="productName" name="productName" [(ngModel)]="createPOLines.productName"
+                            [readOnly]="true" placeholder="{{'Product Name' |translate}}" class="form-control"
+                            type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Product Description' |translate}}
+                        </label>
+                        <div class="col-sm-8 input-group">
+                          <input id="productDescription" name="productDescription"
+                            [(ngModel)]="createPOLines.productDescription"
+                            placeholder="{{'Product Description' |translate}}" class="form-control" type="text"
+                            [disabled]="makeThisDisabled">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Brand Name' |translate}}</label>
+                        <div class="col-sm-8">
+                          <select class="form-control col-form-label-sm" (change)="selectedBrand($event)"
+                            [(ngModel)]="createPOLines.brandName" id="data.brandName"
+                            [ngModelOptions]="{standalone: true}">
+                            <option selected [value]="null">Select Brand</option>
+                            <option *ngFor="let brand of createPOLines.brandNames">
+                              {{brand}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'Receiving Unit' |translate}}<i class="red">*</i>
+                        </label>
+                        <div class="col-sm-8">
+                          <select class="form-control " id="units" (ngModelChange)="onFocusForElement(receivingUnit)"
+                            (focusout)="onFocusOutForElement()" #receivingUnit="ngModel" required name="units"
+                            [(ngModel)]="createPOLines.units" [disabled]="makeThisDisabled">
+                            <option [ngValue]="null">--Select--</option>
+                            <option *ngFor="let receivingUnit1 of units" [ngValue]="receivingUnit1.unitCode">
+                              {{receivingUnit1.unitCode}}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'Unit Price' |translate}}</label>
+                        <div class="col-sm-4">
+                          <input id="unitPrice" name="unitPrice" [ngModel]="createPOLines.unitPrice | decimalFilter"
+                            (ngModelChange)="createPOLines.unitPrice=$event" [ngModelOptions]="{standalone: true}"
+                            [readOnly]="true" placeholder="{{'Unit Price' |translate}}" class="form-control"
+                            type="text">
+                        </div>
+                        <div class="col-sm-4 extraLongWidth">
+                          <input id="currency" name="currency" [(ngModel)]="createPOLines.currency" [readOnly]="true"
+                            placeholder="{{'Currency' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'Created By' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="createdBy" name="createdBy" #createdBy="ngModel"
+                            [(ngModel)]="createPOLines.createdBy" placeholder="{{'Created By' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'Created Date' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="createdDate" name="createdDate" #createdDate="ngModel"
+                            [(ngModel)]="createPOLines.createdDate " placeholder="{{'Created Date' |translate}}"
+                            class="form-control" type="date">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row" *ngIf="showImage">
+                        <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                        <div class="col-sm-8">
+                          <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                            alt="No Image">
+                        </div>
+                      </div>
+                      <div class="form-group row d-none">
+                        <label class="col-sm-4 col-form-label">{{'UPCEAN Number' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="eanNumber" name="eanNumber" [(ngModel)]="createPOLines.upcEANNumber"
+                            [readOnly]="true" placeholder="{{'UPC EAN Number' |translate}}" class="form-control "
+                            type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'ETA' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <input id="eta" name="eta" [(ngModel)]="createPOLines.eta" placeholder="{{'ETA' |translate}}"
+                            class="form-control" type="date" [readOnly]="ETA || raisedPOCheck">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Order Quantity' |translate}}<i
+                            class="red">*</i></label>
+                        <div class="col-sm-4">
+                          <input id="quantity" name="quantity" (keyup)="validateDecimal();calculate()"
+                            oninput="validity.valid||(value='');" min="0"
+                            [ngClass]="{'valiError': shouldShowErrors(quantity), 'valiSucess': shouldShowSuccess(quantity)}"
+                            (focus)="onFocusForElement(quantity)"
+                            (focusout)="onFocusOutForElement();getUnitPriceWithCalculation()" required
+                            #quantity="ngModel" [(ngModel)]="createPOLines.quantity"
+                            placeholder="{{'Order Quantity' |translate}}" class="form-control" type="text"
+                            [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                        <div class="col-sm-4">
+                          <select class="form-control" id="units" (ngModelChange)="onFocusForElement(receivingUnit);"
+                            (focusout)="onFocusOutForElement()" (change)="getUnitPriceWithCalculation()"
+                            #receivingUnit="ngModel" required name="units" [(ngModel)]="createPOLines.units"
+                            [disabled]="makeThisDisabled || raisedPOCheck" style="margin-left:-14px">
+                            <option [ngValue]="null">--Select--</option>
+                            <option *ngFor="let receivingUnit1 of units" [ngValue]="receivingUnit1.unitCode">
+                              {{receivingUnit1.unitCode}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Order Unit Price' |translate}}</label>
+                        <div class="col-sm-4">
+                          <input id="orderUnitPrice" name="orderUnitPrice"
+                            [ngModel]="createPOLines.orderUnitPrice | decimalFilter"
+                            (ngModelChange)="createPOLines.orderUnitPrice=$event" [ngModelOptions]="{standalone: true}"
+                            placeholder="{{'Order Unit Price' |translate}}" class="form-control" type="text"
+                            (focusout)="getUnitPrice()">
+                        </div>
+                        <div class="col-sm-4">
+                          <input id="currency" name="currency" [(ngModel)]="createPOLines.currency" [readOnly]="true"
+                            placeholder="{{'Currency' |translate}}" class="form-control" type="text"
+                            style="margin-left:-14px">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Purchase Tax' |translate}}
+                        </label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="taxIDs" [(ngModel)]="createPOLines.purchaseTaxes" [disabled]="isSub2Disable"
+                            [ngModelOptions]="{standalone: true}" (focusout)="calculateTaxPercentage()">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+
+                      <!-- <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax 1%' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="tax1" name="tax1" (keyup)="calculate()" (focus)="onFocusForElement(tax1)"
+                            (focusout)="onFocusOutForElement()" #tax1="ngModel" [(ngModel)]="createPOLines.tax1"
+                            placeholder="{{'Tax 1%' |translate}}" class="form-control"type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax 2%' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="tax2" name="tax2" (keyup)="calculate()" (focus)="onFocusForElement(tax2)"
+                            (focusout)="onFocusOutForElement()" #tax2="ngModel" [(ngModel)]="createPOLines.tax2"
+                            placeholder="{{'Tax 2%' |translate}}" class="form-control vblr"type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax 3%' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="tax3" (keyup)="calculate()" name="tax3" (focus)="onFocusForElement(tax3)"
+                            (focusout)="onFocusOutForElement()" #tax3="ngModel" [(ngModel)]="createPOLines.tax3"
+                            placeholder="{{'Tax 3%' |translate}}" class="form-control vblr"type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax 4%' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="tax4" (keyup)="calculate()" name="tax4" #tax4="ngModel"
+                            [(ngModel)]="createPOLines.tax4" placeholder="{{'Tax 4%' |translate}}" class="form-control vblr"
+                           type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax 5%' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="tax5" (keyup)="calculate()" name="tax5" #tax5="ngModel"
+                            [(ngModel)]="createPOLines.tax5" placeholder="{{'Tax 5%' |translate}}" class="form-control vblr"
+                           type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div> -->
+
+
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Gross Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input [ngModel]="createPOLines.grossAmount | decimalFilter"
+                            (ngModelChange)="createPOLines.grossAmount=$event" [ngModelOptions]="{standalone: true}"
+                            readonly id="grossAmount" name="grossAmount" placeholder="{{'gross Amount' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Discount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="discount" (keyup)="calculate()" name="discount"
+                            [(ngModel)]="createPOLines.discount" placeholder="{{'Discount' |translate}}"
+                            class="form-control vblr" type="text" [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Tax Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input readonly id="taxAmount" name="taxAmount" placeholder="{{'Tax Amount' |translate}}"
+                            class="form-control" type="text" [ngModel]="createPOLines.taxAmount | decimalFilter"
+                            (ngModelChange)="createPOLines.taxAmount=$event" [ngModelOptions]="{standalone: true}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Amount' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input readonly placeholder="{{'Amount' |translate}}" class="form-control" type="text"
+                            [ngModel]="createPOLines.netAmount | decimalFilter"
+                            (ngModelChange)="createPOLines.netAmount=$event" [ngModelOptions]="{standalone: true}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Remarks' |translate}}</label>
+                        <div class="col-sm-8">
+                          <input id="remarks" name="remarks" [(ngModel)]="createPOLines.remarks"
+                            placeholder="{{'Remarks' |translate}}" class="form-control" type="text"
+                            [readOnly]="orderQuantity || raisedPOCheck">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                      <div class="form-group row">
+                        <div class="col-sm-12 text-center mb-3">
+                          <button class="btn btn-green mr-1" (click)="save()"
+                            [disabled]="!(productHeaderData.poDeliveryDate && productHeaderData.receiptType && ((createPOLines.productIDName && createPOLines.quantity) || productsPOLines.length>0)) || raisedPOCheck">
+                            {{'Save' |translate}}
+                          </button>
+                          <button class="btn btn-white mr-1" (click)="clear()">{{'Clear' |translate}}</button>
+                          <button class="btn btn-green mr-1"
+                            *ngIf="productHeaderData.statusStages.length>0 && !permissionToggle && (totalStatusCount == productHeaderData.statusStages[productHeaderData.statusStages.length-1].statusSequence && productHeaderData.statusStages[productHeaderData.statusStages.length-1].status != 'Rejected')"
+                            [disabled]="raisedPOCheck || productHeaderData.statusStages[productHeaderData.statusStages.length-1].status == 'Rejected'"
+                            (click)="noApprovalsRaisePO()">{{'RAISE PO'
+                            |translate}}
+                          </button>
+                          <button class="btn btn-green mr-1"
+                            *ngIf="productHeaderData.statusStages.length>0 && !permissionToggle && (totalStatusCount == productHeaderData.statusStages[productHeaderData.statusStages.length-1].statusSequence && productHeaderData.statusStages[productHeaderData.statusStages.length-1].status != 'Rejected')"
+                            [disabled]="raisedPOCheck || productHeaderData.statusStages[productHeaderData.statusStages.length-1].status == 'Rejected'"
+                            (click)="noApprovalsRaisePO('Rejected')">{{'REJECT PO'
+                            |translate}}
+                          </button>
+                          <button class="btn btn-green mr-1" (click)="raisePO()"
+                            *ngIf="productHeaderData.statusStages.length>0 && permissionToggle && productHeaderData.statusStages && statusObj"
+                            [disabled]="raisedPOCheck  || productHeaderData.statusStages[productHeaderData.statusStages.length-1].status == 'Rejected'">{{'RAISE
+                            PO'
+                            |translate}}
+                          </button>
+                          <button class="btn btn-white" (click)="raisePO('Rejected')"
+                            *ngIf="productHeaderData.statusStages.length>0 && permissionToggle && productHeaderData.statusStages && statusObj"
+                            [disabled]="raisedPOCheck || productHeaderData.statusStages[productHeaderData.statusStages.length-1].status == 'Rejected'">{{'REJECT
+                            PO'
+                            |translate}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" [hidden]="true">
+        <span class="pull-right"><span class="clickable2 mt0">
+            <i class="glyphicon glyphicon-chevron-down"></i></span>
+        </span>
+        <app-edit-supplier-details></app-edit-supplier-details>
+        <span class="pull-right"><span class="clickable2 mt0">
+            <i class="glyphicon glyphicon-chevron-down"></i></span>
+        </span>
+        <div class="panel-body">
+          <app-edit-product-lines></app-edit-product-lines>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+            <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="findPurchaseOrderByID(pageForTable=1)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="findPurchaseOrderByID(pageForTable=1)">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Image' | translate}}</th>
+                <th scope="col">{{'PO Line No' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'Quantity' |translate}}</th>
+                <th scope="col">{{'Currency' |translate}}</th>
+                <th scope="col">{{'Unit Price' |translate}}</th>
+                <th scope="col">{{'Gross Amount' |translate}}</th>
+                <th scope="col">{{'Tax Amount' |translate}}</th>
+                <th scope="col">{{'Discount' |translate}}</th>
+                <th scope="col">{{'Amount' |translate}}</th>
+                <th scope="col">{{'Remarks' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of productsPOLines | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: pageForTable,totalItems: totalItems}">
+                <td>{{((pageForTable-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{product.wmsPOLineNumber}}</td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td class="text-center">{{product.units}}</td>
+                <td class="text-center">{{product.brandName}}</td>
+                <!-- <td class="text-right">{{product.quantity}}</td> -->
+                <td>
+                  <input class="form-control" [(ngModel)]="product.quantity" [ngModelOptions]="{standalone: true}"
+                    (keyup)="validateDecimal(i)" (focusout)="calculate(null,product)" [disabled]="raisedPOCheck"
+                    placeholder="{{'Quantity' |translate}}" type="text" oninput="validity.valid||(value='')" min="0">
+                </td>
+                <td class="text-center">{{product.currency}}</td>
+                <td class="text-right">{{product.orderUnitPrice | decimalFilter}}</td>
+                <td class="text-right">{{product.grossAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.discount}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}}</td>
+                <td>{{product.remarks}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm" (click)="edit(product)"></i><i
+                      [hidden]="raisedPOCheck" (click)="delete(product)" class="fa fa-trash btn-blue"></i></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2" *ngIf="productsPOLines.length>0">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo" (pageChange)="findPurchaseOrderByID((pageForTable = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+          <div class="r">
+            <div class="text-center">
+              <p style="font-size:12px;color:black;text-align: center;margin-top: -50px;">Total Amount:
+                {{restrictedNumber }} {{
+                myCurrency}}
+              <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'PO Line No' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'Quantity' |translate}}</th>
+                <th scope="col">{{'Currency' |translate}}</th>
+                <th scope="col">{{'Unit Price' |translate}}</th>
+                <th scope="col">{{'Gross Amount' |translate}}</th>
+                <th scope="col">{{'Tax Amount' |translate}}</th>
+                <th scope="col">{{'Discount' |translate}}</th>
+                <th scope="col">{{'Amount' |translate}}</th>
+                <th scope="col">{{'Remarks' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of productsPOLines; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{product.wmsPOLineNumber}}</td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td class="text-center">{{product.units}}</td>
+                <td class="text-center">{{product.brandName}}</td>
+                <td class="text-right">{{product.quantity}}</td>
+                <td class="text-center">{{product.currency}}</td>
+                <td class="text-right">{{product.orderUnitPrice | decimalFilter}}</td>
+                <td class="text-right">{{product.grossAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.taxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.discount}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}}</td>
+                <td>{{product.remarks}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm" (click)="edit(product)"></i><i
+                      [hidden]="raisedPOCheck" (click)="delete(product)" class="fa fa-trash btn-blue"></i></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-1">
+            <div class="col-md-12">
+              <p style="font-size:12px;color:black;text-align: center;">Total Amount: {{restrictedNumber }} {{
+                myCurrency}}
+              <p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row d-none">
+      <div class="col-md-6">
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2 mt0">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+          <div class="">
+            <app-edit-shipping-details></app-edit-shipping-details>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="">
+          <div class="">
+            <span class="pull-right"><span class="clickable2 mt0">
+                <i class="glyphicon glyphicon-chevron-down"></i></span>
+            </span>
+          </div>
+
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-12">
+                    <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions2"
+                      [dtTrigger]="dtTrigger2">
+                      <thead>
+                        <tr>
+                          <th scope="col">{{'S.No' |translate}}</th>
+                          <th scope="col">{{'Product Id/Name' |translate}}</th>
+                          <th scope="col">{{'Order Quantity' |translate}}</th>
+                          <th scope="col"> {{'Receipt Date' |translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let recentHistory of recentHistories; let i = index">
+                          <td class="text-left">{{i+1}}</td>
+                          <td>{{recentHistory.productMasterInfo.productIDName}}</td>
+                          <td>{{recentHistory.quantity}} {{recentHistory.units}}</td>
+                          <td>{{recentHistory.receiptDate | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 pb-4" [hidden]="true">
+      <div class="wmsDataTables row">
+        <div class="col-md-9">
+          <h5>{{'Terms and conditions' |translate}}</h5>
+          <p>{{termsAndConditions}}</p>
+        </div>
+        <div class="col-md-3 text-center mt-3 ">
+          <button class="btn btn-green mr-1" (click)="save()"
+            [disabled]="!(productHeaderData.poDeliveryDate && productHeaderData.receiptType && ((createPOLines.productIDName && createPOLines.quantity) || productsPOLines.length>0)) || raisedPOCheck">
+            {{'SAVE' |translate}}
+          </button>
+          <button class="btn btn-white" (click)="raisePO()" [disabled]="raisedPOCheck">{{'RAISE PO' |translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

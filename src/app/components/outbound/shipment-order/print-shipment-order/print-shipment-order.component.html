@@ -1,0 +1,316 @@
+<body>
+  <table class="w-100">
+    <tbody>
+      <tr>
+        <td>
+          <div class="content">
+            <div class="row" *ngIf="shipmentOrder" id="container">
+              <div class="col-md-12">
+                <div class="m-3">
+                  <table border="1" class="w-100">
+                    <tr>
+                      <td style="width:180px;border: none !important;">
+                        <img id="logoImage" style="height: 90px;border-radius: 10px;margin-top:5px;"
+                          class="img-responsive img-rounded">
+                      </td>
+                      <td class="d-flex justify-content-center text-center" style="border: none !important;">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-sm-10">
+                                <p style="font-size: 20px;color: black;" *ngIf="shipmentOrder.shipFromAddress">
+                                  {{shipmentOrder.shipFromAddress?.name}}</p>
+                              </div>
+                              <div class="col-sm-10">
+                                <p style="color:black" *ngIf="shipmentOrder.shipFromAddress">
+                                  {{shipmentOrder.shipFromAddress?.address}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <table border="1" class="w-100">
+                    <tr>
+                      <td
+                        style="border-right-color:white;color: black;font-size: 20px;border: none !important;padding: 0px !important;">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group row" style="position: relative;left:350px;">
+                              <p class="col-sm-12 col-form-label text-center" style="font-size: 16px;color: black;">
+                                Loading
+                                Confirmation Sheet</p>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="row">
+                                <div class="col-md-12" style="margin-top: -40px !important;">
+                                  <div class="form-group row m-0">
+                                    <label class="col-sm-5 col-form-label">Billed To:
+                                    </label>
+                                    <label
+                                      class="col-sm-4 col-form-label">{{shipmentOrder?.billToAddress?.name}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Address:
+                                    </label>
+                                    <label
+                                      class="col-sm-6 col-form-label">{{shipmentOrder?.billToAddress?.address}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">State:
+                                    </label>
+                                    <label
+                                      class="col-sm-4 col-form-label">{{shipmentOrder?.billToAddress?.state}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">GSTIN:
+                                    </label>
+                                    <!-- <label class="col-sm-4 col-form-label" *ngIf="whData">{{whData.gstNumber}}</label> -->
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Sales Order' && editCustomerDetails">{{editCustomerDetails.gstNumber}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="(shipmentOrder.orderType=='WareHouseTransfer' || shipmentOrder.orderType=='WareHouseTransfer Returns') && wareHouseDetails">{{wareHouseDetails.gstNumber}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Purchase Returns' && supplierDetails">{{supplierDetails.gstNumber}}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group row m-0">
+                                    <label class="col-sm-5 col-form-label">Shipped To:
+                                    </label>
+                                    <label
+                                      class="col-sm-4 col-form-label">{{shipmentOrder?.shipToAddress?.name}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Address:
+                                    </label>
+                                    <label
+                                      class="col-sm-6 col-form-label">{{shipmentOrder?.shipToAddress?.address}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">State:
+                                    </label>
+                                    <label
+                                      class="col-sm-7 col-form-label">{{shipmentOrder?.shipToAddress?.state}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">SPOC Name:
+                                    </label>
+                                    <label
+                                      class="col-sm-7 col-form-label">{{shipmentOrder.shipToAddress?.contactDetails.contactName}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">SPOC Contact:
+                                    </label>
+                                    <label
+                                      class="col-sm-4 col-form-label">{{shipmentOrder.shipToAddress?.contactDetails.phoneNumber}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">GSTIN:
+                                    </label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Sales Order' && editCustomerDetails">{{editCustomerDetails.gstNumber}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="(shipmentOrder.orderType=='WareHouseTransfer' || shipmentOrder.orderType=='WareHouseTransfer Returns') && wareHouseDetails">{{wareHouseDetails.gstNumber}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Purchase Returns' && supplierDetails">{{supplierDetails.gstNumber}}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group row m-0">
+                                    <label class="col-sm-5 col-form-label">Customer Code:
+                                    </label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Sales Order'">{{shipmentOrder.customerMasterInfo.customerID}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='WareHouseTransfer' || shipmentOrder.orderType=='WareHouseTransfer Returns'">{{shipmentOrder.wareHouseTransferDestinationInfo.wareHouseIDName}}</label>
+                                    <label class="col-sm-4 col-form-label"
+                                      *ngIf="shipmentOrder.orderType=='Purchase Returns'">{{shipmentOrder.supplierMasterInfo.supplierIDName}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Invoice No:
+                                    </label>
+                                    <label class="col-sm-6 col-form-label">{{shipmentOrder?.invoiceNumber}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Invoice Date:
+                                    </label>
+                                    <label class="col-sm-4 col-form-label">{{shipmentOrder.invoiceDate |
+                                      date:'MM-dd-yyyy'}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Dispatch Date:
+                                    </label>
+                                    <label class="col-sm-4 col-form-label"> {{dispatchDate | date:
+                                      'dd-MM-yyyy'}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Vehicle No:
+                                    </label>
+                                    <label
+                                      class="col-sm-4 col-form-label">{{shipmentOrder?.vehicleInfo?.vehicleNumber}}</label>
+                                  </div>
+                                  <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                    <label class="col-sm-5 col-form-label">Driver Name:
+                                    </label>
+                                    <label class="col-sm-4 col-form-label">{{shipmentOrder.driverName}} </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table border="1" class="w-100 text-center mt-2">
+                    <tr>
+                      <td class="text-center"> Sr.No </td>
+                      <td class="text-center"> SKU Code</td>
+                      <td class="text-center"> Description</td>
+                      <td class="text-center"> Spec</td>
+                      <td class="text-center"> Brand </td>
+                      <td class="text-center"> Billed UOM </td>
+                      <td class="text-center"> Billed Qty </td>
+                      <td class="text-center"> Loading Qty</td>
+                      <td class="text-center"> Product Temp. </td>
+                      <td class="text-center"> Remarks</td>
+                    </tr>
+
+                    <tr *ngFor="let data of shipmentOrderLines;let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{data.productMasterInfo.productID}}</td>
+                      <td>{{data.productMasterInfo.productName}}</td>
+                      <td>{{data.productDescription}}</td>
+                      <td>{{data.brandName}}</td>
+                      <td class="text-center">{{data.shipmentUnit}}</td>
+                      <td class="text-right">{{data.dispatchQuantity|decimalFilter}}</td>
+                      <td class="text-right">{{data.customerDispatchQuantity|decimalFilter}}</td>
+                      <td>{{data.storageInstruction}}</td>
+                      <td></td>
+                    </tr>
+
+                  </table>
+                  <table border="1" class="w-100 mt-2">
+                    <tr>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-3 mt-2" style="position: relative;left: 5px;">
+                                <div class="form-group row">
+                                  <label class="col-sm-6 col-form-label ml-3"
+                                    style="border-bottom: 1px dashed;"></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">(Signature)</label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label"><u>Delivery Assistant</u></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">Name :</label>
+                                </div>
+                              </div>
+                              <div class="col-md-3 mt-2">
+                                <div class="form-group row">
+                                  <label class="col-sm-6 col-form-label ml-3"
+                                    style="border-bottom: 1px dashed;"></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">(Signature)</label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label"><u>Supervisor</u></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">Name :</label>
+                                </div>
+                              </div>
+                              <div class="col-md-3 mt-2">
+                                <div class="form-group row">
+                                  <label class="col-sm-6 col-form-label ml-3"
+                                    style="border-bottom: 1px dashed;"></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">(Signature)</label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label"><u>Driver</u></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">Name :</label>
+                                </div>
+                              </div>
+                              <div class="col-md-3 mt-2">
+                                <div class="form-group row">
+                                  <label class="col-sm-6 col-form-label ml-3"
+                                    style="border-bottom: 1px dashed;"></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">(Signature)</label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label"><u>DC Manager</u></label>
+                                </div>
+                                <div class="form-group row">
+                                  <label class="col-sm-10 col-form-label">Name :</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">
+    <div style="border:1px solid black;">
+      <span class="d-flex justify-content-center Heading"
+        *ngIf="shipmentOrder && shipmentOrder.shipFromAddress">{{shipmentOrder.shipFromAddress?.name}}
+      </span>
+      <br>
+      <span class="d-flex justify-content-center Heading" style="margin-top: -16px !important;"
+        *ngIf="shipmentOrder && shipmentOrder.shipFromAddress">{{shipmentOrder.shipFromAddress?.address}}</span>
+    </div>
+  </div>
+</body>

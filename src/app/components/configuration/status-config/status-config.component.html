@@ -1,0 +1,85 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'STATUS CONFIG' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'STATUS CONFIG' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                  </div>
+                </h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-2">{{inventoryAdjustmentForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="inventoryAdjustmentForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','inventoryAdjustmentForm',inventoryAdjustmentForm.name)"
+                      (onRemove)="onItemRemoved($event, 'status','inventoryAdjustmentForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{purchaseOrderForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="purchaseOrderForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','purchaseOrderForm',purchaseOrderForm.name)"
+                      (onRemove)="onItemRemoved($event, 'status','purchaseOrderForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{internalTransfersForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="internalTransfersForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','internalTransfersForm',internalTransfersForm.name)"
+                    (onRemove)="onItemRemoved($event, 'status','internalTransfersForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{cycleCountingForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="cycleCountingForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','cycleCountingForm',cycleCountingForm.name)"
+                    (onRemove)="onItemRemoved($event, 'status','cycleCountingForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{wtCreateForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="wtCreateForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','wtCreateForm',wtCreateForm.name)"
+                    (onRemove)="onItemRemoved($event, 'status','wtCreateForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{wtApproveForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="wtApproveForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','wtApproveForm',wtApproveForm.name)"
+                    (onRemove)="onItemRemoved($event, 'status','wtApproveForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{statusForm.name |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="statusForm.processStatusStages" (onAdd)="onItemAdded($event, 'status','statusForm',statusForm.name)"
+                    (onRemove)="onItemRemoved($event, 'status','statusForm')" [displayBy]="'status'">
+                    </tag-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

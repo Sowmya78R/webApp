@@ -1,0 +1,1229 @@
+<!-- PutAway Planning -->
+<div *ngIf="selectedValue =='putawayPlanning'">
+  <body>
+    <div class='wrapper'>
+      <div class="row">
+        <div class="col-md-12">
+          <!--  <div class="row">
+            <div class="col-md-4">
+    
+              <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+            </div>
+            <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                <p style="color:black">{{organizationAddressOnly}}</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                <p style="color:black">{{wareHouseAddressOnly}}</p>
+              </div>
+            </div>
+          </div> -->
+          <div class="row m-2">
+            <table border="1" class="w-100 mt-3">
+              <tr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+                  </div>
+                  <div class="col-md-4">
+                    <div class="roundedNeckBox">
+                      <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                      <p style="color:black">{{wareHouseAddressOnly}}</p>
+                    </div>
+                  </div>
+                </div>
+              </tr>
+              <tr>
+                <td colspan="2" class="text-center">
+                  <h6>Putaway Planning</h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">PO Number :</label>
+                            <div class="col-sm-5">
+                              <p class="mt-1"> {{wmsService.fieldsData.wmpoNumber}}</p>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">Employee :</label>
+                            <div class="col-sm-5">
+                              <p class="mt-1"> {{wmsService.fieldsData.executiveIDName}}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">Zone :</label>
+                            <div class="col-sm-5">
+                              <p class="mt-1"> {{wmsService.fieldsData.zoneName}}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">Location :</label>
+                            <div class="col-sm-5">
+                              <p class="mt-1"> {{wmsService.fieldsData.locationName}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <table class="mt-1 w-100">
+              <thead>
+                <tr class="bscTable white" style="font-weight:bold;font-size:10px;">
+                  <td style="color:black">S.No </td>
+                  <th style="color:black" scope="col">PO Number</th>
+                  <th style="color:black" scope="col">Putaway No</th>
+                  <!-- <th style="color:black" scope="col">Assigned By</th> -->
+                  <th style="color:black" scope="col"
+                    [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'"> Suppliers Customer Name</th>
+                  <th style="color:black" scope="col"
+                    [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">Suppliers Customer Address</th>
+                  <th style="color:black" scope="col">Assigned To</th>
+                  <th style="color:black" scope="col">product ID</th>
+                  <th style="color:black" scope="col">Product Name</th>
+                  <th style="color:black" scope="col">Product Description</th>
+                  <th style="color:black" scope="col">Brand Name</th>
+                  <th style="color:black" scope="col">UOM</th>
+                  <th style="color:black" scope="col">Quantity</th>
+                  <th style="color:black" scope="col">Supplier</th>
+                  <th style="color:black" scope="col">Expiry Date</th>
+                  <th style="color:black" scope="col">MFG Date</th>
+                  <th style="color:black" scope="col">Batch Number</th>
+                  <!-- <th style="color:black" scope="col">Warehouse Name</th> -->
+                  <th style="color:black" scope="col">Zone Name</th>
+                  <th style="color:black" scope="col">Rack Name</th>
+                  <th style="color:black" scope="col">Level Name</th>
+                  <th style="color:black" scope="col">Column Name</th>
+                  <th style="color:black" scope="col">Location Name</th>
+                  <th scope="col">Invoice Number</th>
+                  <th scope="col">Invoice Date</th>
+                  <th scope="col">BOE No</th>
+                  <th scope="col">BOE Date</th>
+                  <th scope="col">Bond Number</th>
+                  <th scope="col">Bond Date</th>
+                  <!-- <th style="color:black" scope="col">Created Date</th> -->
+                  <th style="color:black" scope="col">Start Date</th>
+                  <th style="color:black" scope="col">Planned Completion Date</th>
+                </tr>
+              </thead>
+              <tbody [hidden]=" wmsService.printPutawayPlanningTableData.length==0"
+                *ngFor="let data of wmsService.printPutawayPlanningTableData ;let i=index">
+                <tr>
+                  <td>{{i + 1}}</td>
+                  <td>{{data.wmpoNumber}}</td>
+                  <td>{{data.putawayNumber}}</td>
+                  <!-- <td>{{data.putawayExecutive}} <br> {{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+                  <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">
+                    {{data.customersSupplierName}}
+                  </td>
+                  <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">
+                    {{data.customersSupplierAddress}}</td>
+                  <td *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+                    {{data.wareHouseTeamInfo.executiveIDName}}</td>
+                  <td
+                    *ngIf="data.wareHouseTeamInfo==null ||(data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">
+                    {{data.executiveIDName}} </td>
+                  <td>{{data.productMasterInfo?.productID}}</td>
+                  <td>{{data.productMasterInfo?.productName}}</td>
+                  <td>{{data.productDescription}}</td>
+                  <td>{{data.brandName}}</td>
+                  <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+                  <td>{{data.quantity| decimalwithThreeDigits}}</td>
+                  <td>{{data.supplierMasterInfo?.supplierName}}</td>
+                  <td style="text-align: center !important;">{{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td style="text-align: center !important;">{{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.batchNumber}}</td>
+                  <!-- <td>{{data.wareHouseInfo?.wareHouseName}}</td> -->
+                  <td>{{data.zoneInfo?.zoneName}}</td>
+                  <td>{{data.rackInfo?.rackName}}</td>
+                  <td>{{data.levelInfo?.levelName}}</td>
+                  <td>{{data.columnInfo?.columnName}}</td>
+                  <td>{{data.locationInfo?.locationName}}</td>
+                  <td>{{data.invoiceNumber}}</td>
+                  <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.billOfEntryNumber}}</td>
+                  <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.bondNumber}}</td>
+                  <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+                  <!-- <td>{{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+                  <td style="text-align: center !important;">{{data.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                  <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</div>
+
+<!-- Picking Planning -->
+<div *ngIf="selectedValue =='pickingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <div class="row">
+            <div class="col-md-4">
+              <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+            </div>
+            <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                <p style="color:black">{{wareHouseAddressOnly}}</p>
+              </div>
+            </div>
+          </div>
+        </tr>
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Picking Planning</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingfieldsData.wmsoNumber}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Employee :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingfieldsData.executiveIDName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingfieldsData.zoneName}}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Assign Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.assignedEmployee}}
+                          </p>
+                        </div>
+                      </div> -->
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingfieldsData.locationName}}</p>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Planned Completion Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.completionPlannedDate}}</p>
+                        </div>
+                      </div> -->
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-4">
+
+                      </div>
+                      <div class="col-md-4" >
+
+                      </div>
+                      <div class="col-md-4">
+
+                      </div>
+                    </div>
+                  </div> -->
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-1">
+        <thead>
+          <tr class="bscTable white" style="font-weight:bold;font-size:10px;border: 1px solid lightgrey;">
+            <td style="color:black">S.No </td>
+            <th style="color:black" scope="col">SO Number</th>
+            <th scope="col" style="color:black">Picking No</th>
+            <!-- <th style="color:black" scope="col">Assigned By</th> -->
+            <th style="color:black" scope="col">Assigned To</th>
+            <th style="color:black" scope="col">Product ID</th>
+            <th style="color:black" scope="col">Product Name</th>
+            <th style="color:black" scope="col">Product Description</th>
+            <th style="color:black" scope="col">Brand Name</th>
+            <!-- <th style="color:black" scope="col">Expiry Date</th>
+              <th style="color:black" scope="col">MFG Date</th>
+              <th style="color:black" scope="col">Batch Number</th> -->
+            <th style="color:black" scope="col">UOM</th>
+            <th style="color:black" scope="col">Quantity</th>
+            <th style="color:black" scope="col">Customer</th>
+            <th style="color:black" scope="col">Expiry Date</th>
+            <th style="color:black" scope="col">MFG Date</th>
+            <th style="color:black" scope="col">Batch Number</th>
+            <!-- <th style="color:black" scope="col">Warehouse Name</th> -->
+            <th style="color:black" scope="col">Zone Name</th>
+            <th style="color:black" scope="col">Rack Name</th>
+            <th style="color:black" scope="col">Level Name</th>
+            <th style="color:black" scope="col">Column Name</th>
+            <th style="color:black" scope="col">Location Name</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Date</th>
+            <th scope="col">BOE No</th>
+            <th scope="col">BOE Date</th>
+            <th scope="col">Bond Number</th>
+            <th scope="col">Bond Date</th>
+            <th scope="col">Ex Bond Number</th>
+            <th scope="col">Ex Bond Date</th>
+            <th style="color:black" scope="col">Start Date</th>
+            <th style="color:black" scope="col">Planned Completion Date</th>
+          </tr>
+        </thead>
+        <tbody [hidden]=" wmsService.pickingTableData.length==0"
+          *ngFor="let data of wmsService.pickingTableData ;let i=index">
+          <tr>
+            <td>{{i + 1}}</td>
+            <td>{{data.wmsoNumber}}</td>
+            <td>{{data.pickingNumber}}</td>
+            <!-- <td>{{data.pickingExecutive}} <br>{{data.assignedDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+            <td *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+              {{data.wareHouseTeamInfo.executiveIDName}}</td>
+            <td
+              *ngIf="data.wareHouseTeamInfo==null ||(data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">
+              {{data.executiveIDName}} </td>
+            <td>{{data.productMasterInfo?.productID}}</td>
+            <td>{{data.productMasterInfo?.productName}}</td>
+            <td>{{data.productDescription}}</td>
+            <td>{{data.brandName}}</td>
+            <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+            <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+            <td>{{data.customerMasterInfo?.customerName}}</td>
+            <td style="text-align: center !important;"><span *ngFor="let expdata of data.expiryDates">{{expdata | date:
+                'dd/MM/yyyy'}}<br></span></td>
+            <td style="text-align: center !important;"><span *ngFor="let mfgDate of data.mfgDates">{{mfgDate | date:
+                'dd/MM/yyyy'}}<br></span></td>
+            <!--  <td><span *ngFor="let batchno of data.batchNumbers">{{batchno}}<br></span></td> -->
+            <td>{{data.batchNumber}}</td>
+            <!-- <td>{{data.wareHouseInfo?.wareHouseName}}</td> -->
+            <td>{{data.zoneInfo?.zoneName}}</td>
+            <td>{{data.rackInfo?.rackName}}</td>
+            <td>{{data.levelInfo?.levelName}}</td>
+            <td>{{data.columnInfo?.columnName}}</td>
+            <td>{{data.locationInfo?.locationName}}</td>
+            <td>{{data.invoiceNumber}}</td>
+            <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.billOfEntryNumber}}</td>
+            <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.bondNumber}}</td>
+            <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.exBondNumber}}</td>
+            <td>{{data.exBondDate | date: 'dd/MM/yyyy'}}</td>
+            <!-- <td>{{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+            <td style="text-align: center !important;">{{data.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Internal Transfer Planning -->
+<div *ngIf="selectedValue =='internalTransferPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+
+
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Internal Transfer</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Employee ID Name :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.passEmployeeIDNameValue.forSearchEmp}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <div class="form-group row">
+                          <label class="col-sm-6 col-form-label">Assign Employee :</label>
+                          <div class="col-sm-5">
+                            <p class="mt-1"> {{wmsService.assignedEmployee}}
+                            </p>
+                          </div>
+                        </div>
+                      </div> -->
+                    <!-- <div class="col-md-4">
+                        <div class="form-group row">
+                          <label class="col-sm-6 col-form-label">Planned Completion Date :</label>
+                          <div class="col-sm-5">
+                            <p class="mt-1"> {{wmsService.completionPlannedDate}}</p>
+                          </div>
+                        </div>
+                      </div> -->
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th style="font-weight:400" scope="col">S.No</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Approved By</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Source Location Name</th>
+              <th scope="col">Destination Location Name</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Start Date</th>
+              <!--    <th scope="col">End Date</th> -->
+              <th scope="col">Planned Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.dataPassingInterTransfer;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.assignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.createdBy}} {{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.approvedBy}}</td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.transferQuantity | decimalwithThreeDigits}} {{data.quantityInventoryUnit}}</td>
+              <td>{{data.sourceLocation?.locationName}}</td>
+              <td>{{data.destinationLocation?.locationName}}</td>
+              <td style="text-align: center !important;">{{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <!--   <td>{{data.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+              <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Packing Planning -->
+<div *ngIf="selectedValue =='packingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--  <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!-- <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Packing Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.packingPlanningobjData.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Search Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.packingPlanningobjData.forSearchEmp}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">WMSO Number</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Product Description</th>
+              <th scope="col">Brand Name</th>
+              <th scope="col">UOM</th>
+              <th scope="col">Order Quantity</th>
+              <th scope="col">Picked Quantity</th>
+              <th scope="col">Packed Quantity</th>
+              <th scope="col">Packing Type</th>
+              <th scope="col">Packing Material</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">Planned Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passpackingPlanningData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.packingInfo.assignedBy}} {{data.packingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.packingInfo.assignedTo}}</td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity| decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.packingInfo?.packedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.packingInfo.packingType}}</td>
+              <td>{{data.packingInfo.packingMeterial}}</td>
+              <td style="text-align: center !important;">{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.packingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td style="text-align: center !important;">{{data.packingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy
+                HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Co-Packing Planning -->
+<div *ngIf="selectedValue =='coPackingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--  <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!-- <div class="col-md-4">
+                  <div class="roundedNeckBox">
+                    <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                    <p style="color:black">{{organizationAddressOnly}}</p>
+                  </div>
+                </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Co-Packing Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.coPackingPlanningobjData.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                      <!-- <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Planned Completion Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.completionPlannedDate}}</p>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Search Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.coPackingPlanningobjData.forSearchEmp}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Assign Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.assignedEmployee}}</p>
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+                <!-- <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-4">
+
+                      </div>
+                    </div>
+                  </div> -->
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">WMSO Number</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Product Description</th>
+              <th scope="col">Brand Name</th>
+              <th scope="col">UOM</th>
+              <th scope="col">Order Quantity</th>
+              <th scope="col">Picked Quantity</th>
+              <th scope="col">Repacking Qty</th>
+              <th scope="col">Packing Type</th>
+              <th scope="col">Packing Material</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Start Date</th>
+              <!--  <th scope="col">End Date</th> -->
+              <th scope="col">Planned Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of  wmsService.passpackingCoPlanningData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.coPackingInfo.assignedBy}} {{data.coPackingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.coPackingInfo?.assignedTo}}</td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity| decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.coPackingInfo.repackedQty}}</td>
+              <td>{{data.coPackingInfo.packingType}}</td>
+              <td>{{data.coPackingInfo.packingMeterial}}</td>
+              <td style="text-align: center !important;">{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.coPackingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <!--  <td>{{data.coPackingInfo?.endDate| date: 'dd/MM/yyyy'}}</td> -->
+              <td style="text-align: center !important;">{{data.coPackingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy
+                HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Re-Packing planning -->
+<div *ngIf="selectedValue =='rePackingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--  <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!-- <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Re-Packing Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.repackingPlanningobjData.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                      <!-- <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Planned Completion Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.completionPlannedDate}}</p>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Search Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.repackingPlanningobjData.forSearchEmp}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Assign Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.assignedEmployee}}</p>
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+                <!-- <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-4">
+
+                      </div>
+                    </div>
+                  </div>              -->
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">WMSO Number</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Product Description</th>
+              <th scope="col">Brand Name</th>
+              <th scope="col">UOM</th>
+              <th scope="col">Order Quantity</th>
+              <th scope="col">Picked Quantity</th>
+              <th scope="col">Convertion Type</th>
+              <th scope="col">Repacked Quantity</th>
+              <th scope="col">Gain weight (loss/gain)</th>
+              <th scope="col">Packing Type</th>
+              <th scope="col">Packing Material</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Start Date</th>
+              <!--     <th scope="col">End Date</th> -->
+              <th scope="col">Planned Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of  wmsService.dataPassingRePackingData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.rePackingInfo.assignedBy}} <br> {{data.rePackingInfo.assignedDate | date: 'dd/MM/yyyy
+                HH:mm:ss'}}</td>
+              <td>{{data.rePackingInfo.assignedTo}}</td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity| decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.convertionType}}</td>
+              <td>{{data.rePackingInfo.repackedQty}}</td>
+              <td>{{data.rePackingInfo.grossWeight}}</td>
+              <td> {{data.rePackingInfo.packingType}}</td>
+              <td> {{data.rePackingInfo.packingMeterial}}</td>
+              <td style="text-align: center !important;">{{data.createdDate| date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.rePackingInfo?.startDate| date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <!--     <td>{{data.rePackingInfo?.endDate| date: 'dd/MM/yyyy'}}</td> -->
+              <td style="text-align: center !important;">{{data.rePackingInfo?.plannedCompletionDate| date: 'dd/MM/yyyy
+                HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Labelling Planning -->
+<div *ngIf="selectedValue =='labellingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--   <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!-- <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Labelling Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.labelingPlanningobjData.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                      <!-- <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Planned Completion Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.completionPlannedDate}}</p>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Search Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.labelingPlanningobjData.forSearchEmp}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">WMSO Number</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Product Description</th>
+              <th scope="col">Brand Name</th>
+              <th scope="col">UOM</th>
+              <th scope="col">Order Quantity</th>
+              <th scope="col">Picked Quantity</th>
+              <th scope="col">Customer Confirmation</th>
+              <th scope="col">Packing Type</th>
+              <th scope="col">Packing Material</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Start Date</th>
+              <!--   <th scope="col">End Date</th> -->
+              <th scope="col">Planned Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.dataPassingLabellingData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.labelingInfo.assignedBy}} {{data.labelingInfo.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.labelingInfo.assignedTo}}</td>
+              <td>{{data.productMasterInfo?.productIDName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity| decimalwithThreeDigits}}</td>
+              <td>{{data.pickedQuantity| decimalwithThreeDigits}}</td>
+              <td>{{data.labelingInfo.customerConfirmation}}</td>
+              <td>{{data.labelingInfo.packingType}}</td>
+              <td>{{data.labelingInfo.packedQuantity| decimalwithThreeDigits}}</td>
+              <td style="text-align: center !important;">{{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.labelingInfo?.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <!--   <td>{{data.labelingInfo?.endDate | date: 'dd/MM/yyyy'}}</td> -->
+              <td style="text-align: center !important;">{{data.labelingInfo?.plannedCompletionDate | date: 'dd/MM/yyyy
+                HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Loading Planning -->
+<div *ngIf="selectedValue =='loadingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--   <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!-- <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Loading Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1" *ngIf="wmsService.loadingFormDataPassing">
+                            {{wmsService.loadingFormDataPassing.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">Sn No</th>
+              <th scope="col">Wmpo Number</th>
+              <th scope="col">Invoice Number</th>
+              <th scope="col">Invoice Date</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Gate In Date</th>
+              <th scope="col">Note Type</th>
+              <th scope="col">Way Bill Number</th>
+              <th scope="col">Invoice Total Quantity</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">Planned Completion Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.dataPassingLoadingData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.wmpoNumber}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.noteType}}</td>
+              <td>{{data.waybillNumber}}</td>
+              <td>{{data.invoiceTotalQuantity| decimalwithThreeDigits}}</td>
+              <td style="text-align: center !important;">{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss a '}}</td>
+              <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- UnLoading Planning -->
+<div *ngIf="selectedValue =='unloadingPlanning'">
+  <div class="row">
+    <div class="col-md-12">
+      <!--  <div class="row">
+        <div class="col-md-4">
+          <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+            <p style="color:black">{{organizationAddressOnly}}</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="roundedNeckBox">
+            <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+            <p style="color:black">{{wareHouseAddressOnly}}</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row m-3">
+        <table border="1" class="w-100 mt-3">
+          <tr>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Un Loading Planning</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Search WMSO Number :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.unloadingformDataPassing?.fullWmsoNumber}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th scope="col">Sn No</th>
+              <th scope="col">Wmpo Number</th>
+              <th scope="col">Invoice Number</th>
+              <th scope="col">Invoice Date</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Gate In Date</th>
+              <th scope="col">Note Type</th>
+              <th scope="col">Way Bill Number</th>
+              <th scope="col">Invoice Total Quantity</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">Planned Completion Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.dataPassingUnLoadingData;let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{data.wmpoNumber}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.noteType}}</td>
+              <td>{{data.waybillNumber}}</td>
+              <td>{{data.invoiceTotalQuantity | decimalwithThreeDigits}}</td>
+              <td style="text-align: center !important;">{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Employee Performace -->
+<div *ngIf="employeePerformanceRouting =='employeePerformance'">
+  <app-employeeperformanceprintingpage></app-employeeperformanceprintingpage>
+</div>

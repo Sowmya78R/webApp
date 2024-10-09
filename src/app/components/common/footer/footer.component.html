@@ -1,0 +1,159 @@
+<!-- <div id="wmsQuickLinks" class="mtMns22">
+  <div class="row m-auto">
+    <div class="col-md-2">
+      <h4> <i class="material-icons">insert_link</i> <span class="align-top"> Quick Links </span></h4>
+    </div>
+    <div class="col-md-10">
+      <ul>
+        <li *ngFor="let link of footerLinks; let i = index"><a [ngClass]="{'lastChild': (footerLinks.length === i + 1)}">{{link.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div> -->
+
+<div class="row " id="wmsQuickLinks" [dir]="direction"
+[ngStyle]="{'background-image': logoImage ? 'url(' + logoImage + ')' : 'url(assets/bttmMenuBG.jpg)'}">
+  <div class="col-md-2">
+    <h4> <i class="material-icons">insert_link</i> <span class="align-top">{{'Quick Links' |translate}}</span>
+    </h4>
+  </div>
+  <div class="col-lg-10 col-md-10">
+    <div class="row" *ngIf="footerLinks">
+      <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4 quickLinks" *ngFor="let link of footerLinks; let i = index">
+        <a (click)="getRoutingEmployeeView(link)" [ngClass]="{'lastChild': (footerLinks.length === i + 1)}"
+        [ngStyle]="{
+            'border': '1px solid'+ footerMenuFontColor ? '1px solid'+ footerMenuFontColor:deafultColor,
+            'color': footerMenuFontColor ? footerMenuFontColor : deafultColor
+          }">{{link.name |translate}}</a>
+          <!--  [ngStyle]="{color:footerMenuFontColor?footerMenuFontColor:deafultColor" -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <ngx-smart-modal class="text-center" customClass="nsm-centered" id="footernewpage" #footerPage
+  [identifier]="'footerPage'">
+
+  <div style="height:500px">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6 text-right">
+            <h5 class="text-center text-primary mt-2 text-right">Employee View</h5>
+          </div>
+          <div class="col-md-6">
+            <div class="row" style="position: relative;left:0px;top: 4px;">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-sm-1 col-form-label">
+                  </label>
+                  <div class="col-sm-3">
+                    <select name="employeeView" class="form-control" [(ngModel)]="employeeReq.employeeView" id=""
+                      style="width:200px;" (change)="changeType($event.target.value)">
+                      <option value="0">--Select--</option>
+                      <option value="picking">Picking</option>
+                      <option value="putaway">Putaway</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="callingPicking" id="style-8" class="scrollbar" style="height: 400px;">
+      <div class="col-md-12 text-center">
+        <div class="alert alert-warning" role="alert" *ngFor="let data of pickingsList">
+          <table class="w-100">
+            <tr>
+              <th>{{data.pickingNumber}}</th>
+              <th style="width:235px;text-align:left">{{data.productMasterInfo?.productIDName}}</th>
+              <th>{{data.pickedQuantity}} {{data.inventoryUnit}}</th>
+              <th>{{data.locationInfo?.locationName}}</th>
+              <td rowspan="2"><span *ngIf="data.status=='Closed' && data.startTime">Completed</span>
+                <span *ngIf="data.status!='Closed' && data.startTime">
+                  <button class="btn btn-primary" (click)="updateStatus('status',data)">Complete</button></span>
+                <span *ngIf="!data.startTime"><button class="btn btn-primary"
+                    (click)="updateStatus('startTime',data)">Start</button></span>
+              </td>
+            </tr>
+            <tr>
+              <th>{{data.wareHouseInfo?.wareHouseName}}</th>
+              <th>{{data.zoneInfo?.zoneName}}</th>
+              <th>{{data.rackInfo?.rackName}}</th>
+              <th>{{data.levelInfo?.levelName}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div clas="col-md-12" *ngIf="pickingsList?.length === 0">
+        <div style="margin-top:200px">
+          <h6 class='text-uppercase d-flex justify-content-center text-center text-uppercase'>No Assigned Pending
+            picking list available...</h6>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row" *ngIf="callingPutaway">
+      <div class="col-md-12 text-center">
+        <div class="alert alert-warning" role="alert" *ngFor="let data of putawaysLst">
+          <table class="w-100">
+            <tr>
+              <th>{{data.putawayNumber}}</th>
+              <th style="width:235px;text-align:left">{{data.productMasterInfo?.productIDName}}</th>
+              <th>{{data.quantity}} {{data.inventoryUnit}}</th>
+              <th>{{data.locationInfo?.locationName}}</th>
+              <td><span *ngIf="data.status=='Closed' && data.startTime">Completed</span>
+                <span *ngIf="data.status!='Closed' && data.startTime">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="!data.startTime"><button class="btn btn-primary"
+                    (click)="onStatusChange('startTime',data)">Start</button></span>
+              </td>
+            </tr>
+            <tr>
+              <th>{{data.wareHouseInfo?.wareHouseName}}</th>
+              <th>{{data.zoneInfo?.zoneName}}</th>
+              <th>{{data.rackInfo?.rackName}}</th>
+              <th>{{data.levelInfo?.levelName}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div clas="col-md-12" *ngIf="putawaysLst?.length === 0">
+        <div class="text-center">
+          <div style="margin-top:200px;margin-left:90px;">
+            <h6 class='text-uppercase d-flex justify-content-center text-center text-uppercase'>No Assigned Pending
+              picking list available...</h6>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</ngx-smart-modal> -->
+
+
+<!-- <div class="alert alert-primary w-100" *ngFor="let data of pickingsList">
+        <div class="row">
+          <div class="col-md-11">
+            <h5>Lorem ipsum dolor sit amet.</h5>
+            <div class="text-left m-2">
+              <button *ngIf="visibletruecomplete" (click)="hide()"class="btn btn-primary">Complete</button>
+              <button  *ngIf="visibletrueincomplete" (click)="show()"class="btn btn-secondary">Incomplete</button>
+            </div>
+            {{data.wmsoNumber}}
+          </div>
+          <div class="col-md-1">
+            <i style=""class="fa fa-times fa-5x"></i>
+          </div>
+        </div>
+
+
+
+
+      </div> -->

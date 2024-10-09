@@ -1,0 +1,514 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head> -->
+
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="m-3">
+                <table border="1" class="w-100">
+                  <tr>
+                    <td style="width:180px;border-right-color:white">
+                      <img id="logoImage" style="height: 90px;border-radius: 10px;margin-top:5px"
+                        class="img-responsive img-rounded">
+                      <!-- <img src="assets/inMenusIcons/Asset.svg" class="img-fluid img-responsive" alt=""> -->
+                    </td>
+                    <td class="d-flex justify-content-center text-center" style="border: none !important;">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-sm-10">
+                              <p style="font-size: 20px;color: black;" *ngIf="warehouseTransferData.shipToAddress"> {{warehouseTransferData.shipToAddress?.name}}</p>
+                            </div>
+                            <div class="col-sm-10">
+                              <p style="color:black">{{warehouseTransferData.shipToAddress?.address}}</p>
+                            </div>
+                            <!-- <div class="col-sm-12">
+                              <p style="font-size: 20px;color: black;" *ngIf="warehouseTransferData.shipToAddress">
+                                {{warehouseTransferData.shipToAddress?.name}}
+                                <br>
+                                <br>
+                                {{warehouseTransferData.shipToAddress?.address}}
+                              </p>
+                            </div> -->
+                            <!-- <div class="col-sm-10">
+                    <p style="color: black;" *ngIf="orgData">{{orgData.address}}</p>
+                      <p style="color:black" *ngIf="warehouseTransferData.shipToAddress">{{warehouseTransferData.shipToAddress?.name}},{{warehouseTransferData.shipToAddress?.address}}</p>
+                    </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table border="1" class="w-100">
+                  <tr>
+                    <td class="" style="border-right-color:white;color: black;font-size: 12px;font-weight: 700;">
+                      <div class="row">
+                        <div class="col-md-12 text-center" style="position: relative;left:280px">
+                          <span class="text-bold">Purchase Order</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="position:relative ;width:650px">
+                      <div>
+                        <div class="row">
+                          <div class="col-md-12" style="margin-top: -10px !important;">
+                            <div class="form-group row m-0">
+                              <label class="col-sm-3 col-form-label">Vendor Code:
+                              </label>
+                              <label class="col-sm-4 col-form-label"
+                                *ngIf="warehouseTransferData.sourceWareHouseInfo">{{warehouseTransferData.sourceWareHouseInfo.wareHouseID}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Vendor Name:
+                              </label>
+                              <label class="col-sm-7 col-form-label"
+                                *ngIf="warehouseTransferData.sourceWareHouseInfo">{{warehouseTransferData.sourceWareHouseInfo.wareHouseName}}</label>
+
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Vendor Address:
+                              </label>
+                              <label class="col-sm-9 col-form-label"
+                                *ngIf="warehouseTransferData.shipFromAddress">{{warehouseTransferData.shipFromAddress.address}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Vendor Phone :
+                              </label>
+                              <div class="col-sm-4">
+                                <span class="mt-2"
+                                  *ngIf="warehouseTransferData.shipFromAddress">{{warehouseTransferData.shipFromAddress.contactDetails.phoneNumber}}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Vendor Email ID:
+                              </label>
+                              <div class="col-sm-4">
+                                <span class="mt-2"
+                                  *ngIf="warehouseTransferData.shipFromAddress">{{warehouseTransferData.shipFromAddress.contactDetails.email}}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Vendor GSTIN:
+                              </label>
+                              <div class="col-sm-4">
+                                <span class="mt-2" *ngIf="wareHouseDetails"> {{wareHouseDetails.gstNumber}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="position:relative ;width:650px">
+                      <div>
+                        <div class="row">
+                          <div class="col-md-12" style="margin-top: -64px !important;">
+
+                            <div class="form-group row m-0">
+                              <label class="col-sm-3 col-form-label">PO Number:
+                              </label>
+                              <div class="col-sm-4">
+                                <span
+                                  class="mt-2">{{warehouseTransferData.wmsoNumberPrefix}}/{{warehouseTransferData.sourceWareHouseInfo?.wareHouseID}}/{{warehouseTransferData.wmsoNumber}}/{{warehouseTransferData.financialYearName}}</span>
+                              </div>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">PO Date:
+                              </label>
+                              <div class="col-sm-4">
+                                <span class="mt-2">{{warehouseTransferData.createdDate | date : 'dd/MM/yyyy'}} </span>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <!-- <div class="form-group row m-0">
+                      <label class="col-sm-3 col-form-label"></label>
+                      <label class="col-sm-9 col-form-label" *ngIf="warehouseTransferData.wareHouseInfo">{{warehouseTransferData.wareHouseInfo.wareHouseName}}</label>
+                    </div> -->
+                            <div class="form-group row m-0">
+                              <!-- <label class="col-sm-3 col-form-label" style="position: relative;top: -21px !important;">Billed To:
+                      </label>
+                      <label class="col-sm-9 col-form-label"
+                        *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.address }}</label> -->
+                              <label class="col-sm-3 col-form-label" style="position: relative;">Billed
+                                To:
+                              </label>
+                              <label class="col-sm-9 col-form-label"
+                                *ngIf="warehouseTransferData.billToAddress">{{warehouseTransferData.billToAddress?.name}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Address:
+                              </label>
+                              <label
+                                class="col-sm-6 col-form-label">{{warehouseTransferData.billToAddress?.address}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">State:
+                              </label>
+                              <label
+                                class="col-sm-6 col-form-label">{{warehouseTransferData.billToAddress?.state}}</label>
+                            </div>
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">Email:
+                              </label>
+                              <label
+                                class="col-sm-6 col-form-label">{{warehouseTransferData.billToAddress?.contactDetails.email}}</label>
+                            </div>
+                            <!-- <div class="form-group row m-0" style="margin-top: -10px !important;">
+                      <label class="col-sm-3 col-form-label">Telephone No:
+                      </label>
+                      <div class="col-sm-4">
+                        <span class="mt-2" *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.phoneNumber}}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group row m-0" style="margin-top: -10px !important;">
+                      <label class="col-sm-3 col-form-label">Email ID:
+                      </label>
+                      <div class="col-sm-4">
+                        <span class="mt-2" *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.email }}
+                        </span>
+                      </div>
+                    </div> -->
+                            <div class="form-group row m-0" style="margin-top: -10px !important;">
+                              <label class="col-sm-3 col-form-label">GSTIN
+                              </label>
+                              <div class="col-sm-4">
+                                <!-- <span class="mt-2" *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.gstNumber
+                          }} </span> -->
+
+                                <span class="mt-2"
+                                  *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.gstNumber}} </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <td>
+                      <div class="row" style="position: relative;top: -58px;">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-12 mt-5">
+                              <!-- <div class="form-group row m-0">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <label class="col-sm-9 col-form-label" *ngIf="warehouseTransferData.wareHouseInfo">{{warehouseTransferData.wareHouseInfo.wareHouseName}}</label>
+                      </div> -->
+                              <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label" style="position: relative;">Shipped
+                                  To:
+                                </label>
+                                <label class="col-sm-9 col-form-label"
+                                  *ngIf="warehouseTransferData.shipToAddress">{{warehouseTransferData.shipToAddress?.name}}</label>
+                              </div>
+                              <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                <label class="col-sm-3 col-form-label">Address:
+                                </label>
+                                <label
+                                  class="col-sm-6 col-form-label">{{warehouseTransferData.shipToAddress?.address}}</label>
+                              </div>
+                              <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                <label class="col-sm-3 col-form-label">State:
+                                </label>
+                                <label
+                                  class="col-sm-6 col-form-label">{{warehouseTransferData.shipToAddress?.state}}</label>
+                              </div>
+                              <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                <label class="col-sm-3 col-form-label">Email:
+                                </label>
+                                <label
+                                  class="col-sm-6 col-form-label">{{warehouseTransferData.shipToAddress?.contactDetails.email}}</label>
+                              </div>
+                              <!-- <div class="form-group row m-0" style="margin-top: -10px !important;">
+                        <label class="col-sm-3 col-form-label">Telephone No:
+                        </label>
+                        <div class="col-sm-4">
+                          <span class="mt-2"
+                            *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.phoneNumber}}</span>
+                        </div>
+                      </div>
+                      <div class="form-group row m-0" style="margin-top: -10px !important;">
+                        <label class="col-sm-3 col-form-label">Email ID:
+                        </label>
+                        <div class="col-sm-4">
+                          <span class="mt-2"
+                            *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.email}}</span>
+                        </div>
+                      </div> -->
+                              <div class="form-group row m-0" style="margin-top: -10px !important;">
+                                <label class="col-sm-3 col-form-label">GSTIN
+                                </label>
+                                <div class="col-sm-4">
+                                  <!-- {{destinationWareHouseDetails.gstNumber }} -->
+                                  <span class="mt-2"
+                                    *ngIf="destinationWareHouseDetails">{{destinationWareHouseDetails.gstNumber}}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table id="example" border="1" class="w-100 mt-2">
+                  <thead>
+                    <tr>
+                      <td scope="col" class="text-center">S.No</td>
+                      <td class="text-center"> Temp.</td>
+                      <td class="text-center"> HSN Code</td>
+                      <td class="text-center"> SKU Code</td>
+                      <td class="text-center"> Description</td>
+                      <td class="text-center"> Specifications</td>
+                      <td class="text-center"> Brand </td>
+                      <td class="text-center"> Base UOM </td>
+                      <td class="text-center"> Rate</td>
+                      <td class="text-center"> UOM-1 (Pack Size)</td>
+                      <td class="text-center"> Rate / Pack</td>
+                      <td class="text-center"> Billd Qty</td>
+                      <td class="text-center"> Basic</td>
+                      <td class="text-center"> Tax Rate (%) </td>
+                      <!-- <td scope="col" class="text-center">Product ID</td>
+              <td scope="col" class="text-center">Product Name</td>
+              <td scope="col" class="text-center">Delivery Date</td>
+              <td scope="col" class="text-center">UOM</td>
+              <td scope="col" class="text-center">Order Quantity</td>
+              <td scope="col" class="text-center">Rate</td>
+              <td scope="col" class="text-center">Amount</td> -->
+                      <td *ngFor="let details of finalSalesobjectArray" class="text-center">{{details}}</td>
+                      <!-- <td class="text-center">Tax Amount</td> -->
+                      <td scope="col" class="text-center">Total Amount</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of overAllLines;let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{data.storageInstruction}}</td>
+                      <td>{{data.hsnCode}}</td>
+                      <td>{{data.productMasterInfo.productID}}</td>
+                      <td>{{data.productMasterInfo.productName}}</td>
+                      <td style="text-align: center !important;">{{data.productDescription}}</td>
+                      <td style="text-align: center !important;">{{data.brandName}} </td>
+                      <td style="text-align: right !important;"></td>
+                      <td style="text-align: right !important;">{{data.unitPrice}}</td>
+                      <td>{{data.shipmentUnit}}</td>
+                      <td>{{data.orderUnitPrice}}</td>
+                      <td>{{data.customerOrderQuantity}}</td>
+                      <td style="text-align: right !important;">{{data.grossAmount | decimalFilter}}</td>
+                      <td style="text-align: right !important;">{{data.taxPercentage | decimalFilter}}</td>
+                      <td *ngFor="let prod of finalSalesobjectArray" style="text-align: right !important;">
+                        <ng-container *ngFor="let details of getArray(prod,i)">
+                          <span *ngIf="details.taxName==prod">{{details.taxAmount | decimalFilter}}</span>
+                          <span *ngIf="details.taxName!=prod">0</span>
+                        </ng-container>
+                        <ng-container *ngIf="getArray(prod,i).length==0">0</ng-container>
+                      </td>
+                      <td style="text-align: right !important;">{{data.netAmount | decimalFilter}}</td>
+                    </tr>
+                    <tr>
+                      <td style="border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;border-right: none !important;"></td>
+                      <td style="border-left: none !important;">Total</td>
+                      <td style="text-align: right !important;">{{overAllLines?.totalGross | decimalFilter}}</td>
+                      <td></td>
+                      <!--   <td style="text-align: right !important;">{{overAllLines?.totalTax}}</td> -->
+                      <td style="text-align: right !important;" *ngFor="let details of finalTotalArray">
+                        {{details.totalTaxAmount | decimalFilter}}</td>
+                      <!-- <td style="text-align: right !important">{{overAllLines?.totalTaxAmount}}</td> -->
+                      <td style="text-align: right !important">{{totalDecimalValue | decimalFilter}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-2">
+                  <div class="col-md-12">
+                    <div class="text-left">
+                      <!-- <p>Total Amount Value : {{totalNetAmountobj}}</p> -->
+                      <p class="Heading ml-3">Total Amount In Words : {{newTotalNetAmountobj | decimalFilter}}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <table border="1" class="w-100">
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-12" style="margin-top: -98px !important;">
+                      <div class="form-group row m-0">
+
+                        <div class="col-sm-2"></div>
+                      </div>
+                      <div class="form-group row m-0" style="margin-top: -10px !important;">
+
+                        <div class="col-sm-2"></div>
+                      </div>
+                      <div class="form-group row m-0" style="margin-top: 20px !important;">
+                        <label class="col-sm-10 col-form-label">Terms Of Delivery:
+                        </label>
+                      </div>
+                      <div class="form-group row m-0" style="margin-top: -10px !important;">
+
+                      </div>
+                      <div class="form-group row m-0" style="margin-top: -10px !important;">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-12" style="margin-top: -10px !important;">
+                        <div class="form-group row m-0">
+                          <label class="col-sm-8 col-form-label">Note :
+                          </label>
+                        </div>
+                        <div class="form-group row m-0">
+                          <label class="col-sm-12 col-form-label">1. Please quote our purchase
+                            order and send all documents i.e Tax Invoice, Delivery Challan,
+                            Test Certificate, etc along with supply to avoid delay in payment.
+                          </label>
+
+                        </div>
+                        <div class="form-group row m-0" style="margin-top: -10px !important;">
+                          <label class="col-sm-12 col-form-label">2. Execute this order in
+                            accordance with the price, terms, delivery method and specifications
+                            as listed above and as per annexures, if any sent along with this
+                            purchase order.
+                          </label>
+
+                        </div>
+                        <div class="form-group row m-0" style="margin-top: -10px !important;">
+                          <label class="col-sm-12 col-form-label">3. Please notify us immediately
+                            if you are unable to ship as specified.
+                          </label>
+
+                        </div>
+                        <div class="form-group row m-0" style="margin-top: -10px !important;">
+                          <label class="col-sm-12 col-form-label">4. Any mismatch or difference in
+                            tax amount including for changes, if any in tax rates or tax
+                            laws will be recovered from you
+                          </label>
+                        </div>
+
+                        <div class="form-group row m-0" style="margin-top: -10px !important;">
+                          <label class="col-sm-12 col-form-label">5. Please send us an acknowledged
+                            copy of this order to signify your acceptance
+                          </label>
+                        </div>
+                        <div class="form-group row m-0" style="margin-top: -10px !important;">
+                          <label class="col-sm-12 col-form-label">6. No queries will be entertained
+                            post 30 days of payment made for any invoice.
+                          </label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </td>
+          </tr>
+        </table>
+        <table border="1" class="w-100">
+
+          <tr>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row m-0 p-0">
+                  <label class="col-sm-8 col-form-label" style="text-align: end;">
+                    All Supplies made against this Purchase Order are subject to General Terms and
+                    Conditions as described
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </tr>
+        </table>
+        <table border="1" class="w-100">
+          <tr>
+
+            <div class="row text-center">
+              <div class="col-md-12">
+                <div class="form-group row m-0 p-0">
+                  <label class="col-sm-8 col-form-label" style="text-align: end;">
+                    This is a computer-generated document. No signature is required.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </tr>
+        </table> -->
+                <!-- <footer style="border:1px solid black;padding: 0px !important;margin-top: 380px !important;">
+          <span class="d-flex justify-content-center Heading"
+            *ngIf="warehouseTransferData.shipToAddress">{{warehouseTransferData.shipToAddress.name}},{{warehouseTransferData.shipToAddress.address}}
+          </span> -->
+                <!-- <br> -->
+                <!-- <span class="d-flex justify-content-center Heading" style="margin-top: -24px !important;"
+            *ngIf="orgData">{{orgData.address}}</span> -->
+                <!-- </footer> -->
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">
+    <div style="border:1px solid black;">
+      <span class="d-flex justify-content-center Heading"
+        *ngIf="warehouseTransferData.shipToAddress">{{warehouseTransferData.shipToAddress.name}},{{warehouseTransferData.shipToAddress.address}}
+      </span>
+    </div>
+  </div>
+</body>
+
+<!-- </html> -->

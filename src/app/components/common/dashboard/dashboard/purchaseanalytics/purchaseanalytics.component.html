@@ -1,0 +1,160 @@
+<div id="inBody" [formGroup]="purchaseAnalyticsForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12 mb-2">
+      <div class="top-input-label">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Select Type' |translate}}</label>
+              <div class="col-sm-7">
+                <select class="form-control" (change)="enableDate($event.target.value);
+               OnDataChange();changeFunctionalityType($event.target.value)" formControlName="type">
+                  <option [selected]="true">Last 3 Months</option>
+                  <option value="Last 6 Weeks">Last 6 Weeks</option>
+                  <option value="Last 3 Months">Last 3 Months</option>
+                  <option value="Last 6 Months">Last 6 Months</option>
+                  <option value="Last 12 Months">Last 12 Months</option>
+                  <option value="Previous Month">Previous Month</option>
+                  <option value="Current Month to Current Date">Current Month to Current Date</option>
+                  <option value="Last Quarter">Last Quarter</option>
+                  <option value="Financial Year to Date">Financial Year to Date</option>
+                  <option value="Previous Financial Year">Previous Financial Year</option>
+                  <option value="Custom Dates">Custom Dates</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label">{{'Type' |translate}}
+              </label>
+              <div class="col-sm-6">
+                <select name="functionalityType" class="form-control" formControlName="functionalityType"
+                  id="functionalityType" (change)="changeFunctionalityType($event.target.value)">
+                  <option value="purchaseOrder" [selected]="true">Orders</option>
+                  <option value="purchaseReceived">Goods Receive</option>
+                  <option value="purchaseReturns">Goods Return</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group row ">
+              <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}
+              </label>
+              <div class="col-sm-5">
+                <select class="form-control extraLongWidth" [(ngModel)]="orderType" (change)="changeFunctionalityType()"
+                  [ngModelOptions]="{standalone: true}">
+                  <option>Purchase Order</option>
+                  <option>WareHouseTransfer</option>
+                  <option>Sales Returns </option>
+                  <option>WareHouseTransfer Returns </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" *ngIf="showFields">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label">{{'From Date' |translate}}
+              </label>
+              <div class="col-sm-6">
+                <input type="date" name="etaFrom" class="form-control" id="etaFrom" style="width: 117px"
+                  formControlName="etaFrom" (change)="changeFunctionalityType($event.target.value)">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3" *ngIf="showFields">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label">{{'To Date' |translate}}
+              </label>
+              <div class="col-sm-6">
+                <input type="date" name="" class="form-control" id="" style="width: 117px" formControlName="etaTo"
+                  (change)="changeFunctionalityType($event.target.value);OnDataChange()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" *ngIf="permissionsList.includes('View')">
+      <div class="wareHouseBG1 text-center">
+        <div class="row">
+          <div class="col-md-12 mt-4">
+            <h6 class="text-center">{{purchaseOrderWiseGraphName |translate}}</h6>
+            <div class="text-right">
+              <i class="fa fa-table fa-2x" (click)="openModalPopUp()" style="position:relative;
+                  top:-26px;
+                  border-radius:50%;cursor:pointer" data-toggle="tooltip" title="Download Table"></i>
+            </div>
+          </div>
+        </div>
+        <div id="chart">
+          <div id="chart-container" *ngIf="chartData">
+            <canvas #myCanvas id="canvas" baseChart [chartType]="chartType" [datasets]="chartData"
+              [labels]="chartLabels" [colors]="chartColors" [options]="chartOptions"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="productWiseList.includes('View')">
+      <div class="wareHouseBG1 text-center">
+        <app-productwisepurchase [ProductWiseDataBinding]="productWisePurchseReturnResponseList">
+        </app-productwisepurchase>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="categoryWiseList.includes('View')">
+      <div class="wareHouseBG1 text-center">
+        <app-categorywisepurchase [categoryWiseDataBinding]="categoryWiseNewResponseList"></app-categorywisepurchase>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="supplierWiseList.includes('View')">
+      <div class="wareHouseBG1 text-center">
+        <app-supplierwisepurchase [supplierWiseDataBinding]="supplierWiseNewResponseList"></app-supplierwisepurchase>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="regionWiseList.includes('View')">
+      <div class="wareHouseBG1 text-center">
+        <app-regionwisepurchaseorder [regionWiseDataBinding]="locationWiseNewResponseList">
+        </app-regionwisepurchaseorder>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="purchaseAnalyticsOrder" #purchaseAnalyticsOrder
+  [identifier]="'purchaseAnalyticsOrder'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables w-100">
+        <div class="row ">
+          <div class="col-md-12">
+            <div class="text-right">
+              <i class="fa fa-download tableDownload" (click)="exportAsXLSX()"></i>
+            </div>
+          </div>
+        </div>
+        <table id="example" class="table table-striped" >
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Period' |translate}}</th>
+              <th scope="col">{{'Quantity' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of periodWisePurchaseOrderList;let i = index">
+              <td class="text-left">{{i+1}}</td>
+              <td>{{data.period}}</td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

@@ -1,0 +1,1173 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="productForm">
+    <div class="col-md-12">
+      <div class="row" *ngIf="permissionsList.includes('Update')">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <ul>
+              <li (click)="getFileNew()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfileNew" class="hidden" type="file" accept=".xlsx"
+                    #import1 (click)="import1.value = null" (change)="newUploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecordsNew.length > 0"><a (click)="downloadLogFileNew()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+            </ul>
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" #import (click)="import.value = null"
+                (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="getAllProductsForDownload()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+
+          </div>
+        </div>
+      </div>
+      <!--   <div class="row">
+        <div class="col-md-4">
+          <div class="udcBtns">
+          </div>
+        </div>
+
+        <div class="col-md-6 offset-md-2">
+           <ul>
+              <li (click)="getFileNew()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfileNew" class="hidden" type="file" accept=".xlsx"
+                    (change)="newUploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecordsNew.length > 0"><a (click)="downloadLogFileNew()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+           </ul>
+
+          <div class="udcBtns float-right" *ngIf="permissionsList.includes('Update')">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="getAllProductsForDownload()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT ATTRIBUTES' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">
+                        {{'Product ID' |translate}} <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" (keyup)="getProductIDName()" name="productID"
+                          [readonly]="isReadMode"
+                          [ngClass]="{'valiError': shouldShowErrors('productID', productForm),'valiSucess': shouldShowSuccess('productID')}"
+                          (focus)="onFocusForElement('productID')" (focusout)="onFocusOutForElement()"
+                          formControlName="productID" id="productID" placeholder="{{'Product ID' |translate}}"
+                          type="text" [readonly]="productNameReadOnly">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="productName" name="productName" (keyup)="getProductIDName()" [ngClass]="{'valiError': shouldShowErrors('productName', productForm),'valiSucess':
+                           shouldShowSuccess('productName')}" (focus)="onFocusForElement('productName')"
+                          (focusout)="onFocusOutForElement()" formControlName="productName"
+                          placeholder="{{'Product Name' |translate}}" class="form-control" type="text"
+                          [readonly]="productNameReadOnly">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product ID/Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="productIDName" name="productIDName" formControlName="productIDName"
+                          placeholder="{{'Product ID/Name' |translate}}" class="form-control" type="text" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Description' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="productDescription"
+                          formControlName="productDescription" id="productDescription"
+                          placeholder="{{'Product Description' |translate}}" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Configuration' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="productConfiguration"
+                          formControlName="productConfiguration" id="productConfiguration"
+                          placeholder="{{'Product Configuration' |translate}}" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+
+                    <div class="form-group row" formGroupName="productCategoryInfo">
+                      <label class="col-sm-5 col-form-label">{{'Category' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="disablepurpose" name="productCategoryName"
+                          formControlName="productCategoryName" [disabled]="makeThisDisabled"
+                          (change)="getSubData1Details($event.target.value)">
+                          <option value="">--Select--</option>
+                          <option *ngFor="let productCategory of productCategories">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'HSN Code' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select id="hsnCode" name="hsnCode" formControlName="hsnCode" class="form-control"
+                          (change)="getTaxDropdown($event.target.value)">
+                          <option value="null">Select</option>
+                          <option *ngFor="let data of getHSNCodes">{{data}}</option>
+                        </select>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'HSN Code' |translate}}</label>
+                      <div class="col-sm-2">
+                        <ng2-completer [datasource]="getHSNCodes" [minSearchLength]="0" placeholder="Search"
+                          [(ngModel)]="dummyHsnCode" [ngModelOptions]="{standalone: true}"
+                          (selected)="setHsnCode($event)">
+                        </ng2-completer>
+                      </div>
+                      <div class="col-md-5 pr-2">
+                        <input name="hsnCode" id="hsnCode" placeholder="HSN Code" class="form-control" type="text"
+                          formControlName="hsnCode" (focusout)="setHsnCode('yes')">
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Category Details' |translate}}</label>
+                      <div class="col-sm-7">
+                        <nz-tree-select style="width: 350px;height: auto;" [nzDropdownMatchSelectWidth]="true"
+                          [nzNodes]="nodes" nzShowSearch [nzAllowClear]="true" [(ngModel)]="value" nzCheckable
+                          nzPlaceHolder="Please select" [ngModelOptions]="{standalone: true}" [nzAsyncData]="true"
+                          (ngModelChange)="onChange($event)" [nzDefaultExpandAll]="true"></nz-tree-select>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Category 1' |translate}}</label>
+                      <div class="col-sm-7">
+                        <!-- <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory1"
+                          (change)="OnsubcatgoryChange($event.target.value)">
+                          <option value=null>Select Category 1</option>
+                          <option *ngFor="let sc of SubCatogrys1" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select> -->
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 1'" [settings]="dropdownSettings"
+                          [data]="categoryList" name="Sub-Category1" formControlName="subcatgory1"
+                          (ngModelChange)="onFocusForElement('Sub-Category ');getSub2DropdownDisable();OnsubcatgoryChange()"
+                          (focusout)="onFocusOutForElement();" placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Category 2' |translate}}</label>
+                      <div class="col-sm-7">
+                        <!-- <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory2"
+                          (change)="Onsub2catgoryChange($event.target.value)">
+                          <option value=null>Select Category 2</option>
+                          <option *ngFor="let sc of SubCatogrys2" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select> -->
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 2'" [settings]="dropdownSettings"
+                          [data]="categoryList2" name="Sub-Category1" formControlName="subcatgory2"
+                          (ngModelChange)="onFocusForElement('Sub-Category ');getSub3DropdownDisable();Onsub2catgoryChange()"
+                          (focusout)="onFocusOutForElement();" placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Category 3' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 3'" [settings]="dropdownSettings"
+                          [data]="categoryList3" name="Sub-Category1" formControlName="subcatgory3"
+                          (ngModelChange)="onFocusForElement('Sub-Category ');Onsub3catgoryChange()"
+                          (focusout)="onFocusOutForElement();" placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row" *ngIf="showImage">
+                      <label for="" class="col-sm-4 col-form-label ml-2">{{'Product Image' |translate}}</label>
+                      <div class="col-sm-8" style="margin-bottom: 30px;">
+                        <img id="imageID" style="border: 1px solid hsl(210, 14%, 83%);
+                        border-radius: 10px;width: 150px;height: 90px;
+                          margin-left: 100px;margin-top: -23px;">
+                        <span><i class="fa fa-times" [hidden]="!imageHidden" 
+                        (click)="deleteImage('imageID')" style="position: relative;
+                            top: -100px;margin-left: 232px;"></i></span>
+                        <div class="col-sm-6 m-auto">
+                          <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg"
+                            (click)="importMeasure.value = null" value="" #importMeasure
+                            (change)="uploadImagesAndFiles($event,'productImage','imageID');" [hidden]="imageHidden"
+                            style="margin-left:100px;margin-top:-64px;overflow: hidden;">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Dfs Code' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="dfsCode" formControlName="dfsCode" id="dfsCode"
+                          placeholder="{{'Dfs Code' |translate}}" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="type" formControlName="type" id="type"
+                          placeholder="{{'Type' |translate}}" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Class' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="productClass" name="productClass" formControlName="productClass"
+                          placeholder="{{'Product Class' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="productType" name="productType" formControlName="productType"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'UPC EAN Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="upcEANNumber" name="upcEANNumber" formControlName="upcEANNumber"
+                          placeholder="{{'UPC EAN Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-2">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-md-3">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="sourceWareHousesDropdownData" [(ngModel)]="wareHouseselected"
+                          [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT UNITS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT UNITS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Inventory Unit' |translate}}<i class=" m-1 red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="inventoryUnit" name="inventoryUnit"
+                          formControlName="inventoryUnit" [ngClass]="{'valiError': shouldShowErrors('inventoryUnit',
+                          productForm),'valiSucess': shouldShowSuccess('inventoryUnit')}"
+                          (focus)="onFocusForElement('inventoryUnit')" (focusout)="onFocusOutForElement()"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let inventoryUni of units" [ngValue]="inventoryUni.unitCode">
+                            {{inventoryUni.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Receiving Unit' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="receivingUnit" name="receivingUnit"
+                          formControlName="receivingUnit" [ngClass]="{'valiError': shouldShowErrors('receivingUnit',
+                           productForm),'valiSucess': shouldShowSuccess('receivingUnit')}"
+                          (focus)="onFocusForElement('receivingUnit')" (focusout)="onFocusOutForElement()"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let receivingUni of units" [ngValue]="receivingUni.unitCode">
+                            {{receivingUni.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Shipment Unit' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="shipmentUnit" name="shipmentUnit"
+                          formControlName="shipmentUnit" [disabled]="makeThisDisabled">
+                          <option [ngValue]=null [selected]="true">--Select--</option>
+                          <option *ngFor="let shipmentUni of units" [ngValue]="shipmentUni.unitCode">
+                            {{shipmentUni.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Brand Configurations' | translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="brandConfigureIDs" name="Sub-Category 1" formControlName="brandNames"
+                          name="brandNames" placeholder="{{'Brand Configurations' | translate}}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Picking Unit' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="pickingUnit" name="pickingUnit" formControlName="pickingUnit"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let pickingUni of units" [ngValue]="pickingUni.unitCode">
+                            {{pickingUni.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Storage Unit' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="storageUnit" name="storageUnit" formControlName="storageUnit"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let storageUni of units" [ngValue]="storageUni.unitCode">
+                            {{storageUni.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PLANNING DETAILS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PLANNING DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Picking Direction' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select name="" id="" formControlName="pickingDirection" class="form-control"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]=null>Select</option>
+                          <option *ngFor="let data of pickDirection">{{data}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Merge' |translate}}
+                        <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" name="productMerge" class="form-control" formControlName="productMerge"
+                          id="productMerge" readonly required>
+
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Merge Type' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <select name="" class="form-control" id="" formControlName="mergeType"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">--Select--</option>
+                          <option [ngValue]="data" *ngFor="let data of mergeTypes">{{data}}</option>
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-5">{{'Serial Number Configuration' |translate}}</label>
+                      <div class="col-md-7">
+                        <button class="btn-danger" *ngIf="productForm.controls.serialNumberCheck.value=='No'"
+                          (click)="saveSerialConfiguration('Yes')">No</button>
+                        <button class="btn-success" *ngIf="productForm.controls.serialNumberCheck.value=='Yes'"
+                          (click)="saveSerialConfiguration('No')">Yes</button>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Location' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="location" name="location" formControlName="location"
+                          placeholder="{{'Location' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Shelf Life' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="shelfLife" name="shelfLife" formControlName="shelfLife"
+                          placeholder="{{'Shelf Life' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Expiry Flag' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="expiryFlag" name="expiryFlag" formControlName="expiryFlag"
+                          placeholder="{{'Expiry Flag' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Invoice Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" formControlName="invoiceType" name="invoiceType" id="invoiceType">
+                          <option value="null">--Select--</option>
+                          <option value="GRN">GRN</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'UOM Conversion Availability' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" formControlName="uomConversionAvailability"
+                          name="uomConversionAvailability" id="uomConversionAvailability">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Lead Time' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="leadTime" name="leadTime" formControlName="leadTime"
+                          placeholder="{{'Lead Time' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Reorder Point' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="reOrderPoint" name="reOrderPoint" formControlName="reOrderPoint"
+                          placeholder="{{'Reorder Point' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Quality Check' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="qualityCheck" name="qualityCheck" formControlName="qualityCheck"
+                          placeholder="{{'Quality Check' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Created On' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="creationDate" name="creationDate" formControlName="creationDate"
+                          placeholder="{{'Created On' |translate}}" class="form-control" type="date"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'MOQ' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="moq" name="moq" formControlName="moq" placeholder="{{'MOQ' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Packing Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select name="" class="form-control" id="" formControlName="packageType"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">--Select--</option>
+                          <option [ngValue]="data.packingTypeName" *ngFor="let data of packingTypeList">
+                            {{data.packingTypeName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Inventory Block' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="blockInventory" id="blockInventory"
+                          formControlName="blockInventory" [readonly]="makeReadOnly"
+                          placeholder="{{'Inventory Block' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Markup' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" name="markup" id="markup" formControlName="markup"
+                          placeholder="{{'Markup' |translate}}" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Markup Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control" formControlName="markupType" name="markupType" id="markupType">
+                          <option value="Percentage">Percentage</option>
+                          <option value="Amount">Amount</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="drop-status">
+            <div class="form-group row">
+              <label class="col-sm-1 col-form-label">Status: </label>
+              <div class="col-sm-3">
+                <select class="form-control" name="status" id="status" formControlName="status" required
+                  [disabled]="makeThisDisabled">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT DIMENSIONS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT DIMENSIONS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Pallet Quantity' |translate}}</label>
+                      <div class="col-sm-8">
+                        <input id="palletQuantity" name="palletQuantity" formControlName="palletQuantity"
+                          (focusout)="calculateVolumeForLocation()" oninput="validity.valid||(value='');" min="0"
+                          placeholder="{{'Pallet Quantity' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="locationDimensionCheck=='Yes'">
+                      <label class="col-sm-4 col-form-label">{{'Location TotalSpace' |translate}}</label>
+                      <div class="col-sm-8">
+                        <input id="locationTotalSpace" name="locationTotalSpace" formControlName="locationTotalSpace"
+                          placeholder="{{'Location Space' |translate}}" class="form-control" type="text"
+                          (focusout)="calculateVolumeForLocation()">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="locationDimensionCheck=='Yes'">
+                      <label class="col-sm-4 col-form-label">{{'Location Weight' |translate}}</label>
+                      <div class="col-sm-8">
+                        <input id="locationWeight" name="locationWeight" formControlName="locationWeight"
+                          placeholder="{{'Location Weight' |translate}}" class="form-control" type="text"
+                          (focusout)="calculateVolumeForLocation()">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Length' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="length" name="length" formControlName="length" (keyup)="calculateVolume()"
+                          placeholder="{{'Length' |translate}}" class="form-control" type="text"
+                          (focusout)="lettersRemove('length')" oninput="validity.valid||(value='');" min="0"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="lengthUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Breadth' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="breadth" name="breadth" formControlName="breadth" (keyup)="calculateVolume()"
+                          placeholder="{{'Breadth' |translate}}" class="form-control" type="text"
+                          (focusout)="lettersRemove('breadth')" oninput="validity.valid||(value='');" min="0"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="breadthUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Height' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="height" name="height" formControlName="height" placeholder="{{'Height' |translate}}"
+                          class="form-control" (keyup)="calculateVolume()" type="text"
+                          (focusout)="lettersRemove('height')" oninput="validity.valid||(value='');" min="0"
+                          [readonly]="makeReadOnly || locationDimensionCheck=='Yes'">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="heightUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Volume' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <!-- <input id="volume" name="volume" placeholder="{{'Volume' |translate}}"
+                          class="form-control" type="text" readonly [readonly]="makeReadOnly"
+                          (focusout)="lettersRemove('volume')" [value]="volumeValue"> -->
+                        <input id="volume" name="volume" formControlName="volume" placeholder="{{'Volume' |translate}}"
+                          class="form-control" type="text" readonly (focusout)="lettersRemove('volume')">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="volumeUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Weight' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="weight" name="weight" formControlName="weight" placeholder="{{'Weight' |translate}}"
+                          class="form-control" type="text" oninput="validity.valid||(value='');" min="0"
+                          [readonly]="makeReadOnly || locationDimensionCheck=='Yes'"
+                          (focusout)="lettersRemove('weight')">
+                      </div>
+
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="weightUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Max Dimension' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="maxDimension" name="maxDimension" formControlName="maxDimension"
+                          placeholder="{{'Max Dimension' |translate}}" class="form-control" type="text"
+                          (focusout)="lettersRemove('maxDimension')" oninput="validity.valid||(value='');" min="0"
+                          [readonly]="makeReadOnly || locationDimensionCheck=='Yes'">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="" class="form-control newDropDown" id="" formControlName="maxDimensionUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Pallet Size' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="palletSize" name="palletSize" formControlName="palletSize"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let palletSize of palletSizes" [ngValue]="palletSize.palletSizeName">
+                            {{palletSize.palletSizeName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT CURRENCY DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT CURRENCY DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Currency' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="currency" name="currency" formControlName="currency"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let currency of currencies" [ngValue]="currency.currency">
+                            {{currency.currency}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Average Sales Price' |translate}}
+                        <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="salePrice" name="salePrice" formControlName="salePrice"
+                          placeholder="{{'Average Sales Price' |translate}}" class="form-control" value="" type="text"
+                          readonly [readonly]="makeReadOnly" required>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Average Cost Price' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="avgCostPrice" name="avgCostPrice" formControlName="avgCostPrice"
+                          placeholder="{{'Average Cost Price' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 pr-0 col-form-label">{{'Purchase Tax' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="taxIDs"
+                          [(ngModel)]="purchaseTaxes" [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Average Purchase Price' |translate}} <i
+                          class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="purchasePrice" name="purchasePrice" formControlName="purchasePrice"
+                          placeholder="{{'Average Purchase Price' |translate}}" class="form-control"
+                          oninput="validity.valid||(value='');" min="0" required
+                          [ngClass]="{'valiError': shouldShowErrors('purchasePrice', productForm),'valiSucess': shouldShowSuccess('purchasePrice')}"
+                          (focus)="onFocusForElement('purchasePrice')"
+                          (focusout)="onFocusOutForElement();lettersRemove('purchasePrice')" value="" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'MRP' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="mrp" name="mrp" formControlName="mrp" class="form-control" value="" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Price Method' |translate}}
+                        <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="pricingMethod" name="pricingMethod"
+                          formControlName="pricingMethod" [disabled]="makeThisDisabled">
+                          <option value="null">--Select--</option>
+                          <option value="LIFO">LIFO</option>
+                          <option value="Standard Price">Standard Price</option>
+                          <option value="Moving Average">Moving Average</option>
+                          <option value="FIFO">FIFO</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 pr-0 col-form-label">{{'Sales Tax' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="taxIDs"
+                          [(ngModel)]="saleTaxes" [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT INSTRUCTIONS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT INSTRUCTIONS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Receiving Instruction' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <textarea id="receivingInstruction" name="receivingInstruction"
+                          formControlName="receivingInstruction" placeholder="{{'Receiving Instruction' |translate}}"
+                          class="form-control" [readonly]="makeReadOnly"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Shipment Instruction' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <textarea id="dispathInstruciton" name="dispathInstruciton" formControlName="dispathInstruciton"
+                          placeholder="{{'Shipment Instruction' |translate}}" class="form-control"
+                          [readonly]="makeReadOnly"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Storage Instruction' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <textarea id="storageInstruction" name="storageInstruction" formControlName="storageInstruction"
+                          placeholder="{{'Storage Instruction' |translate}}" class="form-control"
+                          [readonly]="makeReadOnly"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="!productForm.valid">{{'Save' |translate}}
+                </button>
+                <button class="btn btn-white" value="Clear" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <div class="row">
+              <div class="">
+                <label class="mt-1">Show</label>
+              </div>
+              <div class="">
+                <select [(ngModel)]="itemsPerPage" style="width:63px"
+                  (change)="fetchAllD(page=1,$event)" class="form-control" [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+                <div  class="mt-1"><label>Entries</label>
+                </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="this.fetchAllProducts(page=1, itemsPerPage);">
+              </div>
+            </div>
+            <table class="table table-striped" style="overflow-y: auto;display: block;">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <td *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                      style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></td>
+                </tr>
+                <!-- <tr>
+                  <th scope="col">{{'S.No' |translate}} </th>
+                  <th scope="col">{{'Product ID' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC','Product ID')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                      aria-hidden="true" (click)="setDirection('DESC','Product ID')"></i></th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Description' |translate}}</th>
+                  <th scope="col">{{'Product Configuration' |translate}}</th>
+                  <th scope="col">{{'DFC Code' |translate}}</th>
+                  <th scope="col">{{'Type' |translate}}</th>
+                  <th scope="col">{{'HSN Code' |translate}}</th>
+                  <th scope="col">{{'UPC EAN Number' |translate}}</th>
+                  <th scope="col">{{'Product Type' |translate}}</th>
+                  <th scope="col">{{'Product Class' |translate}}</th>
+                  <th scope="col">{{'Category' |translate}}</th>
+                  <th scope="col">{{'Category 1' |translate}}</th>
+                  <th scope="col">{{'Category 2' |translate}}</th>
+                  <th scope="col">{{'Category 3' |translate}}</th>
+                  <th scope="col">{{'Product ID/Name' |translate}}</th>
+                  <th scope="col">{{'Inventory Unit' |translate}}</th>
+                  <th scope="col">{{'Receiving Unit' |translate}}</th>
+                  <th scope="col">{{'Picking Unit' |translate}}</th>
+                  <th scope="col">{{'Shipment Unit' |translate}}</th>
+                  <th scope="col">{{'Length' |translate}}</th>
+                  <th scope="col">{{'Breadth' |translate}}</th>
+                  <th scope="col">{{'Height' |translate}}</th>
+                  <th scope="col">{{'Volume' |translate}}</th>
+                  <th scope="col">{{'Weight' |translate}}</th>
+                  <th scope="col">{{'Max Dimension' |translate}}</th>
+                  <th scope="col">{{'Pallet Quantity' |translate}}</th>
+                  <th scope="col">{{'Pallet Size' |translate}}</th>
+                  <th scope="col">{{'Currency' |translate}}</th>
+                  <th scope="col">{{'Brand Configure' |translate}}</th>
+                  <th scope="col">{{'Price' |translate}}</th>
+                  <th scope="col">{{'Avg Cost Price' |translate}}</th>
+                  <th scope="col">{{'Avg Sales Price' |translate}}</th>
+                  <th scope="col">{{'MRP' |translate}}</th>
+                  <th scope="col">{{'Product Merge' |translate}}</th>
+                  <th scope="col">{{'Merge Type' |translate}}</th>
+                  <th scope="col">{{'Expiry Flag' |translate}}</th>
+                  <th scope="col">{{'Lead Time' |translate}}</th>
+                  <th scope="col">{{'MOQ' |translate}}</th>
+                  <th scope="col">{{'Picking Direction' |translate}}</th>
+                  <th scope="col">{{'Packing Type' |translate}}</th>
+                  <th scope="col">{{'Location' |translate}}</th>
+                  <th scope="col">{{'Reorder Point' |translate}}</th>
+                  <th scope="col">{{'Quality Check' |translate}}</th>
+                  <th scope="col">{{'Created On' |translate}}</th>
+                  <th scope="col">{{'Shelf Life' |translate}}</th>
+                  <th scope="col">{{'Price Method' |translate}}</th>
+                  <th scope="col">{{'Purchase Tax' |translate}}</th>
+                  <th scope="col">{{'Sales Tax' |translate}}</th>
+                  <th scope="col">{{'Source WareHouse Tax' |translate}}</th>
+                  <th scope="col">{{'Inventory Block' |translate}}</th>
+                  <th scope="col">{{'Markup' |translate}}</th>
+                  <th scope="col">{{'Markup Type'|translate}}</th>
+                  <th scope="col">{{'Status' |translate}}</th>
+                  <th scope="col">{{'Action' |translate}}</th>
+                </tr> -->
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let i=index;let product of products | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                  <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                  <td *ngIf="product.productImageResource">
+                    <div class="tooltip-container">
+                      <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                        alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                      <span *ngIf="showTooltip" class="tooltip-text">{{product.productName}}</span>
+                    </div>
+                  </td>
+                  <td *ngIf="!product.productImageResource">
+                    <div class="noImageIcon">
+                      <p class="noImageIconText">
+                        {{configService.getImageShortCut(product.productName)}}</p>
+                    </div>
+                  </td>
+                  <th style="cursor:pointer" (click)="edit(product)">{{product.productID}}</th>
+                  <td>{{product.productName}}</td>
+                  <td>{{product.productDescription}}</td>
+                  <td>{{product.productConfiguration}}</td>
+                  <td>{{product.dfsCode}}</td>
+                  <td>{{product.type}}</td>
+                  <td>{{product.hsnCode}}</td>
+                  <td>{{product.upcEANNumber}}</td>
+                  <td>{{product.productType}}</td>
+                  <td>{{product.productClass}}</td>
+                  <td>{{product.productCategoryInfo?.productCategoryName}}</td>
+                  <td>
+                    <ng-container
+                      *ngFor="let item of product.productCategoryGroupDetail?.childProductSubCategories;let n=index">
+                      {{item.productSubCategoryName}}
+                      <span
+                        *ngIf="item.productSubCategoryName &&(n)!= (product.productCategoryGroupDetail?.childProductSubCategories.length -1)">,</span>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngFor="let item of product.productCategoryGroupDetail?.childProductSubCategories;let s=index">
+                      <div *ngFor="let itemJr of item?.childProductSubCategories;let n=index">
+                        <span
+                          *ngIf="itemJr.childProductSubCategories && (n)!=(item?.childProductSubCategories.length-1)">,</span>
+                        {{itemJr.productSubCategoryName}}
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngFor="let item of product.productCategoryGroupDetail?.childProductSubCategories;let s=index">
+                      <div *ngFor="let itemJr of item?.childProductSubCategories;let l=index">
+                        <div *ngFor="let itemSubJr of itemJr?.childProductSubCategories;let n=index">
+                          <span
+                            *ngIf="itemSubJr.childProductSubCategories && (n)!=(itemSubJr.childProductSubCategories.length-1)">,</span>
+                          {{itemSubJr.productSubCategoryName}}
+                        </div>
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td>{{product.productIDName}}</td>
+                  <td>{{product.inventoryUnit}}</td>
+                  <td>{{product.receivingUnit}}</td>
+                  <td>{{product.pickingUnit}}</td>
+                  <td>{{product.shipmentUnit}}</td>
+                  <td>{{product.length}} {{product.lengthUom}}</td>
+                  <td>{{product.breadth}} {{product.breadthUom}}</td>
+                  <td>{{product.height}} {{product.heightUom}}</td>
+                  <td>{{product.volume}} {{product.volumeUom}}</td>
+                  <td>{{product.weight}} {{product.weightUom}}</td>
+                  <td>{{product.maxDimension}}{{product.maxDimensionUom}}</td>
+                  <td>{{product.palletQuantity}}</td>
+                  <td>{{product.palletSize}}</td>
+                  <td>{{product.currency}}</td>
+                  <td>{{product.brandNames}}</td>
+                  <td class="text-right">{{product.purchasePrice}}</td>
+                  <td class="text-right">{{product.avgCostPrice}}</td>
+                  <td class="text-right">{{product.salePrice}}</td>
+                  <td>{{product.mrp}}</td>
+                  <td>{{product.productMerge}}</td>
+                  <td>{{product.expiryFlag}}</td>
+                  <td>{{product.mergeType}}</td>
+                  <td>{{product.leadTime}}</td>
+                  <td>{{product.moq}}</td>
+                  <td>{{product.pickingDirection}}</td>
+                  <td>{{product.packageType}}</td>
+                  <td>{{product.location}}</td>
+                  <td>{{product.reOrderPoint}}</td>
+                  <td>{{product.qualityCheck}}</td>
+                  <td class="text-center">{{product.creationDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{product.shelfLife}}</td>
+                  <td>{{product.pricingMethod}} </td>
+                  <td><span [hidden]="product.purchaseTaxes.length==0"
+                      *ngFor="let data of product.purchaseTaxes;let j=index">{{data.taxNamePercentage}}
+                      <span *ngIf="data.taxNamePercentage && (j)!=(product.purchaseTaxes.length-1)">,</span>
+                    </span></td>
+                  <td><span [hidden]="product.saleTaxes.length==0"
+                      *ngFor="let sales of product.saleTaxes;let j=index">{{sales.taxNamePercentage}}
+                      <span *ngIf="sales.taxNamePercentage && (j)!=(product.saleTaxes.length-1)">,</span>
+                    </span></td>
+                  <td>
+                    <div class="col-md-6">
+                      <div class="row" *ngIf="product.isViewToggle == false">
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-down" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeDownToggle(product)">
+                          </i>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="product.isViewToggle == true">
+                        <div class="col-sm-10">
+                          <span *ngFor="let dot of product.sourceWareHouseInfos;let j=index">
+                            {{dot.wareHouseIDName}}
+                            <span *ngIf="dot.wareHouseIDName && (j)!=(product.sourceWareHouseInfos.length-1)">,</span>
+                          </span>
+                        </div>
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-up" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeUpToggle(product)">
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td><span *ngFor="let dot of product.sourceWareHouseInfos;let j=index">{{dot.wareHouseIDName}}
+                      <span *ngIf="dot.wareHouseIDName && (j)!=(product.sourceWareHouseInfos.length-1)">,</span>
+                    </span></td> -->
+                  <td>{{product.blockInventory}} </td>
+                  <td>{{product.markup}} </td>
+                  <td>{{product.markupType}} </td>
+                  <td>{{product.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(product)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" (pageChange)="fetchAllProducts((page = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

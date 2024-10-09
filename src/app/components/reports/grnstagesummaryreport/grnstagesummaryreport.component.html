@@ -1,0 +1,190 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="grnSummaryReportForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'GRN Stage Summary' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'GRN Stage Summary' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}" [inputClass]="'form-control form-control-inline'">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Product Category
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div> -->
+                  </div>
+                  <div class="col-md-6">
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Product Type</label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productType" name="productType" formControlName="productType">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Status</label>
+                      <div class="col-sm-8 mt-1">
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input type="radio" value="All" class="m-1" formControlName="status" name="status">
+                          All
+                        </label>
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input type="radio" value="Location Not Allocated" class="m-1" formControlName="status"
+                            name="status">
+                          Location Not Allocated
+                        </label>
+                        <label class="radio-inline ml-2" style="color:green">
+                          <input type="radio" value="Pending Putaway" class="m-1" formControlName="status"
+                            name="status">
+                          Pending Putaway
+                        </label>
+                        <label class="radio-inline ml-2" style="color:#15d6cc">
+                          <input type="radio" value="Pending Putaway Generation" class="m-1" formControlName="status"
+                            name="status">
+                          Pending Putaway Generation
+                        </label>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Status' |translate}}</label>
+                      <div class="col-sm-4">
+                        <select name="" id="" formControlName="status" class="form-control">
+                          <option [ngValue]=null [selected]=true>--Select--</option>
+                          <option value="Location Not Allocated">Location Not Allocated</option>
+                          <option value="Pending Putaway">Pending Putaway</option>
+                        </select>
+                      </div>
+                    </div> -->
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Status
+                      </label>
+                      <div class="col-sm-8">
+                        <select name="" id=""formControlName="status" class="form-control">
+                          <option value="Location Not Allocated">Location Not Allocated</option>
+                          <option value="Pending Putaway">Pending Putaway</option>
+                        </select>
+                      </div>
+                    </div> -->
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12" style="margin-top: -20px;">
+        <div class="text-right">
+          <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+          <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th>{{'Sr.No' |translate}}</th>
+                <th>{{'productID' |translate}}</th>
+                <th>{{'productName' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Return/Received Quantity' |translate}}</th>
+                <th>{{'Supplier Return/Received Quantity' |translate}}</th>
+                <th>{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of shipmentOrderData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{data.productID}}</td>
+                <td>{{data.productName}}</td>
+                <td class="text-center">{{data.inventoryUnit}}</td>
+                <td>{{data.receivedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{data.supplierReceivedQuantity | decimalwithThreeDigits}}</td>
+                <!-- <td>{{data.status}}</td> -->
+                <td [ngStyle]="{'color':(data.status=='Location Not Allocated') ?'grey':
+   (data.status=='Pending Putaway') ?'green':
+   (data.status=='Pending Putaway Generation') ?'#15d6cc':''}">{{data.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

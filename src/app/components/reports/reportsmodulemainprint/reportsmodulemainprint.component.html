@@ -1,0 +1,3576 @@
+<div *ngIf="selectedValue =='goodsReceiving'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Goods Summary</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.goodsReceivingReportsFormDataPassing.orderType=='Purchase Order'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.supplierIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.goodsReceivingReportsFormDataPassing.orderType=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID/Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.customerIDName}}
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.goodsReceivingReportsFormDataPassing.orderType=='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">Source Warehouse</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.goodsReceivingReportsFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.goodsReceivingReportsFormDataPassing.productIDName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" *ngIf="wmsService.goodsRecevingThirdPartyCustomerCheckAlocation==='Yes' &&
+                    wmsService.goodsReceivingReportsFormDataPassing.orderType !== 'Return'
+                    && wmsService.goodsReceivingReportsFormDataPassing.orderType !=='WareHouseTransfer'">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customer Supplier Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.goodsReceivingReportsFormDataPassing.customersSupplierName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customers Suppiler Address :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.customersSupplierAddress}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">GRN From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.fromDate | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">GRN To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.goodsReceivingReportsFormDataPassing.toDate | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="mt-2">
+        <tr>
+          <td>S.No</td>
+          <td>GRN Date</td>
+          <td>WMPO Number</td>
+          <td>Reference PO Number</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Order Quantity</td>
+          <td>Total Received Quantity</td>
+          <td>Total Return Quantity</td>
+          <td>Receivable Quantity</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Order Unit Price</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Tax Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Gross Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Net Amount'</td>
+          <td>Status</td>
+        </tr>
+        <tr *ngFor="let report of wmsService.goodsReceivingReportsDisplayTableList; let i = index">
+          <td>{{i + 1}}</td>
+          <td class="text-center">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td>{{report.wmpoNumber}}</td>
+          <td>{{report.referencePONumber}}</td>
+          <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+            <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+            <span
+              *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+          </td>
+          <td>{{report.productID}}</td>
+          <td>{{report.productName}}</td>
+          <td class="text-center">{{report.receivingUnit}}</td>
+
+          <td><span *ngIf="report.orderedQuantity">{{report.orderedQuantity}} </span>
+          </td>
+          <td><span *ngIf="report.totalReceivedQuantity">{{report.totalReceivedQuantity}}</span></td>
+
+          <td><span *ngIf="report.totalReturnQuantity">{{report.totalReturnQuantity}}</span></td>
+          <td>{{wmsService.passingCalculationData}}</td>
+          <td *ngIf="wmsService.makeThisVisible === true">{{report.orderUnitPrice | decimalFilter}}</td>
+          <td *ngIf="wmsService.makeThisVisible === true">{{report.taxAmount | decimalFilter}}</td>
+          <td *ngIf="wmsService.makeThisVisible === true">{{report.grossAmount | decimalFilter}}</td>
+          <td *ngIf="wmsService.makeThisVisible === true">{{report.netAmount | decimalFilter}}</td>
+
+          <td>{{report.status}} </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- Putaway Reports -->
+<div *ngIf="selectedValue =='putaway'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100 p-3" border="1">
+        <td>
+          <div class="row">
+            <div class="col-md-4">
+              <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+            </div>
+            <!-- <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                <p style="color:black">{{organizationAddressOnly}}</p>
+              </div>
+            </div> -->
+            <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                <p style="color:black">{{wareHouseAddressOnly}}</p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Putaway Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayFormDataPassing.zoneName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayFormDataPassing.rackName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Status :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayFormDataPassing.status}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" *ngIf="wmsService.putawayFormDataPassing.orderType =='Purchase Order'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.putawayFormDataPassing.orderType =='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">WareHouse ID Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.putawayFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.putawayFormDataPassing.orderType =='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Assigned to :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.executiveIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Completed By :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.completedBy}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Level Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.levelName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created Form :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.fromDate}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayFormDataPassing.toDate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+
+        <tr>
+          <td>S.No</td>
+          <td>Putaway No</td>
+          <td>WMPO Number</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>Product Description</td>
+          <td>Brand Name</td>
+          <td>UOM</td>
+          <td>Putaway Quantity</td>
+          <td>Total Actual Putaway Quantity</td>
+          <td>Balanced Putaway Quantity</td>
+          <td>Expiry Date</td>
+          <td>Manufacture Date</td>
+          <td>Batch Number</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Level Name</td>
+          <td>Column Name</td>
+          <td>Location Name</td>
+          <td>Invoice Number</td>
+          <td>Invoice Date</td>
+          <td>BOE No</td>
+          <td>BOE Date</td>
+          <td>Bond Number</td>
+          <td>Bond Date</td>
+          <td>Created On</td>
+          <td>Start Time</td>
+          <td>End Time</td>
+          <!-- <td>Assigned Date</td>
+          <td>Completed By</td>
+          <td>Assigned To</td> -->
+          <td>Planned Completion Date</td>
+          <td>Status</td>
+        </tr>
+
+        <tr *ngFor="let report of wmsService.putAwaygReportsDisplayTableList; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{report.putawayNumber}}</td>
+          <td>{{report.wmpoNumber}}</td>
+          <td><span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo.supplierIDName}}</span>
+            <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+            <span
+              *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+          </td>
+          <td>{{report.productID}}</td>
+          <td>{{report.productName}}</td>
+          <td>{{report.productDescription}}</td>
+          <td>{{report.brandName}}</td>
+          <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+          <td>{{report.quantity}}</td>
+          <td>{{report.totalActualPutawayQuantity}}</td>
+          <td>{{report.balancePutawayQuantity}}</td>
+          <td style="text-align: center !important;">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+          <td style="text-align: center !important;">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{report.batchNumber}}</td>
+          <td>{{report.zoneInfo?.zoneName}}</td>
+          <td>{{report.rackInfo?.rackName}}</td>
+          <td>{{report.levelInfo?.levelName}}</td>
+          <td>{{report.columnInfo?.columnName}}</td>
+          <td>{{report.locationName}}</td>
+          <td>{{report.invoiceNumber}}</td>
+          <td>{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{report.billOfEntryNumber}}</td>
+          <td>{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{report.bondNumber}}</td>
+          <td>{{report.bondDate | date: 'dd/MM/yyyy'}}</td>
+          <td style="text-align: center !important;">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td style="text-align: center !important;">{{report.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td style="text-align: center !important;">{{report.endTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <!-- <td style="text-align: center !important;">{{report.assignedDate | date: 'dd/MM/yyyy
+            HH:mm:ss'}}<br>{{report.assignedTo}}</td>
+          <td>{{report.completedBy}}</td> -->
+          <!-- <td>{{report.wareHouseTeamInfo?.executiveIDName}}</td> -->
+          <td style="text-align: center !important;">{{report.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+          </td>
+          <td>{{report.status}}</td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- Grn Stage Transaction Reports -->
+<div *ngIf="selectedValue =='grnStageTransaction'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                <p style="color:black">{{organizationAddressOnly}}</p>
+              </div>
+            </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>GRN Stage Transaction</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.grnStageTransactionFormDataPassing.orderType =='Purchase Order'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.supplierIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.grnStageTransactionFormDataPassing.orderType =='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">Source Warehouse</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.grnStageTransactionFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.grnStageTransactionFormDataPassing.orderType =='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.productIDName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">GRN From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.fromDate | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">GRN To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.toDate | date: 'dd/MM/yyyy'}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation === 'Yes' &&
+                           wmsService.grnStageTransactionFormDataPassing.orderType !=='WareHouseTransfer' &&
+                      wmsService.grnStageTransactionFormDataPassing.orderType  !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer Supplier Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.customersSupplierName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation === 'Yes' &&
+                      wmsService.grnStageTransactionFormDataPassing.orderType !=='WareHouseTransfer' &&
+                 wmsService.grnStageTransactionFormDataPassing.orderType  !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customers Supplier Address:</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.customersSupplierAddress}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Status :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageTransactionFormDataPassing.status}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-2">
+
+        <tr>
+          <td>S.No</td>
+          <td>GRN /Created Date</td>
+
+          <td>WMPO Number</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Category</td>
+          <td>Order Quantity</td>
+          <td>Received /Return Quantity</td>
+          <td>Batch Number</td>
+          <td>MFG Date</td>
+          <td>Expiry Date</td>
+          <td
+            [hidden]="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation=='No' || wmsService?.grnStageTransactionFormDataPassing?.orderType!='Purchase Order'">
+            Customer’s Supplier Name</td>
+          <td
+            [hidden]="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation=='No' || wmsService?.grnStageTransactionFormDataPassing?.orderType!='Purchase Order'">
+            Customer’s Supplier Address</td>
+          <td>Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let report of wmsService.grnStageTransactionReportsDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td *ngIf="report.status==='Location Not Allocated'" style="text-align: center !important;">{{report.grnDate
+              | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+            <td *ngIf="report.status==='Pending Putaway'" style="text-align: center !important;">{{report.createdDate |
+              date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+
+            <td>{{report.wmpoNumber}}</td>
+            <td><span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+            </td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.productCategoryName}} </td>
+            <td>{{report.orderedQuantity}} </td>
+            <td>{{report.receivedQuantity}}</td>
+            <td>{{report.batchNumber}}</td>
+            <td style="text-align: center !important;">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+            <td [hidden]="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation=='No' ||
+               wmsService?.grnStageTransactionFormDataPassing?.orderType!='Purchase Order'">
+              {{report.customersSupplierName}}</td>
+            <td [hidden]="wmsService.grnStageTransactionThirdPartyCustomersCheckAllocation=='No' ||
+                 wmsService?.grnStageTransactionFormDataPassing?.orderType!='Purchase Order'">
+              {{report.customersSupplierAddress}}</td>
+            <td>{{report.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- grnStageSummary -->
+<div *ngIf="selectedValue =='grnStageSummary'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                <p style="color:black">{{organizationAddressOnly}}</p>
+              </div>
+            </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>GRN Stage Summary</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageSummaryFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Status :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnStageSummaryFormDataPassing.status}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="w-100 mt-1" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Received/ Return Quantity</td>
+          <td>Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.grnStageSummaryReportsDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{data.productID}}</td>
+            <td>{{data.productName}}</td>
+            <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+            <td>{{data.receivedQuantity}} </td>
+            <td>{{data.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- grnSummary -->
+<div *ngIf="selectedValue =='grnSummary'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Order Type </label>
+                  <div class="col-sm-8 mt-2">
+
+                    {{wmsService.grnSummaryFormDataPassing.orderType}}
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="wmsService.grnSummaryFormDataPassing.orderType=='Purchase Order'">
+                  <label class="col-sm-4 col-form-label">Supplier ID/Name </label>
+                  <div class="col-sm-8 mt-2">
+
+                    {{wmsService.grnSummaryFormDataPassing.supplierIDName}}
+                  </div>
+                </div>
+                <div class="form-group row"
+                  *ngIf="wmsService.grnSummaryFormDataPassing.orderType=='WareHouseTransfer Returns'">
+                  <label class="col-sm-4 col-form-label">Source Warehouse</label>
+                  <div class="col-sm-8">
+                    <p class="mt-1">
+                      {{wmsService.grnSummaryFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="wmsService.grnSummaryFormDataPassing.orderType=='WareHouseTransfer'">
+                  <label class="col-sm-4 col-form-label">Source Warehouse</label>
+                  <div class="col-sm-8">
+                    <p class="mt-1">
+                      {{wmsService.grnSummaryFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="wmsService.grnSummaryFormDataPassing.orderType =='Sales Returns'">
+                  <label class="col-sm-4 col-form-label">Customer ID Name</label>
+                  <div class="col-sm-8">
+                    <p class="mt-1"> {{wmsService.grnSummaryFormDataPassing.customerIDName}}</p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Product ID/Name</label>
+                  <div class="col-sm-8 mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.productIDName}}
+
+                  </div>
+                </div>
+                <div class="form-group row d-none">
+                  <label class="col-sm-4 col-form-label">Product Category</label>
+                  <div class="col-sm-8 mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.productCategoryName}}
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group row d-none">
+                  <label class="col-sm-4 col-form-label">Product Type</label>
+                  <div class="col-sm-8 mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.productType}}
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Status</label>
+                  <div class="col-sm-5 mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.status}}
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Serial Number</label>
+                  <div class="col-sm-5 mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.serialNumber}}
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">GRN From</label>
+                  <div class="col-sm-5 top-input mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">GRN To</label>
+                  <div class="col-sm-5 top-input mt-2">
+                    {{wmsService.grnSummaryFormDataPassing.toDate | date: 'dd/MM/yyyy'}}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="w-100 mt-1" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Supp/Cust/Warehouse ID Name</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Order Unit Price</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Tax Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Gross Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Net Amount</td>
+          <td>WMPO No</td>
+
+          <td>Product ID/Name</td>
+
+          <td>UOM</td>
+
+          <td>Order Qty</td>
+          <td>Received Qty</td>
+          <td>Total Suppplier Received Qty</td>
+          <td>Total Suppplier Return Qty</td>
+          <td>Serial No</td>
+          <td>Batch No</td>
+          <td>MFG Date</td>
+          <td>Expiry Date</td>
+          <td>Invoice No/Date</td>
+          <td>LR No</td>
+          <td>Vehicle No</td>
+          <td>Vehicle Type</td>
+          <td>Bill Of Entry No</td>
+          <td>Bill Of Lading No</td>
+          <td>Bill Of Entry Date</td>
+          <td>Bill Of Lading Date</td>
+          <td *ngIf="wmsService.grnsummaryreportrgirdPartCustomerCheckAllocation ==='Yes'">Customers Supplier Name</td>
+          <td *ngIf="wmsService.grnsummaryreportrgirdPartCustomerCheckAllocation ==='Yes'">Customers Supplier Address
+          </td>
+          <td>Created By</td>
+          <td>GRN Date</td>
+          <td>Status</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let report of wmsService.grnSummaryReportsDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+            </td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.orderUnitPrice}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.taxAmount}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.grossAmount}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.netAmount}}</td>
+            <td>{{report.wmpoNumber}}</td>
+            <td>{{report.productIDName}}</td>
+            <td style="text-align: center !important;">{{report.receivingUnit}}</td>
+            <td>{{report.orderedQuantity}}</td>
+            <td>{{report.receivedQuantity}}</td>
+            <td>{{report.totalSupplierReceivedQuantity}}</td>
+            <td>{{report.totalSupplierReturnQuantity}}</td>
+            <td>{{report.serialNumber}}</td>
+            <td>{{report.batchNumber}}</td>
+            <td style="text-align: center !important;">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.invoiceNumber}} {{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.wayBillNumber}}</td>
+            <td>{{report.vehicleNumber}}</td>
+            <td>{{report.vehicleType}}</td>
+            <td>{{report.billOfEntryNumber}}</td>
+            <td>{{report.billOfLandingNumber}}</td>
+            <td style="text-align: center !important;">{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{report.billOfLandingDate | date: 'dd/MM/yyyy'}}</td>
+            <td *ngIf="wmsService.grnsummaryreportrgirdPartCustomerCheckAllocation ==='Yes'">
+              {{report.customersSupplierName}}</td>
+            <td *ngIf="wmsService.grnsummaryreportrgirdPartCustomerCheckAllocation ==='Yes'">
+              {{report.customersSupplierAddress}}</td>
+            <td>{{report.createdBy}}</td>
+            <td style="text-align: center !important;">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+            <td>{{report.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- grnHistory -->
+<div *ngIf="selectedValue =='grnHistory'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>GRN History</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnHistoryFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnHistoryFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Category :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnHistoryFormDataPassing.productCategoryName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row"
+                      *ngIf="wmsService.grnHistoryFormDataPassing.orderType=='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">Source WareHouse :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.grnHistoryFormDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.grnHistoryFormDataPassing.orderType=='Purchase Order'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.grnHistoryFormDataPassing.orderType =='Return'">
+                      <label class="col-sm-6 col-form-label">Customr ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.customerIDNamep}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Region :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.grnHistoryFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.grnHistoryReportthirdPartyCustomersCheckAllocation ==='Yes' &&
+                    wmsService.grnHistoryFormDataPassing.orderType !=='WareHouseTransfer' &&
+                    wmsService.grnHistoryFormDataPassing.orderType !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customers Supplier Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.customersSupplierName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Date Filter :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.type}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.datePassingHideAndShow === true">
+                      <label class="col-sm-6 col-form-label">From Date:</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.grnDateFrom | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.datePassingHideAndShow === true">
+                      <label class="col-sm-6 col-form-label">To Date :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.grnDateTo | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.grnHistoryReportthirdPartyCustomersCheckAllocation ==='Yes' &&
+                    wmsService.grnHistoryFormDataPassing.orderType !=='WareHouseTransfer' &&
+                    wmsService.grnHistoryFormDataPassing.orderType !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customers Supplier Address :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.grnHistoryFormDataPassing.customersSupplierAddress}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-2" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Product ID </td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product ID Name</td>
+          <td>Product Category</td>
+          <td>Received Quantity</td>
+          <!--  <td>Inventory Unit </td> -->
+          <td>Location Name</td>
+          <td
+            [hidden]="wmsService?.grnHistoryReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.grnHistoryFormDataPassing?.orderType!='Purchase Order'">
+            Customers Suppliers Name</td>
+          <td
+            [hidden]="wmsService?.grnHistoryReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.grnHistoryFormDataPassing?.orderType!='Purchase Order'">
+            Customers Suppliers Address </td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.grnHistoryyReportsDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td><span *ngIf="data.supplierIDName">{{data.supplierIDName}}</span>
+              <span *ngIf="data.customerIDName">{{data.customerIDName}}</span>
+              <span
+                *ngIf="data.wareHouseTransferSourceInfoWareHouseIDName">{{data.wareHouseTransferSourceInfoWareHouseIDName}}</span>
+            </td>
+            <td>{{data.productID}} </td>
+            <td>{{data.productName}} </td>
+            <td style="text-align: center !important;"> {{data.inventoryUnit}}</td>
+            <td>{{data.productIDName}}</td>
+            <td>{{data.productCategoryName}}</td>
+            <td>{{data.receivedQuantity}}</td>
+            <td>{{data.locationName}} </td>
+            <td
+              [hidden]="wmsService?.grnHistoryReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.grnHistoryFormDataPassing?.orderType!='Purchase Order'">
+              {{data.customersSupplierName}} </td>
+            <td
+              [hidden]="wmsService?.grnHistoryReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.grnHistoryFormDataPassing?.orderType!='Purchase Order'">
+              {{data.customersSupplierAddress}} </td>
+          </tr>
+        </tbody>
+        <tr>
+          <td colspan="2">
+          </td>
+          <td colspan="10">
+            <b>Total </b> = {{wmsService.totalProductWiseQtyObj}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Inventory Summary Report -->
+<div *ngIf="selectedValue =='inventory'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory Summary Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Warehouse Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.wareHouseName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Level Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.levelName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventorySummaryFormDataPassing.toDate | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="w-100 mt-2" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Product ID Name</td>
+          <td>UOM</td>
+          <td>Available Quantity</td>
+          <td>Location Name</td>
+          <td>Created Date</td>
+          <td>Serial Number</td>
+          <td>Batch Number</td>
+          <td>Manufacturing Date</td>
+          <td>Expiry Date</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let report of wmsService.inventorySummaryyReportsDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{report.productIDName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.availableQuantity}}</td>
+            <td>{{report.locationName}} </td>
+            <td style="text-align: center !important;">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.serialNumber}} </td>
+            <td>{{report.batchNumber}} </td>
+            <td style="text-align: center !important;">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!--inventory Cycle Counting Report -->
+<div *ngIf="selectedValue =='cycleCounting'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Cycle Counting</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Warehouse Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.wareHouseName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Counter User :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.executiveIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Level Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.levelName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Confirmed By :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.confirmedBy}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Submit From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.cycleCountingFormDataPassing.confirmedDateFrom | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Submit TO :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.cycleCountingFormDataPassing.confirmedDateTo | date: 'dd/MM/yyyy'}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>Sl.No</td>
+          <td>Cycle Counter Number</td>
+          <td>Cycle Counter Criteria</td>
+          <td>Product ID Name</td>
+          <td>UOM</td>
+          <td>Serial Number</td>
+          <td>Batch Number</td>
+          <td>Adjusted Quantity</td>
+          <td>Quantity Inventory Unit</td>
+          <td>Counter User</td>
+          <td>Confirmed By</td>
+          <td>Confirmed Date</td>
+          <td>Available Quantity</td>
+          <td>Warehouse Name</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Location Name</td>
+          <td>Level Name</td>
+          <td>variance</td>
+          <td>variance%</td>
+          <td>Planned Date</td>
+          <td>Actual Date</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let report of wmsService.cycleCountingReportsDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{report.cycleCountingCode}}</td>
+            <td>{{report.criteriaType}}</td>
+            <td>{{report.productMasterInfo.productIDName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.serialNumber}}</td>
+            <td>{{report.batchNumber}}</td>
+            <td>{{report.adjustedQuantity}}</td>
+            <td>{{report.quantityInventoryUnit}}</td>
+            <td>{{report.counterUser}}</td>
+            <td>{{report.confirmedBy}}</td>
+            <td style="text-align: center !important;">{{report.confirmedDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.availableQuantity}}</td>
+            <td>{{report.wareHouseInfo.wareHouseName}}</td>
+            <td>{{report.zoneInfo?.zoneName}}</td>
+            <td>{{report.rackInfo?.rackName}}</td>
+            <td>{{report.locationInfo?.locationName}}</td>
+            <td>{{report.levelInfo?.levelName}}</td>
+            <td>{{report.variance}}</td>
+            <td>{{report.variancePercentage}}</td>
+            <td style="text-align: center !important;">{{report.plannedScheduleDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.actualCycleCountingDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <hr>
+</div>
+<!--inventory Adjustment Report -->
+<div *ngIf="selectedValue =='inventoryAdjustments'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory Adjustments</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryAdjustmentsFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryAdjustmentsFormDataPassing.fromDate | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryAdjustmentsFormDataPassing.toDate | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Transaction ID</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Category</td>
+          <td>Adjusted Quantity</td>
+          <td>Created Date</td>
+          <td>Available Quantity</td>
+          <td>Reserved Quantity</td>
+          <td>Location Name</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let report of wmsService.inventoryAdjustmentssDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{report.fullInventoryAdjustmentTransactionID}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.productCategory}}</td>
+            <td>{{report.adjustedQuantity}}</td>
+            <td style="text-align: center !important;">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.availableQuantity}}{{report.inventoryUnit}}</td>
+            <td>{{report.reservedQuantity}}{{report.inventoryUnit}}</td>
+            <td>{{report.locationName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!--inventory By Location Report -->
+<div *ngIf="selectedValue =='inventoryByLocationReport'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory By Location</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Category :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.productCategoryName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.productType}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">WareHouse ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.wareHouseIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByLocationFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Description</td>
+          <td>Category</td>
+          <td>Quantity Inventory Unit</td>
+          <td>Availble Quantity</td>
+          <td>Reserved Quantity</td>
+          <td>Batch Number</td>
+          <td>MFG Date</td>
+          <td>Expiry Date</td>
+          <td>Warehouse ID Name</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Column Name</td>
+          <td>Level Name</td>
+          <td>Location Name</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let detail of wmsService.inventoryByLocationsDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{detail.productMasterInfo.productID}}</td>
+            <td>{{detail.productMasterInfo.productName}}</td>
+            <td style="text-align: center !important;">{{detail.inventoryUnit}}</td>
+            <td>{{detail.productDescription}}</td>
+            <td>{{detail.productCategoryInfo.productCategory}}</td>
+            <td>{{detail.quantityInventoryUnit}} </td>
+            <td>{{detail.availableQuantity}}</td>
+            <td>{{detail.reservedQuantity}}</td>
+            <td>{{detail.batchNumber}}</td>
+            <td style="text-align: center !important;">{{detail.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{detail.expiryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{detail.wareHouseInfo.wareHouseIDName}}</td>
+            <td>{{detail.zoneInfo.zoneName}}</td>
+            <td>{{detail.rackInfo.rackName}}</td>
+            <td>{{detail.columnInfo?.columnName}}</td>
+            <td>{{detail.levelInfo.levelName}}</td>
+            <td>{{detail.locationInfo.locationName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- inventory By Product Report -->
+<div *ngIf="selectedValue =='inventoryByProductReport'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory By Product</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Category :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.productCategoryName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Supplier :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Batch Number :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.batchNumber}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.inventoryByProductReportFormDataPassing.productType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Serial Number :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryByProductReportFormDataPassing.serialNumber}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="mt-2">
+
+        <tr>
+          <td>S.No</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Supplier ID Name</td>
+          <td>Product Type</td>
+          <td>Product Class</td>
+          <td>Product Description</td>
+          <td>Product Category</td>
+          <td>Quantity Inventory Unit</td>
+          <td>Available Quantity</td>
+          <td>Reserved Quantity</td>
+          <td>Batch Number</td>
+          <td>Serial Number</td>
+          <td>MFG Date</td>
+          <td>Warehouse Name</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Column Name</td>
+          <td>Level Name</td>
+          <td>Location Name</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let detail of wmsService.inventoryByProductReportsDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{detail.productMasterInfo.productID}}</td>
+            <td>{{detail.productMasterInfo.productName}}</td>
+            <td style="text-align: center !important;">{{detail.inventoryUnit}}</td>
+            <td>{{detail.supplierMasterInfo.supplierIDName}}</td>
+            <td>{{detail.productType}}</td>
+            <td>{{detail.productClass}}</td>
+            <td>{{detail.productDescription}}</td>
+            <td>{{detail.productCategoryInfo.productCategoryName}}</td>
+            <td>{{detail.quantityInventoryUnit}}</td>
+            <td>{{detail.availableQuantity}}</td>
+            <td>{{detail.reservedQuantity}}</td>
+            <td>{{detail.batchNumber}}</td>
+            <td>{{detail.serialNumber}}</td>
+            <td style="text-align: center !important;">{{detail.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{detail.wareHouseInfo.wareHouseName}}</td>
+            <td>{{detail.zoneInfo.zoneName}}</td>
+            <td>{{detail.rackInfo.rackName}}</td>
+            <td>{{detail.columnInfo?.columnName}}</td>
+            <td>{{detail.levelInfo.levelName}}</td>
+            <td>{{detail.locationInfo.locationName}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- inventory Transaction Report -->
+<div *ngIf="selectedValue =='inventoryTransactionReport'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory By Transaction</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionReportReportFormDataPassing.transactionType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionReportReportFormDataPassing.productIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order ID :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionReportReportFormDataPassing.orderID}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.inventoryTransactionReportReportFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionReportReportFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.inventoryTransactionReportReportFormDataPassing.locationName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionReportReportFormDataPassing.transactionDateTimeFrom | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionReportReportFormDataPassing.transactionDateTimeTo | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Transaction Date & Time</td>
+          <td>Transaction Type</td>
+          <td>Transaction ID</td>
+          <td>Order ID</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+
+          <td>Line Number</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Quantity</td>
+          <td>Expiry Date</td>
+          <td>Mfg Date </td>
+          <td>Batch Number</td>
+          <td>WareHouse ID/Name</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Column Name</td>
+          <td>Level Name</td>
+          <td>Location Name</td>
+          <td>BOE No</td>
+          <td>BOE Date</td>
+          <td>Invoice Number</td>
+          <td>Invoice Date</td>
+          <td>Bond Number</td>
+          <td>Bond Date</td>
+          <td>Ex Bond Number</td>
+          <td>Ex Bond Date</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.inventoryTransactionReportDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td style="text-align: center !important;">{{data.transactionDateTime | date:'short'}}</td>
+            <td>{{data.transactionType}}</td>
+            <td>{{data.inventoryTransactionID}}</td>
+            <td>{{data.orderID}}</td>
+            <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo.supplierIDName}}</span>
+              <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo.customerIDName}}</span>
+              <span *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+            </td>
+            <!--   <td>{{data.supplierMasterInfo?.supplierID}}</td>
+              <td>{{data.supplierMasterInfo?.supplierIDName}}</td> -->
+            <td>{{data.lineNumber}}</td>
+            <td>{{data.productMasterInfo?.productID}}</td>
+            <td>{{data.productMasterInfo?.productName}}</td>
+            <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+            <td>{{data.quantity}}</td>
+            <!-- <td>{{data.inventoryUnit}}</td> -->
+            <td style="text-align: center !important;">{{data.expiryDate | date:'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{data.mfgDate | date:'dd/MM/yyyy'}}</td>
+            <td>{{data.batchNumber}}</td>
+            <td>{{data.wareHouseInfo?.wareHouseIDName }}</td>
+            <td>{{data.zoneInfo?.zoneName}}</td>
+            <td>{{data.rackInfo?.rackName}}</td>
+            <td>{{data.columnInfo?.columnName}}</td>
+            <td>{{data.levelInfo?.levelName}}</td>
+            <td>{{data.locationInfo?.locationName}}</td>
+            <td>{{data.billOfEntryNumber}}</td>
+            <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.invoiceNumber}}</td>
+            <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.bondNumber}}</td>
+            <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.exBondNumber}}</td>
+            <td>{{data.exBondDate | date: 'dd/MM/yyyy'}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- inventory Transaction Details Report -->
+<div *ngIf="selectedValue =='inventoryTransactionDetailsReport'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Inventory By Transaction Details</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionDetailsReportFormDataPassing.transactionType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionDetailsReportFormDataPassing.productIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order ID :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionDetailsReportFormDataPassing.orderID}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionDetailsReportFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionDetailsReportFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.inventoryTransactionDetailsReportFormDataPassing.locationName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionDetailsReportFormDataPassing.transactionDateTimeFrom |
+                          date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Transaction To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.inventoryTransactionDetailsReportFormDataPassing.transactionDateTimeTo | date:
+                          'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Transaction Details ID</td>
+          <td>Supplier ID</td>
+          <td>Supplier Name </td>
+          <td>Status</td>
+          <td>Transaction Date & Time</td>
+          <td>Transaction Type</td>
+          <td>Order ID</td>
+          <td>Line Number</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Quantity</td>
+          <!--  <td>Inventory Unit</td> -->
+          <td>Expiry Date</td>
+          <td>Manufacturing Date</td>
+          <td>Batch Number</td>
+          <td>WareHouse ID/Name</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Column Name</td>
+          <td>Level Name</td>
+          <td>Location Name</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let data of wmsService.inventoryTransactionDetailsReporttDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{data.inventoryTransactionDetailsID}}</td>
+            <td>{{data.supplierMasterInfo?.supplierID}}</td>
+            <td>{{data.supplierMasterInfo?.supplierName}}</td>
+            <td>{{data.status}}</td>
+            <td style="text-align: center !important;">{{data.transactionDateTime | date:'short'}}</td>
+            <td>{{data.transactionType}}</td>
+            <td>{{data.orderID}}</td>
+            <td>{{data.lineNumber}}</td>
+            <td>{{data.productMasterInfo?.productID}}</td>
+            <td>{{data.productMasterInfo?.productName}}</td>
+            <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+            <td>{{data.quantity}}</td>
+            <!--    <td>{{data.inventoryUnit}}</td> -->
+            <td style="text-align: center !important;">{{data.expiryDate | date:'dd/MM/yyyy'}}</td>
+            <td style="text-align: center !important;">{{data.mfgDate | date:'dd/MM/yyyy'}}</td>
+            <td>{{data.batchNumber}}</td>
+            <td>{{data.wareHouseInfo?.wareHouseIDName}}</td>
+            <td>{{data.zoneInfo?.zoneName}}</td>
+            <td>{{data.rackInfo?.rackName}}</td>
+            <td>{{data.columnInfo?.columnName}}</td>
+            <td>{{data.levelInfo?.levelName}}</td>
+            <td>{{data.locationInfo?.locationName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- open Sales Order Report -->
+<div *ngIf="selectedValue =='openSalesOrder'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Open Sales Order</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.openSalesOrderFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.openSalesOrderFormDataPassing.orderType !=='WareHouseTransfer'
+                       && wmsService.openSalesOrderFormDataPassing.orderType !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.openSalesOrderFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.openSalesOrderFormDataPassing.orderType =='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">Destination WareHouse :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.openSalesOrderFormDataPassing.wareHouseTransferDestinationInfoWareHouseIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="wmsService.openSalesOrderFormDataPassing.orderType =='Return'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.openSalesOrderFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.openSalesOrderFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Expected Delivery Date From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.openSalesOrderFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Expected Delivery Date To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.openSalesOrderFormDataPassing.toDate | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Supplier IDName/Customer IDName/WareHouse IDName</td>
+          <td>Expected Delivery Date</td>
+          <td>Wmso Number</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Quantity</td>
+          <td>SO Order Date</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let report of wmsService.openSalesOrderDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+            </td>
+            <td style="text-align: center !important;">{{report.expectedDeliveryDate | date: 'dd/MM/yyyy' }} </td>
+            <td>{{report.wmsoNumber}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.quantity}} </td>
+            <td style="text-align: center !important;">{{report.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- picking Report -->
+<div *ngIf="selectedValue =='picking'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Picking Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Level Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingrFormDataPassing.levelName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Status :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.status}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <!-- <div class="form-group row" *ngIf="wmsService.pickingrFormDataPassing.orderType !=='WareHouseTransfer'
+                    && wmsService.pickingrFormDataPassing.orderType !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div> -->
+                    <div class="form-group row" *ngIf="wmsService.pickingrFormDataPassing.orderType !=='WareHouseTransfer'
+                    && wmsService.pickingrFormDataPassing.orderType !=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.pickingrFormDataPassing.orderType =='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">WareHouse ID Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.wareHouseIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.pickingrFormDataPassing.orderType =='Return'">
+                      <label class="col-sm-6 col-form-label">Supplier ID Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingrFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Assigned To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.executiveIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Completed By :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.completedBy}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.pickingrFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Created To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.pickingrFormDataPassing.toDate | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table border="1" class="mt-2 w-100">
+
+        <tr>
+          <td>S.No</td>
+          <td>Supplier IDName /Customer Name/WareHouse ID Name</td>
+          <td>Picking No</td>
+          <td>WMSO Number</td>
+          <td>Product ID </td>
+          <td>Product Name</td>
+          <td>Product Description</td>
+          <td>Brand Name</td>
+          <td>UOM</td>
+          <td>Expiry Dates </td>
+          <td>Manufactured Date</td>
+          <td>Batch Number</td>
+          <!-- <td>Assigned To</td>
+          <td>Assigned Date</td>
+          <td>Completed By</td> -->
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Level Name</td>
+          <td>Column Name</td>
+          <td>Location Name</td>
+          <td>Ex Bond Number</td>
+          <td>Ex Bond Date</td>
+          <td>Picked Quantity</td>
+          <td>Total Actual Picking Quantity</td>
+          <td>Balanced Picking Quantity</td>
+          <!-- <td>Picking Executive</td> -->
+          <td>Created On</td>
+          <td>Start Time</td>
+          <td>End Time</td>
+          <td>Planned Completion Date</td>
+          <td>Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let report of wmsService.pickingDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+            </td>
+            <td>{{report.wmsoNumber}}</td>
+            <td>{{report.pickingNumber}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td>{{report.productDescription}}</td>
+            <td>{{report.brandName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td style="text-align: center !important;"><span *ngFor="let expdata of report.expiryDates">{{expdata |
+                date: 'dd/MM/yyyy'}}<br></span></td>
+            <td style="text-align: center !important;"><span *ngFor="let mfgDate of report.mfgDates">{{mfgDate | date:
+                'dd/MM/yyyy'}}<br></span></td>
+            <td style="text-align: center !important;"><span
+                *ngFor="let batchno of report.batchNumbers">{{batchno}}<br></span></td>
+            <!-- <td>{{report.wareHouseTeamInfo?.executiveIDName}}</td>
+            <td style="text-align: center !important;">{{report.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.completedBy}}</td> -->
+            <td>{{report.zoneInfo?.zoneName}}</td>
+            <td>{{report.rackInfo?.rackName}}</td>
+            <td>{{report.levelInfo?.levelName}}</td>
+            <td>{{report.columnInfo?.columnName}}</td>
+            <td>{{report.locationName}}</td>
+            <td>{{report.exBondNumber}}</td>
+            <td>{{report.exBondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.pickedQuantity}}</td>
+            <td>{{report.totalActualPickingQuantity}}</td>
+            <td>{{report.balancePickingQuantity}}</td>
+            <td style="text-align: center !important;">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.endTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+            <td>{{report.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <table id="example" class="mt-2" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Supplier IDName /Customer Name/WareHouse ID Name</td>
+          <td>Picking No</td>
+          <td>WMSO Number</td>
+          <td>Product ID </td>
+          <td>Product Name</td>
+          <td>Expiry Dates </td>
+          <td>Manufactured Date</td>
+          <td>Batch Number</td>
+          <td>Assigned To</td>
+          <td>Assigned Date</td>
+          <td>Completed By</td>
+          <td>Planned Completion Date</td>
+          <td>Location Name</td>
+          <td>Picked Quantity</td>
+          <td>Created On</td>
+          <td>Start Time</td>
+          <td>End Time</td>
+          <td>Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let report of wmsService.pickingDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+            </td>
+            <td>{{report.wmsoNumber}}</td>
+            <td>{{report.pickingNumber}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;"><span *ngFor="let expdata of report.expiryDates">{{expdata |
+                date: 'dd/MM/yyyy'}}<br></span></td>
+            <td style="text-align: center !important;"><span *ngFor="let mfgDate of report.mfgDates">{{mfgDate | date:
+                'dd/MM/yyyy'}}<br></span></td>
+            <td style="text-align: center !important;"><span
+                *ngFor="let batchno of report.batchNumbers">{{batchno}}<br></span></td>
+            <td>{{report.wareHouseTeamInfo?.executiveIDName}}</td>
+            <td style="text-align: center !important;">{{report.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.completedBy}}</td>
+            <td style="text-align: center !important;">{{report.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+
+            <td>{{report.locationName}}</td>
+            <td>{{report.pickedQuantity}} {{report.inventoryUnit}} </td>
+            <td style="text-align: center !important;">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td style="text-align: center !important;">{{report.endTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.status}}</td>
+          </tr>
+        </tbody>
+      </table> -->
+    </div>
+  </div>
+</div>
+<!-- shipment Report -->
+<div *ngIf="selectedValue =='shipment'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Shipment Order Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.shipmentFormDataPassing.orderType=='WareHouseTransfer'">
+                      <label class="col-sm-6 col-form-label">Destination Warehouse</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.shipmentFormDataPassing.wareHouseTransferDestinationInfoWareHouseIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService?.shipmentFormDataPassing.orderType!=='WareHouseTransfer' &&
+                    wmsService?.shipmentFormDataPassing.orderType!=='Return'">
+                      <label class="col-sm-6 col-form-label">Customer ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService?.shipmentFormDataPassing.orderType=='Return'">
+                      <label class="col-sm-6 col-form-label">Supplier ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product Category :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.productCategoryName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='Yes' &&
+                      wmsService?.shipmentFormDataPassing.orderType!=='WareHouseTransfer' &&
+                      wmsService?.shipmentFormDataPassing.orderType!=='Return'">
+                      <label class="col-sm-6 col-form-label">Customers Customer Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.customersCustomerName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='Yes' && wmsService.shipmentFormDataPassing.orderType=='Sales Order'">
+                      <label class="col-sm-6 col-form-label">Customers Customer Address :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentFormDataPassing.customersCustomerAddress}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Dispatch From :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.fromDate | date:'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Dispatch To :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentFormDataPassing.toDate | date:'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Dispatch Date</td>
+          <td>WMSO Number</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Description</td>
+          <td>Product Category Name</td>
+          <td>Order Quantity</td>
+          <td>Shipped Quantity</td>
+          <td>Total Dispatched Quantity</td>
+          <td>Batch Number</td>
+          <td>Invoice Date</td>
+          <td
+            [hidden]="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.shipmentFormDataPassing?.orderType!='Sales Order'">
+            Customer's CustomerName</td>
+          <td
+            [hidden]="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.shipmentFormDataPassing?.orderType!='Sales Order'">
+            Customer's CustomerAddress</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Order Unit Price</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Tax Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Gross Amount</td>
+          <td *ngIf="wmsService.makeThisVisible === true">Net Amount</td>
+          <th>Invoice Number</th>
+          <th>BOE No</th>
+          <th>BOE Date</th>
+          <th>Bond Number</th>
+          <th>Bond Date</th>
+          <th>Ex Bond Number</th>
+          <th>Ex Bond Date</th>
+          <td>Order Date</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let report of wmsService.shipmentDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+            </td>
+            <td style="text-align: center !important;">{{report.dispatchDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.wmsoNumber}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.productDescription}}</td>
+            <td>{{report.productCategoryInfo.productCategoryName}}</td>
+            <td>{{report.quantity}} </td>
+            <td>{{report.dispatchQuantity}}</td>
+            <td>{{report.totalCustomerDispatchQuantity}}</td>
+            <td>{{report.batchNumbers}}</td>
+            <td style="text-align: center !important;">{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+            <td
+              [hidden]="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.shipmentFormDataPassing?.orderType!='Sales Order'">
+              {{report.customersCustomerName}}</td>
+            <td
+              [hidden]="wmsService.shipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.shipmentFormDataPassing?.orderType!='Sales Order'">
+              {{report.customersCustomerAddress}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.orderUnitPrice}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.taxAmount | decimalFilter}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.grossAmount | decimalFilter}}</td>
+            <td *ngIf="wmsService.makeThisVisible === true">{{report.netAmount | decimalFilter}}</td>
+            <td>{{report.invoiceNumber}}</td>
+            <td>{{report.referenceBillOfEntryNumber}}</td>
+            <td>{{report.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.referenceBondNumber}}</td>
+            <td>{{report.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.exBondNumber}}</td>
+            <td>{{report.exBondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.orderDate | date: 'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- Newshipmentorder Report -->
+<div *ngIf="selectedValue =='Newshipmentorder'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                <p style="color:black">{{organizationAddressOnly}}</p>
+              </div>
+            </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>New Shipment Order Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Order Type :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1">{{wmsService.NewshipmentorderFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService?.NewshipmentorderFormDataPassing?.orderType == 'Return'">
+                      <label class="col-sm-4 col-form-label">Suppiler ID/Name
+                      </label>
+                      <div class="col-sm-8">
+                        {{wmsService.NewshipmentorderFormDataPassing.supplierIDName}}
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService?.NewshipmentorderFormDataPassing.orderType== 'WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">Warehouse ID Name</label>
+                      <div class="col-sm-8">
+                        {{wmsService.NewshipmentorderFormDataPassing.wareHouseTransferDestinationInfoWareHouseIDName}}
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService?.NewshipmentorderFormDataPassing?.orderType!== 'WareHouseTransfer'
+                       && wmsService?.NewshipmentorderFormDataPassing?.orderType !== 'Return'">
+                      <label class="col-sm-4 col-form-label">Customer ID/Name
+                      </label>
+                      <div class="col-sm-8">
+                        {{wmsService.NewshipmentorderFormDataPassing.customerIDName}}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1">{{wmsService.NewshipmentorderFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4"
+                    *ngIf="wmsService.newShipmentReportthirdPartyCustomersCheckAllocation== 'Yes' && wmsService.NewshipmentorderFormDataPassing.orderType!=='WareHouseTransfer' && wmsService.NewshipmentorderFormDataPassing.orderType!=='Return'">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Customers Customer Name :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1">{{wmsService.NewshipmentorderFormDataPassing.customersCustomerName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Customers Customer Address :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1">{{wmsService.NewshipmentorderFormDataPassing.customersCustomerAddress}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Dispatch From :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1"> {{wmsService.NewshipmentorderFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Dispatch To :</label>
+                      <div class="col-sm-8">
+                        <p class="mt-1"> {{wmsService.NewshipmentorderFormDataPassing.toDate | date: 'dd/MM/yyyy'}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>WMSO Number</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Category</td>
+          <td>Product Description</td>
+          <td>Dispatch Quantity</td>
+          <td>Batch Number</td>
+          <td>Dispatch Date</td>
+          <td>Serial Number</td>
+          <td>Location Name</td>
+          <td>Invoice Number</td>
+          <td>Invoice Date</td>
+          <td>Vehicle Number</td>
+          <td>Vehicle Type</td>
+          <td>WayBill Number</td>
+          <td
+            [hidden]="wmsService.newShipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.NewshipmentorderFormDataPassing?.orderType!='Sales Order'">
+            Customers Customer Name</td>
+          <td
+            [hidden]="wmsService.newShipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.NewshipmentorderFormDataPassing?.orderType!='Sales Order'">
+            Customers Customer Address</td>
+          <td>BOE No</td>
+          <td>BOE Date</td>
+          <td>Bond Number</td>
+          <td>Bond Date</td>
+          <td>Ex Bond Number</td>
+          <td>Ex Bond Date</td>
+          <td>Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let report of wmsService.NewshipmentorderDisplayTableList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+              <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+              <span
+                *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+            </td>
+            <td>{{report.wmsoNumber}}</td>
+            <td>{{report.productID}}</td>
+            <td>{{report.productName}}</td>
+            <td style="text-align: center !important;">{{report.inventoryUnit}}</td>
+            <td>{{report.productCategoryInfo.productCategoryName}}</td>
+            <td>{{report.productDescription}}</td>
+            <td>{{report.quantity}}</td>
+            <td>{{report.batchNumber}}</td>
+            <td style="text-align: center !important;">{{report.dispatchDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{report.serialNumber}}</td>
+            <td>{{report.locationName}}</td>
+            <td>{{report.invoiceNumber}}</td>
+            <td style="text-align: center !important;">{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.vehicleInfo?.vehicleNumber}}</td>
+            <td>{{report.vehicleType}}</td>
+            <td>{{report.wayBillNumber}}</td>
+            <td
+              [hidden]="wmsService.newShipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.NewshipmentorderFormDataPassing?.orderType!='Sales Order'">
+              {{report.customersCustomerName}}</td>
+            <td
+              [hidden]="wmsService.newShipmentReportthirdPartyCustomersCheckAllocation=='No' || wmsService?.NewshipmentorderFormDataPassing?.orderType!='Sales Order'">
+              {{report.customersCustomerAddress}}</td>
+            <td>{{report.referenceBillOfEntryNumber}}</td>
+            <td>{{report.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.referenceBondNumber}}</td>
+            <td>{{report.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.exBondNumber}}</td>
+            <td>{{report.exBondDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{report.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- shipmentHistory Report -->
+<div *ngIf="selectedValue =='shipmentHistory'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Shipment History Report</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" *ngIf="wmsService?.shipmentHistoryFormDataPassing.orderType=='Sales Order'">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customer ID Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentHistoryFormDataPassing.customerIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row"
+                    *ngIf="wmsService?.shipmentHistoryFormDataPassing.orderType=='WareHouseTransfer'">
+                    <label class="col-sm-6 col-form-label">WareHouse ID Name</label>
+                    <div class="col-sm-6">
+                      <p class="mt-1">
+                        {{wmsService?.shipmentHistoryFormDataPassing.wareHouseTransferDestinationInfoWareHouseIDName}}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="wmsService?.shipmentHistoryFormDataPassing.orderType=='Return'">
+                    <label class="col-sm-6 col-form-label">Supplier ID Name</label>
+                    <div class="col-sm-6">
+                      <p class="mt-1">
+                        {{wmsService?.shipmentHistoryFormDataPassing.supplierIDName}}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Date Filter :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.filterType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.datePassingHideAndShow === true">
+                      <label class="col-sm-6 col-form-label">From Date</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.expectedDeliveryDateFrom}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="wmsService.datePassingHideAndShow === true">
+                      <label class="col-sm-6 col-form-label">To Date</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.expectedDeliveryDateTo}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Region :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentHistoryFormDataPassing.locationName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" *ngIf="wmsService?.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='Yes'
+                    && wmsService?.shipmentHistoryFormDataPassing.orderType=='Sales Order'">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customers Customer Address :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentHistoryFormDataPassing.customersCustomerAddress}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Category :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.shipmentHistoryFormDataPassing.productCategoryName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" *ngIf="wmsService.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='Yes'
+                    && wmsService.shipmentHistoryFormDataPassing.orderType=='Sales Order'">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customers Customer Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.shipmentHistoryFormDataPassing.customersCustomerName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+
+        <tr>
+          <td>S.No</td>
+          <td>Supplier/Customer/WareHouse IDName</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>UOM</td>
+          <td>Product Category Name</td>
+          <td>Quantity</td>
+          <td [hidden]="wmsService?.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='No' ||
+               wmsService?.shipmentHistoryFormDataPassing?.orderType!='Sales Order'">
+            Customers Customers Name</td>
+          <td [hidden]="wmsService?.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='No' ||
+               wmsService?.shipmentHistoryFormDataPassing?.orderType!='Sales Order'">
+            Customers Customers Address</td>
+          <td>Customer Location</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.shipmentHistoryDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>
+              <span *ngIf="data.supplierIDName">{{data.supplierIDName}}</span>
+              <span *ngIf="data.customerIDName">{{data.customerIDName}}</span>
+              <span
+                *ngIf="data.wareHouseTransferDestinationInfoWareHouseIDName">{{data.wareHouseTransferDestinationInfoWareHouseIDName}}</span>
+            </td>
+            <td>{{data.productID}}</td>
+            <td>{{data.productName}}</td>
+            <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+            <td>{{data.productCategoryName}}</td>
+            <td>{{data.quantity}}</td>
+            <td [hidden]="wmsService?.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='No' ||
+               wmsService?.shipmentHistoryFormDataPassing?.orderType!='Sales Order'">
+              {{data.customersCustomerName}}</td>
+            <td [hidden]="wmsService?.shipmentHistoryReportthirdPartyCustomersCheckAllocation=='No' ||
+               wmsService?.shipmentHistoryFormDataPassing?.orderType!='Sales Order'">
+              {{data.customersCustomerAddress}}</td>
+            <td>{{data.locationName}}</td>
+          </tr>
+        </tbody>
+        <tr>
+          <td colspan="2">
+            Total
+          </td>
+          <td colspan="8">{{wmsService.shipmentHistoryObjDisplay | json}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <hr>
+</div>
+<!-- spaceutilizationHistory Report -->
+<div *ngIf="selectedValue =='spaceutilizationHistory'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Space Utilization History</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Warehouse Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationHistoryFormDataPassing.wareHouseName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationHistoryFormDataPassing.zoneNames}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.spaceutilizationHistoryFormDataPassing.rackNames}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Supplier :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.spaceutilizationHistoryFormDataPassing.supplierIDNames}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationHistoryFormDataPassing.locationNames}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">From Date :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationHistoryFormDataPassing.transactionDateTimeFrom |
+                          date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">To Date :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.spaceutilizationHistoryFormDataPassing.transactionDateTimeTo |
+                          date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+
+                  </div>
+                  <div class="col-md-4">
+
+                  </div>
+                  <div class="col-md-4">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table class="mt-2 w-100" border="1">
+        <tr>
+          <td>S.No</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Level Name</td>
+          <td>Column Name</td>
+          <td>Location Name</td>
+          <td>Total Space</td>
+          <td>used Space</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let data of wmsService.spaceutilizationHistoryDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{data.zoneName}}</td>
+            <td>{{data.productIDName}}</td>
+            <td>{{data.receivedQuantity}}</td>
+            <td>{{data.receivedQuantity}}</td>
+            <td>{{data.receivedQuantity}}</td>
+            <td>{{data.locationDimensionsResponse?.totalSpace}}</td>
+            <td>{{data.locationDimensionsResponse?.usedSpace}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- spaceutilizationReports Report -->
+<div *ngIf="selectedValue =='spaceutilizationReports'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+              <!--   <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+                  <p style="color:black">{{organizationAddressOnly}}</p>
+                </div>
+              </div> -->
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Space Utilization</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationReportsFormDataPassing.zoneNames}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.spaceutilizationReportsFormDataPassing.locationNames}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.spaceutilizationReportsFormDataPassing.rackNames}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Suplier ID Name:</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.spaceutilizationReportsFormDataPassing.supplierIDNames}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Warehouse Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{warehousenameonly}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-2">
+
+        <tr>
+          <td>S.No</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Level Name</td>
+          <td>Column Name</td>
+          <td>Location Name</td>
+          <td>Total Space</td>
+          <td>used Space</td>
+          <td>Location Space Status</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.spaceutilizationReportsDisplayTableList; let i = index;">
+            <td>{{i + 1}}</td>
+            <td>{{data.zoneInfo?.zoneName}}</td>
+            <td>{{data.rackInfo?.rackName}}</td>
+            <td>{{data.levelInfo?.levelName}}</td>
+            <td>{{data.columnInfo?.columnName}}</td>
+            <td>{{data.locationName}}</td>
+            <td>{{data.totalSpace}} {{data.totalSpaceUom}}</td>
+            <td>{{data.usableSpace}} {{data.usableSpaceUom}}</td>
+            <td>{{data.locationSpaceStatus}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-md-12 ml-3">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Completely Available Location</label>
+              <div class="col-sm-4 mt-2">
+                {{wmsService.completeCounting ? wmsService.completeCounting:0}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Partial Available Location</label>
+              <div class="col-sm-4 mt-2">
+                {{wmsService.partialCounting ? wmsService.partialCounting:0}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Not Available Location</label>
+              <div class="col-sm-4 mt-2">
+                {{wmsService.notAvailableCounting ? wmsService.notAvailableCounting:0}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Total Location</label>
+              <div class="col-sm-4 mt-2">
+                {{wmsService.totalCountNumber ? wmsService.totalCountNumber : 0}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Total Space</label>
+              <div class="col-sm-4 mt-2" *ngIf="wmsService.totalSpaceReqObjGetData">
+                {{wmsService.totalSpaceReqObjGetData}} {{wmsService.totalSpaceUomReqObjGetData}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label">Total Usuable Space</label>
+              <div class="col-sm-4 mt-2" *ngIf="wmsService.totalusableReqObjGetData">
+                {{wmsService.totalusableReqObjGetData | decimalFilter}} {{wmsService.totalUsuableSpaceUomReqObjGetData}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Inventory Report -->
+<div *ngIf="selectedValue =='inventory-report'">
+  <h6>Inventory Report Works</h6>
+</div>
+<div *ngIf="selectedValue =='locationAvailability'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100" border="1">
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-4">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+              </div>
+
+              <div class="col-md-4">
+                <div class="roundedNeckBox">
+                  <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                  <p style="color:black">{{wareHouseAddressOnly}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Location Availability</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location Type</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.locationType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Product ID/Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.productIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label"
+                        *ngIf="wmsService.locationavailabilityfromdatapassing.locationType=='Receive'">Supplier
+                        ID/Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.supplierIDName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.locationavailabilityfromdatapassing.locationType=='Receive'">
+                      <label class="col-sm-6 col-form-label">Zone Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.zoneName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="wmsService.locationavailabilityfromdatapassing.locationType=='Return'">
+                      <label class="col-sm-6 col-form-label">Zone Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.zoneName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Rack Name</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.rackName}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.locationavailabilityfromdatapassing.locationName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-2">
+
+        <tr>
+          <td>S.No</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Column Name</td>
+          <td>Level Name</td>
+          <td>Location Name</td>
+          <td>Quantity</td>
+          <td>UOM</td>
+          <td>Usable Space</td>
+          <td>Usable Space Uom</td>
+          <td>Allowable Max Dimensions</td>
+          <td>Allowable Max Dimensions Uom</td>
+          <td>Allowable Weight</td>
+          <td>Allowable Weight Uom</td>
+        </tr>
+
+        <tbody>
+          <tr *ngFor="let data of wmsService.locationavailabilityDisplayTableList; let i = index;">
+            <td>{{i+1}}</td>
+            <td>{{data.zoneInfo.zoneName}}</td>
+            <td>{{data.rackInfo.rackName}}</td>
+            <td>{{data.columnInfo.columnName}}</td>
+            <td>{{data.levelInfo.levelName}}</td>
+            <td>{{data.locationName}}</td>
+            <td>{{data.allowableQuantity}}</td>
+            <td>{{data.inventoryUnit}}</td>
+            <td>{{data.usableSpace}}</td>
+            <td>{{data.usableSpaceUom}}</td>
+            <td>{{data.allowableMaxDimension}}</td>
+            <td>{{data.allowableMaxDimensionUom}}</td>
+            <td>{{data.allowableWeight}}</td>
+            <td>{{data.allowableWeightUom}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+<!-- Removed Screnes -->
+<!-- Returns Reports -->
+<!-- <div *ngIf="selectedValue =='returnOrder'">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100 p-3">
+        <div class="row">
+          <div class="col-md-4">
+            <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;position:relative;top:20px;">
+          </div>
+          <div class="col-md-4">
+            <div class="roundedNeckBox">
+              <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+              <p style="color:black">{{wareHouseAddressOnly}}</p>
+            </div>
+          </div>
+        </div>
+      </table>
+    </div>
+  </div>
+  <div class="borderStyle">
+    <div class="row force-overflow">
+      <div class="col-md-6">
+        <div class="form-group row ">
+          <label class="col-sm-4 col-form-label">Product ID/Name
+          </label>
+          <div class="col-sm-8">
+            {{wmsService.returnOrderyFormDataPassing.productIDName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">ETA From:
+          </label>
+          <div class="col-sm-4 top-input">
+            {{wmsService.returnOrderyFormDataPassing.fromDate | date: 'dd/MM/yyyy'}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">ETA To:
+          </label>
+          <div class="col-sm-4 top-input">
+            {{wmsService.returnOrderyFormDataPassing.toDate | date: 'dd/MM/yyyy'}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table clas="w-100">
+          <thead>
+            <tr>
+              <td>S.No</td>
+              <td>PO Reference Number</td>
+              <td>Product ID</td>
+              <td>Product Name</td>
+              <td>Return Quantity</td>
+              <td>Return Date</td>
+              <td>ETA Date</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let report of wmsService.returnOrdergReportsDisplayTableList; let i = index">
+             <td>{{i + 1}}</td>
+              <td>{{report.poReferenceA}}</td>
+              <td>{{report.productID}}</td>
+              <td>{{report.productName}}</td>
+              <td>{{report.returnQuantity}}</td>
+              <td>{{report.returnDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{report.grnDate | date: 'dd/MM/yyyy'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> -->

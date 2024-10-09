@@ -1,0 +1,201 @@
+<div id="inBody" [formGroup]="spaceUtilizationHistoryReportForm" class="hideFromPrinting" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-3">
+          <div class="udcBtns float-right">
+            <a>
+              <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <a>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+              </li>
+              <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Space Utilization History' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                        class="fa fa-angle-up"></i></span>
+                    |
+                    <i class="material-icons fullscreen"> unfold_less </i>
+                  </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Space Utilization History' |translate}}<div class="float-right"><i
+                        class="material-icons fullscreen">
+                        close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}</label>
+                      <div class="col-sm-6">
+                        <input type="text" name="" class="form-control" formControlName="wareHouseNames"
+                          readonly id="">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Zone' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="zoneDropDownList" name="columns" formControlName="{{'zoneNames' |translate}}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Zone Name' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="{{'zoneNames' |translate}}" name="{{'zoneNames' |translate}}" formControlName="{{'zoneNames' |translate}}"
+                          [datasource]="zoneNameValues" [minSearchLength]="0" placeholder="{{'Zone Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Rack' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="rackDropDownList" name="columns" formControlName="rackNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <!--  <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Rack Name' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="rackNames" name="rackNames" formControlName="rackNames"
+                          [datasource]="rackNameValues" [minSearchLength]="0" placeholder="{{'Rack Name' |translate}}s">
+                        </ng2-completer>
+                      </div>
+                    </div> -->
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Location' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="dropdownList" name="colu" formControlName="locationNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="supplierDropDownList"
+                          [data]="supplierDropDownList" name="supplier" formControlName="supplierIDNames">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <!--  <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Supplier</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="supplierIDNames" name="supplierIDNames" [datasource]="suppliersIDs"
+                         [minSearchLength]="0"placeholder="supplierIDNames"
+                          formControlName="supplierIDNames">
+                        </ng2-completer>
+                      </div>
+                    </div> -->
+                   
+                    <!--  <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Location Name' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="locationNames" name="locationNames" formControlName="locationNames"
+                          [datasource]="locationsIDs" [minSearchLength]="0" placeholder="{{'Location Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div> -->
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'From' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input type="date" class="form-control" formControlName="transactionDateTimeFrom"
+                          name="transactionDateTimeFrom" id="transactionDateTimeFrom">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'To' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input type="date" class="form-control" formControlName="transactionDateTimeTo"
+                          name="transactionDateTimeTo" id="transactionDateTimeTo">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row mt-1">
+                    <label class="col-sm-8 col-form-label"> </label>
+                    <div class="col-sm-4 text-right">
+                      <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                      <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+
+        <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Zone Name' |translate}}</th>
+              <th scope="col">{{'Rack Name' |translate}}</th>
+              <th scope="col">{{'Level Name' |translate}}</th>
+              <th scope="col">{{'Column Name' |translate}}</th>
+              <th scope="col">{{'Location Name' |translate}}</th>
+              <th scope="col">{{'Total Space' |translate}}</th>
+              <th scope="col">{{'used Space' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of zonesInfo[0]; let i = index;">
+              <td class="text-left">{{i+1}}</td>
+              <td>{{data.zoneName}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.receivedQuantity}}</td>
+              <td>{{data.receivedQuantity}}</td>
+              <td>{{data.receivedQuantity}}</td>
+              <td>{{data.locationDimensionsResponse?.totalSpace}}</td>
+              <td>{{data.locationDimensionsResponse?.usedSpace}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>

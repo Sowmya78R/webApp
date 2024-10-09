@@ -1,0 +1,252 @@
+<div id="inBody"   class="hideFromPrinting" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-3">
+          <div class="udcBtns float-right">
+            <a>
+              <button type="button" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <a>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+              </li>
+              <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row" [formGroup]="shipmentOrderHistoryReportForm">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Shipment History' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                        class="fa fa-angle-up"></i></span>
+                    |
+                    <i class="material-icons fullscreen"> unfold_less </i>
+                  </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Shipment History' |translate}}<div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Sales Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Purchase Returns </option>
+                          <option>WareHouseTransfer Returns </option>  
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="productIDName" name="productIDName" formControlName="productIDName"
+                          [datasource]="products" [minSearchLength]="0" placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Category' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="category" name="category" formControlName="productCategoryName"
+                          [datasource]="productCategoriesIDs" [minSearchLength]="0" placeholder="{{'Category' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" *ngIf="shipmentOrderHistoryReportForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="customerIDName" name="customerIDName" [datasource]="customersIDs"
+                          [minSearchLength]="0" placeholder="{{'Customer' |translate}}" formControlName="customerIDName" (selected)="getSelectedValue($event,'regionLocation')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"  *ngIf="shipmentOrderHistoryReportForm.controls.orderType.value=='Purchase Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                        [datasource]="suppliersIDs" [minSearchLength]="0" placeholder="{{'Supplier' |translate}}"
+                        (selected)="getSelectedValue($event,'regionFromSupplierIDName')">
+                      </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"  *ngIf="shipmentOrderHistoryReportForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                        [datasource]="sourceWareHouses" [minSearchLength]="0" placeholder="{{'WareHouse' |translate}}" (selected)="getSelectedValue($event,'sourceWareHouseLocation')">
+                      </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"  *ngIf="shipmentOrderHistoryReportForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                        [datasource]="sourceWareHouses" [minSearchLength]="0" placeholder="{{'WareHouse' |translate}}" (selected)="getSelectedValue($event,'sourceWareHouseLocation')">
+                      </ng2-completer>
+                      </div>
+                    </div>
+                   
+
+                    <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && shipmentOrderHistoryReportForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Name' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0" placeholder="{{'Customers Customer Name' |translate}}"
+                         [datasource]="salesOrdersSupplierNameFiterIDs"formControlName="customersCustomerName">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && shipmentOrderHistoryReportForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Address' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0"
+                        [datasource]="salesOrdersSupplierAddressFilterIDs"
+                         placeholder="{{'Customers Customer Address' |translate}}"
+                         formControlName="customersCustomerAddress">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Region' |translate}}</label>
+                      <div class="col-sm-5 extraLongWidth">
+                        <select name="" class="form-control" id="" formControlName="locationName">
+                          <option [selected]=true [ngValue]=null>--Select--</option>
+                          <option [value]="data" *ngFor="let data of dataArrayList ">{{data}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Date Filter' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" id="filterType" name="filterType"
+                          (click)="onDropDownChange($event.target.value)" formControlName="filterType">
+                          <option [selected]="true" [ngValue]=null>--Select--</option>
+                          <option value="Last 6 Weeks">Last 6 Weeks</option>
+                          <option value="Last 3 Months">Last 3 Months</option>
+                          <option value="Last 6 Months">Last 6 Months</option>
+                          <option value="Last 12 Months">Last 12 Months</option>
+                          <option value="Previous Month">Previous Month</option>
+                          <option value="Current Month to Current Date">Current Month to Current Date</option>
+                          <option value="Last Quarter">Last Quarter</option>
+                          <option value="Financial Year to Date">Financial Year to Date</option>
+                          <option value="Previous Financial Year">Previous Financial Year</option>
+                          <option value="Custom Dates">Custom Dates</option>
+                        </select>
+                      </div>
+                    </div>
+                  
+                    <div class="form-group row" *ngIf="isFormVisible">
+                      <label class="col-sm-4 col-form-label">{{'From Date' |translate}}</label>
+                      <div class="col-sm-8">
+                        <input type="date" class="form-control" formControlName="expectedDeliveryDateFrom"
+                          name="expectedDeliveryDateFrom" id="expectedDeliveryDateFrom">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="isFormVisible">
+                      <label class="col-sm-4 col-form-label">{{'To Date' |translate}}</label>
+                      <div class="col-sm-8">
+                        <input type="date" class="form-control" name="expectedDeliveryDateTo"
+                          id="expectedDeliveryDateTo" formControlName="expectedDeliveryDateTo"(change)="generate()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'UOM' |translate}}</th>
+                  <th scope="col">{{'Product Category Name' |translate}}</th>
+                  <th scope="col">{{'Quantity' |translate}}</th>
+                  <th scope="col" [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderHistoryReportForm.controls.orderType.value!='Sales Order'">{{'Customers Customers Name' |translate}}</th>
+                  <th scope="col" [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderHistoryReportForm.controls.orderType.value!='Sales Order'">{{'Customers Customers Address' |translate}}</th>
+                  <th scope="col">{{'Customer Location' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of grnhistoryResponseList; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <td>
+                    <span *ngIf="data.supplierIDName">{{data.supplierIDName}}</span>
+                    <span *ngIf="data.customerIDName">{{data.customerIDName}}</span>
+                    <span
+                      *ngIf="data.wareHouseTransferDestinationInfoWareHouseIDName">{{data.wareHouseTransferDestinationInfoWareHouseIDName}}</span>
+                  </td>
+                  <td>{{data.productID}}</td>
+                  <td>{{data.productName}}</td>
+                  <td class="text-center">{{data.inventoryUnit}}</td>
+                  <td>{{data.productCategoryName}}</td>
+                  <td>{{data.quantity | decimalwithThreeDigits}}</td>
+                  <td [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderHistoryReportForm.controls.orderType.value!='Sales Order'">{{data.customersCustomerName}}</td>
+                  <td [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderHistoryReportForm.controls.orderType.value!='Sales Order'">{{data.customersCustomerAddress}}</td>
+                  <td>{{data.locationName}}</td>
+                </tr>
+              </tbody>
+              <tr *ngIf="totalProductWiseQtyObj">
+                <td colspan="2">
+                  Total
+                </td>
+                <td colspan="8">{{totalProductWiseQtyObj | decimalwithThreeDigits}}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

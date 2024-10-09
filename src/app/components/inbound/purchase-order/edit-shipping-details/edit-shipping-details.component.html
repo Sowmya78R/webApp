@@ -1,0 +1,121 @@
+<form #editShippingDetails="ngForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+   <div class="panel portlet">
+      <div class="formBox portlet-title">
+         <div class="row">
+            <div class="panel-heading formTitle">
+               <h4>{{'EDIT SHIPPING DETAILS' |translate}}</h4>
+               <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+               <h4>{{'EDIT SHIPPING DETAILS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+               </h4>
+            </div>
+         </div>
+         <div id="style-8" class="panel-body scrollbar">
+            <div class="row force-overflow">
+               <div class="col-md-6">
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Contact Name' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="contactName" name="contactName" [readOnly]="isReadMode"
+                           [(ngModel)]="editShippingData.contactName" placeholder="{{'Contact Name' |translate}}"
+                           (focus)="onFocusForElement('contactName')"
+                           [ngClass]="{'valiError': shouldShowErrors(contactName)}" (focusout)="onFocusOutForElement()"
+                           #contactName="ngModel" class="form-control vblr" required type="text"  [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Contact No' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="phoneNumber" name="phoneNumber" [readOnly]="isReadMode"
+                           [(ngModel)]="editShippingData.phoneNumber" placeholder="{{'Phone No' |translate}}"
+                           (focus)="onFocusForElement('phoneNumber')"
+                           [ngClass]="{'valiError': shouldShowErrors(phoneNumber)}" (focusout)="onFocusOutForElement()"
+                           #phoneNumber="ngModel" class="form-control vbrg" required type="text" [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Email' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="email1" name="email" [readOnly]="isReadMode" [(ngModel)]="editShippingData.email"
+                           placeholder="{{'Email' |translate}}" class="form-control" (focus)="onFocusForElement('email')"
+                           [ngClass]="{'valiError': shouldShowErrors(email)}" (focusout)="onFocusOutForElement()"
+                           #email="ngModel" required type="text" [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Address' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="address" name="address" [readOnly]="isReadMode"
+                           [(ngModel)]="editShippingData.address" placeholder="{{'Address' |translate}}" class="form-control"
+                           (focus)="onFocusForElement('address')" [ngClass]="{'valiError': shouldShowErrors(address)}"
+                           (focusout)="onFocusOutForElement()" #address="ngModel" required type="text" [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <p class="ml-3 mt-4 " [hidden]="raisedPOCheck"><a class="red" (click)="redirectToWareHouse()"><u>{{'Edit More shipping' |translate}}
+                           </u></a></p>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'Country' |translate}}</label>
+                     <div class="col-sm-7">
+                        <select class="form-control selectPanl" id="country1" #country="ngModel" required
+                           (ngModelChange)="onFocusForElement(country)" (focusout)="onFocusOutForElement()"
+                           [disabled]="makeThisDisabled" name="country" [(ngModel)]="editShippingData.country">
+                           <option [ngValue]="null">--Select--</option>
+                           <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}
+                           </option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="state1" name="state" [(ngModel)]="editShippingData.state" placeholder="{{'State' |translate}}"
+                           class="form-control vbrg" (focus)="onFocusForElement('state')"
+                           [ngClass]="{'valiError': shouldShowErrors(state)}" (focusout)="onFocusOutForElement()"
+                           #state="ngModel" required [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'City' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="city1" name="city" [readOnly]="isReadMode" [(ngModel)]="editShippingData.city"
+                           placeholder="{{'City' |translate}}" class="form-control" (focus)="onFocusForElement('city')"
+                           [ngClass]="{'valiError': shouldShowErrors(city)}" (focusout)="onFocusOutForElement()"
+                           #city="ngModel" required type="text" [readOnly]="isReadMode">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-5 col-form-label">{{'PIN' |translate}}</label>
+                     <div class="col-sm-7">
+                        <input id="pin" name="pin" [(ngModel)]="editShippingData.pin" placeholder="{{'PIN' |translate}}"
+                           class="form-control vbrg" (focus)="onFocusForElement('pin')"
+                           [ngClass]="{'valiError': shouldShowErrors(pin)}" (focusout)="onFocusOutForElement()"
+                           #pin="ngModel" required [readOnly]="isReadMode">
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12" *ngIf="!isEditShippingDetails">
+                  <div class="form-group row">
+                     <div class="col-sm-12 text-center mb-2">
+                        <button class="btn btn-green" (click)="update()" [disabled]="raisedPOCheck">{{'Update' |translate}}</button>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12" *ngIf="isEditShippingDetails">
+                  <div class="form-group row">
+                     <div class="col-sm-12 text-center mb-3">
+                        <button class="btn btn-green mr-2" (click)="save()"
+                        >{{'Save' |translate}}</button>
+                        <button class="btn btn-white" (click)="cancel()">{{'Cancel' |translate}}</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>

@@ -1,0 +1,98 @@
+<div *ngIf="selectedValue =='goodsReceiving'">
+  <app-goods-receiving-report (emitTripSheet)="trigeerTripSheet()"></app-goods-receiving-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='putaway'">
+  <app-putaway-report (emitTripSheet)="trigeerTripSheet()"></app-putaway-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='returnOrder'">
+  <app-return-order (emitTripSheet)="trigeerTripSheet()"></app-return-order>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='grnStageTransaction'">
+  <app-grnstagetransactionreport (emitTripSheet)="trigeerTripSheet()"></app-grnstagetransactionreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='grnStageSummary'">
+  <app-grnstagesummaryreport (emitTripSheet)="trigeerTripSheet()"></app-grnstagesummaryreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='grnSummary'">
+  <app-grnsummary (emitTripSheet)="trigeerTripSheet()"></app-grnsummary>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='grnHistory'">
+  <app-grnhistoryreport (emitTripSheet)="trigeerTripSheet()"></app-grnhistoryreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventory'">
+  <app-inventory-summary (emitTripSheet)="trigeerTripSheet()"></app-inventory-summary>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='cycleCounting'">
+  <app-cycle-counting-report (emitTripSheet)="trigeerTripSheet()"></app-cycle-counting-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventoryAdjustments'">
+  <app-inventory-adjustments-report (emitTripSheet)="trigeerTripSheet()"></app-inventory-adjustments-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventoryByLocationReport'">
+  <app-inventorybylocationreport (emitTripSheet)="trigeerTripSheet()"></app-inventorybylocationreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<!-- Next 10 Reports -->
+
+<div *ngIf="selectedValue =='inventoryByProductReport'">
+  <app-inventorybyproductreport (emitTripSheet)="trigeerTripSheet()"></app-inventorybyproductreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventoryTransactionReport'">
+  <app-inventorytransactionreport (emitTripSheet)="trigeerTripSheet()"></app-inventorytransactionreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventoryTransactionDetailsReport'">
+  <app-inventorytransactiondetailsreport (emitTripSheet)="trigeerTripSheet()"></app-inventorytransactiondetailsreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='openSalesOrder'">
+  <app-open-sales-order-report (emitTripSheet)="trigeerTripSheet()"></app-open-sales-order-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='picking'">
+  <app-picking-report (emitTripSheet)="trigeerTripSheet()"></app-picking-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='shipment'">
+  <app-shipment-order-report (emitTripSheet)="trigeerTripSheet()"></app-shipment-order-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='Newshipmentorder'">
+  <app-shipmentorderreport (emitTripSheet)="trigeerTripSheet()"></app-shipmentorderreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='shipmentHistory'">
+  <app-shipmenthistoryreports (emitTripSheet)="trigeerTripSheet()"></app-shipmenthistoryreports>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='spaceutilizationHistory'">
+  <app-spaceutilizationhistoryreport (emitTripSheet)="trigeerTripSheet()"></app-spaceutilizationhistoryreport>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='spaceutilizationReports'">
+  <app-spaceutilization (emitTripSheet)="trigeerTripSheet()"></app-spaceutilization>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='inventory-report'">
+  <app-inventory-report (emitTripSheet)="trigeerTripSheet()"></app-inventory-report>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+<div *ngIf="selectedValue =='locationAvailability'">
+  <app-locationavaillibity (emitTripSheet)="trigeerTripSheet()"></app-locationavaillibity>
+  <app-reportsmodulemainprint [tripInput]="tripInput"></app-reportsmodulemainprint>
+</div>
+
+
+
+

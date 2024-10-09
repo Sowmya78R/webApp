@@ -1,0 +1,222 @@
+<div id="inTop" [dir]="direction">
+  <div class="row">
+    <div class="col-md-2" [hidden]="!logo1">
+      <div class="wmsLogoHomePage">
+        <a><img id="logo1" width="90%" style="height: 90px;" alt=""></a>
+      </div>
+    </div>
+    <div class="col-md-2 inLogo" [hidden]="logo1" style="display: flex; align-items: center; justify-content: center;">
+      <a style="width: 80%;height: 60%; margin: 14px 21px">
+        <img src="assets/FRUISCE.png" class="img-fluid img-responsive" style="width: 100%;height: 100%">
+      </a>
+    </div>
+    <!--   <div class="col-md-1" [hidden]="!logo1">
+      <div class="wmsLogoHomePage">
+        <a><img id="logo1" width="90%"style="height: 90px;" alt=""></a>
+      </div>
+    </div> -->
+    <!-- <div class="col-md-1 inLogo" [hidden]="logo1">
+      <a> <img src="assets/logo.png" width="85px" height="85px" class="" alt="" style="width: 160px;height: 91px;margin-left: -22px;"/></a>
+    </div> -->
+    <!-- <div class="col-md-2" [hidden]="!logo1">
+      <div class="wmsLogoHome">
+        <a><img id="logo1" width="90%" height="" alt="" style="width: 165px;
+          height: 120px;
+          margin: auto;
+          position: relative;
+          top: 0px;
+          left: 30px;"></a>
+      </div>
+    </div>
+    <div class="col-md-2 inLogo" [hidden]="logo1">
+      <a> <img src="assets/logo.png" width="212px" height="110px" class="img-fluid" alt="" /></a>
+    </div> -->
+    <div class="col-md-10 inMenus">
+      <div class="topMenuright"
+        [ngStyle]="{'background-image': subMenuImg ? 'url(' + subMenuImg + ')' : 'url(assets/topMenuBG.jpg)'}">
+        <a class="navbar-brand col-sm-4 col-md-3 mr-0 px-4">
+          <p [ngStyle]="{color:homeTextColor?homeTextColor:deafultColorWareHouseManagement}">{{homeTitletext
+            |translate}} </p>
+        </a>
+        <ul style="position:relative;top:0px;left:0px;">
+          <li>
+            <select (change)="useLanguage($event.target.value)" [(ngModel)]="configService.language"
+              class="form-control" [ngStyle]="{
+              'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColor,
+              'color': organizationFontColor ? organizationFontColor : deafultColor
+            }">
+              <option value="en"> {{'English' | translate}}</option>
+              <option value="ar">{{'Arabic' | translate}}</option>
+              <option value="dut">{{'Dutch' | translate}}</option>
+              <option value="fr">{{'France' | translate}}</option>
+              <option value="ge">{{'German' | translate}}</option>
+              <option value="ko">{{'Korean' | translate}}</option>
+              <option value="la">{{'Latin' | translate}}</option>
+              <option value="por">{{'Portuguese' | translate}}</option>
+              <option value="sp">{{'Spain' | translate}}</option>
+              <option value="sw">{{'Swedish' | translate}}</option>
+            </select>
+            <!--  [ngStyle]="{color:?organizationFontColor:deafultColor}"> -->
+            <!-- [ngStyle]="{color:organizationFontColor?organizationFontColor:deafultColor}" -->
+          </li>
+          <li>
+
+            <input class="form-control" [(ngModel)]="configService.organizationValue" readonly [ngStyle]="{
+              'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColorCombo,
+              'color': organizationFontColor ? organizationFontColor : deafultColorCombo
+            }" style="margin-left: 21px;position:relative;left:-26px;border-radius:1px;background-color:transparent;width: 200px;
+            height: 23px;">
+          </li>
+          <!--  <li>
+            <input class="form-control" [(ngModel)]="configService.organizationValue" readonly
+            [ngStyle]="{
+              'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColor,
+              'color': organizationFontColor ? organizationFontColor : deafultColor
+            }"style="margin-left: 21px;position: relative;left:-26px;border-radius:1px">
+          </li> -->
+          <li><select [(ngModel)]="configService.wareHouseValue" class="form-control"
+              (change)="getOrgandWareChanged($event.target.value);getwareHouseValue($event.target.value)" [ngStyle]="{
+                'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColor,
+                'color': organizationFontColor ? organizationFontColor : deafultColor
+              }">
+              <option value="null">--select--</option>
+              <option *ngFor="let warehouse of configService.wareHouseDropdown">{{warehouse}}</option>
+            </select>
+          </li>
+          <li><a routerLink="/homepage"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+          <!-- <li class="mt-2"><a> <i class="fa fa-cog" aria-hidden="true"></i> </a></li> -->
+          <li><a>
+              <!-- <i class="fa fa-question-circle" style="cursor:pointer;" title="Help" (click)="openCreateModal()"></i>  -->
+              <i class="fa fa-question-circle" title="Help" type="button" data-toggle="modal" style="cursor:pointer;"
+                data-target="#modalLoginForm1"></i>
+            </a></li>
+            <li *ngIf="footerLinks && footerLinks.length>0">
+              <div class="dropdown show" style="font-size: 24px;margin-top: -8px;">
+                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <i class="material-icons">insert_link</i></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <div *ngFor="let link of footerLinks; let i = index">
+                    <a class="dropdown-item" routerLink="{{link.route}}">{{link.name}}</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <li>
+            <div class="dropdown show">
+              <a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item"> <i class="material-icons"> perm_identity </i>{{userDetails?.firstName}}
+                  {{userDetails?.lastName}}</a>
+                <a class="dropdown-item" routerLink="/changePassword"> <i class="material-icons"> perm_identity
+                  </i>Reset
+                  Password</a>
+                <a class="dropdown-item" (click)="logout()"> <i class="material-icons"> keyboard_tab </i> Logout</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="inMenusRightSide" style=" margin-top: -70px;">
+        <ul>
+          <li *ngFor="let navLink of navLinks; let i = index" [class.active]="isActive(navLink.route)"><a
+              (click)="checkSubMenuLength(navLink);displaySubmenus(i)" [routerLinkActiveOptions]="{ exact: true}"
+              routerLinkActive="active" routerLink="{{'/'+navLink.route}}">
+              {{navLink.rename ? navLink.rename : navLink.name |translate}}
+            </a>
+            <ul id="{{'subMenus'+i}}"
+            [ngStyle]="{'float':'left !important','position': 'absolute','display':'none','left': shiftView(i,navLink.subFunctionalities.length)}"
+              [hidden]="navLink.subFunctionalities.length==1 || navLink.name == 'Layout' || router.url.includes('masterdata') || router.url.includes('reports') || router.url.includes('dashboard')  || router.url.includes('config')">
+              <li [class.active]="active" *ngFor="let subNavLink of navLink.subFunctionalities" id="submenuLi"
+                [hidden]="subNavLink.name=='Putaway History' || subNavLink.name=='Picking History'">
+                <a id="submenuLiA" routerLink="{{'/'+ subNavLink.route}}" routerLinkActive="active"
+                  (click)="checkSubMenuLength(navLink,id);redirectToSpecificPage(subNavLink.route)">
+                  <span *ngIf="subNavLink.name==='Sales Order'">{{'Customer Order' |translate}}</span>
+                  <span *ngIf="subNavLink.name==='Goods Receiving Note'">{{'Gate Entry' |translate}}</span>
+                  <span *ngIf="subNavLink.name==='Outbound Gate Entry'">{{'Gate Entry' |translate}}</span>
+                  <span
+                    *ngIf="subNavLink.name!='Goods Receiving Note' && subNavLink.name!='Sales Order'&& subNavLink.name!='Outbound Gate Entry'">
+                    {{subNavLink.rename ? subNavLink.rename : subNavLink.name |translate}} </span></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- <div class="row">
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-6">
+        <div class="text-right">
+          <div class="arrow-sign">
+            <span class="designThis">
+              {{globalRoute1}}=====>{{globalRoute2}}=====>{{globalRoute3}}<span *ngIf="globalRoute4">======>{{globalRoute4}}</span>
+            </span>
+        </div>
+        </div>
+      </div>
+    </div> -->
+
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalLoginForm1" tabindex="-1" role="dialog" aria-labelledby="modalLoginForm"
+  aria-hidden="true">
+  <div class="modal-dialog">x
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="text-uppercase text-center text-primary font-weight-bold">Help File</h5>
+        <span data-dismiss="modal" aria-label="Close" title="Close" style="cursor: pointer;"
+          class="d-flex justify-content-end">X</span>
+      </div>
+      <div class="modal-body mx-3" style="text-align: left;">
+        <div class="row">
+          <div class="col-md-12" *ngIf="changeFileData">
+            <h6 class="font-weight-bold d-flex justify-content-center">{{changeFileData.MAIN}}</h6>
+            <ul style="color:black;list-style-type: disc;">
+              <li style="color:black;list-style-type: disc;" *ngFor="let item of changeFileData.LIST">{{item.ELEM}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <ngx-smart-modal customClass="nsm-centered" #openModal id="openModal" [identifier]="'openModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="text-uppercase text-capitalize text-center text-primary font-weight-bold">Help File</h5>
+    </div>
+    <div class="col-md-12">
+      <h6 class="font-weight-bold">{{changeFileData.MAIN}}</h6>
+      <ul style="list-style-type: disk;color:black">
+        <li style="list-style-type: disk;color:black" *ngFor="let item of changeFileData.LIST">{{item.ELEM}}</li>
+      </ul>
+    </div>
+  </div>
+</ngx-smart-modal> -->
+<!--
+<ngx-smart-modal customClass="nsm-centered" id="navbaar" #openModal [identifier]="'openModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="text-uppercase text-capitalize text-center text-primary font-weight-bold">Help File</h5>
+    </div>
+    <div class="col-md-12">
+      <h6 class="font-weight-bold">{{changeFileData.MAIN}}</h6>
+      <ul class="">
+        <li class=""style="color:black;" *ngFor="let item of changeFileData.LIST">{{item.ELEM}}</li>
+      </ul>
+    </div>
+  </div>
+</ngx-smart-modal> -->

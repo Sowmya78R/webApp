@@ -1,0 +1,559 @@
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApexDataLabels, ApexLegend, ApexTheme, ApexTitleSubtitle, ChartComponent } from "ng-apexcharts";
+import { Storage } from '../../../../shared/utils/storage';
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+import { CompleterData } from "ng2-completer";
+import { ToastrService } from "ngx-toastr";
+import { CommonMasterDataService } from "src/app/services/integration-services/commonMasterData.service";
+import { ConfigurationService } from "src/app/services/integration-services/configuration.service";
+import { WMSService } from "src/app/services/integration-services/wms.service";
+import { TranslateService } from "@ngx-translate/core";
+
+export type putawayChartDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+  title: ApexTitleSubtitle
+}
+export type internalTRansferstDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+
+export type pickingDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+export type packingDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+export type coPackingDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+export type rePackingDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+export type labellingDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+export type cycleTransferDetails = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  legend: any;
+}
+
+@Component({
+  selector: 'app-employee-inbound-out-bound-dashboard',
+  templateUrl: './employee-inbound-out-bound-dashboard.component.html',
+  styleUrls: ['./employee-inbound-out-bound-dashboard.component.scss']
+})
+export class EmployeeInboundOutBoundDashboardComponent implements OnInit {
+
+  employeePutaway = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Employee Putaway', Storage.getSessionUser());
+  internalTranfer = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Internal Tranfer', Storage.getSessionUser());
+  inventoryAdjustmentDetails = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Inventory Adjustment Details', Storage.getSessionUser());
+  EmployeePicking = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Employee Picking', Storage.getSessionUser());
+  Packing = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Packing', Storage.getSessionUser());
+  Repacking = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Repacking', Storage.getSessionUser());
+  Copacking = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Co-packing', Storage.getSessionUser());
+  Labelling = this.configService.getPermissionsForDashboard('kpiConfigurationFunctionalities', 'Employee', 'Labelling', Storage.getSessionUser());
+
+  @ViewChild("chart") chart: ChartComponent;
+  public putawayChartDetails: Partial<putawayChartDetails>;
+  public internalTRansferstDetails: Partial<internalTRansferstDetails>;
+  public pickingDetails: Partial<pickingDetails>;
+  public packingDetails: Partial<packingDetails>;
+  public rePackingDetails: Partial<rePackingDetails>;
+  public coPackingDetails: Partial<coPackingDetails>;
+  public labellingDetails: Partial<labellingDetails>;
+  public cycleTransferDetails: Partial<cycleTransferDetails>;
+  inboundOutboundDashboardsForm: FormGroup
+  wareHouseTeamsList: any;
+  wareHouseTeamsListIDs: CompleterData
+  formObj = this.configService.getGlobalpayload();
+  language = this.configService.language;
+  direction = ((this.language == 'ar') ? "rtl" : "ltr");
+  constructor(private wmsService: WMSService, private fb: FormBuilder, private configService: ConfigurationService,
+    private commonmasterdataservice: CommonMasterDataService, private datepipe: DatePipe,private toastr:ToastrService,
+    private translate: TranslateService,) {
+      this.translate.use(this.language);
+  }
+  ngOnInit() {
+    console.log(this.Copacking);
+    this.createInboundOutboundDashboardsForm();
+    this.inboundOutboundDashboardsForm.controls.assignedDateFrom.setValue(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.inboundOutboundDashboardsForm.controls.assignedDateTo.setValue(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.putAwayGraphDetailsgraph();
+    this.internalTransferGraphDetailsgraph();
+    this.pickingGraphDetailsgraph();
+  //  this.internalAdjustmentGraphDetailsgraph();
+    this.packingGraphDetailsgraph();
+    this.coPackingGraphDetailsgraph();
+    this.rePackingGraphDetailsgraph();
+    this.labellingDetailsgraph();
+    this.fetchAllExecutionIDName();
+    this.inboundOutboundDashboardsForm.get("orderType").setValue("Sales Order")
+    this.inboundOutboundDashboardsForm.get("dummyOrderType").setValue("Purchase Order")
+    this.configService.forLanguage$.subscribe(data => {
+      this.language = data;
+      this.direction = (this.language == 'ar') ? "rtl" : "ltr";
+      this.translate.use(this.language);
+    })
+  }
+  createInboundOutboundDashboardsForm() {
+    this.inboundOutboundDashboardsForm = this.fb.group({
+      createdDateFrom: [null],
+      createdDateTo: [null],
+      assignedDateFrom: [null],
+      assignedDateTo: [null],
+      assignedTo: [null],
+      orderType: ['Sales Order'],
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName,
+      dummyOrderType: ['Purchase Order']
+    })
+  }
+  filter() {
+    this.putAwayGraphDetailsgraph();
+    this.internalTransferGraphDetailsgraph();
+    this.pickingGraphDetailsgraph();
+    //this.internalAdjustmentGraphDetailsgraph();
+    this.packingGraphDetailsgraph();
+    this.coPackingGraphDetailsgraph();
+    this.rePackingGraphDetailsgraph();
+    this.labellingDetailsgraph();
+    this.fetchAllExecutionIDName();
+  }
+  reset() {
+    this.inboundOutboundDashboardsForm.reset();
+    this.createInboundOutboundDashboardsForm();
+  }
+  createdDatesFrom:any;
+  createdDatesTo:any;
+  filtercreatedDates() {
+    this.createdDatesFrom = this.inboundOutboundDashboardsForm.value.createdDateFrom;
+    this.createdDatesTo = this.inboundOutboundDashboardsForm.value.createdDateTo;
+    if(this.inboundOutboundDashboardsForm.value.createdDateTo !=null && this.inboundOutboundDashboardsForm.value.createdDateTo !=null ) {
+    if (this.createdDatesFrom <= this.createdDatesTo) {
+      this.filter();
+    } else {
+      this.toastr.error('Select valid date difference between Created Dates');
+    }
+  }
+  else{
+    this.toastr.error('please select both Dates');
+  }
+  }
+  assignedDatesFrom:any;
+  assignedDatesTo:any;
+  filterassignedDate() {
+    this.assignedDatesFrom = this.inboundOutboundDashboardsForm.value.assignedDateFrom;
+    this.assignedDatesFrom = this.inboundOutboundDashboardsForm.value.assignedDateTo;
+    if(this.inboundOutboundDashboardsForm.value.assignedDateTo !=null && this.inboundOutboundDashboardsForm.value.assignedDateFrom !=null) {
+    if (this.createdDatesFrom <= this.createdDatesTo) {
+      this.filter();
+    } else {
+      this.toastr.error('Select valid date difference between Assigned Dates');
+    }
+  }
+  else{
+    this.toastr.error('please select Both Dates');
+  }
+}
+  fetchAllExecutionIDName() {
+    this.commonmasterdataservice.fetchAllExecutionIDName(this.formObj).subscribe(
+      (response) => {
+        if (response && response.status === 0 && response.data.wareHouseTeams) {
+          this.wareHouseTeamsList = response.data.wareHouseTeams;
+          this.wareHouseTeamsListIDs = this.wareHouseTeamsList.map(x => x.executiveIDName);
+        }
+      })
+  }
+  periodWisePurchaseOrderReceiveList: any;
+  totalObjectList: any;
+  putAwayGraphDetailsgraph() {
+    const reqObject = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.dummyOrderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllPutawayInboundOutboundDashboardsGraphDetail(reqObject).subscribe(response => {
+      if (response && response.status === 0 && response.data.putawaysCount) {
+
+        this.totalObjectList = response.data.putawaysCount
+        this.putawayChartDetails = {
+          series: [this.totalObjectList.incompleteCount, this.totalObjectList.completedCount, this.totalObjectList.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Incomplete Count", "Complete Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+  totalInternalTransfersObjectList: any;
+  internalTransferGraphDetailsgraph() {
+    const reqObject = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: null,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllInternalTransferInboundOutboundDashboardsGraphDetail(reqObject).subscribe(response => {
+      if (response && response.status === 0 && response.data.internalTransfersCount) {
+
+        this.totalInternalTransfersObjectList = response.data.internalTransfersCount
+        this.internalTRansferstDetails = {
+          series: [this.totalInternalTransfersObjectList.completedCount, this.totalInternalTransfersObjectList.approvedCount,
+          this.totalInternalTransfersObjectList.inprocessCount, this.totalInternalTransfersObjectList.createdCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Completed Count", "Approved Count", "In Process Count", "Created Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+  totalinventoryAdjustmentsCountObjectList: any;
+
+  pickingDetailsObjwct: any;
+  pickingGraphDetailsgraph() {
+    const reqObjModal = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.orderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllPickingInboundOutboundDashboardsGraphDetail(reqObjModal).subscribe(response => {
+      if (response && response.status === 0 && response.data.pickingsCount) {
+
+        this.pickingDetailsObjwct = response.data.pickingsCount;
+        this.pickingDetails = {
+          series: [this.pickingDetailsObjwct.incompleteCount, this.pickingDetailsObjwct.completedCount, this.pickingDetailsObjwct.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["InComplete Count", "Completed Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        }
+      }
+    })
+  }
+  packingGraphDetailsgraph() {
+    const reqObjModal = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.orderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllPackingOutboundDashboardsGraphDetail(reqObjModal).subscribe(response => {
+      if (response && response.status === 0 && response.data.packingCount) {
+
+        this.pickingDetailsObjwct = response.data.packingCount;
+        this.packingDetails = {
+          series: [this.pickingDetailsObjwct.incompleteCount, this.pickingDetailsObjwct.completedCount, this.pickingDetailsObjwct.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Incomplete Count", "Complete Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+  coPackingDetailsObject: any
+  coPackingGraphDetailsgraph() {
+    const reqObjModal = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.orderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllCopackingInboundOutboundDashboardsGraphDetail(reqObjModal).subscribe(response => {
+      if (response && response.status === 0 && response.data.coPackingCount) {
+
+        this.coPackingDetailsObject = response.data.coPackingCount;
+        this.coPackingDetails = {
+          series: [this.coPackingDetailsObject.incompleteCount, this.coPackingDetailsObject.completedCount, this.coPackingDetailsObject.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Incomplete Count", "Complete Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+  rePackingDetailsObject: any;
+  rePackingGraphDetailsgraph() {
+    const reqObjModal = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.orderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllRepackingInboundOutboundDashboardsGraphDetail(reqObjModal).subscribe(response => {
+      if (response && response.status === 0 && response.data.rePackingCount) {
+
+        this.rePackingDetailsObject = response.data.rePackingCount;
+        this.rePackingDetails = {
+          series: [this.rePackingDetailsObject.incompleteCount, this.rePackingDetailsObject.completedCount, this.rePackingDetailsObject.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Incomplete Count", "Complete Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+  labellingDetailsObject: any;
+  labellingDetailsgraph() {
+    const reqObjModal = {
+      createdDateFrom: this.inboundOutboundDashboardsForm.value.createdDateFrom,
+      createdDateTo: this.inboundOutboundDashboardsForm.value.createdDateTo,
+      assignedDateFrom: this.inboundOutboundDashboardsForm.value.assignedDateFrom,
+      assignedDateTo: this.inboundOutboundDashboardsForm.value.assignedDateTo,
+      assignedTo: this.inboundOutboundDashboardsForm.value.assignedTo,
+      orderType: this.inboundOutboundDashboardsForm.value.orderType,
+      organizationIDName: this.configService.getOrganization().organizationIDName,
+      wareHouseIDName: this.configService.getWarehouse().wareHouseIDName
+    }
+    this.wmsService.fetchAllLabelligInboundOutboundDashboardsGraphDetail(reqObjModal).subscribe(response => {
+      if (response && response.status === 0 && response.data.labelingCount) {
+
+        this.labellingDetailsObject = response.data.labelingCount;
+        this.labellingDetails = {
+          series: [this.labellingDetailsObject.incompleteCount, this.labellingDetailsObject.completedCount, this.labellingDetailsObject.inprocessCount],
+          chart: {
+            width: 375,
+            height: 375,
+            type: "pie"
+          },
+          labels: ["Incomplete Count", "Complete Count", "Inprocess Count"],
+          dataLabels: {
+            formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+            },
+          },
+          legend: {
+            formatter: function (series, opts) {
+              return [series + " - " + opts.w.globals.series[opts.seriesIndex]]
+            }
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+          ]
+        };
+      }
+    })
+  }
+}
+

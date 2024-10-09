@@ -1,0 +1,396 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="transportorForm">
+    <div class="col-md-12">
+      <div class="row" *ngIf="permissionsList.includes('Update')">
+        <div class="col-md-12 ">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'TRANSPORTER DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'TRANSPORTER DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Transporter ID' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input id="serviceProviderId" name="serviceProviderID" formControlName="serviceProviderID"
+                          [readonly]="isReadMode" placeholder="{{'Transporter ID' |translate}}" class="form-control"
+                          type="text" (keyup)="getServiceIDName()" [ngClass]="{'valiError': shouldShowErrors('serviceProviderID', transportorForm),
+                           'valiSucess': shouldShowSuccess('serviceProviderID')}"
+                          (focus)="onFocusForElement('serviceProviderID')" (focusout)="onFocusOutForElement()" required>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Transporter Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="serviceProviderName" name="serviceProviderName" formControlName="serviceProviderName"
+                          [readonly]="isReadMode" class="form-control" (keyup)="getServiceIDName()"
+                          placeholder="{{'Transporter Name' |translate}}" type="text" [ngClass]="{'valiError': shouldShowErrors('serviceProviderName', transportorForm),
+                           'valiSucess': shouldShowSuccess('serviceProviderName')}"
+                          (focus)="onFocusForElement('serviceProviderName')" (focusout)="onFocusOutForElement()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Transporter ID/Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="serviceProviderIDName" readonly name="serviceProviderIDName" class="form-control"
+                          type="text" formControlName="serviceProviderIDName"
+                          placeholder="{{'Transporter ID/Name' |translate}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'TRANSPORTER ADDRESS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'TRANSPORTER ADDRESS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow" formGroupName="address">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Address' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="address" name="address" placeholder="{{'Address' |translate}}" class="form-control"
+                          formControlName="addressLine" value="" type="text" [ngClass]="{'valiError': shouldShowErrors('addressLine', transportorForm),'valiSucess':
+                          shouldShowSuccess('addressLine', 'address')}" (focus)="onFocusForElement('addressLine')"
+                          (focusout)="onFocusOutForElement()">
+                      </div>
+                    </div>
+                    <div class="form-group row drop-status ">
+                      <label class="col-sm-5 col-form-label">{{'Country' |translate}}</label>
+                      <div class="col-sm-7">
+                        <select class="form-control mt-1" id="country" name="country" formControlName="country">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="country.name" *ngFor="let country of countries">{{country.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'State' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="state" name="state" formControlName="state" placeholder="{{'State' |translate}}"
+                          class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'City' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="city" name="city" placeholder="{{'City' |translate}}" formControlName="city"
+                          class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Phone Number' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="mobileNumber" name="mobileNumber" formControlName="mobileNumber"
+                          placeholder="{{'Phone Number' |translate}}" class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="text" name="emailId" formControlName="emailId"
+                          placeholder="{{'Email ID' |translate}}" class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Pin' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="pin" name="pin" formControlName="pin" placeholder="{{'Pin' |translate}}"
+                          class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'TRANSPORTER DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'TRANSPORTER DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow" formArrayName="contactDetails"
+                  *ngFor="let data of transportorForm.get('contactDetails')['controls'];let i = index;">
+                  <div [formGroupName]="i" class="col-md-12 row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'SPOC Name' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="name" name="name" formControlName="name" placeholder="{{'SPOC Name' |translate}}"
+                            class="form-control" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'SPOC Number' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
+                            placeholder="{{'SPOC Number' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">{{'SPOC Email ID' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <input id="emailAddress" name="emailAddress" formControlName="emailAddress"
+                            placeholder="{{'SPOC Email ID' |translate}}" class="form-control" type="text">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row drop-status">
+              <label class="col-sm-1 col-form-label">{{'Status:' |translate}}</label>
+              <div class="col-sm-3">
+                <select class="form-control mt-1" id="status" name="status" formControlName="status">
+                  <option [ngValue]="null">{{'Select' |translate}}</option>
+                  <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'TRANSPORTER BANK DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> {{'TRANSPORTER BANK DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow" formGroupName="paymentDetails">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Bank Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="bankName" name="bankName" formControlName="bankName"
+                          placeholder="{{'Bank Name' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="accountNumber" name="accountNumber" class="form-control"
+                          formControlName="accountNumber" placeholder="{{'Account Number' |translate}}" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Holder Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="accountHolderName" name="accountHolderName" formControlName="accountHolderName"
+                          placeholder="{{'Account Holder Name' |translate}}" class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Account Type' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="accountType" name="accountType" formControlName="accountType"
+                          placeholder="{{'Account Type' |translate}}" class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'IFSC Code' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="ifsc" name="ifsc" formControlName='ifsc' placeholder="{{'IFSC Code' |translate}}"
+                          class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Bank Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="bankAddress" name="bankAddress" formControlName="bankAddress"
+                          placeholder="{{'Bank Address' |translate}}" class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'PAN' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="PAN" name="PAN" placeholder="{{'PAN' |translate}}" formControlName="panNumber"
+                          class="form-control" value="" type="text">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-1" [disabled]="transportorForm.invalid"
+                  (click)="saveTransportor()">{{'Save' |translate}}</button>
+                <button class="btn btn-white" (click)="clearFields()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <td>{{'S.No' |translate}}</td>
+                  <td>{{'Transporter ID' |translate}}</td>
+                  <td>{{'Transporter Name' |translate}}</td>
+                  <td>{{'Address' |translate}}</td>
+                  <td>{{'City' |translate}}</td>
+                  <td>{{'State' |translate}}</td>
+                  <td>{{'Country' |translate}}</td>
+                  <td>{{'Phone No' |translate}}</td>
+                  <td>{{'Email ID' |translate}}</td>
+                  <td>{{'Pin Code' |translate}}</td>
+                  <td>{{'SPOC Name' |translate}}</td>
+                  <td>{{'SPOC No' |translate}}</td>
+                  <td>{{'SPOC Email' |translate}}</td>
+                  <td>{{'Bank Name' |translate}}</td>
+                  <td>{{'Account No' |translate}}</td>
+                  <td>{{'Account Holder Name' |translate}}</td>
+                  <td>{{'Account Type' |translate}}e</td>
+                  <td>{{'IFSC Code' |translate}}</td>
+                  <td>{{'Bank Address' |translate}}</td>
+                  <td>{{'Action' |translate}}</td>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let service of serviceProviders; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer" (click)="edit(service)">{{service.serviceProviderID}}</th>
+                  <td>{{service.serviceProviderName}}</td>
+                  <td>{{service.address?.addressLine}}</td>
+                  <td>{{service.address?.city}}</td>
+                  <td>{{service.address?.state}}</td>
+                  <td>{{service.address?.country}}</td>
+                  <td>{{service.address?.mobileNumber}}</td>
+                  <td>{{service.address?.emailId}}</td>
+                  <td>{{service.address?.pin}}</td>
+                  <td>
+                    <span *ngFor="let data of service.contactDetails">{{data.name}}</span>
+                  </td>
+                  <td> <span *ngFor="let data of service.contactDetails">{{data.phoneNumber}}</span></td>
+                  <td> <span *ngFor="let data of service.contactDetails">{{data.emailAddress}}</span></td>
+                  <td>{{service.paymentDetails?.bankName}}</td>
+                  <td>{{service.paymentDetails?.accountNumber}}</td>
+                  <td>{{service.paymentDetails?.accountHolderName}}</td>
+                  <td>{{service.paymentDetails?.accountType}}</td>
+                  <td>{{service.paymentDetails?.ifsc}}</td>
+                  <td>{{service.paymentDetails?.bankAddress}}</td>
+
+                  <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(service)"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

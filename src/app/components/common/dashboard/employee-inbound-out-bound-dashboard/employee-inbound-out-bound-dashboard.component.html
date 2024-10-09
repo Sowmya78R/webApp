@@ -1,0 +1,183 @@
+<div class="row" [formGroup]="inboundOutboundDashboardsForm" [dir]="direction">
+  <div class="col-md-12">
+    <div class="top-input-label">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Created Date From' |translate}}</label>
+            <div class="col-sm-7">
+              <input type="date" name="" class="form-control" id="" formControlName="createdDateFrom" (change)="filtercreatedDates()">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{'Created Date To' |translate}}</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="createdDateTo" (change)="filtercreatedDates()">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{'Assigned Date From' |translate}}</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="assignedDateFrom" (change)="filterassignedDate()">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{'Assigned Date To' |translate}}</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="assignedDateTo" (change)="filterassignedDate()">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{'Assigned To' |translate}}</label>
+            <div class="col-sm-6">
+              <ng2-completer id="assignedTo" name="assignedTo" formControlName="assignedTo" id=""
+                [minSearchLength]="0" placeholder="{{'Assigned To' |translate}}" [datasource]="wareHouseTeamsListIDs">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Inward Order Type' |translate}}</label>
+            <div class="col-sm-6">
+              <select class="form-control extraLongWidth" formControlName="dummyOrderType">
+                <option>Purchase Order</option>
+                <option>WareHouseTransfer Returns </option>
+                <option>WareHouseTransfer</option>
+                <option>Sales Returns</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Outward Order Type' |translate}}</label>
+            <div class="col-sm-6">
+              <select class="form-control extraLongWidth" formControlName="orderType">
+                <option>Sales Order</option>
+                <option>WareHouseTransfer Returns </option>
+                <option>WareHouseTransfer</option>
+                <option>Purchase Returns </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <div class="text-center">
+              <button class="btn btn-green m-1" (click)="filter()">{{'Filter' |translate}}</button>
+              <button class="btn btn-white" (click)="reset()">{{'Reset' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+      <div class="row">
+        <div class="col-md-4" *ngIf="employeePutaway.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Putaway' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="putawayChartDetails?.series" [chart]="putawayChartDetails?.chart"
+                [labels]="putawayChartDetails?.labels" [title]="putawayChartDetails?.title"
+                [theme]="putawayChartDetails?.theme" [responsive]="putawayChartDetails?.responsive"
+                [dataLabels]="putawayChartDetails?.dataLabels" [legend]="putawayChartDetails?.legend"
+                [colors]="putawayChartDetails?.colors"></apx-chart>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"  *ngIf="internalTranfer.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Internal transfer' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="internalTRansferstDetails?.series" [chart]="internalTRansferstDetails?.chart"
+                [labels]="internalTRansferstDetails?.labels" [title]="internalTRansferstDetails?.title"
+                [theme]="internalTRansferstDetails?.theme" [responsive]="internalTRansferstDetails?.responsive"
+                [dataLabels]="internalTRansferstDetails?.dataLabels" [legend]="internalTRansferstDetails?.legend"
+                [colors]="internalTRansferstDetails?.colors"></apx-chart>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="EmployeePicking.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Picking' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="pickingDetails?.series" [chart]="pickingDetails?.chart"
+                [labels]="pickingDetails?.labels" [dataLabels]="pickingDetails?.dataLabels"
+                [responsive]="pickingDetails?.responsive" [legend]="pickingDetails?.legend"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"  *ngIf="Packing.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Packing' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="packingDetails?.series" [chart]="packingDetails?.chart"
+                [labels]="packingDetails?.labels" [responsive]="packingDetails?.responsive"
+                [dataLabels]="pickingDetails?.dataLabels" [legend]="pickingDetails?.legend"></apx-chart>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="Repacking.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Re-packing' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="rePackingDetails?.series" [chart]="rePackingDetails?.chart"
+              [labels]="rePackingDetails?.labels" [responsive]="rePackingDetails?.responsive"
+              [dataLabels]="rePackingDetails?.dataLabels" [legend]="rePackingDetails?.legend"></apx-chart>
+           <!--    <apx-chart [series]="rePackingDetails?.series" [chart]="rePackingDetails?.chart"
+                [labels]="rePackingDetails?.labels" [responsive]="rePackingDetails?.responsive"
+                [dataLabels]="rePackingDetails?.dataLabels"></apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="Copacking.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Co-Packing' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="coPackingDetails?.series" [chart]="coPackingDetails?.chart"
+              [labels]="coPackingDetails?.labels" [responsive]="coPackingDetails?.responsive"
+              [dataLabels]="coPackingDetails?.dataLabels" [legend]="coPackingDetails?.legend"></apx-chart>
+              <!-- <apx-chart [series]="coPackingDetails?.series" [chart]="coPackingDetails?.chart"
+                [labels]="coPackingDetails?.labels" [dataLabels]="coPackingDetails?.dataLabels"
+                [responsive]="coPackingDetails?.responsive"></apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="Labelling.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-center">{{'Labelling' |translate}}</h6>
+            <div id="chart">
+              <apx-chart [series]="labellingDetails?.series" [chart]="labellingDetails?.chart"
+              [labels]="labellingDetails?.labels" [responsive]="labellingDetails?.responsive"
+              [dataLabels]="labellingDetails?.dataLabels" [legend]="labellingDetails?.legend"></apx-chart>
+           <!--    <apx-chart [series]="labellingDetails?.series" [chart]="labellingDetails?.chart"
+                [labels]="labellingDetails?.labels" [dataLabels]="labellingDetails?.dataLabels"
+                [responsive]="labellingDetails?.responsive"></apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-4" *ngIf="employeePutaway.includes('View')">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">cycle counting</h6>
+            <div id="chart">
+              <apx-chart [series]="cycleTransferDetails?.series" [chart]="cycleTransferDetails?.chart"
+                [labels]="cycleTransferDetails?.labels" [responsive]="cycleTransferDetails?.responsive"></apx-chart>
+            </div>
+          </div>
+        </div> -->
+      </div>
+

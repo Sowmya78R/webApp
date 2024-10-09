@@ -1,0 +1,204 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <form [formGroup]="promotionPolicyForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'PROMOTION POLICY' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PROMOTION POLICY' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <div class="form-group row" formGroupName="promotionInfo">
+                      <label class="col-sm-5 col-form-label">{{'Promo Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer [datasource]="promotionData" id="promotionName" [minSearchLength]="0"
+                          formControlName="promotionName" placeholder="{{'Promo Name' |translate}}"
+                          (selected)="getPromoInfo($event)">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <div class="col-sm-4">
+                        <select class="form-control" name="productCategoryName" formControlName="promotionCondition">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option value="Unit Price Of Product">{{'Unit Price Of Product'| translate}}</option>
+                          <option value="Unit Price of Product">{{'Shipping Total'| translate}}</option>
+                          <option value="Unit Price of Product">{{'X amount of Product'| translate}}</option>
+                          <!-- <option value="Unit Price of Product">{{'Unit Price of Product'| translate}}</option> -->
+                        </select>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control" id="disablepurpose" name="productCategoryName"
+                          formControlName="comparisonType">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option value="Is greater then">{{'Is greater then'| translate}}</option>
+                          <option value="Is greater then or Equal to">{{'Is greater then or Equal to'| translate}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3">
+                        <input type="text" formControlName="comparisonValue" placeholder="{{'Comparison Value' |translate}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <div class="row">
+                      <label class="col-sm-5 col-form-label">{{'Product Category' | translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select Product Catgeory'" [settings]="dropdownSettings"
+                          [data]="categoriesList" name="Sub-Category 1" formControlName="productCategoryName"
+                          [data]="categoriesList"
+                          (ngModelChange)="onFocusForElement('productCategoryName');getProductFiltersData('category')"
+                          (focusout)="onFocusOutForElement();" name="Sub-Category 3"
+                          placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="col-sm-12">
+                      <ng-multiselect-dropdown [placeholder]="'Select Category 1'" [settings]="dropdownSettings"
+                        [data]="subList1" name="Sub-Category 1" formControlName="subcatgory1"
+                        (ngModelChange)="onFocusForElement('Sub-Category 2');getProductFiltersData()"
+                        (focusout)="onFocusOutForElement();" name="Sub-Category 3" placeholder="product Category Name">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <ng-multiselect-dropdown [placeholder]="'Select Category 2'" [settings]="dropdownSettings"
+                      [data]="subList2" name="Sub-Category 1" formControlName="subcatgory2"
+                      (ngModelChange)="onFocusForElement('Sub-Category 2');getProductFiltersData()"
+                      (focusout)="onFocusOutForElement();" name="Sub-Category 3" placeholder="product Category Name">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-2">
+                    <ng-multiselect-dropdown [placeholder]="'Select Category 3'" [settings]="dropdownSettings"
+                      [data]="subList3" name="Sub-Category 1" formControlName="subcatgory3"
+                      (ngModelChange)="onFocusForElement('subcatgory3');getProductFiltersData()"
+                      (focusout)="onFocusOutForElement();" name="Sub-Category 3" placeholder="product Category Name">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="row">
+                      <label class="col-sm-3 col-form-label">{{'Brand' | translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select Brand'" [settings]="dropdownSettings" [data]="bransLists"
+                        name="Sub-Category 1" formControlName="brandNames"
+                        (ngModelChange)="onFocusForElement('productCategoryName');getProductFiltersData()"
+                        (focusout)="onFocusOutForElement();" name="brandNames" >
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <div class="row">
+                      <label class="col-sm-5 col-form-label">{{'Product ID Name' | translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng-multiselect-dropdown [placeholder]="'Select Product ID/Name '" [settings]="dropdownSettings" [data]="newProductlist"
+                        name="Sub-Category 1" formControlName="productIDName"
+                        (ngModelChange)="onFocusForElement('productIDName');getProductInfo()"
+                        (focusout)="onFocusOutForElement();" name="productIDName" >
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <div class="col-sm-7">
+                        <select class="form-control" id="disablepurpose" name="discountType"
+                          formControlName="discountType">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <!-- <option value="Discount %">{{'Discount %'| translate}}</option>
+                          <option value="Discount Amount">{{'Discount Amount'| translate}}
+                          </option> -->
+                          <option value="Percentage">Percentage</option>
+                          <option value="Amount">Amount</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-5">
+                        <input type="text" formControlName="discount" placeholder="{{'Discount' |translate}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label"> </label>
+              <div class="col-sm-8 text-right">
+                <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+                <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <td scope="col">S.No</td>
+                <td scope="col">{{'Promo Name'|translate}}</td>
+                <td scope="col">{{'Promo Condition Name' |translate}}</td>
+                <td scope="col">{{'Promo Condition' |translate}}</td>
+                <td scope="col">{{'Promo Condition Value' |translate}}</td>
+                <td scope="col">{{'Product' |translate}}</td>
+                <td scope="col">{{'Discount' |translate}}</td>
+                <td scope="col">{{'Discount Type' |translate}}</td>
+                <td>{{'Action' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of promotionPoliciesList; let i = index">
+               <td class="text-left">{{i+1}}</td>
+                <th style="cursor: pointer;" (click)="edit(record)">{{record.promotionInfo?.promotionName}}</th>
+                <td>{{record.promotionCondition}}</td>
+                <td>{{record.comparisonType}}</td>
+                <td>{{record.comparisonValue}} </td>
+                <td><span [hidden]="record.productMasterInfos.length==0"
+                  *ngFor="let det of record.productMasterInfos;let j=index">{{det.productIDName}}
+                  <span *ngIf="det.productIDName && (j)!=(record.productMasterInfos.length-1)">,</span>
+                </span></td>
+                <td>{{record.discount}} </td>
+                <td>{{record.discountType}} </td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                      (click)="delete(record)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="promotionPolicyInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

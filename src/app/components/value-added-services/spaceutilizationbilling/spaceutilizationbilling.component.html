@@ -1,0 +1,192 @@
+<div id="inBody" [formGroup]="spaceUtilizationBillingForm" *ngIf="spaceUtilizationBillingPermission.includes('View')"
+  [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9"></div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li value="Download Excel" (click)="generatePDF()"><a> <i class="material-icons align-middle">print
+                </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'Space Utilization Billing' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'Space Utilization' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar" style="height:80px;">
+              <div class="container">
+                <div class="row force-overflow justify-content-center">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'From Date' |translate}}</label>
+                      <div class="col-sm-9">
+                        <input id="date" name="date" formControlName="dateFrom" placeholder="date" class="form-control"
+                          type="date">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'To Date' |translate}}</label>
+                      <div class="col-sm-9">
+                        <input id="date" name="date" placeholder="{{'date' |translate}}" class="form-control"
+                          formControlName="dateTo" type="date">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 text-left">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Supplier' |translate}}</label>
+                      <div class="col-sm-5">
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName" [datasource]="dataService"
+                          [minSearchLength]="0" placeholder="{{'Supplier' |translate}}"
+                          (selected)="getZoneDetails($event)" [inputClass]="'form-control form-control-inline'">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Zone' | translate}} </label>
+                      <div class="col-sm-9">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="zoneValueDetailsIds" [(ngModel)]="zoneNames" [ngModelOptions]="{standalone: true}"
+                          class="custom-font-size customClass custom-dropdown">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-right">
+          <button class="btn btn-green m-1" (click)="generate()">{{'Generate' |translate}}</button>
+          <button class="btn btn-white" value="Clear" (click)="clear()">{{'CLEAR' |translate}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+           <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="this.generate(page=1, itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc"
+                    (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let data of thirdPartySpaceUtilizationResponceList | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td class="text-center">{{data.date | date: 'MM/dd/yyyy'}}</td>
+                <td>{{data.openingBalance | decimalwithThreeDigits}} {{data.openingBalanceUom}}</td>
+                <td>{{data.in | decimalwithThreeDigits}}</td>
+                <td>{{data.out | decimalwithThreeDigits}}</td>
+                <td>{{data.occupied | decimalwithThreeDigits}}</td>
+                <td>{{data.pallet | decimalwithThreeDigits}}</td>
+                <td>{{data.supplierIDName}}</td>
+                <td>{{data.zoneNames}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="hidePanel">
+      <div class="col-md-12">
+        <div class="topInputWhichBackGround">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label px-0">{{'Average Space Occupied' |translate}}</label>
+                <div class="col-sm-9">
+                  <input type="type" placeholder="{{'Available Space Occupied' |translate}}" name="customerName"
+                    value="{{decimalAverageSpaceOccupiedobj| decimalwithThreeDigits}}" class="form-control" id=""
+                    readonly>
+                </div>
+              </div>
+              <div class="form-group row mt-2">
+                <label class="col-sm-3 col-form-label px-0">{{'Round Off' |translate}}</label>
+                <div class="col-sm-9">
+                  <input type="type" placeholder="{{'Round Off' |translate}}" name="customerName" class="form-control"
+                    value="{{averageSpaceOccupiedObj | number: '1.0-0'}}" id="" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label px-0">{{'Billing SFT' |translate}}</label>
+                <div class="col-sm-9">
+                  <input type="type" placeholder="{{'Billing SFT' |translate}}" name="customerName" class="form-control"
+                    id="" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

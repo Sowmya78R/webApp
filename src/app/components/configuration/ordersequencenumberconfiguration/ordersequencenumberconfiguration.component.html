@@ -1,0 +1,258 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+
+    <form #orderSequence="ngForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Prefix Config' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Prefix Config' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">{{'Prefix' |translate}}</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Purchase Order' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="purchaseOrderPrefix" name="purchaseOrderPrefix" type="text" [(ngModel)]="purchaseOrderForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="purchaseOrderStartNumber" name="purchaseOrderStartNumber" type="text" [(ngModel)]="purchaseOrderForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Sales Order' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="salesOrderPrefix" name="salesOrderPrefix" type="text" [(ngModel)]="salesOrderForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="salesOrderStartNumber" name="salesOrderStartNumber" type="text" [(ngModel)]="salesOrderForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">{{'Prefix' |translate}}</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Warehouse Transfer' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="wareHouseTransferFormprefix" name="wareHouseTransferFormprefix" type="text" [(ngModel)]="wareHouseTransferForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="wareHouseTransferFormstartNumber" name="wareHouseTransferFormstartNumber" type="text" [(ngModel)]="wareHouseTransferForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Purchase Return' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="purchaseReturnFormprefix" name="purchaseReturnFormprefix" type="text" [(ngModel)]="purchaseReturnForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="purchaseReturnFormstartNumber" name="purchaseReturnFormstartNumber" type="text" [(ngModel)]="purchaseReturnForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">{{'Prefix' |translate}}</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Warehouse Transfer Return' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="warehouseTransferReturnprefix" name="warehouseTransferReturnprefix" type="text" [(ngModel)]="wareHouseTransferReturnForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="wareHouseTransferReturnFormstartNumber" name="wareHouseTransferReturnFormstartNumber" type="text" [(ngModel)]="wareHouseTransferReturnForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Invoice' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="invoiceFormprefix" name="invoiceFormprefix" type="text" [(ngModel)]="invoiceForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="invoiceFormstartNumber" name="invoiceFormstartNumber" type="text" [(ngModel)]="invoiceForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                   <!--  <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">Prefix</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="inventoryFormprefix" name="inventoryFormprefix" type="text" [(ngModel)]="inventoryForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="inventoryFormstartNumber" name="inventoryFormstartNumber" type="text" [(ngModel)]="inventoryForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory Transaction' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="inventoryTransactionFormprefix" name="inventoryTransactionFormprefix" type="text" [(ngModel)]="inventoryTransactionForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="inventoryTransactionFormstartNumber" name="inventoryTransactionFormstartNumber" type="text" [(ngModel)]="inventoryTransactionForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  <!--   <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">Prefix</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory Transaction Details' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="inventoryTransactionDetailsFormprefix" name="inventoryTransactionDetailsFormprefix" type="text" [(ngModel)]="inventoryTransactionDetailsForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="inventoryTransactionDetailsFormtartNumber" name="inventoryTransactionDetailsFormtartNumber" type="text" [(ngModel)]="inventoryTransactionDetailsForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory Adjustment' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="invoiceFormprefix" name="inventoryAdjustmentFormprefix" type="text" [(ngModel)]="inventoryAdjustmentForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="invoiceFormstartNumber" name="inventoryAdjustmentFormstartNumber" type="text" [(ngModel)]="inventoryAdjustmentForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                 <!--    <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">Prefix</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Internal Transfer' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="internalTransferFormprefix" name="internalTransferFormprefix" type="text" [(ngModel)]="internalTransferForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="internalTransferFormstartNumber" name="internalTransferFormstartNumber" type="text" [(ngModel)]="internalTransferForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Cycle Counting' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="cycleCountingFormprefix" name="cycleCountingFormprefix" type="text" [(ngModel)]="cycleCountingForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="cycleCountingFormstartNumber" name="cycleCountingFormstartNumber" type="text" [(ngModel)]="cycleCountingForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  <!--   <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">Prefix</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Putaway' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="putawayFormprefix" name="putawayFormprefix" type="text" [(ngModel)]="putawayForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="putawayFormstartNumber" name="putawayFormstartNumber" type="text" [(ngModel)]="putawayForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Picking' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="pickingprefix" name="pickingprefix" type="text" [(ngModel)]="pickingForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="cycleCountingFormstartNumber" name="cycleCountingFormstartNumber" type="text" [(ngModel)]="pickingForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  <!--   <label class="col-sm-3 col-form-label"></label>
+                    <label class="col-sm-4  col-form-label text-center">Prefix</label>
+                    <label class="col-sm-4 col-form-label text-center">{{'Starting Order Number' |translate}}</label> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory Issues' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="inventoryIssueFormprefix" name="inventoryIssueFormprefix" type="text" [(ngModel)]="inventoryIssueForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="inventoryIssueFormstartNumber" name="inventoryIssueFormstartNumber" type="text" [(ngModel)]="inventoryIssueForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Replishment Order' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="replishmentOrderHistoryFormprefix" name="replishmentOrderHistoryFormprefix" type="text" [(ngModel)]="replishmentOrderHistoryForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="replishmentOrderHistoryFormstartNumber" name="replishmentOrderHistoryFormstartNumber" type="text" [(ngModel)]="replishmentOrderHistoryForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Cross Docking' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="crossDockingHistoryFormprefix" name="crossDockingHistoryFormprefix" type="text" [(ngModel)]="crossDockingHistoryForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="crossDockingHistoryFormstartNumber" name="crossDockingHistoryFormstartNumber" type="text" [(ngModel)]="crossDockingHistoryForm.startNumber">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Inventory Issue Picking' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="inventoryIssuePickingprefix" name="inventoryIssuePickingprefix" type="text" [(ngModel)]="inventoryIssuePickingForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="inventoryIssuePickingFormstartNumber" name="inventoryIssuePickingFormstartNumber" type="text" [(ngModel)]="inventoryIssuePickingForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Sales Return' |translate}}</label>
+                      <div class="col-sm-4 p-1">
+                        <input id="salesReturnPrefix" name="salesReturnPrefix" type="text" [(ngModel)]="salesReturnForm.prefix">
+                      </div>
+                      <div class="col-sm-4 mt-1">
+                        <input id="salesReturnPrefixstartNumber" name="salesReturnPrefixstartNumber" type="text" [(ngModel)]="salesReturnForm.startNumber">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right mb-3">
+              <button class="btn btn-green mr-2"(click)="save()">{{'Save' |translate}}</button>
+              <button class="btn btn-green mr-2">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

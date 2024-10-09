@@ -1,0 +1,121 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="top-input-label">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Select Type' |translate}}</label>
+              <div class="col-sm-7">
+                <select class="form-control" (change)="onChangePeriods($event.target.value)"
+                  [(ngModel)]="periodChangeType">
+                  <option value="Year">Year</option>
+                  <option value="Month">Month</option>
+                  <option value="Day">Day</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="dateDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'From Date' |translate}}</label>
+              <div class="col-sm-7">
+                <input type="date" class="form-control" [(ngModel)]="dispatchDateFrom">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="dateDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'To Date' |translate}}</label>
+              <div class="col-sm-7">
+                <input type="date" class="form-control" [(ngModel)]="dispatchDateTo">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="monthDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'From Month' |translate}}</label>
+              <div class="col-sm-7">
+                <input type="month" class="form-control" [(ngModel)]="monthFrom">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="monthDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'To Month' |translate}}</label>
+              <div class="col-sm-7">
+                <input type="month" class="form-control" [(ngModel)]="monthTo">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="yearDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'From year' |translate}}</label>
+              <div class="col-sm-7">
+                <input autocomplete="off" class="form-control" name="year" bsDatepicker
+                  [bsConfig]="{dateInputFormat: 'YYYY'}" (onShown)="onOpenCalendar($event)" [(ngModel)]="yearFrom">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="yearDisplay">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'To year' |translate}}</label>
+              <div class="col-sm-7">
+                <input autocomplete="off" class="form-control" name="year" bsDatepicker
+                  [bsConfig]="{dateInputFormat: 'YYYY'}" (onShown)="onOpenCalendar($event)" [(ngModel)]="yearTo">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">
+                {{'Customer' |translate}}
+              </label>
+              <div class="col-sm-7">
+                <ng2-completer [(ngModel)]="customerIDName" [datasource]="customerIDNameValues" [minSearchLength]="0"
+                  placeholder="{{'Customer ID Name' |translate}}">
+                </ng2-completer>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}
+              </label>
+              <div class="col-sm-5">
+                <select class="form-control extraLongWidth" [(ngModel)]="orderType"
+                  [ngModelOptions]="{standalone: true}">
+                  <option value="Sales Order">Sales Order</option>
+                  <option value="WareHouseTransfer">WareHouseTransfer</option>
+                  <option value="Purchase Returns">Purchase Returns </option>
+                  <option value="WareHouseTransfer Returns">WareHouseTransfer Returns </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="fomr-group row">
+              <div class="float-right">
+                <button class="btn btn-green" (click)="filter1()">{{'Filter' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <app-ordervolumefillrate [item]="currentItem"></app-ordervolumefillrate>
+    </div>
+    <div class="col-md-12">
+      <app-ontimeordervolumedeliverydashboard [item]="currentItem"></app-ontimeordervolumedeliverydashboard>
+    </div>
+    <div class="col-md-12">
+      <app-perfectordervolumerate [item]="currentItem"></app-perfectordervolumerate>
+    </div>
+    <!--  <div class="col-md-12">
+      <app-></app-orderstatustransactiondashboards>
+    </div> -->
+  </div>
+</div>

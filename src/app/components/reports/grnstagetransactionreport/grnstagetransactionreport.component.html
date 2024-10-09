@@ -1,0 +1,317 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="grnTransactionReport">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'GRN Stage Transaction' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'GRN Stage Transaction' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Purchase Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Sales Returns </option>
+                          <option>WareHouseTransfer Returns </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row "
+                      *ngIf="grnTransactionReport.controls.orderType.value=='Purchase Order'">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="supplierIDNames" [minSearchLength]="0"
+                          placeholder="{{'supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                    *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && grnTransactionReport.controls.orderType.value=='Purchase Order'">
+                    <label class="col-sm-4 col-form-label">{{'Customer Supplier Name' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <ng2-completer name="customersSupplierName" [datasource]="customerServiceNameFilterIDs"
+                        [minSearchLength]="0" placeholder="{{'Customer Supplier Name' |translate}}"
+                        formControlName="customersSupplierName">
+                      </ng2-completer>
+                    </div>
+                  </div>
+
+                  
+                <!--   <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Status' |translate}}</label>
+                    <div class="col-sm-5">
+                      <select name="" id="" formControlName="status" class="form-control extraLongWidth">
+                        <option [ngValue]=null [selected]=true>--Select--</option>
+                        <option value="Location Not Allocated">Location Not Allocated</option>
+                        <option value="Pending Putaway">Pending Putaway</option>
+                      </select>
+                    </div>
+                  </div> -->
+                  <div class="form-group row"
+                    *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && grnTransactionReport.controls.orderType.value=='Purchase Order'">
+                    <label class="col-sm-4 col-form-label ">{{'Customer’s Supplier Address' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <ng2-completer name="productIDName" [datasource]="customerServiceAddresFilterIDs"
+                        formControlName="customersSupplierAddress" [minSearchLength]="0"
+                        placeholder="{{'Customer’s Supplier Address' |translate}}">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                    <div class="form-group row"
+                      *ngIf="grnTransactionReport.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                    *ngIf="grnTransactionReport.controls.orderType.value=='WareHouseTransfer Returns'">
+                    <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                        [datasource]="sourceWareHouses" [minSearchLength]="0"
+                        placeholder="{{'Warehouse' |translate}}">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                    <div class="form-group row " *ngIf="grnTransactionReport.controls.orderType.value=='Sales Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Status</label>
+                      <div class="col-sm-8 mt-1">
+                        <label class="radio-inline ml-2">
+                          <input 
+                            type="radio" 
+                            value="All" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="status">
+                            ALL
+                        </label>
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input 
+                            type="radio" 
+                            value="Location Not Allocated" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="statusOptions">
+                            Location Not Allocated
+                        </label>
+                        <label class="radio-inline ml-2" style="color:green">
+                          <input 
+                            type="radio" 
+                            value="Pending Putaway" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="statusOptions">
+                            Pending Putaway
+                        </label>
+                        
+                      </div>
+                    </div>
+                   
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'GRN From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control extraLongWidth" formControlName="fromDate" id="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'GRN To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control extraLongWidth" formControlName="toDate" id="toDate">
+                      </div>
+                    </div>
+                  
+                   
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'GRN Date/Created Date' |translate}}</th>
+               
+                <th scope="col">{{'WMPO Number' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Product Category' |translate}}</th>
+                <th scope="col">{{'Order Quantity' |translate}}</th>
+                <th scope="col">{{'Return/Received Quantity' |translate}}</th>
+                <th scope="col">{{'Supplier Return/Received Quantity' |translate}}</th>
+                <!-- <th scope="col">WareHouse IDName</th> -->
+                <!--    <th scope="col">{{'Order Type' |translate}}</th> -->
+                <th scope="col">{{'Batch Number' |translate}}</th>
+                <th scope="col">{{'MFG Date' |translate}}</th>
+                <th scope="col">{{'Expiry Date' |translate}}</th>
+                <!-- <th scope="col">Supplier ID</th>
+                <th scope="col">Supplier Name</th> -->
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnTransactionReport.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Name' |translate}}</th>
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnTransactionReport.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Address' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of shipmentOrderData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td *ngIf="report.status==='Location Not Allocated'">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td *ngIf="report.status==='Pending Putaway'">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              
+                <td>{{report.wmpoNumber}}</td>
+                <td><span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.productCategoryName}} </td>
+                <td>{{report.orderedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.receivedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.supplierReceivedQuantity| decimalwithThreeDigits}}</td>
+                <!--   <td>{{report.wareHouseTransferSourceInfo?.wareHouseIDName}}</td> -->
+                <!--    <td>{{report.returnOrderType}}</td> -->
+                <!-- <td><span *ngIf="report.receivedQuantity">{{report.receivedQuantity}}</span></td> -->
+                <td>{{report.batchNumber}}</td>
+                <td class="text-center">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                <!-- <td>{{report.supplierID}}</td>
+                <td>{{report.supplierName}}</td> -->
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnTransactionReport.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierName}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnTransactionReport.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierAddress}}</td>
+               <!--  <td>{{report.status}}</td> -->
+               <td [ngStyle]="{'color':(report.status=='Location Not Allocated') ?'grey':
+   (report.status=='Pending Putaway') ?'green':
+   (report.status=='Completely Received') ?'#15d6cc':''}">{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

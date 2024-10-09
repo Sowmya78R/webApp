@@ -1,0 +1,150 @@
+<form #editProductLines="ngForm">
+  <div class="panel portlet">
+    <div class="formBox portlet-title">
+      <div class="row">
+        <div class="panel-heading formTitle">
+          <h4>EDIT PRODUCT DETAILS </h4>
+          <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span> | <i
+              class="material-icons fullscreen"> unfold_less </i> </div>
+        </div>
+        <div class="formTitleHover">
+          <h4> EDIT PRODUCT DETAILS
+            <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+          </h4>
+        </div>
+      </div>
+      <div id="style-8" class="panel-body scrollbar">
+        <div class="row force-overflow">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Product ID </label>
+              <div class="col-sm-7">
+                <input id="productID" name="productID" [readOnly]="true" [(ngModel)]="editProductLinesData.productID"
+                  placeholder="Product ID" (focus)="onFocusForElement('productID')"
+                (focusout)="onFocusOutForElement()"
+                  #productID="ngModel" class="form-control" required type="text" >
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Product Name </label>
+              <div class="col-sm-7">
+                <input id="productName1" name="productName1" [readOnly]="isReadMode"
+                  [(ngModel)]="editProductLinesData.productName" placeholder="Product Name"
+                  (focus)="onFocusForElement('productName')"
+                  (focusout)="onFocusOutForElement()" #productName="ngModel" class="form-control vbrg" required
+                  type="text">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Product Category </label>
+              <div class="col-sm-7">
+                <select class="form-control" id="productCategory" (change)="onFocusForElement('productCategory')"
+                  (focusout)="onFocusOutForElement()"
+                  #productCategory="ngModel" required name="productCategory" [disabled]="isReadMode"
+                  [(ngModel)]="editProductLinesData.productCategoryInfo.productCategoryName">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let productCategory of productCategories"
+                    [ngValue]="productCategory.productCategoryName">{{productCategory.productCategoryName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Product Type</label>
+              <div class="col-sm-7">
+                <select class="form-control selectPanl" id="productType" (change)="onFocusForElement('productType')"
+                (focusout)="onFocusOutForElement()" [disabled]="isReadMode"
+                  #productType="ngModel" required name="productType"
+                  [(ngModel)]="editProductLinesData.productType">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                    {{productType.value}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">UPC EAN Number </label>
+              <div class="col-sm-7">
+                <input id="upcEANNumber" name="upcEANNumber" [readOnly]="isReadMode"
+                  [(ngModel)]="editProductLinesData.upcEANNumber" placeholder="EAN Number"
+                  (focus)="onFocusForElement('upcEANNumber')"
+                  (focusout)="onFocusOutForElement()" #upcEANNumber="ngModel" class="form-control" required type="text">
+              </div>
+            </div>
+            <p class="ml-3 mt-4"><a (click)="redirectToProductMasterData()" class="red"><u>Edit More Product details</u></a></p>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Inventory Unit </label>
+              <div class="col-sm-7">
+                <select class="form-control " id="inventoryUnit" (change)="onFocusForElement('inventoryUnit')"
+                 (focusout)="onFocusOutForElement()"
+                  #inventoryUnit="ngModel" required name="inventoryUnit" [disabled]="isReadMode"
+                  [(ngModel)]="editProductLinesData.inventoryUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let inventoryUnit of units" [ngValue]="inventoryUnit.unitCode">
+                    {{inventoryUnit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Receiving Unit </label>
+              <div class="col-sm-7">
+                <select class="form-control " id="receivingUnit" (change)="onFocusForElement('receivingUnit')"
+                  (focusout)="onFocusOutForElement()"
+                  #receivingUnit="ngModel" required name="receivingUnit" [disabled]="isReadMode"
+                  [(ngModel)]="editProductLinesData.receivingUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let receivingUnit of units" [ngValue]="receivingUnit.unitCode">
+                    {{receivingUnit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Picking Unit </label>
+              <div class="col-sm-7">
+                <select class="form-control " id="pickingUnit" (change)="onFocusForElement('pickingUnit')"
+                  (focusout)="onFocusOutForElement()"
+                  #pickingUnit="ngModel" required name="pickingUnit" [disabled]="isReadMode"
+                  [(ngModel)]="editProductLinesData.pickingUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let pickingUnit of units" [ngValue]="pickingUnit.unitCode">
+                    {{pickingUnit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Shipment Unit </label>
+              <div class="col-sm-7">
+                <select class="form-control " id="shipmentUnit" (change)="onFocusForElement('shipmentUnit')"
+                  (focusout)="onFocusOutForElement()"
+                  #shipmentUnit="ngModel" required name="shipmentUnit" [disabled]="isReadMode"
+                  [(ngModel)]="editProductLinesData.shipmentUnit">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let shipmentUnit of units" [ngValue]="shipmentUnit.unitCode">
+                    {{shipmentUnit.unitCode}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="!isEditProduct">
+            <div class="form-group row">
+              <div class="col-sm-12 text-center  mb-3">
+                <button class="btn btn-green" (click)="update()"> Update </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3" *ngIf="isEditProduct">
+            <div class="form-group row">
+               <div class="col-sm-12 text-center mb-3">
+                  <button class="btn btn-green mr-2" (click)="save()"
+                  > Save </button>
+                  <button class="btn btn-white" (click)="cancel()"> Cancel </button>
+               </div>
+            </div>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

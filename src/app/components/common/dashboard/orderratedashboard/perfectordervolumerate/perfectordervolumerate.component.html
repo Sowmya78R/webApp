@@ -1,0 +1,52 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-8" *ngIf="perfectOrderRatepermissions.includes('View')">
+          <div class="wmsDataTablesOrderTypeRateGraph">
+            <h6 class="text-center">{{'Perfect Order Rate' |translate}}</h6>
+            <apx-chart [series]="ChartOptions1?.series" [chart]="ChartOptions1?.chart" [yaxis]="ChartOptions1?.yaxis"
+              [xaxis]="ChartOptions1?.xaxis" [labels]="ChartOptions1?.labels" [stroke]="ChartOptions1?.stroke"
+              [plotOptions]="ChartOptions1?.plotOptions" [markers]="ChartOptions1?.markers" [fill]="ChartOptions1?.fill"
+              [tooltip]="ChartOptions1?.tooltip"></apx-chart>
+          </div>
+        </div>
+        <div class="col-md-4"  *ngIf="perfectOrderRatePercentagepermissions.includes('View')">
+          <div class="wmsDataTablesOrderTypeRateGraph">
+            <h6 class="text-center">{{'Perfect Order Rate Percentage' |translate}}</h6>
+            <div id="chart" *ngIf="chartOptions">
+              <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart"
+                [plotOptions]="chartOptions?.plotOptions" [labels]="chartOptions?.labels" [fill]="chartOptions?.fill">
+              </apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-8"  *ngIf="perfectVolumeRatepermissions.includes('View')">
+          <div class="wmsDataTablesOrderTypeRateGraph">
+            <h6 class="text-center">{{'Perfect Volume Rate' |translate}}</h6>
+            <apx-chart [series]="ChartOptions2?.series" [chart]="ChartOptions2?.chart" [yaxis]="ChartOptions2?.yaxis"
+              [xaxis]="ChartOptions2?.xaxis" [labels]="ChartOptions2?.labels" [stroke]="ChartOptions2?.stroke"
+              [plotOptions]="ChartOptions2?.plotOptions" [markers]="ChartOptions2?.markers" [fill]="ChartOptions2?.fill"
+              [tooltip]="ChartOptions2?.tooltip"></apx-chart>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="perfectVolumeRatePercentagepermissions.includes('View')">
+          <div class="wmsDataTablesOrderTypeRateGraph">
+            <h6 class="text-center">{{'Perfect Volume Rate Percentage' |translate}}</h6>
+            <div id="chart" *ngIf="chartOptions3">
+              <apx-chart [series]="chartOptions3?.series" [chart]="chartOptions3?.chart"
+                [plotOptions]="chartOptions3?.plotOptions" [labels]="chartOptions3?.labels" [fill]="chartOptions3?.fill">
+              </apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

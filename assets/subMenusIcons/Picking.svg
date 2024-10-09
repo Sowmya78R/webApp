@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1000" height="1000" viewBox="0 0 1000 1000" xml:space="preserve">
+<desc>Created with Fabric.js 3.5.0</desc>
+<defs>
+</defs>
+<rect width="6" height="30" x="15" y="21" fill="#0068dd"/>
+<g transform="matrix(-1 0 0 1 501.0023 498.2253)" id="292065">
+<g style="">
+		<g transform="matrix(1.7756 0 0 1.7756 226.2506 81.0009)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,172,234); fill-rule: nonzero; opacity: 1;" transform=" translate(-360.988, -301.619)" d="M 428.906 262.883 v 67.281 c 0 5.606 -4.586 10.191 -10.191 10.191 h -115.45 c -5.609 0 -10.195 -4.585 -10.195 -10.19 v -67.282 Z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 226.2506 199.447)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,239,209); fill-rule: nonzero; opacity: 1;" transform=" translate(-360.988, -368.326)" d="M 428.906 234.848 v 28.035 H 293.07 v -28.035 c 0 -5.606 4.59 -10.196 10.196 -10.196 h 115.449 c 5.605 0 10.191 4.461 10.191 10.196 z m -56.449 202.48 c 20.645 0 37.336 16.692 37.336 37.336 c 0 20.64 -16.691 37.336 -37.336 37.336 c -20.64 0 -37.336 -16.695 -37.336 -37.336 c -0.125 -20.644 16.695 -37.336 37.336 -37.336 z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 67.8714 -190.5053)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,172,234); fill-rule: nonzero; opacity: 1;" transform=" translate(-271.789, -148.707)" d="M 339.707 109.969 v 67.281 c 0 5.61 -4.586 10.195 -10.191 10.195 h -115.45 c -5.605 0 -10.195 -4.586 -10.195 -10.195 v -67.281 Z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 67.8714 -293.2254)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,239,209); fill-rule: nonzero; opacity: 1;" transform=" translate(-271.789, -90.8555)" d="M 339.707 81.934 v 28.035 H 203.871 V 81.934 c 0 -5.606 4.59 -10.192 10.195 -10.192 h 115.45 c 5.605 0 10.191 4.461 10.191 10.192 Z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 -90.5007 81.0009)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,172,234); fill-rule: nonzero; opacity: 1;" transform=" translate(-182.594, -301.619)" d="M 250.512 262.883 v 67.281 c 0 5.606 -4.59 10.191 -10.196 10.191 H 124.867 c -5.605 0 -10.191 -4.585 -10.191 -10.19 v -67.282 Z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 -90.5007 199.447)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,239,209); fill-rule: nonzero; opacity: 1;" transform=" translate(-182.594, -368.326)" d="M 250.512 234.848 v 28.035 H 114.676 v -28.035 c 0 -5.606 4.586 -10.196 10.191 -10.196 h 115.45 c 5.605 0 10.195 4.461 10.195 10.196 z m -85.887 202.48 c 20.645 0 37.336 16.692 37.336 37.336 c 0 20.64 -16.695 37.336 -37.336 37.336 c -20.64 0 -37.336 -16.695 -37.336 -37.336 c 0 -20.644 16.691 -37.336 37.336 -37.336 z m 0 0" stroke-linecap="round"/>
+</g>
+		<g transform="matrix(1.7756 0 0 1.7756 0.0066 -94.3419)" id="trolley">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(254,219,65); fill-rule: nonzero; opacity: 1;" transform=" translate(-233.565, -202.8635)" d="M 453.883 405.727 H 119.516 c -35.168 0 -63.715 -28.543 -63.715 -63.715 V 50.969 c 0 -14.016 -11.469 -25.485 -25.485 -25.485 H 13.242 C 6.234 25.484 0.5 19.75 0.5 12.742 C 0.5 5.734 6.234 0 13.242 0 h 17.074 C 58.48 0 81.29 22.809 81.29 50.969 v 291.043 c 0 21.027 17.203 38.23 38.227 38.23 h 334.367 c 7.008 0 12.746 5.735 12.746 12.742 c -0.004 7.008 -5.738 12.743 -12.746 12.743 Z m 0 0" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,13 @@
+<!-- history-main.component.html -->
+<!-- history-main.component.html -->
+<div>
+  <app-putawaymanagement [isReportView]="isReportView"></app-putawaymanagement>
+  <app-history-pdf *ngIf="isReportView"></app-history-pdf>
+</div>
+
+
+
+<div *ngIf="selectedValue.includes('pickingHistory')">
+  <app-picking-history></app-picking-history>
+  <app-history-pdf></app-history-pdf>
+</div>

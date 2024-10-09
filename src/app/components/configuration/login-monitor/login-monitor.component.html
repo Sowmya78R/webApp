@@ -1,0 +1,26 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped" [dtTrigger]="dtTrigger" datatable [dtOptions]="dtOptions">
+            <thead>
+              <tr>
+                <th *ngFor="let key of activityKeys">{{key}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let activity of activites; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{activity.email}}</td>
+                <td>{{activity.rolesList[0]?.roleName}}</td>                
+                <td>{{activity.startTime | date: 'short'}}</td>
+                <td>{{activity.endTime | date: 'short'}}</td>                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

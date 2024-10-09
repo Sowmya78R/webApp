@@ -1,0 +1,1169 @@
+<div id="inBody" [formGroup]="employeesPerformanceForm" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel'
+                |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF'
+                |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="top-input-label1 mt-2" style="
+        background-color: white;
+        border-bottom-left-radius:
+        50px
+        ;
+        border-top-right-radius:
+        50px">
+          <div class="row p-2">
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'From Date' |translate}}</label>
+                <div class="col-sm-6">
+                  <input id="rackName" type="date" class="form-control" formControlName="endTimeFrom">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'To Date' |translate}}</label>
+                <div class="col-sm-6">
+                  <input id="rackName" type="date" class="form-control" formControlName="endTimeTo">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Completed by' |translate}}</label>
+                <div class="col-sm-6">
+                  <ng2-completer id="completedBys" name="completedBys" formControlName="completedBys" id=""
+                    [minSearchLength]="0" placeholder="{{'Completed by' |translate}}"
+                    [datasource]="wareHouseTeamsListIDs">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Employee' |translate}}</label>
+                <div class="col-sm-6">
+                  <ng2-completer id="executiveIDName" name="executiveIDName" formControlName="assignedTos"
+                    [minSearchLength]="0" placeholder="Search Employee" [datasource]="wareHouseTeamsListIDs">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Assigned by' |translate}}</label>
+                <div class="col-sm-6">
+                  <ng2-completer id="executiveIDName" name="executiveIDName" formControlName="assignedBys" id=""
+                    [minSearchLength]="0" placeholder="{{'Assigned by' |translate}}"
+                    [datasource]="wareHouseTeamsListIDs">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-7">
+                     
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">{{'Total Actual WorkDuration:' |translate}}</label>
+                        <span class="col-sm-6 col-form-label text-success">{{totalNetActualWorkDuration}}</span>
+                      </div>
+
+                      <div class="form-group row" style="width: 366px">
+                        <label class="col-sm-6 col-form-label">{{'Total Planned WorkDuration:' |translate}}</label>
+                        <span  class=" col-sm-6 col-form-label text-info">{{totalNetPlannedWorkDuration}}</span>
+                      </div>
+                      
+
+                      
+                    </div>
+                    <div class="col-md-5">
+                      <div class="form-group row" style="width:280px">
+                        <label class="col-sm-6 col-form-label">{{'Total Early Time:' |translate}}</label>
+                        <span class="col-sm-6 col-form-label" style="color: coral;">{{totalNetEarlyTime}}</span>
+                      </div>
+                      <div class="form-group row" style="width:280px">
+                        <label  class="col-sm-6 col-form-label">{{'Total Delayed Time:' |translate}}</label>
+                      <span class="col-sm-6 col-form-label text-danger">{{totalNetDelayedTime}}</span>
+                      </div>
+                      <div class="row">
+                      <div class="col-sm-12">
+
+                        <button class="text-center btn-primary"
+                      (click)="generateAllFunctions()">{{'Filter' |translate}}</button>
+                    <button class="text-center btn-primary ml-4"
+                      (click)="clear()">{{'Reset' |translate}}</button>
+                      </div>
+
+                      
+                      
+
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3" *ngIf="totalNetActualWorkDuration">
+
+            </div>
+            <div class="col-md-3" *ngIf="totalNetEarlyTime">
+
+            </div>
+            <div class="col-md-3" *ngIf="totalNetDelayedTime">
+             
+            </div>
+           <!--  <div class="col-md-3" *ngIf="totalNetPlannedWorkDuration">
+              <label>{{'Total Planned WorkDuration:' |translate}}</label>
+              <span class="text-info">{{totalNetPlannedWorkDuration}}</span>
+            </div> -->
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="float-right">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label"> </label>
+                 <!--  <div class="col-sm-9 text-center d-flex justify-content-center text-center">
+                    <button class="text-center btn-primary d-flex justify-content-center text-center"
+                      (click)="generateAllFunctions()">{{'Filter' |translate}}</button>
+                    <button class="text-center btn-primary ml-3 d-flex justify-content-center text-center"
+                      (click)="clear()">{{'Reset' |translate}}</button>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet" *ngIf="UnLoadingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Un-Loading' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">
+                  {{overAllInwardShipLoadUnloadData.totalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllInwardShipLoadUnloadData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllInwardShipLoadUnloadData.totalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info">{{overAllInwardShipLoadUnloadData.totalPlannedWorkDuration}}</span>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of UnLoadingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="inwardQtyData.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Inward Quality Check' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">
+                  {{overAllInwardShipQualityCheckData.qualityCheckTotalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllInwardShipQualityCheckData.qualityCheckTotalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllInwardShipQualityCheckData.qualityCheckTotalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>Planned Work Duration:</label>
+                <span class="text-info">
+                  {{overAllInwardShipQualityCheckData.qualityCheckTotalPlannedWorkDuration}}</span>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of inwardQtyData;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.qualityCheckAssignedTo}}</td>
+                        <td>{{data.qualityCheckAssignedBy}} <br> {{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy
+                          hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.qualityCheckPlannedWorkDuration}}</td>
+                        <td class="text-success">{{data.qualityCheckActualWorkDuration}}</td>
+                        <td class="text-danger">{{data.qualityCheckDelayedTime}}</td>
+                        <td style="color:coral">{{data.qualityCheckEarlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="grnListData.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'GRN' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">
+                  {{overAllGRNDataData.grnTotalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllGRNDataData.grnTotalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllGRNDataData.grnTotalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>Planned Work Duration:</label>
+                <span class="text-info">
+                  {{overAllGRNDataData.grnTotalPlannedWorkDuration}}</span>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance" *ngFor="let data of grnListData;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.grnAssignedTo}}</td>
+                        <td>{{data.grnAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.grnStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.grnPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.grnEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.grnPlannedWorkDuration}}</td>
+                        <td class="text-success">{{data.grnActualWorkDuration}}</td>
+                        <td class="text-danger">{{data.grnDelayedTime}}</td>
+                        <td style="color:coral">{{data.grnEarlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="putawayEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white;">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Putaway' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success"> {{overAllPutawayData.totalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllPutawayData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllPutawayData.totalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllPutawayData.totalPlannedWorkDuration}}</span>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;width:max-content;background-color:white;border-bottom-left-radius:30px">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMPO Number' |translate}}</th>
+                        <th scope="col">{{'Putaway Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of putawayEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmpoNumber}}</td>
+                        <td>{{data.fullPutawayNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.quantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="salesListData.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Sales Order' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success"> {{overAllSalesorderData.salesOrderTotalActualWorkDuration}}</span>
+                <!--   {{overAllSalesorderData.salesOrderTotalActualWorkDuration}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllSalesorderData.salesOrderTotalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllSalesorderData.salesOrderTotalDelayedTime}}</span>
+                <!-- {{overAllSalesorderData.salesOrderTotalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllSalesorderData.salesOrderTotalPlannedWorkDuration}}</span>
+                <!--{{overAllSalesorderData.salesOrderTotalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;width:max-content;background-color:white;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of salesListData;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.salesOrderAssignedTo}}</td>
+                        <td>{{data.salesOrderAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.salesOrderStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.salesOrderPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.salesOrderEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.salesOrderPlannedWorkDuration}}</td>
+                        <td class="text-success">{{data.salesOrderActualWorkDuration}}</td>
+                        <td class="text-danger">{{data.salesOrderDelayedTime}}</td>
+                        <td style="color:coral">{{data.salesOrderEarlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="pickingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Picking' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">{{overAllPickingData.totalActualWorkDuration}}</span>
+                <!--    {{overAllPickingData.totalActualWorkDuration}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllPickingData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllPickingData.totalDelayedTime}}</span>
+                <!--    {{overAllPickingData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info">{{overAllPickingData.totalPlannedWorkDuration}}</span>
+                <!--   {{overAllPickingData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMSO Number' |translate}}</th>
+                        <th scope="col">{{'Picking Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of pickingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmsoNumber}}</td>
+                        <td>{{data.fullPickingNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="outwardQtyData.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Outward Quality Check' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span
+                  class="text-success">{{overAllOutwardShipQualityCheckData.qualityCheckTotalActualWorkDuration}}</span>
+                <!--   {{overAllOutwardShipQualityCheckData.qualityCheckTotalActualWorkDuration}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllOutwardShipQualityCheckData.qualityCheckTotalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <!--  {{overAllOutwardShipQualityCheckData.qualityCheckTotalDelayedTime}} -->
+                <span class="text-danger">{{overAllOutwardShipQualityCheckData.qualityCheckTotalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span
+                  class="text-info">{{overAllOutwardShipQualityCheckData.qualityCheckTotalPlannedWorkDuration}}</span>
+                <!--  {{overAllOutwardShipQualityCheckData.qualityCheckTotalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of outwardQtyData;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.qualityCheckAssignedTo}}</td>
+                        <td>{{data.qualityCheckAssignedBy}} <br> {{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy
+                          hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.qualityCheckPlannedWorkDuration}}</td>
+                        <td class="text-success">{{data.qualityCheckActualWorkDuration}}</td>
+                        <td class="text-danger">{{data.qualityCheckDelayedTime}}</td>
+                        <td style="color:coral">{{data.qualityCheckEarlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="packingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white;">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Packing' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success"> {{overAllPackingData.totalActualWorkDuration}}</span>
+
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllPackingData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllPackingData.totalDelayedTime}}</span>
+                <!--    {{overAllPackingData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllPackingData.totalPlannedWorkDuration}}</span>
+                <!--    {{overAllPackingData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMSO Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of packingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmsoNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="rePackingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Re-packing' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">{{overAllRePackingData.totalActualWorkDuration}}</span>
+
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllRePackingData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllRePackingData.totalDelayedTime}}</span>
+                <!--   {{overAllRePackingData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info">{{overAllRePackingData.totalPlannedWorkDuration}}</span>
+                <!--     {{overAllRePackingData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMSO Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of rePackingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmsoNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="coPackingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Co-packing' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">{{overAllCopackingData.totalActualWorkDuration}}</span>
+                <!--   -->
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllCopackingData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllCopackingData.totalDelayedTime}}</span>
+                <!--    {{overAllCopackingData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info">{{overAllCopackingData.totalPlannedWorkDuration}}</span>
+                <!--  {{overAllCopackingData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMSO Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of coPackingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmsoNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="labelingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Labelling' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">{{overAllLabellingData.totalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllLabellingData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllLabellingData.totalDelayedTime}}</span>
+                <!--    {{overAllLabellingData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllLabellingData.totalPlannedWorkDuration}}</span>
+                <!--   {{overAllLabellingData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'WMSO Number' |translate}}</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of labelingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullWmsoNumber}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="shipmentListData.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Shipment Order' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success"> {{overAllShipmentOrderData.shipmentOrderTotalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllShipmentOrderData.shipmentOrderTotalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllShipmentOrderData.shipmentOrderTotalDelayedTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllShipmentOrderData.shipmentOrderTotalPlannedWorkDuration}}</span>
+                <!--    {{overAllShipmentOrderData.shipmentOrderTotalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;width:max-content;background-color:white;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of shipmentListData;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.shipmentOrderAssignedTo}}</td>
+                        <td>{{data.shipmentOrderAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}
+                        </td>
+                        <td>{{data.shipmentOrderStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.shipmentOrderPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.shipmentOrderEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.shipmentOrderPlannedWorkDuration}}</td>
+                        <td class="text-success">{{data.shipmentOrderActualWorkDuration}}</td>
+                        <td class="text-danger">{{data.shipmentOrderDelayedTime}}</td>
+                        <td style="color:coral">{{data.shipmentOrderEarlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="LoadingEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Loading' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success">{{overAllOutwardShipLoadUnloadData.totalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllOutwardShipLoadUnloadData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger">{{overAllOutwardShipLoadUnloadData.totalDelayedTime}}</span>
+                <!--     {{overAllOutwardShipLoadUnloadData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info">{{overAllOutwardShipLoadUnloadData.totalPlannedWorkDuration}}</span>
+                <!--   {{overAllOutwardShipLoadUnloadData.totalPlannedWorkDuration}} -->
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;width:max-content;background-color:white;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">{{'Order ID' |translate}}</th>
+                        <th scope="col">{{'Invoice Number' |translate}}</th>
+                        <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">{{'Planned Work Duration' |translate}}</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of LoadingEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullOrderID}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" *ngIf="internalTransferEmployeePerformanceList.length>0">
+          <div class="formBox portlet-title" style="border-bottom-left-radius:50px;border-top: white;">
+            <div class="row">
+              <div class="col-md-3">
+                <h6 class="text-uppercase text-primary font-weight-bolder">{{'Internal Transfers' |translate}}
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-3"><label>{{'Actual WorkDuration:' |translate}}</label>
+                <span class="text-success"> {{overAllInternalTransfersData.totalActualWorkDuration}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Early Time:' |translate}}</label>
+                <span style="color:coral">{{overAllInternalTransfersData.totalEarlyTime}}</span>
+              </div>
+              <div class="col-md-3"><label>{{'Delayed Time:' |translate}}</label>
+                <span class="text-danger"> {{overAllInternalTransfersData.totalDelayedTime}}</span>
+                <!--      {{overAllInternalTransfersData.totalDelayedTime}} -->
+              </div>
+              <div class="col-md-3"><label>{{'Planned WorkDuration:' |translate}}</label>
+                <span class="text-info"> {{overAllInternalTransfersData.totalPlannedWorkDuration}}</span>
+                {{overAllInternalTransfersData.totalPlannedWorkDuration}}
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="example w-100">
+                    <thead class="sticky w-100 alert alert-warningemployeePerformance"
+                      style="position:sticky;z-index:1;top:0px;left: 300px;background-color:white;width:max-content;;border-radius:10px;padding:20px 10px;">
+                      <tr>
+                        <th scope="col">{{'S.No' |translate}}</th>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">{{'Product ID Name' |translate}}</th>
+                        <th scope="col">{{'Quantity' |translate}}</th>
+                        <th scope="col">{{'Assigned To' |translate}}</th>
+                        <th scope="col">{{'Assigned By' |translate}}</th>
+                        <th scope="col">{{'Start Time' |translate}}</th>
+                        <th scope="col">{{'Planned Completion Time' |translate}}</th>
+                        <th scope="col">{{'End Time' |translate}}</th>
+                        <th scope="col">Planned Work Duration</th>
+                        <th scope="col">{{'Actual Work Duration' |translate}}</th>
+                        <th scope="col">{{'Delayed Time' |translate}}</th>
+                        <th scope="col">{{'Early Time' |translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="alert alert-warningemployeePerformance"
+                        *ngFor="let data of internalTransferEmployeePerformanceList;let i = index">
+                        <td class="text-left">{{i+1}}</td>
+                        <td>{{data.fullInternalTransferTransactionID}}</td>
+                        <td>{{data.productIDName}}</td>
+                        <td>{{data.transferQuantity}} {{data.inventoryUnit}}</td>
+                        <td>{{data.assignedTo}}</td>
+                        <td>{{data.assignedBy}} <br>{{data.assignedDate |date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="text-info">{{data.plannedWorkDuration}}</td>
+                        <td class="text-success">{{data.actualWorkDuration}}</td>
+                        <td class="text-danger">{{data.delayedTime}}</td>
+                        <td style="color:coral">{{data.earlyTime}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

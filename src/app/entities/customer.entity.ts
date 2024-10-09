@@ -1,0 +1,33 @@
+export class Customer {
+    _id: string;
+    customerID: string;
+    customerName: string;
+    customerIDName: string;
+    customerType: string;
+    shipingAddress: string;
+    email: string;
+    phoneNumber: string;
+    creditPeriod: string;
+    gst: string;
+    pan: string;
+    country: string;
+    state: string;
+    city: string;
+    pin: string;
+    taxRegNumber1: string;
+    taxRegNumber2: string;
+    taxType: string;
+    priceType: string;
+    markupPercentage: string;
+    discountPercentage: string;
+    spocName: string;
+    spocPhoneNumber: string;
+    spocEmail: string;
+    bankName: string;
+    accountNumber: string;
+    accountHolderName: string;
+    accountType: string;
+    ifscCode: string;
+    bankAddress: string;
+    status: string;
+}

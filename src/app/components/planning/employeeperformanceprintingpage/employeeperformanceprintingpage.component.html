@@ -1,0 +1,1198 @@
+<!-- Form Printing -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4">
+            <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px">
+          </div>
+          <div class="col-md-4">
+            <div class="roundedNeckBox">
+              <p style="font-size: 20px;color: black;">{{organizationnameonly}}</p>
+              <p style="color:black">{{organizationAddressOnly}}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="roundedNeckBox">
+              <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+              <p style="color:black">{{wareHouseAddressOnly}}</p>
+            </div>
+          </div>
+        </div>
+        <table border="1" class="w-100">
+          <tr>
+            <td colspan="2" class="text-center">
+              <h6>Employee Performance</h6>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">From Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.employeePerformanceFormDatapassing.endTimeFrom}}</p>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Completed By :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.employeePerformanceFormDatapassing.completedBys}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Total Early Time :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.dataPassingTotalNetEarlyTime}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">To Date :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.employeePerformanceFormDatapassing.endTimeTo}}</p>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Total Actual Work Duration :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.dataPassingFortotalNetActualWorkDuration}}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Employee :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.employeePerformanceFormDatapassing.assignedTos}}</p>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Total Delayed Time :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1">{{wmsService.dataPassingtotalNetDelayedTime}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Assigned By :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.employeePerformanceFormDatapassing.assignedBys}}
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-6 col-form-label">Total Planned WorkDuration :</label>
+                        <div class="col-sm-5">
+                          <p class="mt-1"> {{wmsService.dataPassingFortotalNetPlannedWorkDuration}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Unloading -->
+    <div class="row" *ngIf="wmsService.passingUnLoadingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <div class="text-center">
+          <!--  <p class="text-capitalize text-info">{{'Un-loading' |translate}}</p> -->
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="wmsService.passingUnLoadingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Un-loading' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row m-1 p-1">
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.unLoadingScreensDataPassing.totalActualWorkDuration}}</span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.unLoadingScreensDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.unLoadingScreensDataPassing.totalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.unLoadingScreensDataPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">{{'Early Time' |translate}}</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingUnLoadingListEmployeePerformanceDataTableList;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td style="text-align: center !important;">{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Inward Quality Check -->
+    <div class="row" *ngIf="wmsService.passingInwardQualityCheckListInEmployeePerformance.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">{{'Inward Quality Check' |translate}}</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingInwardQualityCheckListInEmployeePerformance.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Inward Quality Check' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row m-1 p-1">
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllInwardShipQualityCheckDataDataPassing.qualityCheckTotalActualWorkDuration}}</span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllInwardShipQualityCheckDataDataPassing.qualityCheckTotalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span
+                class="text-danger">{{wmsService.overAllInwardShipQualityCheckDataDataPassing.qualityCheckTotalDelayedTime}}</span>
+            </div>
+            <div class="col-md-3"><label>Planned Work Duration:</label>
+              <span class="text-info">
+                {{wmsService.overAllInwardShipQualityCheckDataDataPassing.qualityCheckTotalPlannedWorkDuration}}
+              </span>
+            </div>
+
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingInwardQualityCheckListInEmployeePerformance;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.qualityCheckAssignedTo}}</td>
+              <td>{{data.qualityCheckAssignedBy}} <br> {{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.qualityCheckPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.qualityCheckPlannedWorkDuration}}</td>
+              <td class="text-success">{{data.qualityCheckActualWorkDuration}}</td>
+              <td class="text-danger">{{data.qualityCheckDelayedTime}}</td>
+              <td style="color:coral">{{data.qualityCheckEarlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--GRN List -->
+    <div class="row" *ngIf="wmsService.passingGRNListEmployeePerformanceDataTableList.length > 0">
+      <!-- <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">GRN List</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingGRNListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row"> <div class="col-md-3">
+            <h6 class="text-uppercase text-primary font-weight-bolder">{{'GRN' |translate}}
+            </h6>
+          </div></div>
+          <div class="row">
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllGRNDataPassing.grnTotalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllGRNDataPassing.grnTotalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllGRNDataPassing.grnTotalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllGRNDataPassing.grnTotalPlannedWorkDuration}}
+              </span>
+            </div>
+            <!-- <div class="col-md-3">
+              <label>Actual WorkDuration:</label>
+
+            </div>
+            <div class="col-md-3">
+              <label>Delayed Time:</label>
+
+              </div>
+            <div class="col-md-3">
+              <label>Planned WorkDuration:</label>
+
+            </div> -->
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingGRNListEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.grnAssignedTo}}</td>
+              <td>{{data.grnAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.grnStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.grnPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.grnEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.grnPlannedWorkDuration}}</td>
+              <td class="text-success">{{data.grnActualWorkDuration}}</td>
+              <td class="text-danger">{{data.grnDelayedTime}}</td>
+              <td style="color:coral">{{data.grnEarlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--PutAway -->
+    <div class="row" *ngIf="wmsService.passingPutawayEmployeePerformanceDataTableList.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">PutAway</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingPutawayEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Putaway' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row m-1 p-1">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllPutawayDataPassing.totalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllPutawayDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllPutawayDataPassing.totalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllPutawayDataPassing.totalPlannedWorkDuration}}
+                </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">WMPO Number</th>
+              <th scope="col">Putaway Number</th>
+              <th scope="col">Product ID Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Assigned To</th>
+              <th scope="col">Assigned By</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">Planned Completion Time</th>
+              <th scope="col">End Time</th>
+              <th scope="col">Planned Work Duration</th>
+              <th scope="col">Actual Work Duration</th>
+              <th scope="col">Delayed Time</th>
+              <th scope="col">Early Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingPutawayEmployeePerformanceDataTableList;let i = index">
+              <td style="text-align:right !important;">{{i + 1}}</td>
+              <td style="text-align:right !important;">{{data.fullWmpoNumber}}</td>
+              <td style="text-align:right !important;">{{data.fullPutawayNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.quantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Sales Order -->
+    <div class="row" *ngIf="wmsService.passingSalesListDataEmployeePerformanceDataTableList.length > 0">
+      <!-- <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Sales Order</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingSalesListDataEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Sales Order' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllSalesorderDataPassing.salesOrderTotalActualWorkDuration}}
+                </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllSalesorderDataPassing.salesOrderTotalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllSalesorderDataPassing.salesOrderTotalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllSalesorderDataPassing.salesOrderTotalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingSalesListDataEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.salesOrderAssignedTo}}</td>
+              <td>{{data.salesOrderAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.salesOrderStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.salesOrderPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.salesOrderEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.salesOrderPlannedWorkDuration}}</td>
+              <td class="text-success">{{data.salesOrderActualWorkDuration}}</td>
+              <td class="text-danger">{{data.salesOrderDelayedTime}}</td>
+              <td style="color:coral">{{data.salesOrderEarlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Picking EMployee Performance -->
+    <div class="row" *ngIf="wmsService.passingPickingEmployeePerformanceDataTableList.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Picking</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingPickingEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Picking' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllPickingDataPassing.totalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllPickingDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllPickingDataPassing.totalDelayedTime}}
+              </span>
+          </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllPickingDataPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">WMSO Number</th>
+            <th scope="col">Picking Number</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingPickingEmployeePerformanceDataTableList;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.fullPickingNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Outward Quality Check -->
+    <div class="row" *ngIf="wmsService.passingOutwardQualityCheckInEmployeePerformance.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Outward Quality Check</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingOutwardQualityCheckInEmployeePerformance.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Outward Quality Check' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllOutwardShipQualityCheckDataPassing.qualityCheckTotalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllOutwardShipQualityCheckDataPassing.qualityCheckTotalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+             <span class="text-danger">
+              {{wmsService.overAllOutwardShipQualityCheckDataPassing.qualityCheckTotalDelayedTime}}
+            </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllOutwardShipQualityCheckDataPassing.qualityCheckTotalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingOutwardQualityCheckInEmployeePerformance;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.qualityCheckAssignedTo}}</td>
+              <td>{{data.qualityCheckAssignedBy}} <br> {{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.qualityCheckPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.qualityCheckPlannedWorkDuration}}</td>
+              <td class="text-success">{{data.qualityCheckActualWorkDuration}}</td>
+              <td class="text-danger">{{data.qualityCheckDelayedTime}}</td>
+              <td style="color:coral">{{data.qualityCheckEarlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Packing Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingPackingListEmployeePerformanceDataTableList.length > 0">
+      <!--   <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Packing</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingPackingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Packing' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllPackingDatapPassing.totalActualWorkDuration}}</span>
+
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllPackingDatapPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllPackingDatapPassing.totalDelayedTime}}
+                </span>
+
+          </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllPackingDatapPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">WMSO Number</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingPackingListEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Re-Packing Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingrePackingListEmployeePerformanceDataTableList.length > 0">
+      <!--   <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Re-Packing</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingrePackingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Re-Packing' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllRePackingDataPassing.totalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllRePackingDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllRePackingDataPassing.totalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllRePackingDataPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">WMSO Number</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingrePackingListEmployeePerformanceDataTableList;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Co-Packing Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingcoPackingListEmployeePerformanceDataTableList.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Co-Packing</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingcoPackingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Co-Packing' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllCopackingDataPassing.totalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllCopackingDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllCopackingDataPassing.totalDelayedTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllCopackingDataPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">WMSO Number</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingcoPackingListEmployeePerformanceDataTableList;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--labeling Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingLabellingDataListInEmployeePerformance.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Labeling</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingLabellingDataListInEmployeePerformance.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="col-md-3">
+            <h6 class="text-uppercase text-primary font-weight-bolder">{{'Labeling' |translate}}
+            </h6>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllLabellingDataPassing.totalActualWorkDuration}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllLabellingDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+            <div class="col-md-3"><label>Delayed Time:</label>
+              <span class="text-danger">
+                {{wmsService.overAllLabellingDataPassing.totalDelayedTime}}
+                </span>
+            </div>
+            <div class="col-md-3"><label>Planned WorkDuration:</label>
+              <span class="text-info">
+                {{wmsService.overAllLabellingDataPassing.totalPlannedWorkDuration}}
+              </span>
+            </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">WMSO Number</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingLabellingDataListInEmployeePerformance;let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Shipment Order Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingShipmentOrderDataEmployeePerformanceDataTableList.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Shipment Order</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingShipmentOrderDataEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Shipment Order' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllShipmentOrderDataPassing.shipmentOrderTotalActualWorkDuration}}
+              </span>
+             </div>
+             <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllShipmentOrderDataPassing.shipmentOrderTotalEarlyTime}}
+              </span>
+            </div>
+             <div class="col-md-3"><label>Delayed Time:</label>
+               <span class="text-danger">
+                {{wmsService.overAllShipmentOrderDataPassing.shipmentOrderTotalDelayedTime}}
+              </span>
+             </div>
+             <div class="col-md-3"><label>Planned WorkDuration:</label>
+               <span class="text-info">
+                {{wmsService.overAllShipmentOrderDataPassing.shipmentOrderTotalPlannedWorkDuration}}
+              </span>
+             </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingShipmentOrderDataEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.shipmentOrderAssignedTo}}</td>
+              <td>{{data.shipmentOrderAssignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.shipmentOrderStartDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.shipmentOrderPlannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.shipmentOrderEndDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.shipmentOrderPlannedWorkDuration}}</td>
+              <td class="text-success">{{data.shipmentOrderActualWorkDuration}}</td>
+              <td class="text-danger">{{data.shipmentOrderDelayedTime}}</td>
+              <td style="color:coral">{{data.shipmentOrderEarlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Loading Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingLoadingListEmployeePerformanceDataTableList.length > 0">
+      <!--  <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Loading</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingLoadingListEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Loading' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllOutwardShipLoadUnloadDataPassing.totalActualWorkDuration}}
+              </span>
+             </div>
+             <div class="col-md-3"><label>Early Time:</label>
+              <span style="color:coral">
+                {{wmsService.overAllOutwardShipLoadUnloadDataPassing.totalEarlyTime}}
+              </span>
+            </div>
+             <div class="col-md-3"><label>Delayed Time:</label>
+               <span class="text-danger">
+                {{wmsService.overAllOutwardShipLoadUnloadDataPassing.totalDelayedTime}}
+              </span>
+             </div>
+             <div class="col-md-3"><label>Planned WorkDuration:</label>
+               <span class="text-info">
+                {{wmsService.overAllOutwardShipLoadUnloadDataPassing.totalPlannedWorkDuration}}
+              </span>
+             </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Invoice Total Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingLoadingListEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullOrderID}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}} {{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} <br> {{data.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td class="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Internal Transfers Employee Perfromance -->
+    <div class="row" *ngIf="wmsService.passingInternalTransfersEmployeePerformanceDataTableList.length > 0">
+      <!--    <div class="col-md-12">
+        <div class="text-center">
+          <p class="text-capitalize text-info">Internal Transfers</p>
+        </div>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="wmsService.passingInternalTransfersEmployeePerformanceDataTableList.length > 0">
+      <div class="col-md-12">
+        <table border="1" class="w-100" style="text-align:center;position: relative;top:10px">
+          <div class="row">
+            <div class="col-md-3">
+              <h6 class="text-uppercase text-primary font-weight-bolder">{{'Internal Transfers' |translate}}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3"><label>Actual WorkDuration:</label>
+              <span class="text-success">
+                {{wmsService.overAllInternalTransfersDataPassing.totalActualWorkDuration}}
+                </span>
+              </div>
+              <div class="col-md-3"><label>Early Time:</label>
+                <span style="color:coral">
+                  {{wmsService.overAllOutwardShipLoadUnloadDataPassing.totalEarlyTime}}
+                </span>
+              </div>
+              <div class="col-md-3"><label>Delayed Time:</label>
+                <span class="text-danger">
+                  {{wmsService.overAllInternalTransfersDataPassing.totalDelayedTime}}
+                  </span>
+
+                </div>
+              <div class="col-md-3"><label>Planned WorkDuration:</label>
+                <span class="text-info">
+                  {{wmsService.overAllInternalTransfersDataPassing.totalPlannedWorkDuration}}
+                </span>
+              </div>
+          </div>
+        </table>
+        <table border="1" style="text-align:center">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Transaction ID</th>
+            <th scope="col">Product ID Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Assigned By</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Planned Completion Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Planned Work Duration</th>
+            <th scope="col">Actual Work Duration</th>
+            <th scope="col">Delayed Time</th>
+            <th scope="col">Early Time</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let data of wmsService.passingInternalTransfersEmployeePerformanceDataTableList;let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullInternalTransferTransactionID}}</td>
+              <td>{{data.productIDName}}</td>
+              <td>{{data.transferQuantity}} {{data.inventoryUnit}}</td>
+              <td>{{data.assignedTo}}</td>
+              <td>{{data.assignedBy}} <br>{{data.assignedDate |date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+              <td class="text-info">{{data.plannedWorkDuration}}</td>
+              <td clas="text-success">{{data.actualWorkDuration}}</td>
+              <td class="text-danger">{{data.delayedTime}}</td>
+              <td style="color:coral">{{data.earlyTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

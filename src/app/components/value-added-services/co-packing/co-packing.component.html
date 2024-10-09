@@ -1,0 +1,242 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-sm">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="top-input-label">
+          <div class="row my-2">
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'WMSO No' |translate}}</label>
+                <div class="col-sm-9">
+                  <ng2-completer name="wmsoNumber" [datasource]="wmsoNumbers" id="wmsoNumber" [(ngModel)]="wmsoNumber"
+                    [minSearchLength]="0" placeholder="{{'WMSO No' |translate}}" (selected)="onWMSONoChange()">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">{{'Customer Id' |translate}}</label>
+                <div class="col-sm-9">
+                  <input type="type" name="customerID" readonly [(ngModel)]="customerID"
+                    placeholder="{{'Customer Id' |translate}}" class="form-control" id="">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label px-0">{{'Customer Name' |translate}}</label>
+                <div class="col-sm-9">
+                  <input type="type" placeholder="{{'Customer Name' |translate}}" readonly [(ngModel)]="customerName"
+                    name="customerName" class="form-control" id="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-11"></div>
+          <div class="col-md-1 mt-2">
+            <div>
+              <button class="btn btn-primary" (click)="onStatusChange(selectedDocuments[0])"
+                [disabled]="selectedDocuments.length==0">{{'Update' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+                class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="fetchAllShipmentOrders(page=1, this.itemsPerPage)">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Image</th>
+                <th>{{'Include' |translate}}</th>
+                <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Product ID')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product ID')"> </i></th>
+                <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Product Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Name')"> </i>
+                </th>
+                <th>{{'Product Description' |translate}} <i class="fa fa-sort-asc"
+                    style="position: relative;left: -7px;" (click)="setDirection1('ASC','Product Description')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Description')"> </i></th>
+                <th>{{'Brand Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Brand Name')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Brand Name')"> </i></th>
+                <th>{{'Assigned To' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Assigned To')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Assigned To')"> </i></th>
+                <th>{{'Assigned By' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Assigned By')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Assigned By')"> </i></th>
+                <th>{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','UOM')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','UOM')"> </i></th>
+                <th>{{'Order Qty' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Order Qty')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection1('DESC','Order Qty')"> </i></th>
+                <th>{{'Picked Qty' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                      left: -7px;" (click)="setDirection1('ASC','Picked Qty')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection1('DESC','Picked Qty')"> </i></th>
+                <th>{{'Repacking Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC','Repacked Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Repacked Quantity')"> </i></th>
+                <th>{{'Packing Type' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','Packing Type')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Packing Type')"> </i></th>
+                <th>{{'Packing Material' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','Packing Material')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Packing Material')"> </i></th>
+                <th>{{'Start Time' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','Start Time')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Start Time')"> </i></th>
+                <th>{{'End Time' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','End Time')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','End Time')"> </i></th>
+                <th>{{'Completed By' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','Completed By')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Completed By')"> </i></th>
+                <th>{{'Planned Completion Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+    left: -7px;" (click)="setDirection1('ASC','Planned Completion Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Planned Completion Date')"> </i></th>
+                <th>{{'Action' |translate}} </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of shipmentOrderLines | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo?.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo?.productName)}}</p>
+                  </div>
+                </td>
+                <!-- [disabled]="product.coPackingInfo.endDate" -->
+                <td><input type="checkbox" [checked]="product.isChecked" [disabled]="makeThisDsiable"
+                    (change)="onDocumentSelect($event,product)"></td>
+                <td>{{product.productMasterInfo?.productID}}</td>
+                <td>{{product.productMasterInfo?.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td *ngIf="!product.coPackingInfo.endDate">
+                  <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                    [data]="wareHouseTeamsListIDs" [(ngModel)]="product.coPackingInfo.assignedTo"
+                    [ngModelOptions]="{standalone: true}" (focusout)="intoEmployee($event,product)"
+                    [disabled]="makeThisDsiable">
+                  </ng-multiselect-dropdown>
+                </td>
+                <td *ngIf="product.coPackingInfo.endDate">
+                  {{product.coPackingInfo.assignedTo}}
+                </td>
+                <td>{{product.coPackingInfo.assignedBy}}</td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td>{{product.quantity | decimalwithThreeDigits}}</td>
+                <td>{{product.pickedQuantity| decimalwithThreeDigits}}</td>
+                <td>
+                  <input type="number" [disabled]="makeThisDsiable" class="form-control" id="repackedQty"
+                    [(ngModel)]="product.coPackingInfo.repackedQty" placeholder="Packed quantity"
+                    *ngIf="product.coPackingInfo.status === 'Open'; else closed">
+                  <ng-template #closed>
+                    {{product.coPackingInfo.repackedQty | decimalwithThreeDigits}}
+                  </ng-template>
+                </td>
+                <td> <select class="form-control" [disabled]="makeThisDsiable" id="packingType" style="width: 108px;"
+                    name="packingType" *ngIf="product.coPackingInfo.status === 'Open'; else closed1"
+                    [(ngModel)]="product.coPackingInfo.packingType">
+                    <option value="null">Select</option>
+                    <option value="mechanical">mechanical</option>
+                    <option value="manual">manual</option>
+                  </select>
+                  <ng-template #closed1>
+                    {{product.coPackingInfo.packingType}}
+                  </ng-template>
+                </td>
+                <td><input type="text" class="form-control" id="packingMeterial"
+                    *ngIf="product.coPackingInfo.status === 'Open'; else closed2"
+                    [(ngModel)]="product.coPackingInfo.packingMeterial" placeholder="packing Metarial"
+                    [disabled]="makeThisDsiable">
+                  <ng-template #closed2>
+                    {{product.coPackingInfo.packingMeterial}}
+                  </ng-template>
+                </td>
+                <td>{{product.coPackingInfo?.startDate | date: 'MM/dd/yyyy HH:mm:ss'}}</td>
+                <td>{{product.coPackingInfo?.endDate | date: 'MM/dd/yyyy HH:mm:ss'}}</td>
+                <td>{{product.completedBy}}</td>
+                <td><input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                    [disabled]="makeThisDsiable" *ngIf="product.coPackingInfo.status === 'Open'; else closed3"
+                    [(ngModel)]="product.coPackingInfo.plannedCompletionDate">
+                  <ng-template #closed3>
+                    {{product.coPackingInfo?.plannedCompletionDate| date: 'MM/dd/yyyy HH:mm:ss'}}
+                  </ng-template>
+                </td>
+                <td><span *ngIf="product.coPackingInfo?.startDate && product.coPackingInfo?.endDate"
+                    class="text-success">Completed</span>
+                  <span *ngIf="product.coPackingInfo?.startDate && !product.coPackingInfo.endDate">
+                    <button class="btn btn-primary" (click)="onStatusChange(product,'status')">Complete</button></span>
+                  <span *ngIf="!product.coPackingInfo.startDate"><button class="btn btn-primary"
+                      (click)="onStatusChange(product,'startDate')">Start</button></span>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+          <div class="row">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo" (pageChange)="fetchAllShipmentOrders((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

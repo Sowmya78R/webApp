@@ -1,0 +1,129 @@
+<div class="row rotate-content">
+  <div class="col-md-12">
+      <table border="1" class="w-100">
+          <tr>
+              <td colspan="28">
+                  <div class="row w-100">
+                      <div class="col-md-4">
+                          <img id="logoImage" style="width: 175px; height: 80px; border-radius: 10px; margin: 5px 15px;">
+                      </div>
+                      <div class="col-md-4">
+                          <div class="roundedNeckBox">
+                              <p style="font-size: 20px; color: black;">{{warehousenameonly}}</p>
+                              <p>{{wareHouseAddressOnly}}</p>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="28" class="text-center">
+                  <h6>Putaway</h6>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="28">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-md-4">
+                                  <div class="form-group row">
+                                      <label class="col-sm-6 col-form-label">PO Number</label>
+                                      <div class="col-sm-5">
+                                          <p class="mt-1">{{wmsService.fieldsData.wmpoNumber}}</p>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row">
+                                      <label class="col-sm-6 col-form-label">Employee</label>
+                                      <div class="col-sm-5">
+                                          <p class="mt-1">{{wmsService.fieldsData.executiveIDName}}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-group row">
+                                      <label class="col-sm-6 col-form-label">Zone</label>
+                                      <div class="col-sm-5">
+                                          <p class="mt-1">{{wmsService.fieldsData.zoneName}}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-group row">
+                                      <label class="col-sm-6 col-form-label">Location</label>
+                                      <div class="col-sm-5">
+                                          <p class="mt-1">{{wmsService.fieldsData.locationName}}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <th>S.No</th>
+              <th>PO Number</th>
+              <th>Putaway No</th>
+              <th [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning == 'No'">Suppliers Customer Name</th>
+              <th [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning == 'No'">Suppliers Customer Address</th>
+              <th>Assigned To</th>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Product Description</th>
+              <th>Brand Name</th>
+              <th>UOM</th>
+              <th>Quantity</th>
+              <th>Supplier</th>
+              <th>Expiry Date</th>
+              <th>MFG Date</th>
+              <th>Batch No</th>
+              <th>Zone Name</th>
+              <th>Rack Name</th>
+              <th>Level Name</th>
+              <th>Column Name</th>
+              <th>Location Name</th>
+              <th>Invoice No</th>
+              <th>Invoice Date</th>
+              <th>BOE No</th>
+              <th>BOE Date</th>
+              <th>Bond No</th>
+              <th>Bond Date</th>
+              <th>Planned Completion Date</th>
+          </tr>
+          <tbody [hidden]="wmsService.printPutawayPlanningTableData.length == 0">
+              <tr *ngFor="let data of wmsService.printPutawayPlanningTableData; let i = index">
+                  <th>{{i + 1}}</th>
+                  <td>{{data.wmpoNumber}}</td>
+                  <td>{{data.putawayNumber}}</td>
+                  <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning == 'No'">{{data.customersSupplierName}}</td>
+                  <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning == 'No'">{{data.customersSupplierAddress}}</td>
+                  <td *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName !== null">{{data.wareHouseTeamInfo.executiveIDName}}</td>
+                  <td *ngIf="!data.wareHouseTeamInfo || (data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">{{data.executiveIDName}}</td>
+                  <td>{{data.productMasterInfo?.productID}}</td>
+                  <td>{{data.productMasterInfo?.productName}}</td>
+                  <td>{{data.productDescription}}</td>
+                  <td>{{data.brandName}}</td>
+                  <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+                  <td>{{data.quantity | decimalwithThreeDigits}}</td>
+                  <td>{{data.supplierMasterInfo?.supplierName}}</td>
+                  <td style="text-align: center !important;">{{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td style="text-align: center !important;">{{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.batchNumber}}</td>
+                  <td>{{data.zoneInfo?.zoneName}}</td>
+                  <td>{{data.rackInfo?.rackName}}</td>
+                  <td>{{data.levelInfo?.levelName}}</td>
+                  <td>{{data.columnInfo?.columnName}}</td>
+                  <td>{{data.locationInfo?.locationName}}</td>
+                  <td>{{data.invoiceNumber}}</td>
+                  <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.billOfEntryNumber}}</td>
+                  <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{data.bondNumber}}</td>
+                  <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+                  <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+</div>

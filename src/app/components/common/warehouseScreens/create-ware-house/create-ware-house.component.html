@@ -1,0 +1,552 @@
+<div id="inBody" [dir]="direction">
+  <!-- <header class="hideFromPrinting" *ngIf="!isShow"> <button (click)="expanded = !expanded"><i class="fa fa-bars"
+        aria-hidden="true"></i></button></header> -->
+  <div class="main-layout ml-2">
+    <!-- <aside class="sidebar" *ngIf="expanded" @slidein class="hideFromPrinting">
+      <div id="style-8" class="scrollbar" *ngIf="!isShow" style="background-color:#eae8e8;">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">{{'Product Category Details' |translate}}</label>
+              <div class="col-sm-7">
+                <nz-tree-select style="width: 350px;height: auto;" [nzDropdownMatchSelectWidth]="true" [nzNodes]="nodes"
+                  nzShowSearch [nzAllowClear]="true" [(ngModel)]="value" nzCheckable nzPlaceHolder="Please select"
+                  [ngModelOptions]="{standalone: true}" [nzAsyncData]="true" (ngModelChange)="onChange($event)"
+                  [nzDefaultExpandAll]="true"></nz-tree-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside> -->
+    <section>
+      <div class="col-md-12">
+        <form [formGroup]="whTransferForm" *ngIf="whTransferForm">
+
+          <div class="row mt-3">
+            <div class="col-md-12 mastermenus_top">
+              <div class="top-input-labelf"
+                style="background-color: white;border-bottom-left-radius:50px;border-top-right-radius:50px;">
+                <div class="row p-3">
+                  <div class="col-md-3">
+                    <div class="form-group row mt-1" [formGroup]="wareHouseTransferLine">
+                      <label class="col-sm-4 col-form-label">{{'Product Catgeory' |translate}}<i class="red">*</i>
+                      </label>
+                      <!-- getProductFiltersData('category')" -->
+                      <div class="col-sm-8" formGroupName="productCategoryInfo">
+                        <ng-multiselect-dropdown [placeholder]="'Select Product Catgeory'" [settings]="dropdownSettings"
+                          [data]="categoriesList" name="Sub-Category 1" formControlName="productCategoryName"
+                          (ngModelChange)="onFocusForElement('productCategoryName');getCategoryName()"
+                          (focusout)="onFocusOutForElement()" name="Sub-Category 3" placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                        <!-- <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName"
+                          (change)="getProductsList($event.target.value);getSubData1Details($event.target.value);"
+                          style="width: 168px;">
+                          <option value=null>-Select--</option>
+                          <option *ngFor="let productCategory of categoriesList">
+                            {{productCategory}}</option>
+                        </select> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="row mt-1">
+                      <div class="col-sm-4">
+                        <!-- <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory1"
+                          (change)="OnsubcatgoryChange($event.target.value)">
+                          <option value=null>Select Category 1</option>
+                          <option *ngFor="let sc of SubCatogrys1" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select> -->
+                        <!-- getProductFiltersData()" -->
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 1'" [settings]="dropdownSettings"
+                          [data]="subList1" name="Sub-Category 1" formControlName="subcatgory1"
+                          (ngModelChange)="onFocusForElement('Sub-Category 2');" [disabled]="isSub1Disable"
+                          (focusout)="onFocusOutForElement();getExistingCategory()" placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                      <div class="col-sm-4">
+                        <!-- <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory2"
+                          (change)="Onsub2catgoryChange($event.target.value)">
+                          <option value=null>Select Category 2</option>
+                          <option *ngFor="let sc of SubCatogrys2" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select> -->
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 2'" [settings]="dropdownSettings"
+                          [data]="subList2" name="Sub-Category 1" formControlName="subcatgory2"
+                          (ngModelChange)="onFocusForElement('Sub-Category 2')" [disabled]="isSub2Disable"
+                          (focusout)="onFocusOutForElement();getSub3DropdownDisable()" name="Sub-Category 3"
+                          placeholder="product Category Name">
+                        </ng-multiselect-dropdown>
+                      </div>
+                      <div class="col-sm-4">
+                        <!-- <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory3"
+                          (change)="Onsub3catgoryChange($event.target.value)">
+                          <option value=null>Select Category 3</option>
+                          <option *ngFor="let sc of SubCatogrys3" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select> -->
+                        <ng-multiselect-dropdown [placeholder]="'Select Category 3'" [settings]="dropdownSettings"
+                          [data]="subList3" name="Sub-Category 1" formControlName="subcatgory3"
+                          (ngModelChange)="onFocusForElement('Sub-Category 2')" (focusout)="onFocusOutForElement();
+                          getDropdownDatas();" name="Sub-Category 3" placeholder="product Category Name"
+                          [disabled]="isSub3Disable">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="float-left">
+                      <button class="btn btn-green " (click)="openModalPopUp()">Catalog</button>
+                      <button class="btn btn-green m-1" (click)="filter()">Filter</button>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group row mt-3" formGroupName="sourceWareHouseInfo">
+                      <label class="col-sm-6 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-6">
+                        <select class="form-control col-form-label-sm" (change)="changeWareHouse($event.target.value)"
+                          formControlName="wareHouseIDName" style="width:161px">
+                          <option *ngFor="let data of sourceWareHouses " [value]="data.wareHouseIDName">
+                            {{data.wareHouseIDName}}
+                          </option>
+                        </select>
+                      </div>
+                      <!-- <div class="col-sm-6" *ngIf="whTransferForm.controls._id.value">
+                        <input type="text" class="form-control" formControlName="wareHouseIDName" readonly>
+                      </div> -->
+                    </div>
+                    <div class="form-group row mt-2 d-none" formGroupName="destinationWareHouseInfo">
+                      <label class="col-sm-6 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" style="width: 162px;" formControlName="wareHouseIDName"
+                          readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3" [formGroup]="wareHouseTransferLine">
+                    <div class="form-group row">
+                      <!-- <nz-tree-select style="width: 250px;height: auto;margin-left: 10px;"
+                        [nzDropdownMatchSelectWidth]="true" [nzNodes]="nodes" nzShowSearch [nzAllowClear]="true"
+                        [(ngModel)]="value" nzCheckable nzPlaceHolder="Please select"
+                        [ngModelOptions]="{standalone: true}" [nzAsyncData]="true" (ngModelChange)="onChange($event)"
+                        [nzDefaultExpandAll]="true">
+                      </nz-tree-select> -->
+                    </div>
+                    <div class="form-group row mt-2">
+                      <label class="col-sm-4 col-form-label">{{'Brand' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select Brand'" [settings]="dropdownSettings"
+                          [data]="bransLists" name="Sub-Category 1" formControlName="brandName"
+                          (ngModelChange)="onFocusForElement('productCategoryName');getDropdownDatas()"
+                          (focusout)="onFocusOutForElement();" name="brandName">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3" [formGroup]="wareHouseTransferLine">
+                    <div class="form-group row mt-2" formGroupName="productMasterInfo">
+                      <label class="col-sm-4 col-form-label">{{'Product ID/Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select Product ID/Name '" [settings]="dropdownSettings"
+                          [data]="newProductlist" name="Sub-Category 1" formControlName="productIDName"
+                          (ngModelChange)="onFocusForElement('productIDName')" (focusout)="onFocusOutForElement();"
+                          name="productIDName">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="float-left">
+                      <button class="form-control btn btn-green " style="width: 100px;" (click)="navigate()"
+                        [disabled]="!saveDraftResponse">View Cart</button>
+                      <button class="btn btn-green" (click)="save()">Add to Cart</button>
+                      <button class="btn btn-green m-1" (click)="clear()">Clear</button>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mt-1">
+                    <div class="form-group row ">
+                      <label class="col-sm-6 col-form-label">{{'Ship To Address' |translate}}</label>
+                      <div class="col-sm-6">
+                        <select [(ngModel)]="overAllShipTo" [ngModelOptions]="{standalone: true}" class="form-control "
+                          type="text" (change)="setJsonto($event,'shipToAddress')">
+                          <option *ngFor="let ib of shipTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mt-1">
+                    <div class="form-group row ">
+                      <label class="col-sm-6 col-form-label">{{'Bill To Address' |translate}}</label>
+                      <div class="col-sm-6">
+                        <select [(ngModel)]="overAllBillTo" [ngModelOptions]="{standalone: true}" class="form-control "
+                          type="text" (change)="setJsonto($event,'billToAddress')">
+                          <option *ngFor="let ib of billTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+                <div class="row">
+                  <div class="col-md-0.5 pr-0">
+                    <label>Show</label>
+                  </div>
+                  <div class="col-md-1"><select [(ngModel)]="itemsPerPageCreate" (change)="getLines(createPage=1)"
+                      class="form-control" [ngModelOptions]="{standalone: true}">
+                      <option>5</option>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select></div>
+                  <div class="col-md-0.5 pl-0"><label>Entries</label>
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1">
+                    <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                      [ngModelOptions]="{standalone: true}" (keyup)="getLines(createPage=1);">
+                  </div>
+                </div>
+                <table id="example" class="table table-striped">
+                  <thead>
+                    <tr style="background-color:'blueviolet'">
+                      <th scope="col">Select</th>
+                      <th scope="col">{{'Image' | translate}}</th>
+                      <th scope="col">Product ID</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Product Specification</th>
+                      <th scope="col">UOM</th>
+                      <th scope="col">Customer order Quantity</th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Order Unit Price</th>
+                      <th scope="col">Source Warehouse</th>
+                      <th scope="col">ShipFrom Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let i=index;let data of transferLines| paginate: {id:'foo',itemsPerPage: itemsPerPageCreate,currentPage: createPage,totalItems: createTotalItems}">
+                      <td><input type="checkbox" class="form-control" [checked]="data.select"
+                          (click)="setSelect($event,data,i)" style="position: relative;
+                        left: 26px;">
+                      </td>
+                      <td *ngIf="data.productImageResource">
+                        <div class="tooltip-container">
+                          <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                            alt="No Preview available" (mouseover)="showTooltip = true"
+                            (mouseleave)="showTooltip = false">
+                          <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                        </div>
+                      </td>
+                      <td *ngIf="!data.productImageResource">
+                        <div class="noImageIcon">
+                          <p class="noImageIconText">
+                            {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                        </div>
+                      </td>
+                      <td>{{data.productMasterInfo.productID}}</td>
+                      <td>{{data.productMasterInfo.productName}}</td>
+                      <td>{{data.productDescription}}</td>
+                      <td><select [(ngModel)]="data.shipmentUnit" [ngModelOptions]="{standalone: true}"
+                          (change)="unitChange(data,i)">
+                          <option [value]="null">--Select--</option>
+                          <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                            {{unit.unitCode}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                          [(ngModel)]="data.customerOrderQuantity" [ngModelOptions]="{standalone: true}"
+                          (focusout)="setSelect1($event,i)" (keyup)="validate('customerOrderQuantity',i)">
+                      </td>
+                      <td>
+                        <select class="form-control col-form-label-sm" (change)="selectedBrand(data,$event,i)"
+                          [(ngModel)]="data.brandName" id="data.brandName" [ngModelOptions]="{standalone: true}">
+                          <option selected [value]="null">Select Brand</option>
+                          <option *ngFor="let brand of data.brandNames">
+                            {{brand}}
+                          </option>
+                        </select>
+                      </td>
+                      <td>{{data.orderUnitPrice}} {{data.currency}}</td>
+                      <td>
+                        <span *ngIf="data.sourceWareHouseInfos && data.sourceWareHouseInfo">
+                          <select class="form-control" [(ngModel)]="data.sourceWareHouseInfo.wareHouseIDName"
+                            [ngModelOptions]="{standalone: true}" (change)="setWareHouseinTable($event,i,data)">
+                            <option *ngFor="let ware of data.sourceWareHouseInfos">{{ware.wareHouseIDName}}</option>
+                          </select>
+                        </span>
+                        <span
+                          *ngIf="!data.sourceWareHouseInfos && data.sourceWareHouseInfo">{{data.sourceWareHouseInfo.wareHouseIDName}}</span>
+                      </td>
+                      <td>
+                        <span *ngIf="data.shipFromAddresses && data.shipFromAddress">
+                          <select class="form-control" [(ngModel)]="data.shipFromAddress.name"
+                            [ngModelOptions]="{standalone: true}" (change)="setshipFrominTable($event,i,data)">
+                            <option *ngFor="let ware of data.shipFromAddresses" [value]="ware.name">{{ware.name}}
+                            </option>
+                          </select>
+                        </span>
+                        <span
+                          *ngIf="!data.shipFromAddresses && data.shipFromAddress">{{data.shipFromAddress.name}}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+                <div class="row mt-2">
+                  <div class="col-md-12" style="text-align: end;">
+                    <pagination-controls class="pagi" id="foo"
+                      (pageChange)="pageIndirectSave();getLines((createPage = $event))">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="createWarehouseT" #createWarehouseT [identifier]="'createWarehouseT'">
+  <div id="inBody" [dir]="direction">
+    <div class="main-layout ml-2">
+      <div class="col-md-12">
+        <form [formGroup]="whTransferForm" *ngIf="whTransferForm">
+          <div class="row mt-3">
+            <div class="col-md-12 mastermenus_top">
+              <div class="top-input-labelf"
+                style="background-color: white;border-bottom-left-radius:50px;border-top-right-radius:50px;">
+                <div class="row p-3">
+                  <div class="col-md-4">
+                    <div class="form-group row" formGroupName="sourceWareHouseInfo">
+                      <label class="col-sm-6 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-6" *ngIf="!whTransferForm.controls._id.value">
+                        <select class="form-control col-form-label-sm" (change)="framingSourceObj($event.target.value)"
+                          formControlName="wareHouseIDName" style="width:161px">
+                          <option *ngFor="let data of sourceWareHouses " [value]="data.wareHouseIDName">
+                            {{data.wareHouseIDName}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6" *ngIf="whTransferForm.controls._id.value">
+                        <input type="text" class="form-control" formControlName="wareHouseIDName" readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" [formGroup]="wareHouseTransferLine">
+                    <div class="form-group row " formGroupName="productMasterInfo">
+                      <label class="col-sm-6 col-form-label">{{'Product ID/Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-6">
+                        <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="productsData"
+                          (selected)="onProductIDNameChange($event)" [minSearchLength]="0"
+                          placeholder="{{'Product ID/Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4" [formGroup]="wareHouseTransferLine">
+                    <div class="form-group row">
+                    </div>
+                    <div class="formG-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Brand' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control col-form-label-sm" (change)="getLines()"
+                          formControlName="brandName">
+                          <option value="">Select Brand</option>
+                          <option *ngFor="let brand of brandsList " [value]="brand.brandName">
+                            {{brand.brandName}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row mt-1" [formGroup]="wareHouseTransferLine">
+                      <label class="col-sm-6 col-form-label">{{'Product Catgeory' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-6" formGroupName="productCategoryInfo">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName"
+                          (change)="getProductsList($event.target.value);getSubData1Details($event.target.value)"
+                          style="width: 168px;">
+                          <option value=null>-Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [value]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row mt-1">
+                      <div class="col-sm-4">
+                        <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory1"
+                          (change)="OnsubcatgoryChange($event.target.value)">
+                          <option value=null>Select Category 1</option>
+                          <option *ngFor="let sc of SubCatogrys1" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select>
+                        <!-- <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="subData1"
+                          name="Sub-Category 1" formControlName="dummySub1"
+                          (ngModelChange)="onFocusForElement('Sub-Category 2');getSubdata('sub1')"
+                          (focusout)="onFocusOutForElement();" name="Sub-Category 3" placeholder="product Category Name">
+                        </ng-multiselect-dropdown> -->
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory2"
+                          (change)="Onsub2catgoryChange($event.target.value)">
+                          <option value=null>Select Category 2</option>
+                          <option *ngFor="let sc of SubCatogrys2" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control" id="subcatgory1" name="subcatgory1" formControlName="subcatgory3"
+                          (change)="Onsub3catgoryChange($event.target.value)">
+                          <option value=null>Select Category 3</option>
+                          <option *ngFor="let sc of SubCatogrys3" [value]="sc.productSubCategoryName">
+                            {{sc.productSubCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+                <div class="row">
+                  <div class="col-md-0.5 pr-0">
+                    <label>Show</label>
+                  </div>
+                  <div class="col-md-1"><select [(ngModel)]="itemsPerPageCreate" (change)="getLines(createPage=1)"
+                      class="form-control" [ngModelOptions]="{standalone: true}">
+                      <option>5</option>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select></div>
+                  <div class="col-md-0.5 pl-0"><label>Entries</label>
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1">
+                    <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                      [ngModelOptions]="{standalone: true}" (keyup)="getLines(createPage=1);">
+                  </div>
+                </div>
+                <table id="example" class="table table-striped">
+                  <thead>
+                    <tr style="background-color:'blueviolet'">
+                      <th scope="col">Select</th>
+                      <th scope="col">{{'Image' | translate}}</th>
+                      <th scope="col">Product ID</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Product Specification</th>
+                      <th scope="col">UOM</th>
+                      <th scope="col">Customer order Quantity</th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Order Unit Price</th>
+                      <th scope="col">Source Warehouse</th>
+                      <th scope="col">ShipFrom Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let i=index;let data of transferLines| paginate: {itemsPerPage: itemsPerPageCreate,currentPage: createPage,totalItems: createTotalItems}">
+                      <td><input type="checkbox" class="form-control" [checked]="data.select"
+                          (click)="setSelect($event,data,i)" style="position: relative;
+                        left: 26px;">
+                      </td>
+                      <td *ngIf="data.productImageResource">
+                        <div class="tooltip-container">
+                          <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                            alt="No Preview available" (mouseover)="showTooltip = true"
+                            (mouseleave)="showTooltip = false">
+                          <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                        </div>
+                      </td>
+                      <td *ngIf="!data.productImageResource">
+                        <div class="noImageIcon">
+                          <p class="noImageIconText">
+                            {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                        </div>
+                      </td>
+                      <td>{{data.productMasterInfo.productID}}</td>
+                      <td>{{data.productMasterInfo.productName}}</td>
+                      <td>{{data.productDescription}}</td>
+                      <td><select [(ngModel)]="data.shipmentUnit" [ngModelOptions]="{standalone: true}"
+                          (change)="unitChange(data,i)">
+                          <option [value]="null">--Select--</option>
+                          <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                            {{unit.unitCode}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                          [(ngModel)]="data.customerOrderQuantity" [ngModelOptions]="{standalone: true}"
+                          (focusout)="setSelect1($event,i)" (keyup)="validate('customerOrderQuantity',i)">
+                      </td>
+                      <td>
+                        <select class="form-control col-form-label-sm" (change)="selectedBrand(data,$event,i)"
+                          [(ngModel)]="data.brandName" id="data.brandName" [ngModelOptions]="{standalone: true}">
+                          <option selected [value]="null">Select Brand</option>
+                          <option *ngFor="let brand of data.brandNames">
+                            {{brand}}
+                          </option>
+                        </select>
+                      </td>
+                      <td>{{data.orderUnitPrice}} {{data.currency}}</td>
+                      <td>
+                        <span *ngIf="data.sourceWareHouseInfos && data.sourceWareHouseInfo">
+                          <select class="form-control" [(ngModel)]="data.sourceWareHouseInfo.wareHouseIDName"
+                            [ngModelOptions]="{standalone: true}" (change)="setWareHouseinTable($event,i,data)">
+                            <option *ngFor="let ware of data.sourceWareHouseInfos">{{ware.wareHouseIDName}}</option>
+                          </select>
+                        </span>
+                        <span
+                          *ngIf="!data.sourceWareHouseInfos && data.sourceWareHouseInfo">{{data.sourceWareHouseInfo.wareHouseIDName}}</span>
+                      </td>
+                      <td>
+                        <span *ngIf="data.shipFromAddresses && data.shipFromAddress">
+                          <select class="form-control" [(ngModel)]="data.shipFromAddress.name"
+                            [ngModelOptions]="{standalone: true}" (change)="setshipFrominTable($event,i,data)">
+                            <option *ngFor="let ware of data.shipFromAddresses" [value]="ware.name">{{ware.name}}
+                            </option>
+                          </select>
+                        </span>
+                        <span
+                          *ngIf="!data.shipFromAddresses && data.shipFromAddress">{{data.shipFromAddress.name}}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+                <div class="row mt-2">
+                  <div class="col-md-12" style="text-align: end;">
+                    <pagination-controls class="pagi" (pageChange)="getLines((createPage = $event))">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

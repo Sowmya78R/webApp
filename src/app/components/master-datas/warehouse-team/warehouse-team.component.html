@@ -1,0 +1,470 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="warehouseTeamForm">
+    <div class="col-md-12">
+      <div class="row" *ngIf="permissionsList.includes('Update')">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}} </a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'EXECUTIVE DETAILS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'EXECUTIVE DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label class="checkbox-inline">
+                          <input type="checkbox" value="" (change)="onChekedFunctions($event)" id="subscribe">{{'Add
+                          Details' |translate}}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Executive ID' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input id="executiveID" name="executiveID" formControlName="executiveID" [readOnly]="isReadMode"
+                          [ngClass]="{'valiError': shouldShowErrors('executiveID', warehouseTeamForm),'valiSucess': shouldShowSuccess('executiveID')}"
+                          (focus)="onFocusForElement('executiveID')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Executive ID' |translate}}" class="form-control" type="text"
+                          (keyup)="getEquipmentIDName();checkBoxEnableDisable();">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'First Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="executiveFirstName" name="executiveFirstName" formControlName="executiveFirstName"
+                          [ngClass]="{'valiError': shouldShowErrors('executiveFirstName', warehouseTeamForm),'valiSucess': shouldShowSuccess('executiveFirstName')}"
+                          (focus)="onFocusForElement('executiveFirstName')" (focusout)="onFocusOutForElement()"
+                          (keyup)="getEquipmentIDName();executiveNameChanges()"
+                          placeholder="{{'executive First Name' |translate}}" class="form-control" type="text"
+                          [readOnly]="isReadMode" (keyup)="getEquipmentIDName();">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Last Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="executiveLastName" name="executiveLastName" formControlName="executiveLastName"
+                          [ngClass]="{'valiError': shouldShowErrors('executiveLastName', warehouseTeamForm),'valiSucess': shouldShowSuccess('executiveLastName')}"
+                          (focus)="onFocusForElement('executiveLastName')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'ExecutiveLast Name' |translate}}" class="form-control" type="text"
+                          [readOnly]="isReadMode" (keyup)="getEquipmentIDName();executiveNameChanges()">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Executive ID Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="executiveIDName" name="executiveIDName" formControlName="executiveIDName"
+                          [ngClass]="{'valiError': shouldShowErrors('executiveIDName', warehouseTeamForm),'valiSucess': shouldShowSuccess('executiveIDName')}"
+                          (focus)="onFocusForElement('executiveIDName')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Executive ID Name' |translate}}" class="form-control" type="text" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="address" name="address" formControlName="address"
+                          placeholder="{{'Address' |translate}}" class="form-control" type="text"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'City' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="city" name="city" formControlName="city" placeholder="{{'City' |translate}}"
+                          class="form-control" type="text" [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('city', warehouseTeamForm),'valiSucess': shouldShowSuccess('city')}"
+                          (focus)="onFocusForElement('city')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Phone Number' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
+                          placeholder="{{'Phone Number' |translate}}" class="form-control" type="text"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('phoneNumber', warehouseTeamForm),'valiSucess': shouldShowSuccess('phoneNumber')}"
+                          (focus)="onFocusForElement('phoneNumber')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Email ID' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="email" name="email" formControlName="email" placeholder="{{'Email ID' |translate}}"
+                          class="form-control" type="text" [readOnly]="readonlyPasswordMail">
+                      </div>
+                    </div>
+                    <!--    [ngClass]="{'valiError': shouldShowErrors('email', warehouseTeamForm),'valiSucess': shouldShowSuccess('email')}"
+                          (focus)="onFocusForElement('email')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Pin' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="pin" name="pin" formControlName="pin" placeholder="{{'Pin' |translate}}"
+                          class="form-control" (focus)="onFocusForElement('pin')" (focusout)="onFocusOutForElement()"
+                          type="number" [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Country' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="country" name="country" formControlName="country"
+                          [disabled]="makeThisDisabled" (change)="getStates($event.target.value)">
+                          <option [value]="null">--Select--</option>
+                          <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'State' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="state" name="state" formControlName="state"
+                          (focus)="onFocusForElement('state')" (focusout)="onFocusOutForElement()"
+                          [disabled]="makeThisDisabled">
+                          <option [value]="null">--Select--</option>
+                          <option *ngFor="let data of statesList" [value]="data">{{data}}</option>
+                        </select>
+                        <!-- <input id="state" name="state" formControlName="state" placeholder="{{'State' |translate}}"
+                          (focus)="onFocusForElement('state')" (focusout)="onFocusOutForElement()" class="form-control"
+                          type="text" [readOnly]="makeReadOnly"> -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row drop-status ">
+              <label class="col-sm-1 col-form-label">{{'Status:' |translate}} </label>
+              <div class="col-sm-3">
+                <select class="form-control" formControlName="status" name="status">
+                  <option [ngValue]="null">--Select--</option>
+                  <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!--  [ngClass]="{'valiError': shouldShowErrors('status', warehouseTeamForm),'valiSucess': shouldShowSuccess('status')}"
+                  (focus)="onFocusForElement('status')" (focusout)="onFocusOutForElement()" -->
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'EXECUTIVE ATTRIBUTES' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'EXECUTIVE ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Work Types' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          (ngModelChange)="onFocusForElement('workTypes')" (focusout)="onFocusOutForElement()"
+                          [data]="workTypes" name="workTypes" formControlName="workTypes">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <!--   <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Work Type
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="workType" name="workType" formControlName="workType"
+                          (ngModelChange)="onFocusForElement('workType')" (focusout)="onFocusOutForElement()">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let typeValue of workTypes" [ngValue]="typeValue">{{typeValue}}
+                          </option>
+                        </select>
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'No Of Shifts' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="noOfShifts" name="noOfShifts" formControlName="noOfShifts" (keyup)="getDayCapacity()"
+                          placeholder="{{'No Of Shifts' |translate}}" class="form-control" type="number"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('noOfShifts', warehouseTeamForm),'valiSucess': shouldShowSuccess('noOfShifts')}"
+                          (focus)="onFocusForElement('noOfShifts')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Hours Per Shift' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="hoursPerShift" name="hoursPerShift" formControlName="hoursPerShift"
+                          (keyup)="getDayCapacity()" placeholder="{{'Hours Per Shift' |translate}}" class="form-control"
+                          type="number" [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('hoursPerShift', warehouseTeamForm),'valiSucess': shouldShowSuccess('hoursPerShift')}"
+                          (focus)="onFocusForElement('hoursPerShift')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Day Capacity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="dayCapacity" name="dayCapacity" formControlName="dayCapacity" readonly
+                          (focus)="onFocusForElement('dayCapacity')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Day Capacity' |translate}}" class="form-control" type="number">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'No Of Days Per Week' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="noOfDaysPerWeek" name="noOfDaysPerWeek" formControlName="noOfDaysPerWeek"
+                          (keyup)="getWeeklyCapacity()" placeholder="{{'No Of Days Per Week' |translate}}"
+                          class="form-control" type="number" [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('noOfDaysPerWeek', warehouseTeamForm),'valiSucess': shouldShowSuccess('noOfDaysPerWeek')}"
+                          (focus)="onFocusForElement('noOfDaysPerWeek')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Weekly Capacity' |translate}} </label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="weeklyCapacity" formControlName="weeklyCapacity" readonly
+                          (focus)="onFocusForElement('weeklyCapacity')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Weekly Capacity' |translate}}" class="form-control" type="number">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Utilization' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="utilization" name="utilization" formControlName="utilization"
+                          (focus)="onFocusForElement('utilization')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Utilization' |translate}}" class="form-control" type="number"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Login Time' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="loginTime" name="loginTime" formControlName="loginTime"
+                          placeholder="{{'Login Time' |translate}}" class="form-control" type="datetime-local"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('loginTime', warehouseTeamForm),'valiSucess': shouldShowSuccess('loginTime')}"
+                          (focus)="onFocusForElement('loginTime')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Logout Time' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="logoutTime" name="logoutTime" formControlName="logoutTime"
+                          placeholder="{{'Logout Time' |translate}}" class="form-control" type="datetime-local"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('logoutTime', warehouseTeamForm),'valiSucess': shouldShowSuccess('logoutTime')}"
+                          (focus)="onFocusForElement('logoutTime')" (focusout)="onFocusOutForElement()" -->
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Efficiency' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="efficiency" name="efficiency" formControlName="efficency"
+                          (focus)="onFocusForElement('efficency')" (focusout)="onFocusOutForElement()"
+                          placeholder="{{'Efficiency' |translate}}" class="form-control" type="number"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Sequence Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="sequenceNumber" name="sequenceNumber" formControlName="sequenceNumber"
+                          placeholder="{{'Sequence Number' |translate}}" class="form-control" type="number"
+                          [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('sequenceNumber', warehouseTeamForm),'valiSucess': shouldShowSuccess('sequenceNumber')}"
+                          (focus)="onFocusForElement('sequenceNumber')" (focusout)="onFocusOutForElement()"
+  -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate/Hr' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="rateHr" name="rateHr" formControlName="rate" placeholder="{{'Rate/Hr' |translate}}"
+                          class="form-control" type="number" [readOnly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Executive UserID' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="executiveUserID" name="executiveUserID" formControlName="executiveUserID"
+                          placeholder="{{'Executive UserID' |translate}}" class="form-control" type="text" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-5 col-form-label">{{'Executive Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="executiveName" name="executiveName" formControlName="executiveName"
+                          placeholder="{{'Executive Name' |translate}}" class="form-control" type="text" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Executive Password' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="executivePassword" name="executivePassword" formControlName="executivePassword"
+                          placeholder="{{'Executive Password' |translate}}" class="form-control" type="password"
+                          [readOnly]="readonlyPasswordMail">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="warehouseTeamForm.invalid">
+                  {{'Save' |translate}}
+                </button>
+                <button class="btn btn-white" value="Clear" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div  class="wmsDataTables">
+            <table  class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S.No' |translate}}</td>
+                  <td scope="col">{{'Executive ID' |translate}}</td>
+                  <td scope="col">{{'Executive Name' |translate}}</td>
+                  <td scope="col">{{'Executive ID Name' |translate}}</td>
+                  <td scope="col">{{'Executive Last Name' |translate}}</td>
+                  <td scope="col">{{'Address' |translate}}</td>
+                  <td scope="col">{{'Country' |translate}}</td>
+                  <td scope="col">{{'State' |translate}}</td>
+                  <td scope="col">{{'City' |translate}}</td>
+                  <td scope="col">{{'Phone No' |translate}}</td>
+                  <td scope="col">{{'Email ID' |translate}}</td>
+                  <td scope="col">{{'Pin' |translate}}</td>
+                  <td scope="col">{{'Work Type' |translate}}</td>
+                  <td scope="col">{{'No Of Shifts' |translate}}</td>
+                  <td scope="col">{{'Hour per shifts' |translate}}</td>
+                  <td scope="col">{{'Day Capacity' |translate}}</td>
+                  <td scope="col">{{'NoOf Days perWeek' |translate}}</td>
+                  <td scope="col">{{'Weekly Capacity' |translate}}</td>
+                  <td scope="col">{{'Utilization' |translate}}</td>
+                  <td scope="col">{{'Login Time' |translate}}</td>
+                  <td scope="col">{{'Logout Time' |translate}}</td>
+                  <td scope="col">{{'Efficiency' |translate}}</td>
+                  <td scope="col">{{'Sequence Number' |translate}}</td>
+                  <td scope="col">{{'Rate' |translate}}</td>
+                  <td scope="col">{{'Status' |translate}}</td>
+                  <td scope="col">{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of warehouseTeams; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer;" (click)="edit(detail)">{{detail.executiveID}}</th>
+                  <td>{{detail.executiveFirstName}}</td>
+                  <td>{{detail.executiveIDName}}</td>
+                  <td>{{detail.executiveLastName}}</td>
+                  <td>{{detail.address}}</td>
+                  <td>{{detail.country}}</td>
+                  <td>{{detail.state}}</td>
+                  <td>{{detail.city}}</td>
+                  <td>{{detail.phoneNumber}}</td>
+                  <td>{{detail.email}}</td>
+                  <td>{{detail.pin}}</td>
+                  <td><span *ngFor="let det of detail.workTypes">{{det}},</span></td>
+                  <td>{{detail.noOfShifts}}</td>
+                  <td>{{detail.hoursPerShift}}</td>
+                  <td>{{detail.dayCapacity}}</td>
+                  <td>{{detail.noOfDaysPerWeek}}</td>
+                  <td>{{detail.weeklyCapacity}}</td>
+                  <td>{{detail.utilization}}</td>
+                  <td>{{detail.loginTime | date: 'dd/MM/yyyy hh:mm:ss a '}}</td>
+                  <td>{{detail.logoutTime | date: 'dd/MM/yyyy hh:mm:ss a '}}</td>
+                  <td>{{detail.efficency}}</td>
+                  <td>{{detail.sequenceNumber}}</td>
+                  <td>{{detail.rate}}</td>
+                  <td>{{detail.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span>
+                  </td>
+                  <!-- <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                    *ngIf="permissionsList.includes('Update')"   class="fa fa-pencil btn-sm" (click)="edit(detail)"></i><i _ngcontent-lty-c40=""
+                    *ngIf="permissionsList.includes('Delete')"   class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span></td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

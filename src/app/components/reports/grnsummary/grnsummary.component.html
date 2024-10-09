@@ -1,0 +1,483 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="getAllGrnSummaryDownload()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="grnTransactionReport">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'GRN SUMMARY' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'GRN SUMMARY' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType">
+                          <option>Purchase Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Sales Returns</option>
+                          <option>WareHouseTransfer Returns</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="grnTransactionReport.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="grnTransactionReport.controls.orderType.value=='Sales Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="grnTransactionReport.controls.orderType.value=='WareHouseTransfer Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="grnTransactionReport.controls.orderType.value=='Purchase Order'">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="supplierIDNames" formControlName="supplierIDName"
+                          [datasource]="supplierIDNames" [minSearchLength]="0"
+                          placeholder="{{'supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                   
+                    <div class="form-group row d-none">
+                      <label class="col-sm-4 col-form-label">{{'Product Category' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Serial Number' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <ng2-completer name="serialNumber" formControlName="serialNumber" [minSearchLength]="0"
+                          placeholder="{{'Serial Number' |translate}}" [datasource]="SerialNumberCallingFilterList">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4">{{'Serial Number Configuration' |translate}}</label>
+                      <div class="col-md-5">
+                        <button class="btn-danger" *ngIf="grnTransactionReport.controls.serialNumberCheck.value=='No'"
+                          (click)="setSerialNumberCheck('No')">No</button>
+                        <button class="btn-success" *ngIf="grnTransactionReport.controls.serialNumberCheck.value=='Yes'"
+                          (click)="setSerialNumberCheck('Yes')">Yes</button>
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-4 col-form-label">{{'Product Type' |translate}}</label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productType" name="productType" formControlName="productType">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4">{{'GRN Summary Values' |translate}}</label>
+                      <div class="col-sm-2">
+                        <input type="checkbox" class="form-control" formControlName="dummyCheckBoxValue"
+                        (click)="onCheckCHanges($event)">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'GRN From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm" formControlName="fromDate"
+                          id="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'GRN To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm " formControlName="toDate" id="toDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">Status</label>
+                      <div class="col-sm-8 mt-1">
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input 
+                            type="radio" 
+                            value="All" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="status">
+                            ALL
+                        </label>
+                        <label class="radio-inline ml-2" style="color:grey">
+                          <input 
+                            type="radio" 
+                            value="Not Received" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="status">
+                            Not Received
+                        </label>
+                        <label class="radio-inline ml-2" style="color:#15d6cc">
+                          <input 
+                            type="radio" 
+                            value="Completely Received" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="status">
+                            Completely Received
+                        </label>
+                        <label class="radio-inline ml-2" style="color:green">
+                          <input 
+                            type="radio" 
+                            value="Partially Received" 
+                            class="m-1"  
+                            formControlName="status"
+                            name="status">
+                            Partially Received
+                        </label>                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-md-12">
+          <div  class="wmsDataTables">
+              <div class="row">
+                <div class="col-md-0.5 pr-0">
+                  <label class="mt-1">Show</label>
+                </div>
+                  <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage"
+                    (change)="fetchAllD(1,$event)" class="form-control"
+                          [ngModelOptions]="{standalone: true}">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                      </select></div>
+                      <div class="col-md-1 mt-1"><label>Entries</label> 
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1" style="left: -20px;">
+                      <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                          [ngModelOptions]="{standalone: true}"
+                          (keyup)="generate(page, itemsPerPage);">
+                  </div>
+              </div>
+              <table class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+                <thead>
+                  <tr>
+                    <th>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','S.No')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','S.No')" aria-hidden="true"></i></th>
+                    <th>{{'Supplier/Customer/Warehouse ID Name' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Supplier/Customer/Warehouse ID Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Supplier/Customer/Warehouse ID Name')" aria-hidden="true"></i></th>
+                    <th>{{'WMPO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','WMPO Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','WMPO Number')" aria-hidden="true"></i></th>
+                    <th>{{'PO Reference Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','PO Reference Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','PO Reference Number')" aria-hidden="true"></i></th>
+                    <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Product ID')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Product ID')" aria-hidden="true"></i></th>
+                    <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Product Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Product Name')" aria-hidden="true"></i></th>
+                    <th>{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','UOM')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','UOM')" aria-hidden="true"></i></th>
+                    <th>{{'Product Category' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Product Category')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Product Category')" aria-hidden="true"></i></th>
+                    <th>{{'Order Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Order Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Order Quantity')" aria-hidden="true"></i></th>
+                    <th>{{'Total Suppplier Received Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Total Suppplier Received Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Total Suppplier Received Quantity')" aria-hidden="true"></i></th>
+                    <th>{{'Total Suppplier Return Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Total Suppplier Return Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Total Suppplier Return Quantity')" aria-hidden="true"></i></th>
+                    <th>{{'Serial Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Serial Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Serial Number')" aria-hidden="true"></i></th>
+                    <th>{{'Batch Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Batch Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Batch Number')" aria-hidden="true"></i></th>
+                    <th>{{'MFG Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','MFG Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','MFG Date')" aria-hidden="true"></i></th>
+                    <th>{{'Expiry Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Expiry Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Expiry Date')" aria-hidden="true"></i></th>
+                    <th>{{'Invoice Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Invoice Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Invoice Number')" aria-hidden="true"></i></th>
+                    <th>{{'Invoice Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Invoice Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Invoice Date')" aria-hidden="true"></i></th>
+                    <th>{{'LR Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','LR Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','LR Number')" aria-hidden="true"></i></th>
+                    <th>{{'Vehicle Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Vehicle Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Vehicle Number')" aria-hidden="true"></i></th>
+                    <th>{{'Vehicle Type' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Vehicle Type')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Vehicle Type')" aria-hidden="true"></i></th>
+                    <th>{{'BOE No' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','BOE No')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','BOE No')" aria-hidden="true"></i></th>
+                    <th>{{'Bond Number' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Bond Number')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Bond Number')" aria-hidden="true"></i></th>
+                    <th>{{'Bond Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Bond Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Bond Date')" aria-hidden="true"></i></th>
+                    <th>{{'BOL No' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','BOL No')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','BOL No')" aria-hidden="true"></i></th>
+                    <th>{{'BOE Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','BOE Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','BOE Date')" aria-hidden="true"></i></th>
+                    <th>{{'BOL Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','BOL Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','BOL Date')" aria-hidden="true"></i></th>
+                    <th>{{'Customers Supplier Name' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Customers Supplier Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Customers Supplier Name')" aria-hidden="true"></i></th>
+                    <th>{{'Customers supplier Address' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Customers supplier Address')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Customers supplier Address')" aria-hidden="true"></i></th>
+                    <th>{{'Created By' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Created By')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Created By')" aria-hidden="true"></i></th>
+                    <th>{{'GRN Date' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','GRN Date')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','GRN Date')" aria-hidden="true"></i></th>
+                    <th [hidden] ="priceCheck">{{'Order Unit Price' |translate}} <i class="fa fa-sort-asc" 
+                      style="position: relative; left: -7px;" (click)="setDirection('ASC','Order Unit Price')"
+                       aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" 
+                       (click)="setDirection('DESC','Order Unit Price')" aria-hidden="true"></i></th>
+                    <th [hidden] ="priceCheck">{{'Tax Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Tax Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Tax Amount')" aria-hidden="true"></i></th>
+                    <th [hidden] ="priceCheck">{{'Gross Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Gross Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Gross Amount')" aria-hidden="true"></i></th>
+                    <th [hidden] ="priceCheck">{{'Net Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Net Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Net Amount')" aria-hidden="true"></i></th>
+                
+                    <th>{{'Status' |translate}} <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC','Status')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative; left: -7px;" (click)="setDirection('DESC','Status')" aria-hidden="true"></i></th>
+                </tr>
+                
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i=index;let report of shipmentOrderData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                    <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                    <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+                      <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                      <span
+                        *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                    </td>
+                    <td>{{report.wmpoNumber}}</td>
+                    <td>{{report.referenceInvoiceNumber}}</td>
+                    <td>{{report.productID}}</td>
+                    <td>{{report.productName}}</td>
+                    <td class="text-center"> {{report.receivingUnit}}</td>
+                    <td> {{report.productCategoryName}}</td>
+                    <td>{{report.orderedQuantity | decimalwithThreeDigits}}</td>              
+                    <td>{{report.totalSupplierReceivedQuantity | decimalwithThreeDigits}}</td>
+                    <td>{{report.totalSupplierReturnQuantity | decimalwithThreeDigits}}</td>
+                    <td><span
+                        [hidden]="grnTransactionReport.controls.serialNumberCheck.value=='No'">{{report.serialNumber}}</span>
+                      <span
+                        [hidden]="grnTransactionReport.controls.serialNumberCheck.value=='Yes'">{{report.serialNumbers}}</span>
+                    </td>
+                    <td>{{report.batchNumber}}</td>
+                    <td class="text-center">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                    <td class="text-center">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{report.invoiceNumber}}</td>
+                    <td>{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{report.lrNumber}}</td>
+                    <td>{{report.vehicleInfo?.vehicleNumber}}</td>
+                    <td>{{report.vehicleType}}</td>
+                    <td>{{report.billOfEntryNumber}}</td>
+                    <td>{{report.bondNumber}}</td>
+                    <td>{{report.bondDate | date: 'dd/MM/yyyy'}}</td>   
+                    <td>{{report.billOfLandingNumber}}</td>
+                    <td class="text-center">{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                    <td class="text-center">{{report.billOfLandingDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{report.customersSupplierName}}</td>
+                    <td>{{report.customersSupplierAddress}}</td>
+                    <td>{{report.createdBy}}</td>
+                    <td class="text-center">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                    <td [hidden] ="priceCheck">{{report.orderUnitPrice | decimalFilter}}</td>
+                    <td [hidden] ="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                    <td [hidden] ="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                    <td [hidden] ="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                                                
+                    <td [ngStyle]="{'color':(report.status=='Not Received') ?'grey':
+                    (report.status=='Partially Received') ?'green':
+                    (report.status=='Completely Received') ?'#15d6cc':''}">{{report.status}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row mt-2">
+                <div class="col-md-12" style="text-align: end;">
+                  <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+                  </pagination-controls>
+                </div>
+              </div>
+          </div>
+
+      </div>
+  </div>
+  <!--   <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse ID Name' |translate}}</th>
+                <th>{{'WMPO Number' |translate}}</th>
+                <th>{{'PO Reference Number' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Product Category' |translate}}</th>
+                <th>{{'Order Quantity' |translate}}</th>
+                <th>{{'Total Suppplier Received Quantity' |translate}}</th>
+                <th>{{'Total Suppplier Return Quantity' |translate}}</th>
+                <th>{{'Serial Number' |translate}}</th>
+                <th>{{'Batch Number' |translate}}</th>
+                <th>{{'MFG Date' |translate}}</th>
+                <th>{{'Expiry Date' |translate}}</th>
+                <th>{{'Invoice Number' |translate}}</th>
+                <th>{{'Invoice Date' |translate}}</th>
+                <th>{{'LR Number' |translate}}</th>
+                <th>{{'Vehicle Number' |translate}}</th>
+                <th>{{'Vehicle Type' |translate}}</th>
+                <th>{{'BOE No' |translate}}</th>
+                <th>{{'Bond Number' |translate}}</th>
+                <th>{{'Bond Date' |translate}}</th>
+                <th>{{'BOL No' |translate}}</th>
+                <th>{{'BOE Date' |translate}}</th>
+                <th>{{'BOL Date' |translate}}</th>
+                <th>{{'Customers Supplier Name' |translate}}</th>
+                <th>{{'Customers supplier Address' |translate}}</th>
+                <th>{{'Created By' |translate}}</th>
+                <th>{{'GRN Date' |translate}}</th>
+                <th [hidden] ="priceCheck">{{'Order Unit Price' |translate}}</th>
+                <th [hidden] ="priceCheck">{{'Tax Amount' |translate}}</th>
+                <th [hidden] ="priceCheck">{{'Gross Amount' |translate}}</th>
+                <th [hidden] ="priceCheck">{{'Net Amount' |translate}}</th>
+                <th>{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of shipmentOrderData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.wmpoNumber}}</td>
+                <td>{{report.referenceInvoiceNumber}}</td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center"> {{report.receivingUnit}}</td>
+                <td> {{report.productCategoryName}}</td>
+                <td>{{report.orderedQuantity | decimalwithThreeDigits}}</td>              
+                <td>{{report.totalSupplierReceivedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.totalSupplierReturnQuantity | decimalwithThreeDigits}}</td>
+                <td><span
+                    [hidden]="grnTransactionReport.controls.serialNumberCheck.value=='No'">{{report.serialNumber}}</span>
+                  <span
+                    [hidden]="grnTransactionReport.controls.serialNumberCheck.value=='Yes'">{{report.serialNumbers}}</span>
+                </td>
+                <td>{{report.batchNumber}}</td>
+                <td class="text-center">{{report.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.invoiceNumber}}</td>
+                <td>{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.lrNumber}}</td>
+                <td>{{report.vehicleInfo?.vehicleNumber}}</td>
+                <td>{{report.vehicleType}}</td>
+                <td>{{report.billOfEntryNumber}}</td>
+                <td>{{report.bondNumber}}</td>
+                <td>{{report.bondDate | date: 'dd/MM/yyyy'}}</td>   
+                <td>{{report.billOfLandingNumber}}</td>
+                <td class="text-center">{{report.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.billOfLandingDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.customersSupplierName}}</td>
+                <td>{{report.customersSupplierAddress}}</td>
+                <td>{{report.createdBy}}</td>
+                <td class="text-center">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                <td [hidden] ="priceCheck">{{report.orderUnitPrice | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                                            
+                <td [ngStyle]="{'color':(report.status=='Not Received') ?'grey':
+                (report.status=='Partially Received') ?'green':
+                (report.status=='Completely Received') ?'#15d6cc':''}">{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

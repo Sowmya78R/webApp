@@ -1,0 +1,167 @@
+<div *ngIf="selectedValue.includes('putawayHistory')">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="w-100 p-3" border="1">
+        <td>
+          <div class="row">
+            <div class="col-md-4">
+              <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin:5px 15px;">
+            </div>
+            <div class="col-md-4">
+              <div class="roundedNeckBox">
+                <p style="font-size: 20px;color: black;">{{warehousenameonly}}</p>
+                <p style="color:black">{{wareHouseAddressOnly}}</p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td colspan="2" class="text-center">
+            <h6>Putaway History</h6>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Type :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayHistoryDataPassing.orderType}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Order Number :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayHistoryDataPassing.fullWmpoNumber}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Supplier</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayHistoryDataPassing.supplierIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Customer :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayHistoryDataPassing.customerIDName}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Warehouse:</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">
+                          {{wmsService.putawayHistoryDataPassing.wareHouseTransferSourceInfoWareHouseIDName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Zone :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1">{{wmsService.putawayHistoryDataPassing.zoneName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Location :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayHistoryDataPassing.locationName}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label">Employee Name :</label>
+                      <div class="col-sm-5">
+                        <p class="mt-1"> {{wmsService.putawayHistoryDataPassing.executiveIDName}}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table border="1" class="w-100 mt-3">
+        <tr>
+          <td>S.No</td>
+          <td>WMPO Number</td>
+          <td>Putaway Number</td>
+          <td>Status</td>
+          <td>Start Date</td>
+          <td>End Date</td>
+          <td>Planned Completion Date</td>
+          <td>Assigned By</td>
+          <td>Assigned To</td>
+          <td>Product ID</td>
+          <td>Product Name</td>
+          <td>Product Description</td>
+          <td>Brand Name</td>
+          <td>UOM</td>
+          <td>Quantity</td>
+          <td>Actual Putaway Quantity</td>
+          <td>Zone Name</td>
+          <td>Rack Name</td>
+          <td>Level Name</td>
+          <td>Column Name</td>
+          <td>Location Name</td>
+          <td>Invoice Number</td>
+          <td>Invoice Date</td>
+          <td>BOE No</td>
+          <td>BOE Date</td>
+          <td>Bond Number</td>
+          <td>Bond Date</td>
+          <td>Created Date</td>
+        </tr>
+        <tr *ngFor="let data of wmsService.PutawayTableList;let i=index;">
+          <td class="text-left">{{i+1}}</td>
+          <td>{{data.fullWmpoNumber}}</td>
+          <td>{{data.fullPutawayNumber}}</td>
+          <td>{{data.status}}</td>
+          <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+          <td>{{data.endTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+          <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
+          <td>{{data.putawayExecutive}} <br> {{data.assignedDate| date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+          <td>
+            <span *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+              {{data.wareHouseTeamInfo.executiveIDName}}
+            </span>
+          </td>
+          <td>{{data.productMasterInfo?.productID}}</td>
+          <td>{{data.productMasterInfo?.productName}}</td>
+          <td>{{data.productDescription}}</td>
+          <td>{{data.brandName}}</td>
+          <td class="text-center">{{data.inventoryUnit}}</td>
+          <td>{{data.quantity | decimalwithThreeDigits}}</td>
+          <td>{{data.actualPutawayQuantity}} </td>
+          <td>{{data.zoneInfo?.zoneName}}</td>
+          <td>{{data.rackInfo?.rackName}}</td>
+          <td>{{data.levelInfo?.levelName}}</td>
+          <td>{{data.columnInfo?.columnName}}</td>
+          <td>{{data.locationInfo?.locationName}}</td>
+          <td>{{data.invoiceNumber}}</td>
+          <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{data.billOfEntryNumber}}</td>
+          <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{data.bondNumber}}</td>
+          <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+          <td class="text-center">{{data.createdDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="selectedValue.includes('pickingHistory')">
+  <!-- Write PickingPDF here-->
+</div>

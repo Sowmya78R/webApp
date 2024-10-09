@@ -1,0 +1,223 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="udcBtns">
+            <ul>
+              <li (click)="navigate()"><a> <i class="material-icons align-middle"> description
+                  </i>{{'Create Cycle Counting' |translate}}</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="col-md-8 text-right">
+          <div class="udcBtns float-right mt-2" *ngIf="permissionsList.includes('Update')">
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="udcBtns">
+       
+      </div>
+    </div>
+    <div class="col-md-3">
+      
+    </div>
+  </div>
+  
+    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-input-label">
+                    <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group row">
+                            <label class="col-form-label col-sm-6">Planned Scheduled From</label>
+                            <div class="col-sm-6">
+                              <input class="form-control" [(ngModel)]="reqObj.plannedScheduleDateFrom"
+                              name="plannedScheduleDateFrom" type="date" [disabled]="makePlannedScheduledDateDisable"
+                              (change)="forValidDateDifferenceplannedScheduleDateFromDateFrom($event.target.value)">
+                            </div>
+                        </div>
+                        <div class="form-group row mt-1">
+                          <label class="col-form-label col-sm-6">Planned Scheduled To</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="date" [(ngModel)]="reqObj.plannedScheduleDateTo"
+                              name="plannedScheduleDateTo" [disabled]="makePlannedScheduledDateDisable"
+                              (change)="forValidDateDifferenceplannedScheduleDateFromDateTo($event.target.value)">
+                          </div>
+                      </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group row">
+                            <label class="col-form-label col-sm-6">Actual Scheduled From</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="date" [(ngModel)]="reqObj.actualCycleCountingDateFrom"
+                            [disabled]="makeActualScheduledDateDisable" name="actualCycleCountingDateFrom"
+                            (change)="forValidDateDifferenceactualCycleCountingFrom($event.target.value)">
+                          </div>
+                        </div>
+                        <div class="form-group row mt-1">
+                          <label class="col-form-label col-sm-6">Actual Scheduled To</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="date" [(ngModel)]="reqObj.actualCycleCountingDateTo"
+                            [disabled]="makeActualScheduledDateDisable" name="actualCycleCountingDateTo"
+                            (change)="forValidDateDifferenceactualCycleCountingTo($event.target.value)">
+                          </div>
+                      </div>                           
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group row">
+                            <label class="col-form-label col-sm-4">Criteria Type</label>
+                            <div class="col-sm-8">
+                              <select class="form-control" id="criteriaType" [(ngModel)]="reqObj.criteriaType"
+                                name="criteriaType">
+                                <option [ngValue]="null">-Select--</option>
+                                <option *ngFor="let ccCriteria of cycleCountingCriterias" [value]="ccCriteria.viewValue">
+                                    {{ccCriteria.viewValue}}</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Status</label>
+                          <div class="col-sm-8 mt-2">
+                            <label class="radio-inline ml-2" style="color:grey">
+                              <input 
+                                type="radio" 
+                                value="All" 
+                                class="m-1"  
+                                [(ngModel)]="reqObj.status" name="status"
+                                name="statusOptions">
+                                All
+                            </label>
+                            <label class="radio-inline ml-2" style="color:grey">
+                              <input 
+                                type="radio" 
+                                value="Created" 
+                                class="m-1"  
+                                [(ngModel)]="reqObj.status" name="status"
+                                name="statusOptions">
+                                Created
+                            </label>
+                            <label class="radio-inline ml-2" style="color:green">
+                              <input 
+                                type="radio" 
+                                value="Completed" 
+                                class="m-1"  
+                                [(ngModel)]="reqObj.status" name="status"
+                                name="statusOptions">
+                                Completed
+                            </label>
+                            
+                          </div>
+                        </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 text-center">
+                          <div class="form-group mt-4">
+                              <input (click)="selectParedDates()" class="btn btn-green" style="margin-right: 5px;"
+                                  type="button" value="Filter">
+                              <input class="btn btn-white" type="reset" (click)="backtoNormal()" value="Reset">
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label>Show</label>
+          </div>
+         <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+              class="form-control" [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select></div>
+          <div class="col-md-0.5 pl-0"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1">
+            <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+              (keyup)="this.fetchData(page=1, itemsPerPage);">
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC',key)"
+                  aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+                  left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let detail of ccData| paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+              <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+              <th style="cursor:pointer;" (click)="navigate(detail._id)">{{detail.fullCycleCountingCode}}</th>
+              <td>{{detail.criteriaType}}</td>
+              <td class="text-center">{{detail.plannedScheduleDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td class="text-center">{{detail.actualCycleCountingDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td class="text-center">
+                <div class="row" *ngIf="detail.isViewToggle == false">
+                  <div class="col-sm-10">
+                    <span [hidden]="detail.statusStages[detail.statusStages.length]">
+                      <p [ngStyle]="{'color':(detail.statusStages[detail.statusStages.length-1].status =='Completed') ?'green':'grey'}">{{detail.statusStages[detail.statusStages.length-1].status
+                        }} </p>
+                    </span>
+                  </div>
+                  <div class="col-sm-2">
+                    <i class="fa fa-arrow-down" aria-hidden="true"
+                      style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                      (click)="changeDownToggle(detail)">
+                    </i>
+                  </div>
+                </div>
+                <div class="row" *ngIf="detail.isViewToggle == true" >
+                  <div class="col-sm-10">
+                    <span [hidden]="detail.statusStages[detail.statusStages.length]">
+                      <p *ngFor="let start of detail.statusStages">
+                        {{start.status}} {{start.statusSubmittedBy}}
+                        {{start.statusSubmittedDate |
+                        date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                    </span>
+                  </div>
+                  <div class="col-sm-2">
+                    <i class="fa fa-arrow-up" aria-hidden="true"
+                      style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                      (click)="changeUpToggle(detail)">
+                    </i>
+                  </div>
+                </div>
+              </td>
+              <td [ngStyle]="{'color':(detail.status =='Completed') ?'green':'grey'}">{{detail.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" (pageChange)="fetchData((page = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

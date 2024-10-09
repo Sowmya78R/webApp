@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 
+	    http://www.springframework.org/schema/security/spring-security-oauth2.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd 
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.dli*" />
+
+	<bean id="barcodeAuthenticationFilter"
+		class="com.dli.security.BarcodeAuthenticationFilter">
+		<property name="authenticationManager"
+			ref="authenticationManager" />
+		<property name="authenticationSuccessHandler"
+			ref="authSuccessHandler" />
+		<property name="authenticationFailureHandler"
+			ref="authFailureHandler" />
+	</bean>
+
+
+    <!-- Success and failure handlers (you may need to implement these) -->
+     
+    <bean id="authSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"/>
+    <bean id="authFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+
+
+	 	<!-- This is default url to get a token from OAuth -->
+	 <sec:http pattern="/oauth/token"  authentication-manager-ref="clientAuthenticationManager" xmlns="http://www.springframework.org/schema/security">
+		  <sec:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY" />
+		  <sec:anonymous enabled="false" />
+		  <sec:http-basic entry-point-ref="clientAuthenticationEntryPoint"  />
+		  <!-- include this only if you need to authenticate clients via request parameters -->
+          <sec:custom-filter ref="barcodeAuthenticationFilter" before="FORM_LOGIN_FILTER" />
+		  <sec:custom-filter ref="clientCredentialsTokenEndpointFilter" after="BASIC_AUTH_FILTER"  />
+		  
+		  <sec:access-denied-handler ref="oauthAccessDeniedHandler"/>
+	 </sec:http>
+	 
+	 <!-- This is where we tells spring security what URL should be protected 
+	  and what roles have access to them -->
+
+	<sec:http pattern="/common/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/common/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	
+	<sec:http pattern="/product/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/product/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/purchaseorder/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/purchaseorder/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/supplier/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/supplier/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	 
+	 <sec:http pattern="/goodsReceipt/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/goodsReceipt/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	 
+	  <sec:http pattern="/putaway/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/putaway/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	
+	 <sec:http pattern="/inventory/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/inventory/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/cycleCounting/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/cycleCounting/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/internalTransfer/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/internalTransfer/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 
+	  <sec:http pattern="/customer/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/customer/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/salesOrder/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/salesOrder/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/picking/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/picking/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/shipmentOrder/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/shipmentOrder/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/capacityplanning/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/capacityplanning/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/reports/*" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/reports/*" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 
+	  <sec:http pattern="/dashboards/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/dashboards/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	  <sec:http pattern="/billingpurchaseorder/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/billingpurchaseorder/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/uom/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/uom/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/fileStore/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/fileStore/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http>
+	 
+	 <sec:http pattern="/configuration/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/configuration/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	 
+	 <sec:http pattern="/barcode/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/barcode/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	 
+	  <sec:http pattern="/location/**" auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="false"/>
+	   <sec:intercept-url pattern="/location/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	 
+	 <sec:http auto-config="true" use-expressions="true" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint">
+	   <sec:anonymous enabled="true"/>
+	   <sec:intercept-url pattern="/login/findUserBusinessUnitByEmail/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	   <sec:intercept-url pattern="/login/findAllLoginText/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	   <sec:intercept-url pattern="/login/forgotPassword/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	   <sec:intercept-url pattern="/login/resetPassword/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	    <sec:intercept-url pattern="/login/findUserDetailsByEmailToResetPassword/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	   <sec:intercept-url pattern="/login/**" access="permitAll"/>
+	   <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+	   <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+	 </sec:http> 
+	  
+	 
+    <bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+    	<property name="realmName" value="test" />
+        <property name="exceptionTranslator" ref="OauthErrorHandler" />
+    </bean>
+
+    <bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+    	<property name="realmName" value="test/client" />
+        <property name="typeName" value="Basic" />
+       	<property name="exceptionTranslator" ref="OauthErrorHandler" />
+    </bean>
+
+    <bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler">
+    	<property name="exceptionTranslator" ref="OauthErrorHandler" />
+    </bean>
+
+	<bean id="OauthErrorHandler" class="com.dli.security.OauthErrorHandler"/>
+
+    <bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <property name="authenticationManager" ref="clientAuthenticationManager" />
+        <property name="authenticationEntryPoint" ref="clientAuthenticationEntryPoint"/>
+    </bean>
+
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"
+        xmlns="http://www.springframework.org/schema/beans">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter" />
+                <bean class="org.springframework.security.access.vote.RoleVoter" />
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <authentication-manager id="clientAuthenticationManager" xmlns="http://www.springframework.org/schema/security">
+        <authentication-provider user-service-ref="clientDetailsUserService" />
+    </authentication-manager>
+
+    <authentication-manager alias="authenticationManager" xmlns="http://www.springframework.org/schema/security">
+        <authentication-provider  ref="authenticationProvider">
+           <!--  <user-service id="userDetailsService">
+                <user name="user" password="password" authorities="ROLE_USER" />
+            </user-service> -->
+        </authentication-provider>
+    </authentication-manager>
+
+	<!-- userDetailsService bean config -->
+	 <bean id="authenticationProvider" class="com.dli.security.DaoAuthenticationProvider">
+	    <property name="userDetailsService" ref="userDetailsService"></property>
+	 </bean>
+	 
+	 <bean id="userDetailsService" class="com.dli.security.UserDetailsServiceImpl"></bean>
+	 
+    <bean id="clientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <constructor-arg ref="clientDetails" />
+    </bean>
+
+    <!-- Used for the persistence of tokens (currently an in memory implementation) -->
+    <bean id="tokenStore" class="com.dli.security.InMemoryTokenStore" />
+
+    <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <property name="tokenStore" ref="tokenStore" />
+        <property name="supportRefreshToken" value="true" />
+        <property name="clientDetailsService" ref="clientDetails" />
+        <property name="tokenEnhancer" ref="tokenEnhancer"></property>
+        <property name="accessTokenValiditySeconds" value="86140" />
+    </bean>
+    
+     <!-- Adding some additional information to oAuth2.0 access token -->
+	 <bean id="tokenEnhancer" class="com.dli.security.CustomTokenEnhancer" />
+
+    <bean id="userApprovalHandler" class="org.springframework.security.oauth2.provider.approval.DefaultUserApprovalHandler">
+    </bean>
+
+   <oauth:authorization-server client-details-service-ref="clientDetails" token-services-ref="tokenServices" user-approval-handler-ref="userApprovalHandler">
+		  <oauth:authorization-code />
+		  <oauth:implicit />
+		  <oauth:refresh-token />
+		  <oauth:client-credentials />
+		  <oauth:password />
+		  
+	 </oauth:authorization-server>
+	
+	 <oauth:resource-server id="resourceServerFilter" resource-id="test" token-services-ref="tokenServices" entry-point-ref=""/> 
+	
+	 <oauth:client-details-service id="clientDetails">
+	  <!-- client -->
+	
+	  <oauth:client client-id="restapp" authorized-grant-types="password,authorization_code,refresh_token,implicit" secret="restapp" authorities="ROLE_SUPER_ADMIN,ROLE_CLIENT" scope="read,write,trust"/>
+	
+	 </oauth:client-details-service>
+	
+	 <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
+	  <!--you could also wire in the expression handler up at the layer of the 
+	   http filters. See https://jira.springsource.org/browse/SEC-1452 -->
+	  	<sec:expression-handler ref="oauthExpressionHandler" />
+	 </sec:global-method-security>
+	
+	 <oauth:expression-handler id="oauthExpressionHandler" />
+	 <oauth:web-expression-handler id="oauthWebExpressionHandler" />
+
+</beans>

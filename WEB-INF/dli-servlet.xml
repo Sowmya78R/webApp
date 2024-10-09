@@ -1,0 +1,211 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:ws="http://jax-ws.dev.java.net/spring/core" xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang 
+		http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+ 		http://www.springframework.org/schema/util 
+ 		http://www.springframework.org/schema/util/spring-util.xsd
+      	http://www.springframework.org/schema/task 
+      	http://www.springframework.org/schema/task/spring-task.xsd
+      	http://jax-ws.dev.java.net/spring/core 
+      	http://jax-ws.dev.java.net/spring/core.xsd
+      	http://jax-ws.dev.java.net/spring/servlet 
+      	http://jax-ws.java.net/spring/servlet.xsd
+      	http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.dli*" />
+
+	<!-- <context:property-placeholder location="classpath:DbConfig.properties" /> -->
+
+
+	<bean id="appProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<!-- <value>classpath:auth.properties</value> -->
+				<!-- <value>classpath:/properties/MailConfig.properties</value> -->
+			</list>
+		</property>
+	</bean>
+
+	<!-- <bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+        <props>
+            <prop key="resource.loader">class</prop>
+            <prop key="class.resource.loader.class">
+                org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </prop>
+        </props>
+    </property>
+	</bean> -->
+     <bean id="velocityEngine"
+		class="org.apache.velocity.spring.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+        <props>
+            <prop key="resource.loader">class</prop>
+            <prop key="class.resource.loader.class">
+                org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </prop>
+        </props>
+    </property>
+	</bean>
+	<!-- This tag registers the DefaultAnnotationHandlerMapping and AnnotationMethodHandlerAdapter 
+		beans that are required for Spring MVC -->
+	<mvc:annotation-driven />
+	<mvc:resources mapping="/images/**" location="/images/" />  
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:default-servlet-handler />
+
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/view/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<bean id="properties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<!-- <value>classpath:DbConfig.properties</value> -->
+				<!-- <value>classpath:/properties/MailConfig.properties</value> -->
+			</list>
+		</property>
+	</bean>
+	<!-- Mongo - Starts here -->
+ 	<!-- <mongo:mongo-client id="mongoClient" host="localhost" port="27017"  credentials="root:root@admin"/> -->
+   
+
+	<mongo:mongo-client id="mongoClient" host="localhost" port="27017"/>
+    <mongo:db-factory id="mongoDbFactoryDli" mongo-ref="mongoClient" dbname="dli"/>
+    <mongo:db-factory id="mongoDbFactoryDatalabs" mongo-ref="mongoClient" dbname="datalabs"/>
+    <mongo:db-factory id="mongoDbFactoryTechM" mongo-ref="mongoClient" dbname="techm"/>
+    <mongo:db-factory id="mongoDbFactoryIBM" mongo-ref="mongoClient" dbname="ibm"/>
+    <mongo:db-factory id="mongoDbFactoryCSC" mongo-ref="mongoClient" dbname="csc"/>
+    <mongo:db-factory id="mongoDbFactoryTernWorldWide" mongo-ref="mongoClient" dbname="ternworldwide"/>
+    <mongo:db-factory id="mongoDbFactoryKellog" mongo-ref="mongoClient" dbname="kellog"/>
+    <mongo:db-factory id="mongoDbFactoryCCS" mongo-ref="mongoClient" dbname="ccs"/>
+    <mongo:db-factory id="mongoDbFactoryWms" mongo-ref="mongoClient" dbname="wms"/>
+    	
+	<!-- MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryDli" />
+		<!-- <constructor-arg name="databaseName" value="dli" /> -->
+	</bean>
+	
+	<bean id="mongoTemplateDataLabs" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryDatalabs" />
+	</bean>
+	
+	<bean id="mongoTemplateTechM" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryTechM" />
+	</bean>
+	
+	<bean id="mongoTemplateIBM" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryIBM" />
+	</bean>
+	
+	<bean id="mongoTemplateCSC" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryCSC" />
+	</bean>
+	
+	<bean id="mongoTemplateTernWorldWide" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryTernWorldWide" />
+	</bean>
+	
+	<bean id="mongoTemplateKellog" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryKellog" />
+	</bean>
+	
+	<bean id="mongoTemplateCCS" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryCCS" />
+	</bean>
+	
+	<bean id="mongoTemplateWms" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactoryWms" />
+	</bean>
+
+   <mongo:mapping-converter id="mongoConverterDli"  db-factory-ref ="mongoDbFactoryDli" />
+   <bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryDli" />
+      <constructor-arg ref="mongoConverterDli" />
+   </bean>
+
+   <mongo:mapping-converter id="mongoConverterDatalabs"  db-factory-ref ="mongoDbFactoryDatalabs" />
+   <bean id="gridFsTemplateDatalabs" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryDatalabs" />
+      <constructor-arg ref="mongoConverterDatalabs" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterTechM"  db-factory-ref ="mongoDbFactoryTechM" />
+   <bean id="gridFsTemplateTechM" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryTechM" />
+      <constructor-arg ref="mongoConverterTechM" />
+   </bean>
+    	 
+   <mongo:mapping-converter id="mongoConverterIBM"  db-factory-ref ="mongoDbFactoryIBM" />
+   <bean id="gridFsTemplateIBM" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryIBM" />
+      <constructor-arg ref="mongoConverterIBM" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterCSC"  db-factory-ref ="mongoDbFactoryCSC" />
+   <bean id="gridFsTemplateCSC" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryCSC" />
+      <constructor-arg ref="mongoConverterCSC" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterTernWorldWide"  db-factory-ref ="mongoDbFactoryTernWorldWide" />
+   <bean id="gridFsTemplateTernWorldWide" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryTernWorldWide" />
+      <constructor-arg ref="mongoConverterTernWorldWide" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterKellog"  db-factory-ref ="mongoDbFactoryKellog" />
+   <bean id="gridFsTemplateKellog" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryKellog" />
+      <constructor-arg ref="mongoConverterKellog" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterCCS"  db-factory-ref ="mongoDbFactoryCCS" />
+   <bean id="gridFsTemplateCCS" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryCCS" />
+      <constructor-arg ref="mongoConverterCCS" />
+   </bean>
+   
+   <mongo:mapping-converter id="mongoConverterWms"  db-factory-ref ="mongoDbFactoryWms" />
+   <bean id="gridFsTemplateWms" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+      <constructor-arg ref="mongoDbFactoryWms" />
+      <constructor-arg ref="mongoConverterWms" />
+   </bean>
+   
+	<mongo:repositories base-package="com.dli*"></mongo:repositories>
+	 
+	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	 
+</beans>

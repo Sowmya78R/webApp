@@ -1,0 +1,627 @@
+<div id="inBody" [dir]="direction" style="min-height: unset !important;">
+  <div class="row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3 text-right">
+      <div class="udcBtns">
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" [hidden]="hideTaskDetails">
+    <div class="top-input-label mt-2">
+      <div class="row" [formGroup]="putawayPlanningForm">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}</label>
+                <div class="col-sm-7">
+                  <select class="form-control" formControlName="orderType"
+                    (change)="fetchAllPutawaysBySupplierID($event.target.value)">
+                    <option *ngFor="let data of orderTypeDropdown" [value]="data">{{data}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Order Number' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="fullWmpoNumber" name="fullWmpoNumber" formControlName="fullWmpoNumber"
+                    [minSearchLength]="0" placeholder="{{'WMPO Number' |translate}}" [datasource]="WMPOs"
+                    (selected)="setWmpoNumber($event)">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Supplier' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="supplierIDName" name="supplierIDName" formControlName="supplierIDName"
+                    [minSearchLength]="0" placeholder="{{'Supplier' |translate}}" [datasource]="supplierIds">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Customer' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="customerIDName" name="customerIDName" formControlName="customerIDName"
+                    [minSearchLength]="0" placeholder="{{'Customer' |translate}}" [datasource]="customerIds">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Warehouse' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="wareHouseTransferSourceInfoWareHouseIDName"
+                    name="wareHouseTransferSourceInfoWareHouseIDName"
+                    formControlName="wareHouseTransferSourceInfoWareHouseIDName" [minSearchLength]="0"
+                    placeholder="{{'Warehouse' |translate}}" [datasource]="wareHouseIds">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Zone' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="zoneName" name="zoneName" formControlName="zoneName" [minSearchLength]="0"
+                    placeholder="{{'Zone' |translate}}" [datasource]="zonesIDs" (selected)="fetchAllLocations()">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Location' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="locationName" name="locationName" [minSearchLength]="0"
+                    placeholder="{{'Location' |translate}}" [datasource]="locationIDs" formControlName="locationName">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Employee' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer id="executiveIDName" name="executiveIDName" formControlName="executiveIDName"
+                    [minSearchLength]="0" placeholder="{{'Search Employee' |translate}}"
+                    [datasource]="wareHouseTeamsListIDs">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1 text-right">
+              <button class="btn-primary mt-1 mr-1" style="position: relative;left: 36px;"
+                (click)="getDataForFilters()">{{'Filter' |translate}}</button>
+              <button class="btn-info mt-1" style="position: relative;left: 36px;" (click)="resetOnly()">{{'Reset'
+                |translate}}</button>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+              <div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-right">
+
+
+    </div>
+  </div>
+  <div class="col-md-12" [hidden]="hideTaskDetails">
+    <div class="emptyBackGroun mt-2">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Assign Employee' |translate}}</label>
+                <div class="col-sm-7">
+                  <ng2-completer [(ngModel)]="assignedEmployeeIDName" [ngModelOptions]="{standalone: true}"
+                    [minSearchLength]="0" placeholder="{{'Assign Employee' |translate}}"
+                    [datasource]="wareHouseTeamsListIDs">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-7 col-form-label">{{'Planned Completion Date' |translate}}</label>
+                <div class="col-sm-5">
+                  <input type="datetime-local" class="form-control" [(ngModel)]="completionDate"
+                    [ngModelOptions]="{standalone: true}" style="width: 180px;z-index:1">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mt-1 text-right" style="position: relative;left: 72px;">
+              <button class="btn btn-primary mr-1" (click)="assignEmployeeforMulti()"
+                [disabled]="!(completionDate || assignedEmployeeIDName)">{{'Assign' |translate}}</button>
+              <button class="btn btn-primary mr-1" (click)="multiStart('startTime')">{{'Start' |translate}}</button>
+              <button class="btn btn-primary" (click)="multiStart('status')">{{'Complete' |translate}}</button>
+            </div>
+            <div class="col-md-3 text-right">
+              <!-- <button type="button" (click)="naviagteToStock()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+              </button> -->
+              <i class="fa fa-table fa-2x" (click)="naviagteToStock()" data-toggle="tooltip" title="History"></i>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 2px;margin-top:4px">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" *ngIf="hideTaskDetails">
+    <div class="text-right">
+      <i class="fa fa-table fa-2x" (click)="naviagteToStock()" data-toggle="tooltip" title="History"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label class="mt-1">Show</label>
+          </div>
+          <div class="" style="top:-10px">
+            <select [(ngModel)]="itemsPerPage" (change)="fetchAllPurAwayPlanningDetails(null,page=1)"
+              class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+          <div class="col-md-1 mt-1"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1" style="left: -20px;">
+            <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+              (keyup)="fetchAllPurAwayPlanningDetails(null,page=1)">
+          </div>
+        </div>
+        <table class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+          <thead>
+            <tr style="background-color:'blueviolet'">
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th>{{'Image'|translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Include' |translate}}<input type="checkbox"
+                  class="form-control" (click)="selectAllData($event)" [(ngModel)]="selectAllCheckboxValue"
+                  [disabled]="makeThisDisable" [ngModelOptions]="{standalone: true}"></th>
+              <th *ngIf="barcodePermissionUser">Product</th>
+              <th *ngIf="barcodePermissionUser">Location</th>
+              <th scope="col">{{'WMPO Number' |translate}}</th>
+              <th scope="col">{{'Putaway Number' |translate}}</th>
+              <th scope="col">{{'Status' |translate}}</th>
+              <!-- <th scope="col">{{'Start Date' |translate}}</th> -->
+              <th scope="col" [hidden]="hideTaskDetails">{{'Planned Completion Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Assigned By' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Assigned To' |translate}}</th>
+              <th scope="col">{{'Product ID' |translate}}</th>
+              <th scope="col">{{'Product Name' |translate}}</th>
+              <th scope="col">{{'Product Description' |translate}}</th>
+              <th scope="col">{{'Brand Name' |translate}}</th>
+              <th scope="col">{{'UOM' |translate}}</th>
+              <th scope="col">{{'Quantity' |translate}}</th>
+              <th scope="col" [hidden]="putawayQCConfig == 'No'">{{'Actual Putaway Quantity'}}</th>
+              <th scope="col">{{'Total Actual Putaway Qty'}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'MFG Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Expiry Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Batch Number' |translate}}</th>
+              <th scope="col">{{'Supplier/Warehouse/Customer' |translate}}</th>
+              <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Supplier Customer Name' |translate}}</th>
+              <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Supplier Customer Address' |translate}}</th>
+              <!-- <th scope="col">{{'Warehouse Name' |translate}}</th> -->
+              <th scope="col">{{'Zone Name' |translate}}</th>
+              <th scope="col">{{'Rack Name' |translate}}</th>
+              <th scope="col">{{'Level Name' |translate}}</th>
+              <th scope="col">{{'Column Name' |translate}}</th>
+              <th scope="col">{{'Location Name' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Invoice Number' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Invoice Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'BOE No' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'BOE Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Bond Number' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Bond Date' |translate}}</th>
+              <th scope="col" [hidden]="hideTaskDetails">{{'Created Date' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i=index;let data of putAwaysList | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+              <td class="text-left">{{((page -1) * itemsPerPage)+i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td [hidden]="hideTaskDetails"><input type="checkbox" [checked]="data.isChecked"
+                  (change)="onDocumentSelect($event,data)" [disabled]="makeThisDisable"></td>
+              <td *ngIf="barcodePermissionUser"><input type="text" class="form-control" [(ngModel)]="data.forPBarcode"
+                  (keypress)="isProductAvailable(($event ? $event.target.value : null),data)">
+                <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                  style="background: none !important; border: none !important;"><img
+                    src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner(data,'product')"
+                    style="height: 28px; margin-top: 6px;"></button>
+              </td>
+              <td *ngIf="barcodePermissionUser"><input type="text" class="form-control" [(ngModel)]="data.forLBarcode"
+                  (keypress)="islocationAvailable($event ? $event.target.value : null,data)">
+                <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                  style="background: none !important; border: none !important;"><img
+                    src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner(data,'location')"
+                    style="height: 28px; margin-top: 6px;"></button>
+              </td>
+              <td>{{data.fullWmpoNumber}}</td>
+              <td>{{data.fullPutawayNumber}}</td>
+              <td><span *ngIf="data.quantity == data.totalActualPutawayQuantity">Completed</span>
+                <span *ngIf="data.quantity != data.totalActualPutawayQuantity && data.startTime">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="data.quantity != data.totalActualPutawayQuantity && !data.startTime"><button
+                    class="btn btn-primary" (click)="onStatusChange('startTime',data)">Start</button></span>
+              </td>
+              <!-- <td>{{data.startTime | date: 'dd/MM/yyyy hh:mm:ss'}}</td> -->
+              <td [hidden]="hideTaskDetails"><input type="datetime-local" [(ngModel)]="data.plannedCompletionDate"
+                  [disabled]="makeThisDisable" class="form-control"
+                  (change)="assignPlannedDate(data,$event.target.value)"></td>
+              <td [hidden]="hideTaskDetails">{{data.putawayExecutive}} <br> {{data.assignedDate| date: 'dd/MM/yyyy
+                hh:mm:ss'}}</td>
+              <!--     <td>{{data.assignedBy}} <br> {{data.assignedDate| date: 'dd/MM/yyyy hh:mm:ss'}}</td> -->
+              <td [hidden]="hideTaskDetails"
+                *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+                {{data.wareHouseTeamInfo.executiveIDName}}
+                <i class="fa fa-times-circle" aria-hidden="true" (click)="intoEmployee(data)"></i>
+              </td>
+              <td [hidden]="hideTaskDetails"
+                *ngIf="data.wareHouseTeamInfo==null ||(data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">
+                <select class="form-control" (change)="intoEmployee(data,$event.target.value)"
+                  [disabled]="makeThisDisable">
+                  <option value="null">Select</option>
+                  <option *ngFor="let user of wareHouseTeamsList" [value]="user.executiveIDName">
+                    {{user.executiveIDName}}</option>
+                </select>
+              </td>
+              <td>{{data.productMasterInfo?.productID}}
+              </td>
+              <td>{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.productDescription}}</td>
+              <td>{{data.brandName}}</td>
+              <td class="text-center">{{data.inventoryUnit}}</td>
+              <td>{{data.quantity | decimalwithThreeDigits}}</td>
+              <td [hidden]="putawayQCConfig == 'No'">
+                <input class="form-control" [(ngModel)]="data.actualPutawayQuantity"
+                  [ngModelOptions]="{standalone: true}" placeholder="{{'Actual Quantity' |translate}}" type="text"
+                  oninput="validity.valid||(value='')" min="0" (focusout)="updateActualQty(data,$event.target.value)">
+              </td>
+              <td>{{data.totalActualPutawayQuantity}}</td>
+              <td class="text-center" [hidden]="hideTaskDetails">{{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-center" [hidden]="hideTaskDetails">{{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+              <td [hidden]="hideTaskDetails">{{data.batchNumber}}</td>
+              <td>{{(data.orderType=='WareHouseTransfer' || data.orderType=='WareHouseTransfer Returns') ?
+                (data.wareHouseTransferSourceInfo?.wareHouseIDName) :
+                (data.orderType=='Sales Returns' ? (data.customerMasterInfo?.customerIDName) :
+                (data.orderType=='Purchase Order' ? (data.supplierMasterInfo?.supplierIDName):null))}}
+              </td>
+              <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{data.customersSupplierName}}</td>
+              <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{data.customersSupplierAddress}}</td>
+
+              <!-- <td>{{data.wareHouseInfo?.wareHouseName}}</td> -->
+              <td>{{data.zoneInfo?.zoneName}}</td>
+              <td>{{data.rackInfo?.rackName}}</td>
+              <td>{{data.levelInfo?.levelName}}</td>
+              <td>{{data.columnInfo?.columnName}}</td>
+              <td>{{data.locationInfo?.locationName}}
+              </td>
+              <td [hidden]="hideTaskDetails">{{data.invoiceNumber}}</td>
+              <td [hidden]="hideTaskDetails">{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td [hidden]="hideTaskDetails">{{data.billOfEntryNumber}}</td>
+              <td [hidden]="hideTaskDetails">{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+              <td [hidden]="hideTaskDetails">{{data.bondNumber}}</td>
+              <td [hidden]="hideTaskDetails">{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+              <td [hidden]="hideTaskDetails" class="text-center">{{data.createdDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2" *ngIf="putAwaysList.length>0">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" id="foo"
+              (pageChange)="fetchAllPurAwayPlanningDetails(null,(page = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>
+
+
+<!-- PutAway Table Starts  -->
+
+
+<!-- <div class="row " *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="top-input-label mt-3">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}
+            </label>
+            <div class="col-sm-7">
+              <div class="dsplInLine">
+                <select class="form-control" [disabled]="!permissionsList.includes('Update')" [(ngModel)]="orderType"
+                  [ngModelOptions]="{standalone: true}" (change)="fetchAllPutawaysBySupplierID()">
+                  <option *ngFor="let data of orderTypeDropdown">{{data}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">{{'PO Number:' |translate}}
+            </label>
+            <div class="col-sm-7 top-input">
+              <select class="form-control" id="fullWmpoNumber" name="fullWmpoNumber"
+                (change)="onWMPOChange($event.target.value)">
+                <option value="selectWMPONo">Select PO Number</option>
+                <option *ngFor="let data of WMPOs" value="{{data}}">{{data}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="wmsDataTables">
+      <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+        style="overflow-y: auto;display: block;border-bottom: none;">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{'Status' |translate}}</th>
+            <th scope="col">{{'Putaway Number' |translate}}</th>
+            <th scope="col">{{'Product ID/Name' |translate}}</th>
+            <th scope="col">{{'Product Description' |translate}}</th>
+            <th scope="col">{{'Brand Name' |translate}}</th>
+            <th scope="col">{{'Quantity' |translate}}</th>
+            <th scope="col">{{'MFG Date' |translate}}</th>
+            <th scope="col">{{'Expiry Date' |translate}}</th>
+            <th scope="col">{{'Batch Number' |translate}}</th>
+            <th scope="col" [hidden]="serialNumberAllocation=='No'">{{'Serial Number' |translate}}</th>
+            <th scope="col">{{'Location Name' |translate}}</th>
+            <th scope="col">{{'Assigned By' |translate}}</th>
+            <th scope="col">{{'Assigned To' |translate}}</th>
+            <th scope="col">{{'Start Time' |translate}}</th>
+            <th scope="col">{{'Planned End Time' |translate}}</th>
+            <th scope="col">{{'End Time' |translate}}</th>
+            <th scope="col">{{'Receipt Type' |translate}}</th>
+            <th scope="col">{{'Supplier ID Name' |translate}}</th>
+            <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers Supplier Name' |translate}}</th>
+            <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers Supplier Address' |translate}}</th>
+
+            <th scope="col">{{'Warehouse Name' |translate}}</th>
+            <th scope="col">{{'Zone Name' |translate}}</th>
+            <th scope="col">{{'Rack Name' |translate}}</th>
+            <th scope="col">{{'Level Name' |translate}}</th>
+            <th scope="col">{{'Column Name' |translate}}</th>
+            <th scope="col">{{'Created Date' |translate}}</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attribute of filteredPutaways; let i = index;">
+            <td>{{ i+1 }}</td>
+            <td><span *ngIf="attribute.status=='Closed' && attribute.startTime">Completed</span>
+              <span *ngIf="attribute.status!='Closed' && attribute.startTime">
+                <button class="btn btn-primary" (click)="onStatusChange('status',attribute)">Complete</button></span>
+              <span *ngIf="!attribute.startTime"><button class="btn btn-primary"
+                  (click)="onStatusChange('startTime',attribute)">Start</button></span>
+            </td>
+            <td>{{attribute.fullPutawayNumber}}</td>
+            <td>{{attribute.productMasterInfo.productIDName}}</td>
+            <td>{{attribute.productDescription}}</td>
+            <td>{{attribute.brandName}} </td>
+            <td>{{attribute.quantity| decimalFilter}} {{attribute.inventoryUnit}}</td>
+            <td class="text-center">{{attribute.mfgDate | date: 'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{attribute.expiryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{attribute.batchNumber}}</td>
+            <td [hidden]="serialNumberAllocation=='No'">{{attribute.serialNumbers}}</td>
+            <td>{{attribute.locationInfo.locationName}}</td>
+            <td>{{attribute.putawayExecutive}} {{attribute.assignedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+            <td *ngIf="!attribute.endTime">
+              <span
+                *ngIf="attribute.wareHouseTeamInfo==null ||(attribute.wareHouseTeamInfo && attribute.wareHouseTeamInfo.executiveIDName == null)">
+                <select class="form-control" (change)="intoEmployee(attribute,$event)" [disabled]="disableDropDown">
+                  <option value="null">Select</option>
+                  <option *ngFor="let user of wareHouseTeamsList" [value]="user.executiveIDName">
+                    {{user.executiveIDName}}
+                  </option>
+                </select>
+              </span>
+              <span *ngIf="attribute.wareHouseTeamInfo && attribute.wareHouseTeamInfo.executiveIDName!=null">
+                {{attribute.wareHouseTeamInfo.executiveIDName}}
+                <i class="fa fa-times-circle" aria-hidden="true" (click)="intoEmployee(attribute)"></i>
+              </span>
+            </td>
+            <td *ngIf="attribute.endTime">{{attribute.wareHouseTeamInfo?.executiveIDName}}</td>
+            <td>{{attribute.startTime | date: 'dd/MM/yyyy hh:mm:ss a '}}</td>
+            <td><input type="datetime-local" [(ngModel)]="attribute.plannedCompletionDate" [disabled]="makeThisDisable"
+                class="form-control" (change)="assignPlannedDate(attribute,$event.target.value)"></td>
+            <td>{{attribute.endTime | date: 'dd/MM/yyyy hh:mm:ss a '}}</td>
+            <td>{{attribute.orderType}}</td>
+            <td>{{attribute.supplierMasterInfo?.supplierIDName}}</td>
+            <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{attribute.customersSupplierName}}</td>
+            <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{attribute.customersSupplierAddress}}</td>
+            <td>{{attribute.wareHouseInfo.wareHouseName}}</td>
+            <td>{{attribute.zoneInfo.zoneName}}</td>
+            <td>{{attribute.rackInfo.rackName}}</td>
+            <td>{{attribute.levelInfo.levelName}}</td>
+            <td>{{attribute.columnInfo?.columnName}}</td>
+            <td>{{attribute.lastUpdatedDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'GRAPHICAL REP OF PUTAWAY' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> |
+                  <i class="material-icons fullscreen">
+                    unfold_less </i>
+                </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'GRAPHICAL REP OF PUTAWAY' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close
+                    </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-12" style="padding: 0px 27%;">
+                  <div>
+                    <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme3" [results]="putawayChartData"
+                      [gradient]="gradient" [legend]="showLegend" [legendPosition]="legendPosition">
+                    </ngx-charts-pie-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title" style="border: 1px solid white;">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <h6 class="text-uppercase text-capitalize text-primary text-center">{{'Pending Putaway List'
+                      |translate}}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="row">
+                  <div class="col-md-12 text-centr">
+                    <div class="text-center">
+                      <ul class="text-center">
+                        <li>
+                          <div class="custom-control custom-checkbox checkbox-xl">
+                            <input type="radio" name="optradio" [checked]="radio1"
+                              (click)="getOrderType('Purchase Order')" style="margin-left:-20px">
+                            <span style="color:black;" class="ml-1">{{'Purchase Order' |translate}}</span>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="custom-control custom-checkbox checkbox-xl">
+                            <input type="radio" name="optradio" [checked]="radio2"
+                              (click)="getOrderType('WareHouseTransfer')" style="margin-left:-20px">
+                            <span style="color:black;" class="ml-1">{{'WarehouseTransfer' |translate}}</span>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="custom-control custom-checkbox checkbox-xl">
+                            <input type="radio" name="optradio" [checked]="radio3" (click)="getOrderType('Sales Returns')"
+                              style="margin-left:-20px">
+                            <span style="color:black;" class="ml-1">{{'Sales Returns' |translate}}</span>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="custom-control custom-checkbox checkbox-xl">
+                            <input type="radio" name="optradio" [checked]="radio4" (click)="getOrderType('WareHouseTransfer Returns')"
+                              style="margin-left:-8px">
+                            <span style="color:black;" class="ml-1">{{'WarehouseTransfer Returns' |translate}}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar" style="height: 155px;">
+              <div class="row">
+                <div class="col-md-12">
+                  <div>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+                  <div class="alert alert-warning" *ngFor="let data of pendingPutawayResponseList">
+                    <table class="w-100 text-center">
+                      <tr>
+                        <td>{{data.fullPutawayNumber}}</td>
+                        <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                          <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                          <span
+                            *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                        </td>
+
+                        <td>{{data.createdDate | date}}</td>
+                      </tr>
+                      <tr>
+                        <th>{{data.productMasterInfo?.productIDName}}</th>
+                        <th>{{data.quantity}} {{data.inventoryUnit}}</th>
+                        <th class="text-danger">{{data.message}} <span class="material-icons" style="font-size: 16px;
+                    margin: 0px 2px">shopping_cart</span></th>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->

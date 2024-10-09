@@ -1,0 +1,196 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-3">
+          <div class="udcBtns float-right">
+            <a>
+              <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <a>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+              </li>
+              <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row" [formGroup]="inventoryByLocationForm">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'INVENTORY BY LOCATION' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                        class="fa fa-angle-up"></i></span>
+                    |
+                    <i class="material-icons fullscreen"> unfold_less </i>
+                  </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'INVENTORY BY LOCATION' |translate}} <div class="float-right"><i
+                        class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body scrollbar" id="style-8" style="height:126px">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Product' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="productIDName" name="productIDName" formControlName="productIDName"
+                          [datasource]="products" [minSearchLength]="0" placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Category' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="category" name="category" formControlName="productCategoryName"
+                          [datasource]="categoryDrop" [minSearchLength]="0" placeholder="{{'Category' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Product Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" id="productType" name="productType"
+                          formControlName="productType">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="warehouseIDName" name="warehouseIDName" formControlName="wareHouseIDName"
+                          [datasource]="warehouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Zone' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="zoneName" name="zoneName" formControlName="zoneName"
+                          [datasource]="zoneNameIDs" [minSearchLength]="0" placeholder="{{'Zone' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Rack' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="rackIDName" name="rackIDName" formControlName="rackName"
+                          [datasource]="rackIDs" [minSearchLength]="0" placeholder="{{'Rack' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Location' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer id="zoneName" name="zoneName" formControlName="locationName"
+                          [datasource]="locationsIDs" [minSearchLength]="0"
+                          placeholder="{{'Location' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="form-group row">
+              <label class="col-sm-8 col-form-label"> </label>
+              <div class="col-sm-4 text-right" style="position: relative;top: -20px;">
+                <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div  class="wmsDataTables">
+            <table  class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'UOM' |translate}}</th>
+                  <th scope="col">{{'Product Description' |translate}}</th>
+                  <!-- <th scope="col">Product Configuration</th> -->
+                  <th scope="col">{{'Category' |translate}}</th>
+                  <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                  <th scope="col">{{'Availble Quantity' |translate}}</th>
+                  <th scope="col">{{'Reserved Quantity' |translate}}</th>
+                  <!--  <th scope="col">Inventory Unit </th> -->
+                  <th scope="col">{{'Batch Number' |translate}}</th>
+                  <th scope="col">{{'MFG Date' |translate}}</th>
+                  <th scope="col">{{'Expiry Date' |translate}}</th>
+                  <!--      <th scope="col">Warehouse Name</th> -->
+                  <th scope="col">{{'Warehouse ID Name' |translate}}</th>
+                  <th scope="col">{{'Zone Name' |translate}}</th>
+                  <th scope="col">{{'Rack Name' |translate}}</th>
+                  <th scope="col">{{'Column Name' |translate}}</th>
+                  <th scope="col">{{'Level Name' |translate}}</th>
+                  <th scope="col">{{'Location Name' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of inventoryData; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <td>{{detail.productMasterInfo.productID}}</td>
+                  <td>{{detail.productMasterInfo.productName}}</td>
+                  <td class="text-center">{{detail.inventoryUnit}}</td>
+                  <td>{{detail.productDescription}}</td>
+                  <!-- <td>{{detail.productConfiguration}}</td> -->
+                  <td>{{detail.productCategoryInfo.productCategory}}</td>
+                  <td>{{detail.quantityInventoryUnit | decimalwithThreeDigits}}</td>
+                  <td>{{detail.availableQuantity | decimalwithThreeDigits}}</td>
+                  <td>{{detail.reservedQuantity | decimalwithThreeDigits}}</td>
+                  <!--   <td>{{detail.inventoryUnit}} </td> -->
+                  <td>{{detail.batchNumber}}</td>
+                  <td class="text-center">{{detail.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{detail.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                  <!--    <td>{{detail.wareHouseInfo.wareHouseName}}</td> -->
+                  <td>{{detail.wareHouseInfo.wareHouseIDName}}</td>
+                  <td>{{detail.zoneInfo.zoneName}}</td>
+                  <td>{{detail.rackInfo.rackName}}</td>
+                  <td>{{detail.columnInfo?.columnName}}</td>
+                  <td>{{detail.levelInfo.levelName}}</td>
+                  <td>{{detail.locationInfo.locationName}}</td>
+                  <!--  <td>{{detail.inventoryUnit}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

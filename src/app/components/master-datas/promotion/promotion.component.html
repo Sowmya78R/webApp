@@ -1,0 +1,101 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <form [formGroup]="promotionForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'PROMOTIONS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PROMOTIONS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row ">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Promo Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="promotionName" name="promotionName" formControlName="promotionName"
+                          placeholder="{{'Promo Name' |translate}}" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Valid From' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="height" name="validFrom" formControlName="validFrom" class="form-control" type="date">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Valid To' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="validTo" name="validTo" formControlName="validTo" class="form-control" type="date">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label"> </label>
+              <div class="col-sm-8 text-right">
+                <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+                <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <td scope="col">S.No</td>
+                <td scope="col">{{'Promo Name'|translate}}</td>
+                <td scope="col">{{'Valid From' |translate}}</td>
+                <td scope="col">{{'Valid To' |translate}}</td>
+                <td scope="col">{{'Action' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of promotionList; let i = index">
+               <td class="text-left">{{i+1}}</td>
+                <th style="cursor: pointer;"(click)="edit(record)">{{record.promotionName}}</th>
+                <td class="text-center">{{record.validFrom | date: 'dd/MM/yyyy '}}</td>
+                <td class="text-center">{{record.validTo | date: 'dd/MM/yyyy '}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                      (click)="delete(record)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="promotionInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

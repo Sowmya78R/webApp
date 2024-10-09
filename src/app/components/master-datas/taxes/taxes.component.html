@@ -1,0 +1,153 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" *ngIf="permissionsList.includes('Update')">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+              style="width: 25px;height: 23px;margin-right: 16px;">
+            <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+          </a>
+          <a value="Log File" [hidden]="failureRecords.length==0"><img src="assets/Log file 2.png"
+              title="Log File" alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                  (change)="uploadExcel($event)">
+              </a>
+            </li>
+            <li value="Log File" [hidden]="failureRecords.length==0"><a (click)="downloadLogFile()"> <i
+                  class="material-icons align-middle"> description
+                </i> Log File </a>
+            </li>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel'
+                |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="taxForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'Tax' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i></div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'ABC Class Analysis' |translate}} <div class="float-right"><i class="material-icons fullscreen">
+                      close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div class="panel-body " id="style-8">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Country' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettingsforCountry"
+                        [data]="dropdownList" [(ngModel)]="selectedCountries" [ngModelOptions]="{standalone: true}"
+                        (focusout)="getStates()" [disabled]="countryDisabled">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'State' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [disabled]="stateDisabled" [placeholder]="'Select'"
+                        [settings]="dropdownSettings" [data]="statesList" [(ngModel)]="selectedStates"
+                        [ngModelOptions]="{standalone: true}">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'HSN Code' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" formControlName="hsnCode"
+                        placeholder="{{'HSN Code' |translate}}" [readonly]="taxForm.controls._id.value">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Tax Name' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" formControlName="taxName"
+                        placeholder="{{'Tax Name' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Tax Percentage' |translate}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" formControlName="taxPercentage"
+                        placeholder="{{'Tax Percentage' |translate}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right">
+              <button class="btn btn-green m-1" (click)="save()" [disabled]="taxForm.invalid">{{'Save'
+                |translate}}</button>
+              <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td>{{'S.No' |translate}}</td>
+                  <td>{{'Country Name' |translate}}</td>
+                  <td>{{'State Name' |translate}}</td>
+                  <td>{{'HSN Code' |translate}}</td>
+                  <td>{{'Tax Name' |translate}}</td>
+                  <td>{{'Tax Percentage'|translate}}</td>
+                  <td>{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of getData;let i = index">
+                  <th style="cursor: pointer;" (click)="edit(data)" class="text-left">{{i +1}}</th>
+                  <td>{{data.countryName}}</td>
+                  <td>{{data.stateName}}</td>
+                  <td>{{data.hsnCode}}</td>
+                  <td>{{data.taxName}}</td>
+                  <td>{{data.taxPercentage}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(data)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

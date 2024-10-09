@@ -1,0 +1,44 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-8" *ngIf="orderFillRatePermission.includes('View')">
+      <div class="wmsDataTablesOrderTypeRateGraph">
+        <!-- [markers]="ChartOptions1?.markers"  [stroke]="ChartOptions1?.stroke"-->
+        <h6 class="text-center ">{{'Order Fill Rate' |translate}}</h6>
+        <apx-chart [series]="ChartOptions1?.series" [chart]="ChartOptions1?.chart" [yaxis]="ChartOptions1?.yaxis"
+          [xaxis]="ChartOptions1?.xaxis" [labels]="ChartOptions1?.labels" [plotOptions]="ChartOptions1?.plotOptions"
+          [fill]="ChartOptions1?.fill" [tooltip]="ChartOptions1?.tooltip"></apx-chart>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="orderFillRatePercentagepermissions.includes('View')">
+      <div class="wmsDataTablesOrderTypeRateGraph">
+        <h6 class="text-center">{{'Order Fill Rate Percentage' |translate}}</h6>
+        <div id="chart" *ngIf="chartOptions">
+          <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart"
+            [plotOptions]="chartOptions?.plotOptions" [labels]="chartOptions?.labels" [fill]="chartOptions?.fill">
+          </apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8" *ngIf="volumeFillRatepermissions.includes('View')">
+      <div class="wmsDataTablesOrderTypeRateGraph">
+        <h6 class="text-center">{{'Volume Fill Rate' |translate}}</h6>
+        <apx-chart [series]="ChartOptions2?.series" [chart]="ChartOptions2?.chart" [yaxis]="ChartOptions2?.yaxis"
+          [xaxis]="ChartOptions2?.xaxis" [labels]="ChartOptions2?.labels" [stroke]="ChartOptions2?.stroke"
+          [plotOptions]="ChartOptions2?.plotOptions" [markers]="ChartOptions2?.markers" [fill]="ChartOptions2?.fill"
+          [tooltip]="ChartOptions2?.tooltip"></apx-chart>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="volumeFillRatePercentagepermissions.includes('View')">
+      <div class="wmsDataTablesOrderTypeRateGraph">
+        <h6 class="text-center">{{'Volume Fill Rate Percentage' |translate}}</h6>
+        <div id="chart" *ngIf="chartOptions3">
+          <apx-chart [series]="chartOptions3?.series" [chart]="chartOptions3?.chart"
+            [plotOptions]="chartOptions3?.plotOptions" [labels]="chartOptions3?.labels" [fill]="chartOptions3?.fill">
+          </apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<ngx-smart-modal customClass="nsm-centered" #deletePopup [identifier]="'deletePopup'">
+    <div class="mb-4">
+        <h6>Do you want to delete?</h6>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-green mr-2" (click)="[delete(), deletePopup.close()]"> YES
+        </button>
+        <button class="btn btn-white" (click)="[undo(), deletePopup.close()]"> No </button>
+    </div>
+</ngx-smart-modal>

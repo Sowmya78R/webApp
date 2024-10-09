@@ -1,0 +1,662 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form #locationForm="ngForm">
+    <div class="col-md-12">
+      <div class="row" *ngIf="permissionsList.includes('Update')">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <ul>
+              <!-- <li (click)="getFile1()"><a> <i class="material-icons align-middle"> open_in_browser
+              </i>{{'Upload Excel' |translate}}<input id="upfile1" class="hidden" type="file" accept=".xlsx" #import1
+                (click)="import1.value = null" (change)="newuploadExcel($event)">
+            </a>
+            </li> -->
+              <!-- <li value="Log File" *ngIf="failureRecordsNew.length > 0"><a (click)="downloadLogFileNew()"> <i
+              class="material-icons align-middle"> description
+            </i> Log File </a>  </li> -->
+            </ul>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets\printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" #import (click)="import.value = null"
+                (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="getAllLocationsFor('export')" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx" #import
+                    (click)="import.value = null" (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'LOCATION DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'LOCATION DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Warehouse Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" id="wareHouseName" name="wareHouseName" #wareHouseName="ngModel"
+                          [(ngModel)]="locationDetails.wareHouseInfo.wareHouseName" readonly>
+                        <!-- <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search wareHouse to retrive data of wareHouse"> info </i> -->
+                        <!-- <ng2-completer id="wareHouseName" name="wareHouseName" #wareHouseName="ngModel"
+                          [(ngModel)]="locationDetails.wareHouseInfo.wareHouseName" [datasource]="wareHouseNameValues"
+                          [minSearchLength]="0" (selected)="getSelectedValue('wareHouseName', $event)"
+                          placeholder="{{'Warehouse Name' |translate}}" required [disabled] = "makeThisDisabled">
+                        </ng2-completer> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Zone Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search zone to retrive data of zone"> info </i>
+                        <ng2-completer id="zoneName" name="zoneName" #zoneName="ngModel"
+                          [(ngModel)]="locationDetails.zoneInfo.zoneName" [datasource]="filteredZones"
+                          [minSearchLength]="0" (selected)="getSelectedValue('zoneName', $event)"
+                          placeholder="{{'Zone Name' |translate}}" required [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rack Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon " data-toggle="tooltip" data-placement="top"
+                          title="Search rack to retrive data of rack"> info </i>
+                        <ng2-completer id="rackName" name="rackName" #rackName="ngModel"
+                          [(ngModel)]="locationDetails.rackInfo.rackName" [datasource]="filteredRacks"
+                          [minSearchLength]="0" (selected)="getSelectedValue('rackName', $event)"
+                          placeholder="{{'Rack Name' |translate}}" required [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Column Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon " data-toggle="tooltip" data-placement="top"
+                          title="Search column to retrive data of column"> info </i>
+                        <ng2-completer id="column" name="column" #column="ngModel"
+                          [(ngModel)]="locationDetails.columnInfo.columnName" [datasource]="columnValues"
+                          [minSearchLength]="0" (selected)="getSelectedValue('column', $event)"
+                          placeholder="{{'Column Name' |translate}}" required [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Level Name' |translate}} <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search level to retrive data of level"> info </i>
+                        <ng2-completer id="levelName" name="levelName" #levelName="ngModel"
+                          [(ngModel)]="locationDetails.levelInfo.levelName" [datasource]="filteredLevels"
+                          [minSearchLength]="0" (selected)="getSelectedValue('levelName', $event)"
+                          placeholder="{{'Level Name' |translate}}" required [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Location Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="locationName" name="locationName" #locationName="ngModel" [readonly]="isReadMode"
+                          [(ngModel)]="locationDetails.locationName" placeholder="{{'Location Name' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors(locationName), 'valiSucess': shouldShowSuccess(locationName)}"
+                          (focus)="onFocusForElement(locationName)" (focusout)="onFocusOutForElement()"
+                          class="form-control" required value="" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="mode === '2deep'">
+                      <label class="col-sm-5 col-form-label">{{'Position' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" [(ngModel)]="locationDetails.position" name="position"
+                          id="position" [disabled]="makeThisDisabled">
+                          <option selected disabled value="null">Select</option>
+                          <option>Front</option>
+                          <option>Back</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Capacity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="capacity" name="capacity" #capacity="ngModel" [(ngModel)]="locationDetails.capacity"
+                          placeholder="{{'Capacity' |translate}}" class="form-control" value="" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!-- [ngClass]="{'valiError': shouldShowErrors(capacity), 'valiSucess': shouldShowSuccess(capacity)}"
+                          (focus)="onFocusForElement(capacity)" (focusout)="onFocusOutForElement()" required -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Storage Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search storageType to retrive data of storageType"> info </i>
+                        <ng2-completer id="storageType" name="storageType" #storageTypeCode="ngModel"
+                          [(ngModel)]="locationDetails.storageType.storageTypeCode" [datasource]="storageTypeValues"
+                          [minSearchLength]="0" (selected)="getSelectedValue('storageType', $event)"
+                          placeholder="{{'Storage Type' |translate}}" [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Location Merge' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="locationMerge" name="locationMerge" #locationMerge="ngModel"
+                          [(ngModel)]="locationDetails.locationMerge" [disabled]="makeThisDisabled" required>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Location Availabilty' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="locationAvailability" name="locationAvailability"
+                          #locationAvailability="ngModel" [(ngModel)]="locationDetails.locationAvailability"
+                          [disabled]="makeThisDisabled">
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Location Space Status' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="locationSpaceStatus" name="locationSpaceStatus"
+                          #locationSpaceStatus="ngModel" [(ngModel)]="locationDetails.locationSpaceStatus"
+                          [disabled]="makeThisDisabled">
+                          <option value="null" selected>--Select--</option>
+                          <option value="Completely Available">Completely Available</option>
+                          <option value="Partially Available">Partially Available</option>
+                          <option value="UnAvailable">UnAvailable</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'LOCATION DIMENSION' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'LOCATION DIMENSION' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+
+                    <!--     [ngClass]="{'valiError': shouldShowErrors(usableSpace), 'valiSucess': shouldShowSuccess(usableSpace)}"
+                          (focus)="onFocusForElement(usableSpace)" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Length' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="length" name="length" #length="ngModel" min="0" [(ngModel)]="locationDetails.length"
+                          (keyup)="calculateVolume()" oninput="validity.valid||(value='');" min="0"
+                          placeholder="{{'Length' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="lengthUom" class="form-control newDropDown" id="lengthUom" #lengthUom="ngModel"
+                          [(ngModel)]="locationDetails.lengthUom" [disabled]="makeThisDisabled">
+                          <option value="null" selected="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- [ngClass]="{'valiError': shouldShowErrors(length), 'valiSucess': shouldShowSuccess(length)}"
+                          (focus)="onFocusForElement(length)" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Breadth' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="breadth" name="breadth" #breadth="ngModel" min="0"
+                          [(ngModel)]="locationDetails.breadth" (keyup)="calculateVolume()"
+                          placeholder="{{'Breadth' |translate}}" oninput="validity.valid||(value='');" min="0"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="breadthUom" class="form-control newDropDown" id="breadthUom "
+                          #breadthUom="ngModel" [(ngModel)]="locationDetails.breadthUom" [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--    [ngClass]="{'valiError': shouldShowErrors(breadth), 'valiSucess': shouldShowSuccess(breadth)}"
+                          (focus)="onFocusForElement(breadth)" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Height' |translate}}</label>
+                      <div class="col-sm-4">
+                        <input id="height" name="height" #height="ngModel" min="0" [(ngModel)]="locationDetails.height"
+                          (keyup)="calculateVolume()" placeholder="{{'Height' |translate}}"
+                          oninput="validity.valid||(value='');" min="0" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="heightUom" class="form-control newDropDown" id="heightUom" #heightUom="ngModel"
+                          [(ngModel)]="locationDetails.heightUom" [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Total Space' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="totalSpace" id="totalSpace" name="totalSpace" #totalSpace="ngModel"
+                          [(ngModel)]="locationDetails.totalSpace" placeholder="{{'Total Space' |translate}}"
+                          class="form-control" type="text" readonly>
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="totalSpaceUom" class="form-control newDropDown" id="totalSpaceUom"
+                          #totalSpaceUom="ngModel" [(ngModel)]="locationDetails.totalSpaceUom"
+                          [disabled]="makeThisDisabled">
+                          <option selected>--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors(totalSpace), 'valiSucess': shouldShowSuccess(totalSpace)}"
+                          (focus)="onFocusForElement(totalSpace)" (focusout)="onFocusOutForElement()" required -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Usable Space' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="usableSpace" name="usableSpace" #usableSpace="ngModel"
+                          [(ngModel)]="locationDetails.usableSpace" placeholder="{{'Usable Space' |translate}}"
+                          oninput="validity.valid||(value='');" min="0" class="form-control" value="" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="usableSpaceUom" class="form-control newDropDown" id="usableSpaceUom"
+                          #usableSpaceUom="ngModel" [(ngModel)]="locationDetails.usableSpaceUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--    [ngClass]="{'valiError': shouldShowErrors(height),'valiSucess': shouldShowSuccess(height)}"
+                          (focus)="onFocusForElement(height)" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'weight' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id="weight" name="weight" #weight="ngModel" [(ngModel)]="locationDetails.weight"
+                          placeholder="{{'weight' |translate}}" min="0" oninput="validity.valid||(value='');"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="weightUom" class="form-control newDropDown" id="weightUom" #weightUom="ngModel"
+                          [(ngModel)]="locationDetails.weightUom" [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors(weight),'valiSucess': shouldShowSuccess(weight)}"
+                          (focus)="onFocusForElement(weight)" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Allowable Weight' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input id=" allowableWeight" name=" allowableWeight" #allowableWeight="ngModel"
+                          [(ngModel)]="locationDetails. allowableWeight" min="0" oninput="validity.valid||(value='');"
+                          placeholder=" {{'Allowable Weight' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="allowableWeightUom" class="form-control newDropDown" id="allowableWeightUom"
+                          #allowableWeightUom="ngModel" [(ngModel)]="locationDetails.allowableWeightUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <!--  [ngClass]="{'valiError': shouldShowErrors( allowableWeight),'valiSucess': shouldShowSuccess( allowableWeight)}"
+                          (focus)="onFocusForElement( allowableWeight)" (focusout)="onFocusOutForElement()" -->
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Max Dimension' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input type="text" name="maxDimension" class="form-control" placeholder="maxDimension"
+                          class="form-control" id="maxDimension" #maxDimension="ngModel"
+                          [(ngModel)]="locationDetails.maxDimension" min="0" oninput="validity.valid||(value='');"
+                          [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="maxDimensionUom" class="form-control newDropDown" id="maxDimensionUom"
+                          #maxDimensionUom="ngModel" [(ngModel)]="locationDetails.maxDimensionUom"
+                          [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Allowable Max Dimension' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input type="text" name="allowableMaxDimension" class="form-control" min="0"
+                          oninput="validity.valid||(value='');" placeholder="allowableMaxDimension" class="form-control"
+                          id="allowableMaxDimension" #allowableMaxDimension="ngModel"
+                          [(ngModel)]="locationDetails.allowableMaxDimension" [readonly]="makeReadOnly">
+                      </div>
+                      <div class="col-sm-4">
+                        <select name="allowableMaxDimensionUom" class="form-control newDropDown"
+                          id="allowableMaxDimensionUom" #allowableMaxDimensionUom="ngModel"
+                          [(ngModel)]="locationDetails.allowableMaxDimensionUom" [disabled]="makeThisDisabled">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option [ngValue]="data.unitCode" *ngFor="let data of units">{{data.unitCode}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Usable Space Check' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="usableSpaceCheck" name="usableSpaceCheck"
+                          #usableSpaceCheck="ngModel" [(ngModel)]="locationDetails.usableSpaceCheck"
+                          [disabled]="makeThisDisabled">
+                          <option value=null>--Select--</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Weight Check' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="weightCheck" name="weightCheck" #weightCheck="ngModel"
+                          [(ngModel)]="locationDetails.weightCheck" [disabled]="makeThisDisabled">
+                          <option value=null>--Select--</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Max Dimensions Check' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="maxDimensionCheck" name="maxDimensionCheck"
+                          #maxDimensionCheck="ngModel" [(ngModel)]="locationDetails.maxDimensionCheck"
+                          [disabled]="makeThisDisabled">
+                          <option value=null>--Select--</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="form-group row drop-status">
+            <label class="col-sm-2 col-form-label">Status:</label>
+            <div class="col-sm-3 m-0">
+              <select class="form-control" required id="status" name="status" [(ngModel)]="locationDetails.status"
+                #status="ngModel" [disabled]="makeThisDisabled">
+                <option [ngValue]="null" [selected]="true">--Select--</option>
+                <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right ">
+              <button class="btn btn-green mr-2" value="Save" (click)="save(locationForm)"
+                [disabled]="locationForm.invalid">
+                {{'Save' |translate}} </button>
+              <button class="btn btn-white" value="Clear" (click)="clearLocationData(locationForm)">{{'Clear'
+                |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables" style="max-height: auto;">
+            <div class="row">
+              <div class="">
+                <label class="mt-1">Show</label>
+              </div>
+              <div class="">
+                <select [(ngModel)]="itemsPerPage" style="width:63px" (change)="fetchAllD(page=1,$event)"
+                  class="form-control" [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+              </div>
+              <div class="mt-1"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="this.fetchAllLocations(page=1, itemsPerPage);">
+              </div>
+            </div>
+            <table class="table table-striped" style="overflow-y: auto;display: block;">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <td>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                        left: -7px;" (click)="setDirection('ASC','S.No')" aria-hidden="true"></i> <i
+                      class="fa fa-sort-desc" style="position: relative;
+                          left: -7px;" aria-hidden="true" (click)="setDirection('DESC','S.No')"></i></td>
+                  <td>{{'Include' |translate}}
+                    <input type="checkbox" class="form-control" (click)="selectAllData($event)"
+                      [(ngModel)]="selectAllCheckboxValue" [ngModelOptions]="{standalone: true}">
+                  </td>
+                  <td *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                      style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let detail of locations | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                  <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                  <td><input type="checkbox" [checked]="detail.isChecked" (click)="read($event,detail)"
+                      [(ngModel)]="detail.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                  <th style="cursor: pointer" (click)="editLocationDetails(detail)">
+                    {{detail.wareHouseInfo.wareHouseName}}</th>
+                  <td>{{detail.zoneInfo.zoneName}}</td>
+                  <td>{{detail.rackInfo.rackName}}</td>
+                  <td>{{detail.columnInfo?.columnName}}</td>
+                  <td>{{detail.levelInfo?.levelName}}</td>
+                  <td>{{detail.position}}</td>
+                  <td>{{detail.locationName}}</td>
+                  <td>{{detail.capacity}}</td>
+                  <td>{{detail.storageType?.storageTypeCode}}</td>
+                  <td>{{detail.locationMerge}}</td>
+                  <td>{{detail.locationAvailability}}</td>
+                  <td>{{detail.locationSpaceStatus}}</td>
+                  <td>{{detail.totalSpace}} {{detail.totalSpaceUom}}</td>
+                  <td>{{detail.usableSpace | decimalwithThreeDigits}} {{detail.usableSpaceUom}}</td>
+                  <td>{{detail.length}} {{detail.lengthUom}}</td>
+                  <td>{{detail.breadth}} {{detail.breadthUom}}</td>
+                  <td>{{detail.height}} {{detail.heightUom}}</td>
+                  <td>{{detail.weight}}{{detail.weightUom}}</td>
+                  <td>{{detail.allowableWeight | decimalwithThreeDigits}} {{detail.allowableWeightUom}}</td>
+                  <td>{{detail.maxDimension}}{{detail.maxDimensionUom}}</td>
+                  <td>{{detail.allowableMaxDimension | decimalwithThreeDigits}} {{detail.allowableMaxDimensionUom}}</td>
+                  <td>{{detail.usableSpaceCheck}}</td>
+                  <td>{{detail.weightCheck}}</td>
+                  <td>{{detail.maxDimensionCheck}}</td>
+                  <td>{{detail.blockLocation}}</td>
+                  <td>{{detail.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" (pageChange)="fetchAllLocations((page = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+              style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Warehouse Name' |translate}}</th>
+                  <th scope="col">{{'Zone Name' |translate}}</th>
+                  <th scope="col">{{'Rack Name' |translate}}</th>
+                  <th scope="col">{{'Column Name' |translate}}</th>
+                  <th scope="col">{{'Level Name' |translate}}</th>
+                  <th scope="col">{{'Position' |translate}}</th>
+                  <th scope="col">{{'Location Name' |translate}}</th>
+                  <th scope="col">{{'Capacity' |translate}}</th>
+                  <th scope="col">{{'Storage Type' |translate}}</th>
+                  <th scope="col">{{'Location Merge' |translate}}</th>
+                  <th scope="col">{{'Location Availabilty' |translate}}</th>
+                  <th scope="col">{{'Location Space Status' |translate}}</th>
+                  <th scope="col">{{'Total Space' |translate}}</th>
+                  <th scope="col">{{'Usable Space' |translate}}</th>
+                  <th scope="col">{{'Length' |translate}}</th>
+                  <th scope="col">{{'Breadth' |translate}}</th>
+                  <th scope="col">{{'Height' |translate}}</th>
+                  <th scope="col">{{'Weight' |translate}}</th>
+                  <th scope="col">{{'Allowable Weight' |translate}}</th>
+                  <th scope="col">{{'Max Dimension' |translate}}</th>
+                  <th scope="col">{{'Allowable Max Dimension' |translate}}</th>
+                  <th scope="col">{{'Usable Space Check' |translate}} </th>
+                  <th scope="col">{{'Weight Check' |translate}}</th>
+                  <th scope="col">{{'Max-Dimension Check' |translate}}</th>
+                  <th scope="col">{{'Block Location' |translate}}</th>
+                  <th scope="col">{{'Status' |translate}}</th>
+                  <th scope="col">{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of locations; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor: pointer" (click)="editLocationDetails(detail)">
+                    {{detail.wareHouseInfo.wareHouseName}}</th>
+                  <td>{{detail.zoneInfo.zoneName}}</td>
+                  <td>{{detail.rackInfo.rackName}}</td>
+                  <td>{{detail.columnInfo?.columnName}}</td>
+                  <td>{{detail.levelInfo?.levelName}}</td>
+                  <td>{{detail.position}}</td>
+                  <td>{{detail.locationName}}</td>
+                  <td>{{detail.capacity}}</td>
+                  <td>{{detail.storageType?.storageTypeCode}}</td>
+                  <td>{{detail.locationMerge}}</td>
+                  <td>{{detail.locationAvailability}}</td>
+                  <td>{{detail.locationSpaceStatus}}</td>
+                  <td>{{detail.totalSpace}} {{detail.totalSpaceUom}}</td>
+                  <td>{{detail.usableSpace}} {{detail.usableSpaceUom}}</td>
+                  <td>{{detail.length}} {{detail.lengthUom}}</td>
+                  <td>{{detail.breadth}} {{detail.breadthUom}}</td>
+                  <td>{{detail.height}} {{detail.heightUom}}</td>
+                  <td>{{detail.weight}}{{detail.weightUom}}</td>
+                  <td>{{detail.allowableWeight}} {{detail.allowableWeightUom}}</td>
+                  <td>{{detail.maxDimension}}{{detail.maxDimensionUom}}</td>
+                  <td>{{detail.allowableMaxDimension}} {{detail.allowableMaxDimensionUom}}</td>
+                  <td>{{detail.usableSpaceCheck}}</td>
+                  <td>{{detail.weightCheck}}</td>
+                  <td>{{detail.maxDimensionCheck}}</td>
+                  <td>{{detail.blockLocation}}</td>
+                  <td>{{detail.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

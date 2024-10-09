@@ -1,0 +1,180 @@
+<div id="inBody" [formGroup]="ABCGroupForm" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row mt-1">
+        <div class="col-md-12 mastermenus_top">
+          <div class="top-input-label mb-2">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Type' |translate}}</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" id="type" name="type" (change)="getCriteria($event.target.value)">
+                      <option [value]="undefined">-Select--</option>
+                      <option *ngFor="let cycleCountingCriteria of cycleCountingCriterias"
+                        [value]="cycleCountingCriteria.value">
+                        {{cycleCountingCriteria.viewValue}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'Search:' |translate}}</label>
+                  <div class="col-sm-8 top-input">
+                    <ng2-completer name="search" id="search" [datasource]="dataService" [minSearchLength]="0"
+                      placeholder="Search">
+                    </ng2-completer>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'From Date' |translate}}</label>
+                  <div class="col-sm-8 top-input">
+                    <input type="date" name="" class="form-control" id="" formControlName="fromDate">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">{{'To Date:' |translate}}</label>
+                  <div class="col-sm-8 top-input">
+                    <input type="date" name="" class="form-control" id="" formControlName="toDate">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+          <button class="btn btn-green m-1" (click)="callingGrnerateFunction();OnDataChange()">{{'Generate' |translate}}</button>
+          <button class="btn btn-green" (click)="clearFields()">{{'Clear' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row margin15">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th>{{'ProductIDName' |translate}}</th>
+              <th>{{'Usage' |translate}}</th>
+              <th scope="col" *ngFor="let data of overAllDates">{{data| date: 'dd/MM/yyyy'}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of arr;let i=index">
+              <td><span>{{data.productIDName}}</span></td>
+              <td><span>{{data.usage}}</span></td>
+              <td *ngFor="let res of overAllDates">
+                <span>
+                  {{data[res]}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12"> <div class="">
+      <div class="wmsDataTables">
+        <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger1">
+          <thead>
+            <tr>
+              <th>{{'S.No' |translate}}</th>
+           <!--    <th>Stock No</th> -->
+              <th>{{'product ID Name' |translate}}</th>
+              <th>{{'Usage' |translate}}</th>
+              <th>{{'Price' |translate}}</th>
+              <th>{{'Value' |translate}}</th>
+              <th>{{'Percentage Usage' |translate}}</th>
+              <th>{{'Cummmulative %' |translate}}</th>
+              <th>{{'ABC Class' |translate}}</th>
+              <th>{{'Coefficient' |translate}}</th>
+              <th>{{'XYZ Class' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of abcGroupList?.abcAnalysisGroups;let i=index">
+              <td class="text-left">{{i+1}}</td>
+          <!--   <td>{{data.stockNo}}</td> -->
+            <td>{{data.productMasterInfo?.productIDName}}</td>
+            <td>{{data.usage}}</td>
+            <td>{{data.unitPrice | decimalFilter}}</td>
+            <td>{{data.abcGroupValue}}</td>
+            <td>{{data.percentageUsage}}</td>
+            <td>{{data.cummulative}}</td>
+            <td>{{data.abcAnalysisClass}}</td>
+            <td>{{data.coefficientVariation}}</td>
+            <td>{{data.uncertaintyXYZ}}</td>
+            </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+     <!--  <app-multidimensionalanalysis></app-multidimensionalanalysis> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12"> <div class="">
+      <div class="wmsDataTables">
+        <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger1">
+          <thead>
+            <tr>
+              <th>{{'S.No' |translate}}</th>
+              <th>{{'Parameters' |translate}}</th>
+              <th>{{'No Of Items' |translate}}</th>
+              <th>{{'Value' |translate}}</th>
+              <th>{{'ABC Class %' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of abcGroupList?.abcGroupInfo;let i=index">
+              <td class="text-left">{{i+1}}</td>
+            <td>{{data.parameters}}</td>
+            <td>{{data.noOfProducts}}</td>
+            <td>{{data.value}}</td>
+            <td>{{data.abcClassValue}}</td>
+            </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+     <!--  <app-multidimensionalanalysis></app-multidimensionalanalysis> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+       <div class="wmsDataTables">
+    <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger2">
+      <thead>
+        <tr>
+          <th>{{'S.No' |translate}}</th>
+          <th>{{'Name' |translate}}</th>
+          <th>{{'Products' |translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let abcmatrixgroup of finalArr;let i=index">
+          <td class="text-left">{{i+1}}</td>
+          <td>{{abcmatrixgroup.name}}</td>
+          <td>{{abcmatrixgroup.productID}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <!--   <app-multidimensionalproducts></app-multidimensionalproducts> -->
+    </div>
+  </div>
+</div>

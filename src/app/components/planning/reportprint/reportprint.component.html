@@ -1,0 +1,43 @@
+<div *ngIf="selectedValue =='putawayPlanning'">
+  <!-- <app-putawaygplanning (emitTripSheet)="trigeerTripSheet()"></app-putawaygplanning> -->
+  <app-put-away-table (emitTripSheet)="trigeerTripSheet()"></app-put-away-table>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='pickingPlanning'">
+  <!-- <app-pickingplanning (emitTripSheet)="trigeerTripSheet()"></app-pickingplanning> -->
+  <app-pickingnewversion (emitTripSheet)="trigeerTripSheet()"></app-pickingnewversion>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='internalTransferPlanning'">
+  <app-internaltransferplanning (emitTripSheet)="trigeerTripSheet()"></app-internaltransferplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='packingPlanning'">
+  <app-packingplanning (emitTripSheet)="trigeerTripSheet()"></app-packingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='rePackingPlanning'">
+  <app-repackingplanning (emitTripSheet)="trigeerTripSheet()"></app-repackingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='coPackingPlanning'">
+  <app-copackingplanning (emitTripSheet)="trigeerTripSheet()"></app-copackingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='labellingPlanning'">
+  <app-labellingplanning (emitTripSheet)="trigeerTripSheet()"></app-labellingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+
+<div *ngIf="selectedValue =='loadingPlanning'">
+  <app-loadingplanning (emitTripSheet)="trigeerTripSheet()"></app-loadingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="selectedValue =='unloadingPlanning'">
+  <app-unloadingplanning (emitTripSheet)="trigeerTripSheet()"></app-unloadingplanning>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>
+<div *ngIf="employeePerformanceRouting =='employeePerformance'">
+  <app-employee-performance (emitTripSheet)="trigeerTripSheet()"></app-employee-performance>
+  <app-mainprint [tripInput]="tripInput"></app-mainprint>
+</div>

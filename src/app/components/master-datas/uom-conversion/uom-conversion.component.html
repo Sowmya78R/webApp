@@ -1,0 +1,150 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" *ngIf="permissionsList.includes('Update')">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+              style="width: 25px;height: 23px;margin-right: 16px;">
+            <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+          </a>
+          <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File" alt=""
+              style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+              </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+              (change)="uploadExcel($event)">
+              </a>
+            </li>
+            <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i class="material-icons align-middle"> description
+              </i> Log File </a>
+            </li>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="uomConversionForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'UOM CONVERSION' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'UOM CONVERSION' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row ">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product ID' |translate}}
+                      </label>
+                      <div class="col-sm-8 input-group" formGroupName="productMasterInfo">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productID" id="productID" formControlName="productIDName"
+                          [disableInput]="isReadMode" [datasource]="productIDNameValues" [minSearchLength]="0"
+                          [disabled]="isReadMode" placeholder="{{'Product ID' |translate}}"
+                          [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Unit Conversion From' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="unitConversionFrom" formControlName="unitConversionFrom"
+                          [datasource]="units" [minSearchLength]="0" placeholder="{{'Unit Conversion From' |translate}}"
+                          [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Unit Conversion To' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="unitConversionTo" formControlName="unitConversionTo" [datasource]="units"
+                          [minSearchLength]="0" placeholder="{{'Unit Conversion To' |translate}}"
+                          [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Conversion Factor' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="conversionFactor" name="conversionFactor" formControlName="conversionFactor"
+                          placeholder="{{'Conversion Factor' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label"> </label>
+              <div class="col-sm-8 text-right mb-3">
+                <button class="btn btn-green mr-1" (click)="save()" [disabled]="uomConversionForm.invalid">{{'Save'
+                  |translate}}</button>
+                <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <td scope="col">S.No</td>
+                <td scope="col">{{'Product ID/Name' |translate}}</td>
+                <td scope="col">{{'Unit Conversion From' |translate}}</td>
+                <td scope="col">{{'Unit Conversion To' |translate}}</td>
+                <td scope="col">{{'Conversion Factor' |translate}}</td>
+                <td scope="col">{{'Action' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of uomConversions; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <th style="cursor:pointer" (click)="edit(record)">{{record.productMasterInfo?.productIDName}}</th>
+                <td>{{record.unitConversionFrom}}</td>
+                <td>{{record.unitConversionTo}}</td>
+                <td>{{record.conversionFactor}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                      (click)="delete(record)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="uomInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

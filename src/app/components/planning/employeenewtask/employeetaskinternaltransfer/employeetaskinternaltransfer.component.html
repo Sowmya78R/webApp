@@ -1,0 +1,92 @@
+<div id="inBody">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+     <!--    <h6 class="text-uppercase text-primary text-center">Internal Transfer</h6> -->
+        <table id="example" class="table table-striped w-100" datatable [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Image' | translate}}</th>
+              <th scope="col">{{'Product ID ' |translate}}</th>
+              <th scope="col">{{'Product Name' |translate}}</th>
+              <th scope="col">{{'Quantity' |translate}}</th>
+              <th scope="col">{{'Source Location Name' |translate}}</th>
+              <th scope="col">{{'Destination Location Name' |translate}}</th>
+              <th>{{'Status' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of itData ;let i = index">
+              <td>{{i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td style="width:140px;text-align:left">{{data.productMasterInfo?.productID}}</td>
+              <td style="width:140px;text-align:left">{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.transferQuantity}}</td>
+              <td><b class="text-uppercase m-1">src :-</b>{{data.sourceLocation?.locationName}}</td>
+              <td><b class="text-uppercase m-1">des :-</b>{{data.destinationLocation?.locationName}}</td>
+              <td><span *ngIf="data.status!='Completed' && data.startDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)"
+                    style="width: 95px;">Complete</button></span>
+                <span *ngIf="!data.startDate"><button class="btn btn-primary" style="width: 95px;"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- <div class="panel portlet">
+  <div class="formBox portlet-title" style="border: 1px solid white;position: relative;
+  left: 10px;">
+    <h6 class="text-uppercase text-primary text-center">internal transfer</h6>
+    <div id="style-8" class="panel-body scrollbar" style="height: 229px;">
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+          <div class="">
+            <div class="alert alert-warning" *ngFor="let data of itData ;let i = index">
+              <table class="w-100">
+                <tbody>
+                  <tr>
+                    <td style="width:140px;text-align:left">{{data.productMasterInfo?.productIDName}}</td>
+                    <td>{{data.transferQuantity}}</td>
+                    <td><b class="text-uppercase m-1">src :-</b>{{data.sourceLocation?.locationName}}</td>
+                    <td><b class="text-uppercase m-1">des :-</b>{{data.destinationLocation?.locationName}}</td>
+                   
+                    <td><span *ngIf="data.status!='Completed' && data.startDate">
+                        <button class="btn btn-primary" (click)="onStatusChange('status',data)"
+                          style="width: 95px;">Complete</button></span>
+                      <span *ngIf="!data.startDate"><button class="btn btn-primary" style="width: 95px;"
+                          (click)="onStatusChange('startDate',data)">Start</button></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->

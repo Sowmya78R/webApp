@@ -1,0 +1,205 @@
+<div class="row" [formGroup]="inboundOutboundDashboardsForm">
+  <div class="col-md-12">
+    <div class="top-input-label">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">Created Date From</label>
+            <div class="col-sm-7">
+              <input type="date" name="" class="form-control" id="" formControlName="createdDateFrom">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Created Date To</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="createdDateTo">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Assigned Date From</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="assignedDateFrom">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Assigned Date To</label>
+            <div class="col-sm-6">
+              <input type="date" name="" class="form-control" id="" formControlName="assignedDateTo">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Assigned To</label>
+            <div class="col-sm-6">
+              <ng2-completer id="assignedTo" name="assignedTo" formControlName="assignedTo" id=""
+                [minSearchLength]="0" placeholder="Assigned To" [datasource]="wareHouseTeamsListIDs">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">Inward Order Type</label>
+            <div class="col-sm-6">
+              <select class="form-control extraLongWidth" formControlName="dummyOrderType">
+                <option>Purchase Order</option>
+                <option>WareHouseTransfer</option>
+                <option>Return</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label">Outward Order Type</label>
+            <div class="col-sm-6">
+              <select class="form-control extraLongWidth" formControlName="orderType">
+                <option>Sales Order</option>
+                <option>WareHouseTransfer</option>
+                <option>Return</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-center">
+            <button class="btn btn-green m-1" (click)="filter()">Filter</button>
+            <button class="btn btn-white" (click)="reset()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">putaway</h6>
+            <div id="chart">
+              <apx-chart [series]="putawayChartDetails?.series" [chart]="putawayChartDetails?.chart"
+                [labels]="putawayChartDetails?.labels" [title]="putawayChartDetails?.title"
+                [theme]="putawayChartDetails?.theme" [responsive]="putawayChartDetails?.responsive"
+                [dataLabels]="putawayChartDetails?.dataLabels" [legend]="putawayChartDetails?.legend"
+                [colors]="putawayChartDetails?.colors"></apx-chart>
+              <!--  <apx-chart [series]="putawayChartDetails?.series" [chart]="putawayChartDetails?.chart" [labels]="putawayChartDetails?.labels"
+              [responsive]="putawayChartDetails?.responsive"></apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">internal transfer</h6>
+            <div id="chart">
+              <apx-chart [series]="internalTRansferstDetails?.series" [chart]="internalTRansferstDetails?.chart"
+                [labels]="internalTRansferstDetails?.labels" [title]="internalTRansferstDetails?.title"
+                [theme]="internalTRansferstDetails?.theme" [responsive]="internalTRansferstDetails?.responsive"
+                [dataLabels]="internalTRansferstDetails?.dataLabels" [legend]="internalTRansferstDetails?.legend"
+                [colors]="internalTRansferstDetails?.colors"></apx-chart>
+              <!-- <apx-chart [series]="internalTRansferstDetails?.series" [chart]="internalTRansferstDetails?.chart"
+              [labels]="internalTRansferstDetails?.labels" [responsive]="internalTRansferstDetails?.responsive">
+            </apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">Internal Adjustment Details
+            </h6>
+            <div id="chart">
+              <apx-chart [series]="internalAdjustmentDetails?.series" [chart]="internalAdjustmentDetails?.chart"
+                [labels]="internalAdjustmentDetails?.labels" [title]="internalAdjustmentDetails?.title"
+                [theme]="internalAdjustmentDetails?.theme" [responsive]="internalAdjustmentDetails?.responsive"
+                [dataLabels]="internalAdjustmentDetails?.dataLabels" [legend]="internalAdjustmentDetails?.legend"
+                [colors]="internalAdjustmentDetails?.colors"></apx-chart>
+              <!--   <apx-chart [series]="internalAdjustmentDetails?.series" [chart]="internalAdjustmentDetails?.chart"
+              [labels]="internalAdjustmentDetails?.labels" [responsive]="internalAdjustmentDetails?.responsive">
+              [legend]="internalAdjustmentDetails?.legend"
+            </apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">picking</h6>
+            <div id="chart">
+              <!--  <apex-chart
+            [series]="pickingDetails?.series"
+            [chart]="pickingDetails?.chart"
+            [labels]="pickingDetails?.labels"
+            [title]="pickingDetails?.title"
+            [theme]="pickingDetails?.theme"
+            [responsive]="pickingDetails?.responsive"
+            [dataLabels]="pickingDetails?.dataLabels"
+            [legend]="pickingDetails?.legend"
+            [colors]="pickingDetails?.colors">
+          </apex-chart> -->
+              <apx-chart [series]="pickingDetails?.series" [chart]="pickingDetails?.chart"
+                [labels]="pickingDetails?.labels" [dataLabels]="pickingDetails?.dataLabels"
+                [responsive]="pickingDetails?.responsive" [legend]="pickingDetails?.legend"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">packing</h6>
+            <div id="chart">
+              <apx-chart [series]="packingDetails?.series" [chart]="packingDetails?.chart"
+                [labels]="packingDetails?.labels" [responsive]="packingDetails?.responsive"
+                [dataLabels]="pickingDetails?.dataLabels" [legend]="pickingDetails?.legend"></apx-chart>
+              <!-- <apx-chart [series]="packingDetails?.series" [chart]="packingDetails?.chart"
+              [labels]="packingDetails?.labels" [responsive]="packingDetails?.responsive"></apx-chart> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">re-packing</h6>
+            <div id="chart">
+              <apx-chart [series]="rePackingDetails?.series" [chart]="rePackingDetails?.chart"
+                [labels]="rePackingDetails?.labels" [responsive]="rePackingDetails?.responsive"
+                [dataLabels]="rePackingDetails?.dataLabels"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">Co-Packing</h6>
+            <div id="chart">
+              <apx-chart [series]="coPackingDetails?.series" [chart]="coPackingDetails?.chart"
+                [labels]="coPackingDetails?.labels" [dataLabels]="coPackingDetails?.dataLabels"
+                [responsive]="coPackingDetails?.responsive"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">Labelling</h6>
+            <div id="chart">
+              <apx-chart [series]="labellingDetails?.series" [chart]="labellingDetails?.chart"
+                [labels]="labellingDetails?.labels" [dataLabels]="labellingDetails?.dataLabels"
+                [responsive]="labellingDetails?.responsive"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="wmsDataTablesInboundOutBoundGraphOnly">
+            <h6 class="text-primary text-capitalize text-uppercase text-info text-center">cycle counting</h6>
+            <div id="chart">
+              <apx-chart [series]="cycleTransferDetails?.series" [chart]="cycleTransferDetails?.chart"
+                [labels]="cycleTransferDetails?.labels" [responsive]="cycleTransferDetails?.responsive"></apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

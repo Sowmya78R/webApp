@@ -1,0 +1,456 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="udcBtns">
+          <ul>
+            <li (click)="navigatetoCreatePage()"><a> <i class="material-icons align-middle"> description
+                </i>{{'Create Sales Order' |translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 offset-md-2 mt-2">
+        <div class="udcBtns float-right" *ngIf="permissionsList.includes('Update')">
+          <a (click)="upfile.click()"><img src="assets/Export.png" title="Upload Excel" alt=""
+              style="width: 25px;height: 23px;margin-right: 16px;">
+            <input id="upfile" #upfile (click)="upfile.value = null" value=""
+              style="background: none !important;border: none !important;" class="hidden" type="file" accept=".xlsx"
+              (change)="uploadExcel($event)">
+          </a>
+          <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets\Log file 2.png" title="Log File" alt=""
+              style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <form #maintainSalesOrder="ngForm">
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <div class="top-input-label">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">{{'From' |translate}}
+                  </label>
+                  <div class="col-sm-7 top-input">
+                    <input type="date" class="form-control" [(ngModel)]="fromDate" [ngModelOptions]="{standalone: true}"
+                      style="width:128px">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">{{'To' |translate}}
+                  </label>
+                  <div class="col-sm-7 top-input">
+                    <input type="date" class="form-control" [(ngModel)]="toDate" [ngModelOptions]="{standalone: true}"
+                      style="width:128px">
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-md-1">
+                <div class="form-group row">
+                  <div class="dsplInLine">
+                    <select class="form-control" [(ngModel)]="status" [ngModelOptions]="{standalone: true}">
+                      <option value="Open">Open</option>
+                      <option value="Closed">Closed</option>
+                      <option value="All">All</option>
+                    </select>
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <div class="dsplInLine">
+                    <select class="form-control" [disabled]="!permissionsList.includes('Update')"
+                      [(ngModel)]="orderType" [ngModelOptions]="{standalone: true}">
+                      <!--  <option [ngValue]=null>All</option> -->
+                      <option *ngFor="let data of orderTypeDropdown">{{data}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10 mt-1">
+                    <label class="radio-inline ml-2">
+                      <input type="radio" value="All" class="m-1" [(ngModel)]="status" name="statusOptions">
+                      All
+                    </label>
+                    <label class="radio-inline ml-2" style="color:grey">
+                      <input type="radio" value="Open" class="m-1" [(ngModel)]="status" name="statusOptions">
+                      Open
+                    </label>
+                    <label class="radio-inline ml-2" style="color:green">
+                      <input checked type="radio" value="Closed" class="m-1" [(ngModel)]="status" name="statusOptions">
+                      Closed
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group row">
+                  <div class="col-sm-12 top-input">
+                    <input type="button" class="btn btn-green" style="margin-right: 5px;" value="Filter"
+                      (click)="filterDataFromDates()">
+                    <input type="button" class="btn btn-white" value="Reset" (click)="reset()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="headerItemsPerPage"
+                (change)="fetchAllDHeader(pageHeader=1,$event)" class="form-control shortWidth"
+                [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left:-20px;">
+              <input type="text" [(ngModel)]="headerSearchKey" placeholder="Search..."
+                [ngModelOptions]="{standalone: true}"
+                (keyup)="findAllSalesOrdersForHeader(pageHeader=1, headerItemsPerPage)">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Sr.No')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Sr.No')"></i> </th>
+                <th>{{'WMSO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','WMSO Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                            left: -7px;" aria-hidden="true" (click)="setDirection('DESC','WMSO Number')"></i>
+                </th>
+                <th>{{'Customer/Supplier/Warehouse' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Customer/Supplier/Warehouse')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Customer/Supplier/Warehouse')"></i> </th>
+
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customer Customer Name' |translate}} <i
+                    class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Customer Customer Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Customer Customer Name')"></i>
+                </th>
+
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customer Customer Address' |translate}} <i
+                    class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Customer Customer Address')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC','Customer Customer Address')"></i>
+                </th>
+
+                <th>{{'Order Type' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Order Type')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Type')"></i> </th>
+
+                <th>{{'Order Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Order Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Date')"></i> </th>
+
+                <th>{{'Confirmed By' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Confirmed By')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Confirmed By')"></i> </th>
+
+                <th>{{'Confirmed Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Confirmed Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Confirmed Date')"></i> </th>
+
+                <th>{{'Total Amount'|translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Total Amount')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Total Amount')"></i> </th>
+
+                <th>{{'Status' |translate}} <i class="fa fa-sort-asc" (click)="setDirection('ASC','Status')"
+                    aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Status')"></i> </th>
+
+                <th>{{'Action' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Action')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Action')"></i> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i=index;let order of salesOrderData | paginate:
+                 {itemsPerPage: headerItemsPerPage,currentPage: pageHeader,totalItems: headerTotalItems}">
+                <td>{{((pageHeader-1) * headerItemsPerPage)+i+1}}</td>
+                <th style="cursor:pointer" (click)="editSalesOrder(order._id)">
+                  {{order.fullWmsoNumber}}</th>
+                <td><span *ngIf="order.customerMasterInfo">{{order.customerMasterInfo.customerName}}</span>
+                  <span *ngIf="order.supplierMasterInfo">{{order.supplierMasterInfo.supplierName}}</span>
+                  <span
+                    *ngIf="order.wareHouseTransferDestinationInfo">{{order.wareHouseTransferDestinationInfo.wareHouseName}}</span>
+                </td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{order.customersCustomerName}}</td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{order.customersCustomerAddress}}</td>
+                <td>{{order.orderType}}</td>
+                <td class="text-center">{{order.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{order.confirmedBy}}</td>
+                <td class="text-center">{{order.confirmedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="text-right">{{order.totalNetAmount |decimalFilter}}</td>
+                <td [ngStyle]="{'color':(order.status=='Open') ?'grey':'green'}">{{order.status}}</td>
+                <td><span *ngIf="order.raiseSOStatus" class="ourCommonColor">SO Raised</span>
+                  <span _ngcontent-lty-c40="" class="btn btn-pink btn-sm" *ngIf="!order.raiseSOStatus"><i
+                      _ngcontent-lty-c40="" class="fa fa-trash btn-sm" (click)="delete(order)"></i></span>
+                  <span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"
+                    *ngIf="order.raiseSOStatus && order.status=='Open' && permissionsListForCart.includes('View')"><i
+                      _ngcontent-lty-c40="" class="fa fa-shopping-cart btn-blue"
+                      (click)="navigateToSch(order)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="findAllSalesOrdersForHeader((pageHeader = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--   <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">{{'WMSO Number' |translate}}</th>
+                <th scope="col">{{'Customer/Supplier/Warehouse' |translate}}</th>
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers CustomerName' |translate}}</th>
+                <th [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{'Customers CustomerAddress' |translate}}</th>
+                <th scope="col">{{'Order Type' |translate}}</th>
+                <th scope="col">{{'Order Date' |translate}}</th>
+                <th scope="col">{{'Confirmed By' |translate}}</th>
+                <th scope="col">{{'Confirmed Date' |translate}}</th>
+                <th scope="col">{{'Total Amount' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of filteredSalesOrders; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <th style="cursor:pointer" (click)="editSalesOrder(order._id)">{{order.wmsoNumber}}</th>
+                <td><span *ngIf="order.customerMasterInfo">{{order.customerMasterInfo.customerName}}</span>
+                  <span *ngIf="order.supplierMasterInfo">{{order.supplierMasterInfo.supplierName}}</span>
+                  <span
+                    *ngIf="order.wareHouseTransferDestinationInfo">{{order.wareHouseTransferDestinationInfo.wareHouseName}}</span>
+                </td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{order.customersCustomerName}}</td>
+                <td [hidden]="thirdPartyCustomersCheckAllocation=='No'">{{order.customersCustomerAddress}}</td>
+                <td>{{order.orderType}}</td>
+                <td class="text-center">{{order.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{order.confirmedBy}}</td>
+                <td class="text-center">{{order.confirmedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td  class="text-right">{{order.totalNetAmount}}</td>
+                <td><span *ngIf="order.raiseSOStatus" class="text-success">SO Raised</span>
+                  <span _ngcontent-lty-c40=""
+                    class="btn btn-pink btn-sm" *ngIf="!order.raiseSOStatus"><i _ngcontent-lty-c40=""
+                      class="fa fa-trash btn-sm" (click)="delete(order)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger2">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{'SO Number' |translate}}</th>
+                <th scope="col">{{'SO Line No' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'Brand' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Customer Order Quantity' |translate}}</th>
+                <th scope="col">{{'Batch Numbers' |translate}}</th>
+                <th scope="col" [hidden]="serialNumberAllocation=='No'">{{'Serial Number' |translate}}</th>
+                <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of filteredSOProducts; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{product.fullWmsoNumber}}</td>
+                <td>{{product.wmsoLineNumber}}</td>
+                <td *ngIf="product.productMasterInfo" class="text-right">{{product.productMasterInfo.productID || ''}}
+                </td>
+                <td *ngIf="product.productMasterInfo">{{product.productMasterInfo.productName || ''}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td>{{product.orderQuantity}}</td>
+                <td>{{product.batchNumbers}}</td>
+                <td [hidden]="serialNumberAllocation=='No'">{{product.serialNumbers}}
+                </td>
+                <td class="text-center">{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage" (change)="fetchAllDLines(page=1,$event)"
+                class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left:-20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="this.findAllSalesOrders(page=1, itemsPerPage)">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','S.No')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                        left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','S.No')"></i> </th>
+                <th>{{'Image' | translate}}</th>
+                <th scope="col">{{'SO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','SO Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','SO Number')"></i></th>
+                <th scope="col">{{'SO Line No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','SO Line No')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','SO Line No')"></i></th>
+                <th scope="col">{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Product ID')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product ID')"></i></th>
+                <th scope="col">{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Product Name')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Name')"></i></th>
+                <th scope="col">{{'Product Description' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Product Description')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Product Description')"></i></th>
+                <th scope="col">{{'Brand' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Brand')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Brand')"></i></th>
+                <th scope="col">{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','UOM')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','UOM')"></i></th>
+                <th scope="col">{{'Customer Order Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Customer Order Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Customer Order Quantity')"></i>
+                </th>
+                <th scope="col">{{'Batch Numbers' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Batch Numbers')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Batch Numbers')"></i></th>
+                <th scope="col" [hidden]="serialNumberAllocation=='No'">{{'Serial Number' |translate}} <i
+                    class="fa fa-sort-asc" style="position: relative;
+                      left: -7px;" (click)="setDirection1('ASC','Serial Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Serial Number')"></i></th>
+                <th scope="col">{{'Expected Delivery Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection1('ASC','Expected Delivery Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection1('DESC','Expected Delivery Date')"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let product of filteredSOProducts | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{product.fullWmsoNumber}}</td>
+                <td>{{product.wmsoLineNumber}}</td>
+                <td *ngIf="product.productMasterInfo" class="text-right">{{product.productMasterInfo.productID || ''}}
+                </td>
+                <td *ngIf="product.productMasterInfo">{{product.productMasterInfo.productName || ''}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td class="text-center">{{product.shipmentUnit}}</td>
+                <td>{{product.orderQuantity}}</td>
+                <td>{{product.batchNumbers}}</td>
+                <td [hidden]="serialNumberAllocation=='No'">{{product.serialNumbers}}</td>
+                <td class="text-center">{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" id="foo" (pageChange)="findAllSalesOrders(page = $event)">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

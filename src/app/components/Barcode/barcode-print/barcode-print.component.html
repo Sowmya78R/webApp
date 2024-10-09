@@ -1,0 +1,27 @@
+<!-- <div class="row" *ngFor="let data of finalArray;let i=index">
+  <div class="col-md-4">{{data.productIDName}}</div>
+  <div class="col-md-4">{{data.unit}}</div>
+  <div class="col-md-4"> <img id="logoImage{{i}}" style="width: 300px;height: 150px;border-radius: 10px;margin-top:5px"
+      alt="No Preivew available"><br>
+    <p>{{data.upcEANNumber}}</p></div>
+</div> -->
+
+<body>
+  <table class="w-100">
+    <tbody>
+      <tr>
+        <td>
+          <div class="row m-2">
+            <div class="col-md-4" *ngFor="let data of finalArray;let i=index" style="border: 1px solid;">
+              {{data.productIDName}}({{data.unit}})<br>
+              <!-- Dont Change Width and height of image-->
+              <img id="logoImage{{i}}" style="width: 300px;height: 150px;border-radius: 10px;margin-top:5px"
+                alt="No Preivew available"><br>
+              <p style="text-align: center;">{{data.upcEANNumber}}</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>

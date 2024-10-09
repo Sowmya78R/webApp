@@ -1,0 +1,145 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="inventoryAdjustmentForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'INVENTORY ADJUSTMENTS REPORT' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'INVENTORY ADJUSTMENTS REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Created From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control extraLongWidth" id="formDate" formControlName="fromDate">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Created To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm " formControlName="toDate" id="toDate">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Transaction ID' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Product Category' |translate}}</th>
+                <th>{{'Adjusted Quantity' |translate}}</th>
+                <th>{{'Inventory Unit' |translate}}</th>
+                <th>{{'Created Date' |translate}}</th>
+                <th>{{'Available Quantity' |translate}}</th>
+                <th>{{'Reserved Quantity' |translate}}</th>
+                <th>{{'Location Name' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of inventoryAdjustmentData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{report.fullInventoryAdjustmentTransactionID}}</td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.productCategory}}</td>
+                <td>{{report.adjustedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.inventoryUnit}}</td>
+                <td class="text-center">{{report.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{report.availableQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.reservedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.locationName}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

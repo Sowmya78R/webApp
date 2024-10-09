@@ -1,0 +1,226 @@
+<div id="inBody">
+  <div class="col-md-12" style="padding-bottom: 4.75rem;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> INVENTORY RECEIVING </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> INVENTORY RECEIVING
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <form [formGroup]="inventoryReceivingForm">
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Location Name<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7" formGroupName="locationInfo">
+                        <ng2-completer name="sourceLocation" formControlName="locationName" [datasource]="locationNames"
+                          [ngClass]="{'valiError': shouldShowErrors('locationName', inventoryReceivingForm, 'locationInfo'), 'valiSucess': shouldShowSuccess('locationName', 'locationInfo')}"
+                          [minSearchLength]="0" placeholder="Location Name">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Product ID/Name <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7" formGroupName="productMasterInfo">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="dataService"
+                          [ngClass]="{'valiError': shouldShowErrors('productIDName', inventoryReceivingForm, 'productMasterInfo'), 'valiSucess': shouldShowSuccess('productIDName', 'productMasterInfo')}"
+                          [minSearchLength]="0" placeholder="Product ID/Name" (selected)="onProductIDNameChange()">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Product Type<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="productType" placeholder="Product Type" class="form-control"
+                          formControlName="productType"
+                          [ngClass]="{'valiError': shouldShowErrors('productType', inventoryReceivingForm), 'valiSucess': shouldShowSuccess('productType')}"
+                          (focus)="onFocusForElement('productType')" (focusout)="onFocusOutForElement()" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Product Class<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="productClass" placeholder="Product Class" class="form-control"
+                          formControlName="productClass"
+                          [ngClass]="{'valiError': shouldShowErrors('productClass', inventoryReceivingForm), 'valiSucess': shouldShowSuccess('productClass')}"
+                          (focus)="onFocusForElement('productClass')" (focusout)="onFocusOutForElement()" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Category <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7" formGroupName="productCategoryInfo">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName"
+                          [ngClass]="{'valiError': shouldShowErrors('productCategoryName', inventoryReceivingForm)}"
+                          (focus)="onFocusForElement('productCategoryName')" (focusout)="onFocusOutForElement()">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Manufacturing Date<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="mfgDate" class="form-control" formControlName="mfgDate"
+                          [ngClass]="{'valiError': shouldShowErrors('mfgDate', inventoryReceivingForm), 'valiSucess': shouldShowSuccess('mfgDate')}"
+                          (focus)="onFocusForElement('mfgDate')" (focusout)="onFocusOutForElement()" type="date">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Expiry Date<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="expiryDate" class="form-control" formControlName="expiryDate"
+                          [ngClass]="{'valiError': shouldShowErrors('expiryDate', inventoryReceivingForm), 'valiSucess': shouldShowSuccess('expiryDate')}"
+                          (focus)="onFocusForElement('expiryDate')" (focusout)="onFocusOutForElement()" type="date">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Batch No
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="batchNumber" class="form-control" formControlName="batchNumber" type="text"
+                          placeholder="Batch No">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Quantity Inventory Unit<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="quantityInventoryUnit" class="form-control" formControlName="quantityInventoryUnit"
+                          placeholder="Quantity Inventory Unit"
+                          [ngClass]="{'valiError': shouldShowErrors('quantityInventoryUnit', inventoryReceivingForm), 'valiSucess': shouldShowSuccess('quantityInventoryUnit')}"
+                          (focus)="onFocusForElement('quantityInventoryUnit')" (focusout)="onFocusOutForElement()"
+                          type="number">
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Available Quantity
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="availableQuantity" class="form-control" placeholder="Available Quantity" formControlName="availableQuantity" type="number">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Reserved Quantity
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="reservedQuantity" class="form-control" placeholder="Reserved Quantity" formControlName="reservedQuantity" type="number">
+                      </div>
+                    </div>-->
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-sm-12 text-right  mb-3 mt-3">
+                        <button class="btn btn-green mr-1" (click)="save()"
+                          [disabled]="isButtonDisabled(inventoryReceivingForm)"> SAVE </button>
+                        <button class="btn btn-white" (click)="clear()"> CLEAR </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> INVENTORY </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> INVENTORY <i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-12">
+                  <table class="table table-striped d-table">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let key of inventoryKeys">{{key}}</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="filteredInventoryByProduct.length > 0">
+                      <tr *ngFor="let inventory of filteredInventoryByProduct; let i = index">
+                       <td class="text-left">{{i+1}}</td>
+                        <td>{{inventory.productMasterInfo?.productIDName}}</td>
+                        <td>{{inventory.zoneInfo?.zoneName}}</td>
+                        <td>{{inventory.locationInfo?.locationName}}</td>
+                        <td>{{inventory.quantityInventoryUnit}}</td>
+                        <td>{{inventory.availableQuantity}}</td>
+                      </tr>
+                    </tbody>
+                    <tbody *ngIf="filteredInventoryByProduct.length === 0">
+                      <tr>
+                        <th colspan="6" class="text-center"> No records found in Inventory </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom:-70px;">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped" [dtTrigger]="dtTrigger" datatable [dtOptions]="dtOptions">
+            <thead>
+              <tr>
+                <th *ngFor="let key of inventoryReceivingKeys">{{key}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventory of inventoryReceivings; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{inventory.transactionNumber}}</td>
+                <td>{{inventory.locationInfo?.locationName}}</td>
+                <td>{{inventory.productMasterInfo?.productIDName}}</td>
+                <td>{{inventory.productType}}</td>
+                <td>{{inventory.productClass}}</td>
+                <td>{{inventory.supplierMasterInfo?.supplierIDName}}</td>
+                <td>{{inventory.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.batchNumber}}</td>
+                <td>{{inventory.quantityInventoryUnit}}</td>
+                <td>{{inventory.reservedQuantity}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

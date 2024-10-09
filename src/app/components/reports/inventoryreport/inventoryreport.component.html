@@ -1,0 +1,63 @@
+<div id="inBody">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="udcBtns float-right">
+          <ul>
+            <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                </i> Download Excel </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped" [dtTrigger]="dtTrigger" datatable [dtOptions]="dtOptions">
+            <thead>
+              <tr>
+                <th *ngFor="let key of inventoryKeys">{{key}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventory of inventories; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{inventory.productMasterInfo.productIDName}}</td>
+                <td>{{inventory.productMasterInfo.productName}}</td>
+                <td>{{inventory.serialNumber}}</td>
+                <td>{{inventory.productCategoryInfo?.productCategoryName}}</td>
+                <td>{{inventory.productType}}</td>
+                <td>{{inventory.productClass}}</td>
+                <td>{{inventory.supplierMasterInfo?.supplierIDName}}</td>
+                <td>{{inventory.productDescription}}</td>
+                <td>{{inventory.productConfiguration}}</td>
+                <td>{{inventory.dfsCode}}</td>
+                <td>{{inventory.quantityInventoryUnit}}</td>
+                <td>{{inventory.type}}</td>
+                <td>{{inventory.wareHouseInfo?.wareHouseName}}</td>
+                <td>{{inventory.zoneInfo.zoneName}}</td>
+                <td>{{inventory.rackInfo.rackName}}</td>
+                <td>{{inventory.levelInfo.levelName}}</td>
+                <td>{{inventory.locationInfo.locationName}}</td>
+                <td>{{inventory.columnInfo?.columnName}}</td>
+                <td>{{inventory.createdDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.storageUnit}}</td>
+                <td>{{inventory.inventoryUnit}}</td>
+                <td>{{inventory.availableQuantity}}</td>
+                <td>{{inventory.reservedQuantity}}</td>
+                <td>{{inventory.batchNumber}}</td>
+                <td>{{inventory.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.remainingShelfLife}}</td>
+                <td>{{inventory.avgCostPrice * inventory.availableQuantity}}</td>
+                <td>{{inventory.avgCostPrice}}</td>
+                <td>{{inventory.inventoryAvailability}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

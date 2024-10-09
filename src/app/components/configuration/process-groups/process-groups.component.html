@@ -1,0 +1,111 @@
+<form [formGroup]="permissionsForm" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div id="inBody">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group row mt-3">
+            <label class="mt-1">{{'UserIdName:' |translate}}</label>
+            <div class="col-sm-6 mb-3" formGroupName="userInfo">
+              <!-- <select class="form-control" formControlName="userIDName" name="userIDName"
+                (change)="onSelectUser($event.target.value)">
+                <option value="null">--{{'Select User' |translate}}--</option>
+                <option *ngFor="let user of users" [value]="user.userIDName">{{user.userIDName}}</option>
+              </select> -->
+              <ng2-completer formControlName="userIDName" name="userIDName" [datasource]="userIDNames"
+                [minSearchLength]="0" placeholder="{{'Select User' |translate}}" (selected)="onSelectUser($event)">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" [hidden]="yesAdmin">
+          <div class="form-group row mt-3">
+            <label class="mt-1">{{'Organization IdName:' |translate}}</label>
+            <div class="col-sm-6 mb-3">
+              <!-- <select class="form-control" [(ngModel)]="childOrganizationDropdown" [ngModelOptions]="{standalone: true}"
+                (change)="onSelectOrg($event.target.value)">
+                <option value="null">--Select Organisation--</option>
+                <option *ngFor="let org of orgData" [value]="org.organizationIDName">{{org.organizationIDName}}</option>
+              </select> -->
+              <ng2-completer [(ngModel)]="childOrganizationDropdown" [ngModelOptions]="{standalone: true}"
+                [datasource]="orgIDNames" [minSearchLength]="0" placeholder="{{'Select Organization' |translate}}"
+                (selected)="onSelectOrg($event)">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" [hidden]="yesAdmin">
+          <div class="form-group row mt-3">
+            <label class="mt-1">{{'Warehouse IdName:' |translate}}</label>
+            <div class="col-sm-6 mb-3">
+              <!-- <select class="form-control" [(ngModel)]="childWareHouseDropdown" [ngModelOptions]="{standalone: true}"
+                (change)="onSelectWareHouse($event.target.value)">
+                <option value="null">--Select WareHouseIdName--</option>
+                <option *ngFor="let ware of warehouses" [value]="ware.wareHouseIDName">{{ware.wareHouseIDName}}</option>
+              </select> -->
+              <ng2-completer [(ngModel)]="childWareHouseDropdown" [ngModelOptions]="{standalone: true}"
+                [datasource]="wareHouseIDNames" [minSearchLength]="0" placeholder="{{'Select Warehouse' |translate}}"
+                (selected)="onSelectWareHouse($event)">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <div class="col-md-12">
+              <table class="table table-striped processGroup">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'PROCESS' |translate}}</th>
+                    <th>{{'ACTION' |translate}}<input type="checkbox" class="form-control"
+                        (click)="selectAllData($event,'isEnabled')" [(ngModel)]="selectAllCheckboxValue"
+                        [ngModelOptions]="{standalone: true}"
+                        [disabled]="permissionsList.length==0 || !configPermissionsList.includes('Update')"></th>
+                    <th *ngIf="permissionsList.length>0 && !yesAdmin">{{'PERMISSIONS' |translate}}
+                    </th>
+                    <th *ngIf="permissionsList.length>0 && !yesAdmin">Rename</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let functionality of functionalities">
+                    <td>
+                      <span>{{functionality.name |translate}}</span>
+                    </td>
+                    <td>
+                      <div class="custom-control custom-checkbox checkbox-xl" style="display: inline; margin: 0px;">
+                        <input type="checkbox" [checked]="functionality.isEnabled" [id]="functionality.name"
+                          name="functionality.name" [disabled]="!configPermissionsList.includes('Update')"
+                          (change)="getCheckedProcess(functionality.name, $event);isAllSelected('isEnabled')">
+                        <label for="checkbox-3"></label>
+                      </div>
+                    </td>
+                    <td *ngIf="permissionsList.length>0 && !yesAdmin"><span
+                        *ngIf="permissionsList.includes('View')"><input type="checkbox" [checked]="functionality.View"
+                          disabled>View</span> &nbsp;
+                    </td>
+                    <td *ngIf="permissionsList.length>0 && !yesAdmin">
+                      <span *ngIf="permissionsList.includes('View')">
+                        <input type="text" [(ngModel)]="functionality.rename" class="form-control"
+                        [ngModelOptions]="{standalone: true}">
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row mt-3">
+                <div class="col-sm-12 text-center mb-3">
+                  <button class="btn btn-green mr-1" (click)="update()"
+                    [disabled]="permissionsList.length==0">{{'Update' |translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

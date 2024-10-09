@@ -1,0 +1,53 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <td>{{'S.No' |translate}}</td>
+                <td>{{'WMPO Number' |translate}}</td>
+                <td>{{'WMPO Line Number' |translate}}</td>
+                <td>{{'Suppiler ID' |translate}}</td>
+                <td>{{'Suppiler Name' |translate}}</td>
+                <td>{{'Receipt Date' |translate}}</td>
+                <td>{{'Delivery Date' |translate}}</td>
+                <td>{{'WMSO Number' |translate}}</td>
+                <td>{{'WMSO Line Number' |translate}}</td>
+                <td>{{'Customer ID' |translate}}</td>
+                <td>{{'Customer Name' |translate}}</td>
+                <td>{{'Sales Order Date' |translate}}</td>
+                <td>{{'Delivery Expected Date' |translate}}</td>
+                <td>{{'Product ID' |translate}}</td>
+                <td>{{'Product Name' |translate}}</td>
+                <td>{{'Order Quantity' |translate}}</td>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of crossDockingHistories; let i=index">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{data.fullWmpoNumber}}</td>
+                <td>{{data.wmsPOLineNumber}}</td>
+                <td>{{data.supplierMasterInfo.supplierID}}</td>
+                <td>{{data.supplierMasterInfo.supplierName}}</td>
+                <td>{{data.receiptDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.poDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.wmsoNumber}}</td>
+                <td>{{data.wmsoLineNumber}}</td>
+                <td>{{data.customerMasterInfo.customerID}}</td>
+                <td>{{data.customerMasterInfo.customerName}}</td>
+                <td>{{data.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.deliveryExpDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.productMasterInfo.productID}}</td>
+                <td>{{data.productMasterInfo.productName}}</td>
+                <td>{{data.soQuantity | decimalFilter}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

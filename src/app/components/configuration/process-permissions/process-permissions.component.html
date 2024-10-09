@@ -1,0 +1,124 @@
+<form [formGroup]="permissionsForm" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div id="inBody">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'UserIdName:' |translate}}</label>
+          <div class="col-sm-6 mb-3" formGroupName="userInfo">
+            <ng2-completer formControlName="userIDName" name="userIDName" [datasource]="userIDNames"
+              [minSearchLength]="0" placeholder="{{'Select User' |translate}}" (selected)="onSelectUser($event)">
+            </ng2-completer>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" [hidden]="yesAdmin">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'Organization IdName:' |translate}}</label>
+          <div class="col-sm-6 mb-3">
+            <ng2-completer [(ngModel)]="childOrganizationDropdown" [ngModelOptions]="{standalone: true}"
+              [datasource]="orgIDNames" [minSearchLength]="0" placeholder="{{'Select Organization' |translate}}"
+              (selected)="onSelectOrg($event)">
+            </ng2-completer>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" [hidden]="yesAdmin">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'Warehouse IdName:' |translate}}</label>
+          <div class="col-sm-6 mb-3">
+            <ng2-completer [(ngModel)]="childWareHouseDropdown" [ngModelOptions]="{standalone: true}"
+              [datasource]="wareHouseIDNames" [minSearchLength]="0" placeholder="{{'Select Warehouse' |translate}}"
+              (selected)="onSelectWareHouse($event)">
+            </ng2-completer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="strategryAnalysisTbs">
+        <div class="row">
+          <div class="col-md-12 processPermission" *ngFor="let process of functionalities;">
+            <div class="panel portlet" [hidden]="process.permissions=='No'">
+              <div class="formBox portlet-title">
+                <div class="strategryAnalysisTitle" id="sWOTAnalysis">
+                  <div class="titleBG"> <span>{{process.name |translate}}</span>
+                    <p class="form-inline updateDeleteSelectAll">
+                      <span *ngIf="permissionsList.includes('View') && !yesAdmin"><input type="checkbox"
+                          class="form-control" (click)="selectAllData($event,'Create',process.name)"
+                          [disabled]="!configPermissionsList.includes('View')"
+                          [(ngModel)]="process.selectAllCreateCheckBox" [ngModelOptions]="{standalone: true}">{{'Create'
+                        |translate}}</span>
+                      <span *ngIf="permissionsList.includes('Update') && !yesAdmin"><input type="checkbox"
+                          class="form-control" (click)="selectAllData($event,'Update',process.name)"
+                          [disabled]="!configPermissionsList.includes('Update')"
+                          [(ngModel)]="process.selectAllUpdateCheckBox" [ngModelOptions]="{standalone: true}">{{'Update'
+                        |translate}}</span>
+                      <span *ngIf="permissionsList.includes('Delete') && !yesAdmin"><input type="checkbox"
+                          class="form-control" (click)="selectAllData($event,'Delete',process.name)"
+                          [disabled]="!configPermissionsList.includes('Delete')"
+                          [(ngModel)]="process.selectAllDeleteCheckBox" [ngModelOptions]="{standalone: true}">{{'Delete'
+                        |translate}}</span>
+                    </p>
+                  </div>
+                  <!-- <i class="fa fa-angle-down collapsed" data-toggle="collapse" data-target="#wmsTbsCollosape"></i> -->
+                </div>
+                <div id="wmsTbsCollosape" class="collapse show" aria-labelledby="sWOTAnalysis"
+                  data-parent="#accordionSTrategryAnalysis">
+
+                  <ul>
+                    <li *ngFor="let subProcess of process.subFunctionalities">
+                      <div>
+                        <a> <img src="{{fetchImgSrc(subProcess.name)}}" class="img-responsive menuColrIcon" height="40"
+                            width="60" /> </a>
+                        <div class="custom-control custom-checkbox checkbox-xl">
+                          <input type="checkbox" (change)="getCheckedSubProcess(subProcess.name, $event)"
+                            [id]="subProcess.name" name="subProcess" [checked]="subProcess.isEnabled"
+                            [disabled]="(!individualFunctionality&&!yesAdmin)|| !configPermissionsList.includes('Update')">
+                          <label for="checkbox-3"></label>
+                        </div>
+                        <p class="processHead">{{subProcess.name |translate}}</p>
+                      </div>
+                      <p *ngIf="permissionsList.length>0 && !yesAdmin">
+                        <input type="checkbox" disabled [checked]="subProcess.View"><label class="processHead">{{'View'
+                          |translate}}</label> &nbsp;
+                        <input [type]="(permissionsList.includes('View')?'checkbox':'hidden')"
+                          [checked]="subProcess.Create"
+                          [disabled]="!configPermissionsList.includes('View') || !subProcess.View"
+                          (click)="getCheckPermissions(subProcess.name, $event,'Create');isAllSelected('Create',process.name)"><label
+                          class="processHead" *ngIf="permissionsList.includes('View')">{{'Create' |translate}}</label>
+                        &nbsp;
+                        <input [type]="(permissionsList.includes('Update')?'checkbox':'hidden')"
+                          [checked]="subProcess.Update"
+                          [disabled]="!configPermissionsList.includes('Update') || !subProcess.View"
+                          (click)="getCheckPermissions(subProcess.name, $event,'Update');isAllSelected('Update',process.name)"><label
+                          class="processHead" *ngIf="permissionsList.includes('Update')">{{'Update' |translate}}</label>
+                        &nbsp;
+                        <input [type]="(permissionsList.includes('Delete')?'checkbox':'hidden')"
+                          [checked]="subProcess.Delete"
+                          [disabled]="!configPermissionsList.includes('Delete') || !subProcess.View"
+                          (click)="getCheckPermissions(subProcess.name, $event,'Delete');isAllSelected('Delete',process.name)"><label
+                          class="processHead" *ngIf="permissionsList.includes('Delete')">{{'Delete' |translate}}</label>
+                      </p>
+                      <p *ngIf="permissionsList.length>0 && !yesAdmin">
+                        <input type="text" [(ngModel)]="subProcess.rename" class="form-control"
+                          [ngModelOptions]="{standalone: true}">
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group row mt-3">
+        <div class="col-sm-12 text-center mb-3">
+          <button class="btn btn-green mr-1" (click)="update()" [disabled]="(!individualFunctionality&&!yesAdmin)
+          ">{{'Update' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

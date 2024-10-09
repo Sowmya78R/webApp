@@ -1,0 +1,190 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Notification Config' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Notification Config' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                  <div class="row mb-2" [formGroup]="purchaseOrderForm">
+                    <div class="col-md-3"><label>{{'purchase Order' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName"
+                        (change)="getUsers($event.target.value,'purchaseOrderForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="purchaseorderPendingSelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'purchaseOrderForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                        (click)="getTable('PurchaseOrderPendingList')" aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="putAwayForm">
+                    <div class="col-md-3"><label>{{'Putaway' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName" (change)="getUsers($event.target.value,'putAwayForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="putAwaySelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'putAwayForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" aria-hidden="true"
+                        (click)="getTable('putAwayList')"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="salesOrderForm">
+                    <div class="col-md-3"><label>{{'Sales Order' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName"
+                        (change)="getUsers($event.target.value,'salesOrderForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="SalesOrderPendingSelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'salesOrderForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('salesOrderList')"
+                        aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="pickingForm">
+                    <div class="col-md-3"><label>{{'Picking' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName" (change)="getUsers($event.target.value,'pickingForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="PickingPendingSelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'pickingForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('pickingList')"
+                        aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="expiredForm">
+                    <div class="col-md-3"><label>{{'Expired' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName" (change)="getUsers($event.target.value,'expiredForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="expiredFormSelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'expiredForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('expiryList')"
+                        aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="goingToExpiredForm">
+                    <div class="col-md-3"><label>{{'Going To Expire' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName"
+                        (change)="getUsers($event.target.value,'goingToExpiredForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="goingToExpireSelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'goingToExpiredForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('goingToExpiryList')"
+                        aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row mb-2" [formGroup]="zoneCapacityForm">
+                    <div class="col-md-3"><label>{{'Zone Capacity' |translate}}</label></div>
+                    <div class="col-md-3" formGroupName="role">
+                      <select class="form-control" formControlName="roleName"
+                        (change)="getUsers($event.target.value,'zoneCapacityForm')">
+                        <option value=null>Select Role</option>
+                        <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="zoneCapacitySelected" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setUserstoForm($event,'zoneCapacityForm')">
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('zoneCapacityList')"
+                        aria-hidden="true"></i></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="float-right">
+                        <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<ngx-smart-modal customClass="nsm-centered" id="spaceUtilization" #spaceUtilization [identifier]="'spaceUtilization'">
+  <div class="row" *ngIf="popupData && popupData.notificationsUserConfigurations.length>0; else emptyText">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table class="table table-striped processGroup">
+          <thead>
+            <tr>
+              <th scope="col">{{'Role' |translate}}</th>
+              <th>{{'Users' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let functionality of popupData.notificationsUserConfigurations;">
+              <ng-container *ngFor="let subFunctionality of functionality.userInfos; let i = index">
+                <tr>
+                  <td *ngIf="i=== 0;" [attr.rowspan]="functionality.userInfos.length">
+                    <span>{{functionality.role.roleName}}</span>
+                  </td>
+                  <td>
+                    <span>{{subFunctionality.userIDName}}</span>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyText>No Data Found</ng-template>
+</ngx-smart-modal>

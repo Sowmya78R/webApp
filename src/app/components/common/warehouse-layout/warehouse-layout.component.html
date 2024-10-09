@@ -1,0 +1,672 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12 bWhite" style="border-radius:10px;padding:18px;">
+              <div class="row">
+                <div class="col-md-2" *ngIf="stockPermissionsList.length>0">
+                  <ul>
+                    <li>
+                      <a><i class="fa fa-cubes" style="color:black;font-size:30px;"></i></a>
+                      <div class="custom-control custom-checkbox checkbox-xl">
+                        <input type="radio" name="optradio" [checked]="StockCategoryType"
+                          (click)="setTypevalue('Stock')" style="margin-left:-20px">
+                        <span style="color:black;" class="ml-1">{{'Stock' |translate}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-2" *ngIf="putawayPermissionsList.length>0">
+                  <ul>
+                    <li style="margin-top:-10px;">
+                      <a> <span class="material-icons" style="font-size: 30px;color:black;
+                      position: relative;top: 6px;left: 7px;">shopping_cart</span></a>
+                      <div class="custom-control custom-checkbox checkbox-xl">
+                        <input type="radio" name="optradio" [checked]="putawayCategoryType"
+                          (click)="setTypevalue('Putaway')" style="margin-left:-20px">
+                        <span style="color:black;" class="ml-1">{{'Putaway' |translate}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-2" *ngIf="pickingPermisionsList.length>0">
+                  <ul>
+                    <li>
+                      <a>
+                        <span class="material-icons" style="font-size: 30px;color:black; -webkit-transform: scaleX(-1);
+                        transform: scaleX(-1);    position: relative;
+    left: 23px;
+    top: -1px;">shopping_cart</span>
+                      </a>
+                      <div class="custom-control custom-checkbox checkbox-xl" style="margin-top: -8px">
+                        <input type="radio" name="optradio" [checked]="pickingCategoryType"
+                          (click)="setTypevalue('Picking')">
+                        <span style="color:black;margin-left:-20px;margin-top:-20px;" class="ml-1">{{'Picking' |translate}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-2">
+                  <ul>
+                    <li>
+                      <a><i class="fa fa-cubes" style="color:orange;font-size:30px;"></i></a>
+                      <div class="custom-control custom-checkbox checkbox-xl" style="margin-left:-25px ">
+                        <p class="processHead mt-1">{{'Location Availability' |translate}}</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-2">
+                  <ul>
+                    <li class="ng-star-inserted">
+                      <a><i class="fa fa-table" style="color:black;font-size:30px"></i></a>
+                      <div class="custom-control custom-checkbox checkbox-xl" style="margin-left:-12px">
+                        <p class="processHead mt-1">{{'Locations' |translate}}</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-2">
+                  <ul>
+                    <li class="ng-star-inserted">
+                      <a><i class="fa fa-th-large" style="color:black;font-size:30px"></i></a>
+                      <div class="custom-control custom-checkbox checkbox-xl" style="margin-left:-12px">
+                        <p class="processHead mt-1">{{'Receiving Bay' |translate}}</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="bWhite mb-2" style="padding:10px;margin-top:-31px;border-radius:10px">
+            <div class="row" *ngIf="payloadJSON.selectCategory=='Stock'">
+              <div class="col-md-2">
+                <select class="form-control" [(ngModel)]="payloadJSON.type"
+                  (change)="callResultMethod('type',$event.target.value)"
+                  [disabled]="!stockPermissionsList.includes('View')">
+                  <option value=null>--Select Type--</option>
+                  <option *ngFor="let category of searchCategories" [value]="category">{{category}}</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <ng2-completer [datasource]="supplierData" [minSearchLength]="0" placeholder="{{'Supplier/IDName' |translate}}"
+                  [(ngModel)]="payloadJSON.supplierIDName" name="supplierIDName" #supplierIDName="ngModel"
+                  (selected)="callResultMethod('supplierIDName',$event.originalObject)"
+                  [disabled]="!stockPermissionsList.includes('View') || supplierIDName">
+                </ng2-completer>
+              </div>
+              <div class="col-md-2">
+                <ng2-completer [datasource]="productsData" [minSearchLength]="0" placeholder="{{'Product/IDName' |translate}}"
+                  [(ngModel)]="payloadJSON.productIDName" name="productIDName" #productIDName="ngModel"
+                  (selected)="callResultMethod('productIDName',$event.originalObject)"
+                  [disabled]="!stockPermissionsList.includes('View')">
+                </ng2-completer>
+              </div>
+              <div class="col-md-2">
+                <ng2-completer [datasource]="serialNumberIDs" [(ngModel)]="payloadJSON.serialNumber" name="serialNumber"
+                  #serialNumber="ngModel" [minSearchLength]="0" placeholder="{{'Serial Number' |translate}}"
+                  (selected)="callResultMethod('serialNumber',$event.originalObject)"
+                  [disabled]="!stockPermissionsList.includes('View')">
+                </ng2-completer>
+              </div>
+              <div class="col-md-2" *ngIf="payloadJSON.selectCategory=='Stock'">
+                <ng2-completer [datasource]="batchNumberIDs" [(ngModel)]="payloadJSON.batchNumber" name="batchNumber"
+                  #batchNumber="ngModel" [minSearchLength]="0" placeholder="{{'Batch Number' |translate}}"
+                  (selected)="callResultMethod('batchNumber',$event.originalObject)"
+                  [disabled]="!stockPermissionsList.includes('View')">
+                </ng2-completer>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-2" *ngIf="payloadJSON.selectCategory == 'Putaway'">
+                    <select class="form-control" [(ngModel)]="payloadJSON.executiveIDName" (change)="getResult()"
+                      [disabled]="!putawayPermissionsList.includes('View')">
+                      <option value="null">--Select User--</option>
+                      <option *ngFor="let user of wareHouseTeamsList">{{user.executiveIDName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2" *ngIf="payloadJSON.selectCategory == 'Picking'">
+                    <select class="form-control" [(ngModel)]="payloadJSON.executiveIDName" (change)="getResult()"
+                      [disabled]="!pickingPermisionsList.includes('View')">
+                      <option value="null">--Select User--</option>
+                      <option *ngFor="let user of wareHouseTeamsList">{{user.executiveIDName}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <ul class="wareHouseLayoutStyle">
+                <li><span class="boxModal"></span>
+                  <a style="color:black">{{'Empty Location' |translate}}</a>
+                </li>
+                <li><span class="boxModal1"></span>
+                  <a style="color:black">{{'Stock' |translate}}</a>
+                </li>
+                <li><span class="boxModal2"></span>
+                  <a style="color:black">{{'Going to Expire' |translate}}</a>
+                </li>
+                <li><span class="boxModal3"></span>
+                  <a style="color:black">{{'Expired' |translate}}</a>
+                </li>
+                <li><span class="boxModal4"></span>
+                  <a style="color:black">{{'Reserved Quantity' |translate}}</a>
+                </li>
+                <li><span class="boxModal5"></span>
+                  <a style="color:black">{{'Quarantine' |translate}}</a>
+                </li>
+                <li><span class="boxModal6"></span>
+                  <a style="color:black">{{'Product' |translate}}</a>
+                </li>
+                <li><span class="boxModal7"></span>
+                  <a style="color:black">{{'Supplier' |translate}}</a>
+                </li>
+                <li><span class="boxModal8"></span>
+                  <a style="color:black">{{'Serial Number' |translate}}</a>
+                </li>
+                <li><span class="boxModal9"></span>
+                  <a style="color:black">{{'Batch Number' |translate}}</a>
+                </li>
+                <li><span class="boxModa10"></span>
+                  <a style="color:black">{{'Putaway & Picking' |translate}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row"style="margin-left: 29px;
+  margin-top: -17px;
+  margin-bottom: 20px;
+  width: 1462px;">
+    <ul class="wareHouseLayoutStyle newImageclass">
+      <li><span class="boxModal"></span>
+        <a style="color:black">Stock</a>
+      </li>
+      <li><span class="boxModal1"></span>
+        <a style="color:black">Stock Available</a>
+      </li>
+      <li><span class="boxModal2"></span>
+        <a style="color:black">Going to Expire</a>
+      </li>
+      <li><span class="boxModal3"></span>
+        <a style="color:black">Expired</a>
+      </li>
+      <li><span class="boxModal4"></span>
+        <a style="color:black">Reserved Quantity</a>
+      </li>
+      <li><span class="boxModal5"></span>
+        <a style="color:black">Quarantine</a>
+      </li>
+      <li><span class="boxModal6"></span>
+        <a style="color:black">Product</a>
+      </li>
+      <li><span class="boxModal7"></span>
+        <a style="color:black">Supplier</a>
+      </li>
+      <li><span class="boxModal8"></span>
+        <a style="color:black">Serial Number</a>
+      </li>
+      <li><span class="boxModal9"></span>
+        <a style="color:black">Batch Number</a>
+      </li>
+      <li><span class="boxModa10"></span>
+        <a style="color:black">Putaway and Picking</a>
+      </li>
+    </ul>
+  </div> -->
+  <!--  <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <img src="assets/warehouseLayoutImage.png" class="img-responsive mb-3 w-100 newImageclass" alt="">
+        </div>
+      </div>
+    </div> -->
+
+  <!--  <div class="row" style="margin-top:-17px;">
+    <ul class="wareHouseLayoutStyle newImageclass">
+      <li><span class="boxModal"></span>
+        <a style="color:black">Stock</a>
+      </li>
+      <li><span class="boxModal1"></span>
+        <a style="color:black">Stock Available</a>
+      </li>
+      <li><span class="boxModal2"></span>
+        <a style="color:black">Going to Expire</a>
+      </li>
+      <li><span class="boxModal3"></span>
+        <a style="color:black">Expired</a>
+      </li>
+      <li><span class="boxModal4"></span>
+        <a style="color:black">Reserved Quantity</a>
+      </li>
+      <li><span class="boxModal5"></span>
+        <a style="color:black">Quarantine</a>
+      </li>
+      <li><span class="boxModal6"></span>
+        <a style="color:black">Product</a>
+      </li>
+      <li><span class="boxModal7"></span>
+        <a style="color:black">Supplier</a>
+      </li>
+      <li><span class="boxModal8"></span>
+        <a style="color:black">Serial Number</a>
+      </li>
+      <li><span class="boxModal9"></span>
+        <a style="color:black">Batch Number</a>
+      </li>
+      <li><span class="boxModal10"></span>
+        <a style="color:black">Putaway and Picking</a>
+      </li>
+    </ul>
+  </div> -->
+
+
+  <div class="row" style="margin-top:-10px;">
+    <div class="col-md-12">
+      <div class="row" *ngIf="finalArrayObj">
+        <div class="col-md-12">
+          <ng-container>
+            <div id="zone1" [ngStyle]="{'height': finalArrayObj.height + 'px'}" #zone1>
+              <h6 class="text-center mt-2">{{finalArrayObj.wareHouseID}} : {{finalArrayObj.wareHouseName}} &nbsp;<i
+                  class="fa fa-cubes" style="color:orange;cursor: pointer;"
+                  (click)="getSpaceUtil(finalArrayObj.wareHouseName,'warehouse')" aria-hidden="true"></i>&nbsp;<span
+                  *ngIf="hide">Stock : </span>{{finalArrayObj.wareHouseLayoutInventoryDetails?.quantityInventoryUnit}}
+                {{finalArrayObj.wareHouseLayoutInventoryDetails?.inventoryUnit}}
+              </h6>
+              <ng-container *ngFor="let zone of warehouseData">
+                <div id="zone1" style="float: left; margin: 10px;" #zone1
+                  [ngStyle]="{'height': zone.height + 'px', 'width': zone.width + 'px', 'position':'absolute','left':zone.xcoordinate+'px','top':zone.ycoordinate+'px'}">
+                  <h6 class="text-center m-auto p-2">{{zone.zoneName}} &nbsp;<i class="fa fa-cubes"
+                      style="color:orange;cursor: pointer;" aria-hidden="true"
+                      (click)="getSpaceUtil(zone.zoneName,'zone')"></i><span class="m-2" *ngIf="hide">Stock : </span>
+                    &nbsp;{{zone.wareHouseLayoutInventoryDetails?.quantityInventoryUnit}}
+                    {{zone.wareHouseLayoutInventoryD}}
+                  </h6>
+                  <div class="boxRack">
+                    <div class="row">
+                      <div class="col-md-12 text-center">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-11 p-0">
+                        <div class="boxLevel" *ngFor="let rack of zone.wareHouseLayoutRackDetails"
+                          [ngStyle]="{'height': rack.height + 'px', 'width': rack.width + 'px', 'position':'absolute','left':rack.xcoordinate+'px','top':rack.ycoordinate+'px'}">
+                          <div style="text-align: center; font-weight: 600;">{{rack.rackName}}
+                            &nbsp;<i class="fa fa-cubes" style="color:orange;cursor: pointer;"
+                              (click)="getSpaceUtil(rack.rackName,'rack')" aria-hidden="true"></i>
+                            &nbsp;<i class="fa fa-table" style="cursor: pointer;" aria-hidden="true"
+                              (click)="getDataForFilters(rack.rackName,'rack',zone.zoneName)"></i>
+                            &nbsp;<i class="fa fa-th-large" style="cursor: pointer" aria-hidden="true"
+                              (click)="getProductUtilization(rack.rackName,'rack',zone.zoneName)"></i>
+                            <span class="m-2" *ngIf="hide">Stock :
+                            </span>{{rack.wareHouseLayoutInventoryDetails?.quantityInventoryUnit}}{{rack.wareHouseLayoutInventoryDetails?.inventoryUnit}}
+                          </div>
+                          <ul>
+                            <li *ngFor="let column of rack.wareHouseLayoutColumnDetails; let i=index" [ngStyle]="{'height': column.height + 'px', 'width': column.width + 'px',
+                                      'left':column.xcoordinate+'px',
+                                       'top': column.ycoordinate + 'px','position':'absolute'}">
+                              <div class="RckLocton" (mouseover)="onHover($event)" data-toggle="popover"
+                                [ngClass]="{'bg-primary':(getSelectBoolean(column.frontLocations) && payloadJSON.type=='Stock Available'),
+                            'bg-danger':(getSelectBoolean(column.frontLocations) && payloadJSON.type=='Expired'),
+                            'bg-info':(getSelectBoolean(column.frontLocations) && payloadJSON.type=='Reserved Inventory'),
+                            'bg-warning':(getSelectBoolean(column.frontLocations) && payloadJSON.type=='Going To Expire')}" [ngStyle]="{'background-color':(getSelectBoolean(column.frontLocations) &&
+                             (payloadJSON.selectCategory=='Picking' || payloadJSON.selectCategory=='Putaway'))?'#00ffff':
+                             (getSelectBoolean(column.frontLocations) && payloadJSON.type=='Quarentine'?'#ff9966':
+                             getSelectBoolean(column.frontLocations) && payloadJSON.supplierIDName ?'#9966ff':
+                             getSelectBoolean(column.frontLocations) && payloadJSON.serialNumber ?'#66ffcc':
+                             getSelectBoolean(column.frontLocations) && payloadJSON.batchNumber ?'#0099cc':
+                             getSelectBoolean(column.frontLocations) && payloadJSON.productIDName ?'#28a745':'')}">
+                                {{column.columnName}}
+                                <!-- [ngStyle]="{ 'top': getPromoStyles()}"  id="binHoverDiv"  -->
+                                <div *ngIf="column.frontLocations.length > 0" id="binHoverDiv">
+                                  <ul>
+                                    <li *ngFor="let location of column.frontLocations">
+                                      <div class="media">
+                                        <div class="mr-3 binGryBG mt-1" [ngClass]="{'bg-primary':(location.select=='Yes' && payloadJSON.type=='Stock Available'),
+                                    'bg-danger':(location.select=='Yes' && payloadJSON.type=='Expired'),
+                                    'bg-info':(location.select=='Yes' && payloadJSON.type=='Reserved Inventory'),
+                                    'bg-warning':(location.select=='Yes' && payloadJSON.type=='Going To Expire')}"
+                                          [ngStyle]="{'background-color':(location.select=='Yes' &&
+                                      (payloadJSON.selectCategory=='Picking' || payloadJSON.selectCategory=='Putaway'))?'#00ffff':
+                                      (location.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                             (location.select=='Yes' && payloadJSON.supplierIDName) ?'#9966ff':
+                             location.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                             location.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                             location.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                        </div>
+                                        <div class="media-body">
+                                          <p>{{location.levelName}} {{location.locationName}}</p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Putaway' || payloadJSON.selectCategory=='Picking'"
+                                            *ngFor="let product of location.wareHouseLayoutInventoryDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right" [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                            (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                            (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                            (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                            (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                            payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                            (product.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                            product.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                            product.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                            product.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                            product.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                              </i>
+                                              {{product.productIDName}}
+                                              Expiry: {{product.expiryDate | date:
+                                              'dd/MM/yyyy'}} Reserved
+                                              Quantity: {{product.reservedQuantity}} Quantity InventoryUnit
+                                              :{{product.quantityInventoryUnit}}
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Stock' || payloadJSON.selectCategory=='Picking'"
+                                            *ngFor="let product of location.wareHouseLayoutPutawayDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right" [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                            (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                            (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                            (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                            (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                            payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                            (product.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966'
+                                            :product.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                            product.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                            product.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                            product.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                              </i>
+                                              Putaway Number {{product.putawayNumber}}
+                                              {{product.productIDName}}
+                                              Quantity: {{product.quantity}}&nbsp;{{product.inventoryUnit}}
+                                              <br>
+                                              <button *ngIf="!product.startTime && product.status=='Open'"
+                                                (click)="onStatusChange('startTime',product)">Start</button>
+                                              <button *ngIf="product.startTime && product.status=='Open'"
+                                                (click)="onStatusChange('status',product)">Complete</button>
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Stock' || payloadJSON.selectCategory=='Putaway'"
+                                            *ngFor="let product of location.wareHouseLayoutPickingDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right" [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                            (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                            (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                            (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                            (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                            payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                            (product.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                            product.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                            product.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                            product.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                            product.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                              </i>
+                                              Picking Number {{product.pickingNumber}}<br>
+                                              {{product.productIDName}}<br>
+                                              Quantity: {{product.quantity}}&nbsp;{{product.inventoryUnit}}<br>
+                                              <button *ngIf="!product.startTime && product.status=='Open'"
+                                                (click)="updateStatus('startTime',product)">Start</button>
+                                              <button *ngIf="product.startTime && product.status=='Open'"
+                                                (click)="updateStatus('status',product)">Complete</button>
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </li>
+                            <li *ngFor="let column of rack.wareHouseLayoutColumnDetails; let i=index" [ngStyle]="{'height': column.height + 'px', 'width': column.width + 'px'
+                            ,'left':column.backLeft+'px',
+                            'top': column.backTop + 'px','position':'absolute'}" [hidden]="rack.mode != '2deep'">
+                              <div class="RckLocton" (mouseover)="onHover($event)" 
+                                [ngClass]="{'bg-primary':(getSelectBoolean(column.backLocations) && payloadJSON.type=='Stock Available'),
+                                       'bg-danger':(getSelectBoolean(column.backLocations) && payloadJSON.type=='Expired'),
+                                       'bg-info':(getSelectBoolean(column.backLocations) && payloadJSON.type=='Reserved Inventory'),
+                                       'bg-warning':(getSelectBoolean(column.backLocations) && payloadJSON.type=='Going To Expire')}"
+                                [ngStyle]="{'background-color':(getSelectBoolean(column.backLocations) &&
+                                       (payloadJSON.selectCategory=='Picking' || payloadJSON.selectCategory=='Putaway'))?'#00ffff':
+                                          (getSelectBoolean(column.backLocations) && payloadJSON.type=='Quarentine'?'#ff9966':
+                                          getSelectBoolean(column.backLocations) && payloadJSON.supplierIDName ?'#9966ff':
+                                          getSelectBoolean(column.backLocations) && payloadJSON.serialNumber ?'#66ffcc':
+                                          getSelectBoolean(column.backLocations) && payloadJSON.batchNumber ?'#0099cc':
+                                          getSelectBoolean(column.backLocations) && payloadJSON.productIDName ?'#28a745':'')}">
+                                {{column.columnName}}
+                                <div id="binHoverDiv" *ngIf="column.backLocations.length>0">
+                                  <ul>
+                                    <li *ngFor="let location of column.backLocations">
+                                      <div class="media">
+                                        <div class="mr-3 binGryBG mt-1"
+                                          [ngClass]="{'bg-primary':(location.select=='Yes' && payloadJSON.type=='Stock Available'),
+                                                 'bg-danger':(location.select=='Yes' && payloadJSON.type=='Expired'),
+                                                 'bg-info':(location.select=='Yes' && payloadJSON.type=='Reserved Inventory'),
+                                                 'bg-warning':(location.select=='Yes' && payloadJSON.type=='Going To Expire')}"
+                                          [ngStyle]="{'background-color':(location.select=='Yes' &&
+                                                   (payloadJSON.selectCategory=='Picking' || payloadJSON.selectCategory=='Putaway'))?'#00ffff'
+                                                   :
+                                                   (location.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                                   location.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                                   location.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                                   location.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                                   location.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                        </div>
+                                        <div class="media-body">
+                                          <p>{{location.levelName}} {{location.locationName}}</p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Putaway' || payloadJSON.selectCategory=='Picking'"
+                                            *ngFor="let product of location.wareHouseLayoutInventoryDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right"
+                                                [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                                         (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                                         (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                                         (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                                         (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                                         payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                                         (product.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                                         product.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                                         product.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                                         product.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                                         product.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}"></i>
+                                              {{product.productIDName}}
+                                              Expiry: {{product.expiryDate | date:
+                                              'dd/MM/yyyy'}} Reserved Quantity: {{product.reservedQuantity}} Quantity
+                                              InventoryUnit :{{product.quantityInventoryUnit}}
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Stock' || payloadJSON.selectCategory=='Picking'"
+                                            *ngFor="let product of location.wareHouseLayoutPutawayDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right"
+                                                [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                                         (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                                         (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                                         (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                                         (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                                         payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                                         (product.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                                         product.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                                         product.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                                         product.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                                         product.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                              </i>
+                                              Putaway Number {{product.putawayNumber}}
+                                              {{product.productIDName}}
+                                              Quantity: {{product.quantity}}&nbsp;{{product.inventoryUnit}}
+                                              <br>
+                                              <button *ngIf="!product.startTime && product.status=='Open'"
+                                                (click)="onStatusChange('startTime',product)">Start</button>
+                                              <button *ngIf="product.startTime && product.status=='Open'"
+                                                (click)="onStatusChange('status',product)">Complete</button>
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                          <p [hidden]="payloadJSON.selectCategory=='Stock' || payloadJSON.selectCategory=='Putaway'"
+                                            *ngFor="let product of location.wareHouseLayoutPickingDetails">
+                                            <span *ngIf="product.productIDName; else emptyText"><i
+                                                class="fa fa-caret-right"
+                                                [ngStyle]="{'color':(product.select=='Yes' && payloadJSON.type=='Stock Available') ?'#007bff':
+                                                         (product.select=='Yes' && payloadJSON.type=='Expired') ?'red':
+                                                         (product.select=='Yes' && payloadJSON.type=='Reserved Inventory') ?'#17a2b8':
+                                                         (product.select=='Yes' && payloadJSON.type=='Going To Expire') ?'#ffc107':
+                                                         (product.select=='Yes' && (payloadJSON.selectCategory=='Picking' ||
+                                                         payloadJSON.selectCategory=='Putaway')) ?'#00ffff':
+                                                         (location.select=='Yes' && payloadJSON.type=='Quarentine'?'#ff9966':
+                                                         location.select=='Yes' && payloadJSON.supplierIDName ?'#9966ff':
+                                                         location.select=='Yes' && payloadJSON.serialNumber ?'#66ffcc':
+                                                         location.select=='Yes' && payloadJSON.batchNumber ?'#0099cc':
+                                                         location.select=='Yes' && payloadJSON.productIDName ?'#28a745':'')}">
+                                              </i>
+                                              Picking Number {{product.pickingNumber}}
+                                              {{product.productIDName}}<br>
+                                              Quantity: {{product.quantity}}&nbsp;{{product.inventoryUnit}}<br>
+                                              <br>
+                                              <button *ngIf="!product.startTime && product.status=='Open'"
+                                                (click)="updateStatus('startTime',product)">Start</button>
+                                              <button *ngIf="product.startTime && product.status=='Open'"
+                                                (click)="updateStatus('status',product)">Complete</button>
+                                            </span>
+                                            <ng-template #emptyText>Empty</ng-template>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="utilPopup" #utilPopup [identifier]="'utilPopup'">
+  <div class="row" *ngIf="utilizationHeader && storagePopupData.length>0">
+    <div class="col-md-12">
+      <h6 class="text-center">{{utilizationHeader}}</h6>
+      <table border="1" cellpadding="4" cellspacing="5">
+        <tbody>
+          <tr>
+            <th></th>
+            <th>Location Space</th>
+            <th>Location Space(%)</th>
+            <th>No of Locations</th>
+          </tr>
+          <tr *ngFor="let store of storagePopupData">
+            <th style="color:green;">{{store.locationSpaceStatus | decimalwithThreeDigits}}</th>
+            <th><span *ngIf="store.spaceOccupied">{{store.spaceOccupied | decimalwithThreeDigits}} {{showrawUnits}}</span></th>
+
+            <th>{{store.locationSpaceOccupiedPercentage | decimalwithThreeDigits}}%</th>
+            <th>{{store.locationsCount | decimalwithThreeDigits}}</th>
+          </tr>
+          <tr>
+            <th style="color:orange;">Total Space</th>
+            <th>{{locDimension.totalSpace | decimalwithThreeDigits}} {{locDimension.totalSpaceUom | decimalwithThreeDigits}}</th>
+
+            <th>{{locDimension.totalSpacePercentage | decimalwithThreeDigits}}%</th>
+            <th><span *ngIf="locDimension.spaceOccupied">{{locDimension.spaceOccupied | decimalwithThreeDigits}}
+                {{locDimension.totalSpaceUom | decimalwithThreeDigits}}</span></th>
+          </tr>
+          <tr>
+            <th style="color:red;">Usage Space</th>
+            <th>{{locDimension.usableSpace | decimalwithThreeDigits}} {{locDimension.usableSpaceUom}}</th>
+            <th>{{locDimension.usableSpacePercentage| decimalwithThreeDigits}}%</th>
+            <th><span *ngIf="locDimension.spaceOccupied">{{locDimension.spaceOccupied}}
+                {{locDimension.totalSpaceUom}}</span></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ngx-smart-modal>
+<ngx-smart-modal customClass="nsm-centered" id="spaceUtilization" #spaceUtilization [identifier]="'spaceUtilization'">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table id="" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Location Name</th>
+              <th scope="col">Level Name</th>
+              <th scope="col">Column Name</th>
+              <th scope="col">Total Space</th>
+              <th scope="col">Usage Space</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of locationStatus; let i = index;">
+              <td>{{detail.locationName}}</td>
+              <td>{{detail.levelName}}</td>
+              <td>{{detail.columnName}}</td>
+              <td>{{detail.totalSpace}} {{detail.totalSpaceUom}}</td>
+              <td>{{detail.usableSpace | decimalwithThreeDigits}} {{detail.usableSpaceUom}}</td>
+              <td>{{detail.locationSpaceStatus}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="locationStatus.length==0">
+    <p>No Data Found</p>
+  </div>
+</ngx-smart-modal>
+<ngx-smart-modal customClass="nsm-centered" id="productPopup" #productPopup [identifier]="'productPopup'">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table id="" class="table table-striped w-100" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Location Name</th>
+              <th scope="col">Product ID</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of productStatusValues; let i = index;">
+              <td>{{detail.locationName}}</td>
+              <td>{{detail.productID}}</td>
+              <td>{{detail.productName}}</td>
+              <td>{{detail.quantity}} {{detail.inventoryUnit}}</td>
+              <!--   <td>{{detail.inventoryUnit}}</td> -->
+              <td>{{detail.stageStatus}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="productStatusValues.length==0">
+    <p>No Data Found</p>
+  </div>
+</ngx-smart-modal>

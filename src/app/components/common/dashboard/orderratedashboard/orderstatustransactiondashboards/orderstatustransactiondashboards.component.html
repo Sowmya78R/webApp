@@ -1,0 +1,419 @@
+<form [formGroup]="odderStatusTransactionDashboardsForms">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="top-input-label">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Created Date From</label>
+              <div class="col-sm-7">
+                <input type="date" name="" class="form-control" id="" formControlName="fromDate"
+                  (change)="filterDataFromDates()">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Created Date To</label>
+              <div class="col-sm-6">
+                <input type="date" name="" class="form-control" id="" formControlName="toDate"
+                  (change)="filterDataFromDates()">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Inward Order Type</label>
+              <div class="col-sm-6">
+                <select class="form-control extraLongWidth" formControlName="dummyOrderType">
+                  <option>Purchase Order</option>
+                  <option>WareHouseTransfer</option>
+                  <option>Return</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Outward Order Type</label>
+              <div class="col-sm-6">
+                <select class="form-control extraLongWidth" formControlName="orderType">
+                  <option>Sales Order</option>
+                  <option>WareHouseTransfer</option>
+                  <option>Return</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button class="btn btn-green m-1" (click)="filter()">Filter</button>
+            <button class="btn btn-white" (click)="reset()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<h6 class="text-capitalize text-primary text-center">Inbound</h6>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundTableOnly">
+          <div class="overALlBorder1">
+            <p class="text-caitalize text-center text-primary"> Order Status Today</p>
+            <table class="w-100 text-center" border="1" cellpadding="6">
+              <tr>
+                <th style="color:white;background-color:red">Total Orders </th>
+                <th style="color:white;background-color:blue">{{totalInBoundCountDisplay ? totalInBoundCountDisplay :
+                  0}}</th>
+              </tr>
+              <tr>
+                <td>Released For Unload Count</td>
+                <td>{{releasedForUnloadCountobj}}</td>
+              </tr>
+              <tr>
+                <td>In Unload Count</td>
+                <td>{{inUnloadCountobj}}</td>
+              </tr>
+              <tr>
+                <td>InOutward Quality Check Count</td>
+                <td>{{inOutwardQualityCheckCountobj}}</td>
+              </tr>
+              <tr>
+                <td>Released For Grn Count </td>
+                <td>{{releasedForGrnCountobj}}</td>
+              </tr>
+              <tr>
+                <td>In Grn Count</td>
+                <td>{{inGrnCountobj}}</td>
+              </tr>
+              <tr>
+                <td>Release for Putaway</td>
+                <td>{{releasedForPutawayCountobj}}</td>
+              </tr>
+              <tr>
+                <td>In Putaway Count</td>
+                <td>{{inPutawayCountobj}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-primary text-center text-capitalize">Un-Load Count</h6>
+          <div id="chart">
+            <ng-container *ngIf="UnloadCountTypeDetails">
+              <apx-chart [series]="UnloadCountTypeDetails?.series" [chart]="UnloadCountTypeDetails?.chart"
+                [labels]="UnloadCountTypeDetails?.labels" [title]="UnloadCountTypeDetails?.title"
+                [theme]="UnloadCountTypeDetails?.theme" [responsive]="UnloadCountTypeDetails?.responsive"
+                [dataLabels]="UnloadCountTypeDetails?.dataLabels" [legend]="UnloadCountTypeDetails?.legend"
+                [colors]="UnloadCountTypeDetails?.colors"></apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-primary text-center text-capitalize">Quality Check</h6>
+          <div id="chart">
+            <ng-container *ngIf="qualityCheckDetails">
+              <apx-chart [series]="qualityCheckDetails?.series" [chart]="qualityCheckDetails?.chart"
+                [labels]="qualityCheckDetails?.labels" [title]="qualityCheckDetails?.title"
+                [theme]="qualityCheckDetails?.theme" [responsive]="qualityCheckDetails?.responsive"
+                [dataLabels]="qualityCheckDetails?.dataLabels" [legend]="qualityCheckDetails?.legend"
+                [colors]="qualityCheckDetails?.colors"></apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-primary text-center text-capitalize">purchase order count</h6>
+          <div id="chart">
+            <ng-container *ngIf="purchaseordrObjectDetails">
+              <apx-chart [series]="purchaseordrObjectDetails?.series" [chart]="purchaseordrObjectDetails?.chart"
+                [labels]="purchaseordrObjectDetails?.labels" [title]="purchaseordrObjectDetails?.title"
+                [theme]="purchaseordrObjectDetails?.theme" [responsive]="purchaseordrObjectDetails?.responsive"
+                [dataLabels]="purchaseordrObjectDetails?.dataLabels" [legend]="purchaseordrObjectDetails?.legend"
+                [colors]="purchaseordrObjectDetails?.colors">
+              </apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesOutBoundGraphOnly">
+          <h6 class="text-primary text-center text-capitalize">Goods Receiving </h6>
+          <div id="chart">
+            <ng-container *ngIf="goodsReceiptObjectDetails">
+              <apx-chart [series]="goodsReceiptObjectDetails?.series" [chart]="goodsReceiptObjectDetails?.chart"
+                [labels]="goodsReceiptObjectDetails?.labels" [title]="goodsReceiptObjectDetails?.title"
+                [theme]="goodsReceiptObjectDetails?.theme" [responsive]="goodsReceiptObjectDetails?.responsive"
+                [dataLabels]="goodsReceiptObjectDetails?.dataLabels" [legend]="goodsReceiptObjectDetails?.legend"
+                [colors]="goodsReceiptObjectDetails?.colors">
+              </apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-primary text-center text-capitalize">Putaway completed</h6>
+          <div id="chart">
+            <ng-container *ngIf="putawayCompletedObjectDetails">
+              <apx-chart [series]="putawayCompletedObjectDetails?.series" [chart]="putawayCompletedObjectDetails?.chart"
+                [labels]="putawayCompletedObjectDetails?.labels" [title]="putawayCompletedObjectDetails?.title"
+                [theme]="putawayCompletedObjectDetails?.theme" [responsive]="putawayCompletedObjectDetails?.responsive"
+                [dataLabels]="putawayCompletedObjectDetails?.dataLabels"
+                [legend]="putawayCompletedObjectDetails?.legend" [colors]="putawayCompletedObjectDetails?.colors">
+              </apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h6 class="text-info text-capitalize text-center">Outbound</h6>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="wmsDataTablesInboundOutBoundTableOnly">
+              <div class="overALlBorder">
+                <p class="text-caitalize text-center text-primary">Order Status Today</p>
+                <table class="w-100 text-center" border="1">
+                  <tr>
+                    <th style="color:white;background-color:red">Total Orders </th>
+                    <th style="color:white;background-color:blue">{{totalOutBoundCountDisplay}} </th>
+                  </tr>
+                  <tr>
+                    <td>Release For Picking Count</td>
+                    <td>{{releasedForPickingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Picking Count</td>
+                    <td>{{inPickingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released for Outward Quanlity Check Count</td>
+                    <td>{{releasedForOutwardQualityCheckCount}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For Packing Count</td>
+                    <td>{{releasedForPackingCountObj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Packing Count</td>
+                    <td>{{inPackingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For RePacking Count</td>
+                    <td>{{releasedForRePackingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Re-Packing Count</td>
+                    <td>{{inRePackingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For CoPacking Count</td>
+                    <td>{{releasedForCoPackingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Co packing Count</td>
+                    <td>{{inCoPackingCount}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For Labeling Count</td>
+                    <td>{{releasedForLabelingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Labeling Count</td>
+                    <td>{{inLabelingCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For ShipmentOrders Count</td>
+                    <td>{{releasedForShipmentOrdersCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>Released For Load Count</td>
+                    <td>{{releasedForLoadCountobj}}</td>
+                  </tr>
+                  <tr>
+                    <td>In Load Count</td>
+                    <td>{{inLoadCountobj}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesInboundOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">sales order count</h6>
+              <div id="chart">
+                <ng-container *ngIf="salesOrderObjectDetails">
+                  <apx-chart [series]="salesOrderObjectDetails?.series" [chart]="salesOrderObjectDetails?.chart"
+                    [labels]="salesOrderObjectDetails?.labels" [title]="salesOrderObjectDetails?.title"
+                    [theme]="salesOrderObjectDetails?.theme" [responsive]="salesOrderObjectDetails?.responsive"
+                    [dataLabels]="salesOrderObjectDetails?.dataLabels" [legend]="salesOrderObjectDetails?.legend"
+                    [colors]="salesOrderObjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">Replishment Order history</h6>
+              <div id="chart">
+                <ng-container *ngIf="replishmentHistoryOrderObjectDetails">
+                  <apx-chart [series]="replishmentHistoryOrderObjectDetails?.series"
+                    [chart]="replishmentHistoryOrderObjectDetails?.chart"
+                    [labels]="replishmentHistoryOrderObjectDetails?.labels"
+                    [title]="replishmentHistoryOrderObjectDetails?.title"
+                    [theme]="replishmentHistoryOrderObjectDetails?.theme"
+                    [responsive]="replishmentHistoryOrderObjectDetails?.responsive"
+                    [dataLabels]="replishmentHistoryOrderObjectDetails?.dataLabels"
+                    [legend]="replishmentHistoryOrderObjectDetails?.legend"
+                    [colors]="replishmentHistoryOrderObjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 offset-md-4">
+            <div class="wmsDataTablesInboundOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">picking completed</h6>
+              <div id="chart">
+                <ng-container *ngIf="pickingsCompletedObjectDetails">
+                  <apx-chart [series]="pickingsCompletedObjectDetails?.series"
+                    [chart]="pickingsCompletedObjectDetails?.chart" [labels]="pickingsCompletedObjectDetails?.labels"
+                    [title]="pickingsCompletedObjectDetails?.title" [theme]="pickingsCompletedObjectDetails?.theme"
+                    [responsive]="pickingsCompletedObjectDetails?.responsive"
+                    [dataLabels]="pickingsCompletedObjectDetails?.dataLabels"
+                    [legend]="pickingsCompletedObjectDetails?.legend" [colors]="pickingsCompletedObjectDetails?.colors">
+                  </apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">Outbound Quality Check</h6>
+              <div id="chart">
+                <ng-container *ngIf="outboundQualityCheckobjectDetails">
+                  <apx-chart [series]="outboundQualityCheckobjectDetails?.series"
+                    [chart]="outboundQualityCheckobjectDetails?.chart"
+                    [labels]="outboundQualityCheckobjectDetails?.labels"
+                    [title]="outboundQualityCheckobjectDetails?.title"
+                    [theme]="outboundQualityCheckobjectDetails?.theme"
+                    [responsive]="outboundQualityCheckobjectDetails?.responsive"
+                    [dataLabels]="outboundQualityCheckobjectDetails?.dataLabels"
+                    [legend]="outboundQualityCheckobjectDetails?.legend"
+                    [colors]="outboundQualityCheckobjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">packing</h6>
+              <div id="chart">
+                <ng-container *ngIf="packingShipmentOrderObjectDetails">
+                  <apx-chart [series]="packingShipmentOrderObjectDetails?.series"
+                    [chart]="packingShipmentOrderObjectDetails?.chart"
+                    [labels]="packingShipmentOrderObjectDetails?.labels"
+                    [title]="packingShipmentOrderObjectDetails?.title"
+                    [theme]="packingShipmentOrderObjectDetails?.theme"
+                    [responsive]="packingShipmentOrderObjectDetails?.responsive"
+                    [dataLabels]="packingShipmentOrderObjectDetails?.dataLabels"
+                    [legend]="packingShipmentOrderObjectDetails?.legend"
+                    [colors]="packingShipmentOrderObjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">repacking</h6>
+              <div id="chart">
+                <ng-container *ngIf="rePackingShipmentOrderObjectDetails">
+                  <apx-chart [series]="rePackingShipmentOrderObjectDetails?.series"
+                    [chart]="rePackingShipmentOrderObjectDetails?.chart"
+                    [labels]="rePackingShipmentOrderObjectDetails?.labels"
+                    [title]="rePackingShipmentOrderObjectDetails?.title"
+                    [theme]="rePackingShipmentOrderObjectDetails?.theme"
+                    [responsive]="rePackingShipmentOrderObjectDetails?.responsive"
+                    [dataLabels]="rePackingShipmentOrderObjectDetails?.dataLabels"
+                    [legend]="rePackingShipmentOrderObjectDetails?.legend"
+                    [colors]="rePackingShipmentOrderObjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">copacking </h6>
+              <div id="chart">
+                <ng-container *ngIf="coPackingShipmentOrdersOdjectDetails">
+                  <apx-chart [series]="coPackingShipmentOrdersOdjectDetails?.series"
+                    [chart]="coPackingShipmentOrdersOdjectDetails?.chart"
+                    [labels]="coPackingShipmentOrdersOdjectDetails?.labels"
+                    [title]="coPackingShipmentOrdersOdjectDetails?.title"
+                    [theme]="coPackingShipmentOrdersOdjectDetails?.theme"
+                    [responsive]="coPackingShipmentOrdersOdjectDetails?.responsive"
+                    [dataLabels]="coPackingShipmentOrdersOdjectDetails?.dataLabels"
+                    [legend]="coPackingShipmentOrdersOdjectDetails?.legend"
+                    [colors]="coPackingShipmentOrdersOdjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">labelling</h6>
+              <div id="chart">
+                <ng-container *ngIf="labellingShipmentOrderobjectDetails">
+                  <apx-chart [series]="labellingShipmentOrderobjectDetails?.series"
+                    [chart]="labellingShipmentOrderobjectDetails?.chart"
+                    [labels]="labellingShipmentOrderobjectDetails?.labels"
+                    [title]="labellingShipmentOrderobjectDetails?.title"
+                    [theme]="labellingShipmentOrderobjectDetails?.theme"
+                    [responsive]="labellingShipmentOrderobjectDetails?.responsive"
+                    [dataLabels]="labellingShipmentOrderobjectDetails?.dataLabels"
+                    [legend]="labellingShipmentOrderobjectDetails?.legend"
+                    [colors]="labellingShipmentOrderobjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesInboundOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">shipment order</h6>
+              <div id="chart">
+                <apx-chart [series]="shipmentOrdersObjectDetails?.series" [chart]="shipmentOrdersObjectDetails?.chart"
+                  [plotOptions]="shipmentOrdersObjectDetails?.plotOptions"
+                  [labels]="shipmentOrdersObjectDetails?.labels" [fill]="shipmentOrdersObjectDetails?.fill"
+                  [stroke]="shipmentOrdersObjectDetails?.stroke"></apx-chart>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="wmsDataTablesOutBoundGraphOnly">
+              <h6 class="text-primary text-center text-capitalize">Loading</h6>
+              <div id="chart">
+                <ng-container *ngIf="loadOutboundrobjectDetails">
+                  <apx-chart [series]="loadOutboundrobjectDetails?.series" [chart]="loadOutboundrobjectDetails?.chart"
+                    [labels]="loadOutboundrobjectDetails?.labels" [title]="loadOutboundrobjectDetails?.title"
+                    [theme]="loadOutboundrobjectDetails?.theme" [responsive]="loadOutboundrobjectDetails?.responsive"
+                    [dataLabels]="loadOutboundrobjectDetails?.dataLabels" [legend]="loadOutboundrobjectDetails?.legend"
+                    [colors]="loadOutboundrobjectDetails?.colors"></apx-chart>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

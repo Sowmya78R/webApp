@@ -1,0 +1,346 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+   
+    <form #outWardTemplateForm="ngForm">
+      <div class="top-input-labe">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}
+                </label>
+                <div class="col-sm-7">
+                  <div class="dsplInLine">
+                    <select class="form-control" [disabled]="!permissionsList.includes('Update')"
+                      [(ngModel)]="orderType" [ngModelOptions]="{standalone: true}" (change)="findAllSalesOrders()">
+                      <option *ngFor="let data of orderTypeDropdown">{{data}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Order ID' |translate}}
+                </label>
+                <div class="col-sm-7">
+                  <ng2-completer id="orderid" name="orderid" [datasource]="wmsoNumberCompleterDataIDs"
+                    [(ngModel)]="modalReq.orderId" [ngModelOptions]="{standalone: true}" [minSearchLength]="0"
+                    placeholder="{{'Order ID' |translate}}" placeholder="{{'Order ID' |translate}}"
+                    (selected)="setInvoiceId($event)">
+                  </ng2-completer>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Invoice Number' |translate}}
+                </label>
+                <div class="col-sm-7">
+                  <!-- <ng2-completer id="invoiceNumber" name="invoiceNumber" [datasource]="fetchInvoiceDataIds"
+                    (selected)="getSelectedValue('invoiceNumber', $event)" [(ngModel)]="modalReq.invoiceNumber"
+                    [ngModelOptions]="{standalone: true}" [minSearchLength]="0"
+                    placeholder="{{'Invoice Number' |translate}}" placeholder="{{'Invoice Number' |translate}}">
+                  </ng2-completer> -->
+                  <ejs-combobox #grRemote [dataSource]="fetchInvoiceDataIds" [fields]="fields"
+                  (open)="onOpen1($event,'dropdownObj1')" [query]="query" [(ngModel)]='dummyInv'
+                  [ngModelOptions]="{standalone: true}" 
+                  [allowFiltering]="true" (filtering)="onFiltering($event,'fetchInvoiceDataIds')"
+                  (change)="getSelect('invoiceNumber',$event)" [enablePersistence]="true"
+                  [ngModelOptions]="{standalone: true}"></ejs-combobox>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 text-right">
+                <button type="button" (click)="generatePDF()" title="Print PDF"
+                  style="background: none !important;border: none !important;">
+                  <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+    <div class="row" [formGroup]="outwardCheckListForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle" style=" width: 200px;text-align: center;">
+                <h4>{{'outward detailS' |translate}}</h4>
+                <!--  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i>
+                </div> -->
+              </div>
+
+              <!--   <div class="formTitleHover">
+                <h4>{{'GENERAL DETAILS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                  </div>
+                </h4>
+              </div> -->
+            </div>
+            <div id="style-8" class="panel-body" style="height: auto;padding:12px;">
+              <fieldset>
+                <legend>GENERAL DETAILS :- </legend>
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Invoice Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="invoiceDate" name="invoiceDate" class="form-control" type="date"
+                          formControlName="invoiceDate" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Invoice Quantity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="Invoice Quantity"
+                          formControlName="invoiceQuantity" readonly placeholder="{{'Invoice Quantity' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Hand Delivery in Person' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="handDeliveryInPerson" name="handDeliveryInPerson"
+                          formControlName="handDeliveryInPerson" placeholder="{{'Hand Delivery in Person' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Picked By' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <textarea name="" id="" cols="20" rows="2" formControlName="assignedTo"
+                          placeholder="{{'Picked By' |translate}}" class="form-control" readonly></textarea>
+                      </div>
+                    </div>                   
+                  </div>
+                  <div class="col-md-4">                   
+                    <div class="form-group row"
+                    *ngIf="outwardCheckListForm.controls.customerIDName.value || (!outwardCheckListForm.controls.supplierIDName.value && !outwardCheckListForm.controls.customerIDName.value && !outwardCheckListForm.controls.wareHouseIDName.value)">
+                    <label class="col-sm-5 col-form-label">{{'Customer Name' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" placeholder="customer ID Name"
+                        formControlName="customerIDName" readonly placeholder="{{'Customer Name' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row" [formGroup]="outwardCheckListForm" *ngIf="outwardCheckListForm.controls.supplierIDName.value">
+                    <label class="col-sm-5 col-form-label">{{'Supplier ID Name' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" placeholder="{{'Supplier ID Name' |translate}}"
+                        formControlName="supplierIDName" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" [formGroup]="outwardCheckListForm" *ngIf="outwardCheckListForm.controls.wareHouseIDName.value">
+                    <label class="col-sm-5 col-form-label">{{'WareHouse ID Name' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" placeholder="{{'WareHouse ID Name' |translate}}"
+                        formControlName="wareHouseIDName" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" [formGroup]="outwardCheckListForm">
+                    <label class="col-sm-5 col-form-label">{{'Ship to Customer' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="customersCustomerName" readonly
+                        name="customersCustomerName" formControlName="customersCustomerName"
+                        placeholder="{{'Ship to Customer' |translate}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Hand Delivery Date' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="date" class="form-control" id="handDeliveryInPersonDate"
+                        name="handDeliveryInPersonDate" formControlName="handDeliveryInPersonDate">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Remark' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <textarea rows="2" cols="7" name="remarks" class="form-control" id="remarks"
+                        formControlName="remarks" placeholder="{{'Remark' |translate}}">
+                        </textarea>
+                    </div>
+                  </div>
+                                 
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" [formGroup]="outwardCheckListForm">
+                      <label class="col-sm-5 col-form-label"> {{'Type of Shipment' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id=" typeOfShipment" name="typeOfShipment"
+                          placeholder="{{'Type of Shipment' |translate}}" formControlName="typeOfShipment"
+                          placeholder="{{'Type of Shipment' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'No Of Lines' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="noOfLines" readonly name="noOfLines"
+                          formControlName="numberOfLines" placeholder="{{'No Of Lines' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Quantity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="customerDispatchQuantity" readonly
+                          name="customerDispatchQuantity" formControlName="customerDispatchQuantity"
+                          placeholder="{{'Quantity' |translate}}">
+                      </div>
+                    </div>
+                   
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Condition of Parcel' |translate}}</label>
+                      <div class="col-sm-7">
+                        <label class="radio-inline ml-2">
+                          <input class="m-1"type="radio" value="Good" id="status1"name="conditionOfParcel" formControlName="conditionOfParcel">Good
+                        </label>
+                        <label class="radio-inline ml-2">
+                          <input class="m-1" type="radio" value="Bad" id="status1"name="conditionOfParcel" formControlName="conditionOfParcel">Bad
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="mt-3">
+                <legend>VEHICLE DETAILS :- </legend>
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Vehicle Number' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="vehicleNumber" readonly name="vehicleNumber"
+                          formControlName="vehicleNumber" placeholder="{{'Vehicle Number' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Vehicle Type' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="vehicleType" readonly name="vehicleType"
+                          formControlName="vehicleType" placeholder="{{'Vehicle Type' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Weight' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="emptyVehicleWeight" name="emptyVehicleWeight"
+                          formControlName="emptyVehicleWeight" placeholder="{{'Weight' |translate}} ">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="date" name="date" class="form-control" type="date" formControlName="vehicleDate"
+                          placeholder="{{'Order ID' |translate}}">
+                      </div>
+                    </div>
+                   <!--  <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Invoice Qty' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="invoiceTotalQuantity" readonly
+                          name="invoiceTotalQuantity" formControlName="invoiceTotalQuantity"
+                          placeholder="{{'Invoice Qty' |translate}}">
+                      </div>
+                    </div> -->
+                    
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Way Bill No' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="waybillNumber" readonly name="waybillNumber"
+                          formControlName="waybillNumber" placeholder="{{'way bill Number' |translate}}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Way Bill No Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="date" class="form-control" id="waybillNumberDate" name="waybillNumberDate"
+                          formControlName="waybillNumberDate">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="mt-3">
+                <legend>VERIFICATION DETAILS :- </legend>
+                <div class="row" [formGroup]="outwardCheckListForm">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Checked By' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <textarea name="" class="form-control" id="" cols="20" rows="2"
+                              placeholder="{{'Checked By' |translate}}" formControlName="checkedBy"></textarea>
+                          </div>
+                        </div>
+                       
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Verified By' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" id="verifiedBy" name="verifiedBy"
+                             formControlName="verifiedBy"
+                              placeholder="{{'Verified By' |translate}}">
+                          </div>
+                        </div>                        
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group row">
+                          <label class="col-sm-5 col-form-label">{{'Nav Docket No' |translate}}
+                          </label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" id="navDocketNo" name="navDocketNo"
+                              formControlName="docketNumber"
+                              placeholder="{{'Docket Number' |translate}}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-7 mt-4">
+                    <div class="row">
+                      <div class="col-sm-4" [formGroup]="outwardCheckListForm">
+                        
+                      </div>
+                      <div class="col-sm-4">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+          <div class="text-right">
+            <button class="btn btn-green m-1" (click)="save()">{{'Save' |translate}}</button>
+            <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+          </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+<div id="inBody" [dir]="direction">
+    <div class="row">
+      <div class="DashboardOrders ml-3">
+        <ul *ngIf="expiredProducts.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li>
+            <p>{{'Expired Products' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{headerCountList.expirtyProductCount}}</a></p>
+        </ul>
+        <ul *ngIf="totalInventoryQuantity.includes('View')">
+          <li><img src="assets/production.svg" height="47px" class="mt-4"></li>
+          <li style="width:151px">
+            <p>{{'Total Inventory Quantity' |translate}}</p>
+          </li>
+          <p><a class="ml-2">{{headerCountList.totalQuantityInventory | decimalFilter}}</a></p>
+        </ul>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-4" *ngIf="stockinInventory.includes('View')">
+        <div class="inventoryDashboardGraph">
+          <div class="heading text-center mt-2">
+            <h6>{{'Stock In Inventory' |translate}}</h6>
+          </div>
+          <div style="display:block;margin-top: 40px;">
+            <canvas baseChart [data]="stockInInventoryData" [labels]="stockInInventoryLabels" [colors]="donutColors"
+              [options]="options" [chartType]="doughnutChartType">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" *ngIf="inventoryAccuracy.includes('View')">
+        <div class="inventoryDashboardGraph">
+          <div class="heading text-center mt-2">
+            <h6>{{'Inventory Accuracy' |translate}}</h6>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-right mb-1">
+              <div class="form-group row">
+                <div class="col-sm-12 top-input">
+                  <input type="button" class="btn btn-green" value="Filter" (click)="filterDataFromDates()">
+                  <input type="reset" class="btn btn-white" value="Reset" (click)="reset()">
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="inventryAccuracyGraphForm">
+              <div class="col-md-12">
+                <div class="top-input-label">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="position:relative;left:-10px">{{'From:'
+                          |translate}}
+                        </label>
+                        <div class="col-sm-10 top-input">
+                          <input name="min" id="min" type="date"
+                            class="form-control date-range-filter border-radius-none"
+                            formControlName="confirmedDateFrom" placeholder="From Date:">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="position:relative;left:-10px">{{'To:' |translate}}
+                        </label>
+                        <div class="col-sm-10 top-input">
+                          <input name="max" id="max" type="date" style="width: 127px;
+                          margin-left: -21px;" class="form-control date-range-filter" formControlName="confirmedDateTo"
+                            placeholder="To Date:">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div id="style-8" class="panel-body scrollbar" *ngIf="inventoryAccuracySingle.length>0">
+            <div class="row force-overflow">
+              <div class="col-md-12" style="display: block; margin: 0 auto;" id="inventoryAccuracy">
+                <ngx-charts-gauge [min]="minValue" [max]="maxValue" [view]="inventoryAccuracyView"
+                  [scheme]="inventoryAccuracycolorScheme" [results]="inventoryAccuracySingle"
+                  [legend]="inventoryAccuracylegend" [legendPosition]="inventoryAccuracylegendPosition">
+                </ngx-charts-gauge>
+              </div>
+            </div>
+          </div>
+          <div class="text-center" *ngIf="inventoryAccuracySingle.length==0">
+            <p>{{'No Data Available' |translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" *ngIf="turnOverDays.includes('View')">
+        <div class="inventoryDashboardGraph" style="width: 450px;">
+          <div class="heading text-center mt-2">
+            <h6>{{'Turn Over Days' |translate}}</h6>
+          </div>
+          <apx-chart [series]="turnOverDaysChart?.series" [chart]="turnOverDaysChart?.chart"
+            [dataLabels]="turnOverDaysChart?.dataLabels" [plotOptions]="turnOverDaysChart?.plotOptions"
+            [legend]="turnOverDaysChart?.legend" [fill]="turnOverDaysChart?.fill" [stroke]="turnOverDaysChart?.stroke"
+            [tooltip]="turnOverDaysChart?.tooltip" [xaxis]="turnOverDaysChart?.xaxis"></apx-chart>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="topProdutsInventory.includes('View')">
+      <div class="col-md-12">
+        <div style="background-color:white;padding:10px;border-radius:10px;margin-top:10px">
+
+          <h6 class="text-center">{{'Top Products In Inventory' |translate}}</h6>
+
+          <apx-chart [series]="chartOptions1?.series" [chart]="chartOptions1?.chart"
+            [dataLabels]="chartOptions1?.dataLabels" [plotOptions]="chartOptions1?.plotOptions"
+            [legend]="chartOptions1?.legend" [fill]="chartOptions1?.fill" [stroke]="chartOptions1?.stroke"
+            [tooltip]="chartOptions1?.tooltip" [xaxis]="chartOptions1?.xaxis"></apx-chart>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-center">{{'Cycle counting' |translate}}</h6>
+          <div id="chart">
+            <ng-container *ngIf="cycleTransferDetails">
+              <apx-chart [series]="cycleTransferDetails?.series" [chart]="cycleTransferDetails?.chart"
+                [labels]="cycleTransferDetails?.labels" [responsive]="cycleTransferDetails?.responsive"></apx-chart>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wmsDataTablesInboundOutBoundGraphOnly">
+          <h6 class="text-center">{{'Inventory Adjustments' |translate}}</h6>
+          <div id="chart">
+            <ng-container *ngIf="internalAdjustmentDetails">
+              <apx-chart [series]="internalAdjustmentDetails?.series" [chart]="internalAdjustmentDetails?.chart"
+                [labels]="internalAdjustmentDetails?.labels" [title]="internalAdjustmentDetails?.title"
+                [theme]="internalAdjustmentDetails?.theme" [responsive]="internalAdjustmentDetails?.responsive"
+                [dataLabels]="internalAdjustmentDetails?.dataLabels" [legend]="internalAdjustmentDetails?.legend"
+                [colors]="internalAdjustmentDetails?.colors"></apx-chart>
+            </ng-container>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,234 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="row" *ngIf="permissionsList.includes('Update')">
+    <div class="col-md-12 ">
+      <div class="udcBtns float-right">
+        <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+            style="width: 25px;height: 23px;margin-right: 16px;">
+          <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+        </a>
+        <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File" alt=""
+            style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+        </a>
+        <a>
+          <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+            style="background: none !important;border: none !important;">
+            <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+          </button>
+        </a>
+        <!-- <ul>
+          <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+              </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                (change)="uploadExcel($event)">
+            </a>
+          </li>
+          <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                class="material-icons align-middle"> description
+              </i> Log File </a>
+          </li>
+          <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}} </a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="vehicleByServiceProviderForm">
+    <div class="row" style="min-height: 200px;">
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle formboxwidth">
+                <h4>{{'Vehicle By Service Provider' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i></div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'Vehicle By Service Provider' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row"><label for="" class="col-sm-4">{{'Transporter ID Name'
+                      |translate}}</label>
+                    <div class="col-sm-8">
+                      <ng2-completer id="serviceProviderIDName" name="serviceProviderIDName"
+                        formControlName="serviceProviderIDName" [datasource]="providerIDs" [minSearchLength]="0"
+                        placeholder="{{'Transporter ID Name' |translate}}" (selected)="onChangeServiceProviderIDName()">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  <div class="form-group row"><label for="" class="col-sm-4">{{'Transporter ID' |translate}}<span
+                        class="red">*</span></label>
+                    <div class="col-sm-8 ngCompleter">
+                      <input type="text" id="serviceProviderID" readonly formControlName="serviceProviderID"
+                        placeholder="{{'Transporter ID' |translate}}" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group row"><label for="" class="col-sm-4">{{'Transporter Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" id="serviceProviderName" formControlName="serviceProviderName"
+                        placeholder="{{'Transporter Name' |translate}}" class="form-control" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'SPARE PARTS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  | <i class="material-icons fullscreen"> unfold_less </i></div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'SPARE PARTS' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-12">
+                  <div class="wmsDataT">
+                    <table id="example1" class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">{{'S.No' |translate}}</th>
+                          <th>{{'Include' |translate}}</th>
+                          <th>{{'Vehicle Number' |translate}}</th>
+                          <th>{{'Vehicle Type' |translate}}</th>
+                          <th>{{'Equipment ID' |translate}}</th>
+                          <th>{{'Equipment Type' |translate}}</th>
+                          <th>{{'Action' |translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let details of vehicleMasters;let i=index">
+                          <td scope="row" class="text-right">{{i+1}}</td>
+                          <td><input type="checkbox" (change)="onDocumentSelect($event,details)"
+                              [checked]="details.isChecked"></td>
+                          <td>{{details.vehicleNumber}}</td>
+                          <td>{{details.vehicleType}}</td>
+                          <td>{{details.equipmentInfo?.equipmentID}}</td>
+                          <td>{{details.equipmentType}}</td>
+                          <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm"></i></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group row"><label class="col-sm-4 col-form-label"></label>
+          <div class="col-sm-8 text-right mt-2">
+            <button class="btn btn-green m-1" (click)="save()"
+              [disabled]="vehicleByServiceProviderForm.invalid">{{actionButton |translate}}
+            </button><button class="btn btn-white" (click)="resetFields()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table id="example" class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Service Provider ID' |translate}}</th>
+                <th>{{'Service Provider Name' |translate}}</th>
+                <th>{{'Vehicle Number' |translate}}</th>
+                <th>{{'Vehicle Type' |translate}}</th>
+                <th>{{'Equipment ID' |translate}}</th>
+                <th>{{'Equipment Type' |translate}}</th>
+                <th>{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of newProvidersData; let i=index">
+                <td class="text-right">{{ data?.index}}</td>
+                <th style="cursor: pointer" (click)="edit(data)">{{data?.serviceProviderID}}</th>
+                <td>{{data?.serviceProviderName}}</td>
+                <td>{{data.vehicleNumber}}</td>
+                <td>{{data.vehicleType}}</td>
+                <td>{{data.equipmentID}}</td>
+                <td>{{data.equipmentType}}</td>
+                <td><span class="btn btn-pink btn-sm">
+                    <i (click)="delete(data)" class="fa fa-trash btn-blue"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+</div>
+
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<!--
+<div class="row">
+  <div class="col-md-12">
+    <div class="wmsDataTables">
+      <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger">
+        <thead>
+          <tr>
+            <th scope="col">{{'S.No' |translate}}</th>
+            <th scope="col">Service Provider ID</th>
+            <th scope="col">Service Provider Name</th>
+            <th scope="col">{{'Vehicle Number' |translate}}</th>
+            <th scope="col">{{'Vehicle Type' |translate}}</th>
+            <th scope="col">{{'Equipment ID' |translate}}</th>
+            <th scope="col">{{'Equipment Type' |translate}}</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of displayNewProviderList;let i = index">
+           <td class="text-left">{{i+1}}</td>
+            <td>{{data.serviceProviderID}}</td>
+            <td>{{data.serviceProviderName}}</td>
+            <td>{{data.vehicleInfo?.vehicleNumber}}</td>
+            <td>{{data.vehicleType}}</td>
+            <td>{{data.equipmentInfo?.equipmentID}}</td>
+            <td>{{data.equipmentType}}</td>
+            <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(data)"></i></span>
+            </td>
+          </tr>
+        </tbody>
+        <!--  <tbody>
+        <tr *ngFor="let serviceData of sparePartDetails;let i = index">
+         <td class="text-left">{{i+1}}</td>
+          <td><span [hidden]="serviceData.isShow==false">{{serviceData.serviceProviderId}}</span></td>
+          <td><span [hidden]="serviceData.isShow==false">{{serviceData.serviceProviderName}}</span></td>
+          <td>{{serviceData.vehicleNumber}}</td>
+          <td>{{serviceData.typeVehicle}}</td>
+          <td>{{serviceData.equipmentId}}</td>
+          <td>{{serviceData.equipmentType}}</td>
+          <td><span [hidden]="serviceData.isShow==false"class="btn btn-pink btn-sm"(click)="updateService(serviceData)"><i class="fa fa-pencil btn-sm"></i><i
+                class="fa fa-trash btn-blue"(click)="delete(serviceData)"></i></span></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+
+  </div>
+</div> -->

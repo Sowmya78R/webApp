@@ -1,0 +1,320 @@
+<div id="inBody" [dir]="direction">
+  <div class="row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3 text-right">
+      <div class="udcBtns">
+
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="top-input-label mt-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row" [formGroup]="rcForm">
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Order Type' |translate}}</label>
+                  <div class="col-sm-7">
+                    <select class="form-control" formControlName="orderType"
+                      (change)="fetchwmsoNumbers($event.target.value)">
+                      <option *ngFor="let data of orderTypeDropdown" [value]="data">{{data}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'SO Number' |translate}}</label>
+                  <div class="col-sm-7">
+                    <ng2-completer id="fullWmsoNumber" name="fullWmsoNumber" formControlName="fullWmsoNumber"
+                      [minSearchLength]="0" placeholder="{{'WMSO Number' |translate}}" [datasource]="WMSOs"
+                      (selected)="setWmsoNumber($event ? $event.originalObject:null)">
+                    </ng2-completer>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">{{'Replacement ID' |translate}}</label>
+                  <div class="col-sm-7">
+                    <input type="text" formControlName="fullReplacementOrderNumber" readonly class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+
+              </div>
+              <div class="col-md-2">
+
+              </div>
+              <div class="col-md-1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label"> </label>
+          <div class="col-sm-8 text-right mb-3">
+            <button class="btn btn-green mr-1" (click)="generate()" [disabled]="!rcForm.controls.wmsoNumber.value ||
+              rcForm.controls.confirmed.value">{{'Create'
+              |translate}}</button>
+            <button class="btn btn-green mr-1" (click)="validate()" [disabled]="!rcForm.controls._id.value ||
+              rcForm.controls.confirmed.value">{{'Confirm'
+              |translate}}</button>
+            <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <table class="table table-striped">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Select' |translate}}</th>
+                  <th [hidden]="rcForm.controls.confirmed.value || !barcodePermissionUser">Barcode</th>
+                  <th scope="col">{{'PO Line No' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Brand Name' |translate}}</th>
+                  <th scope="col">{{'Order Quantity' |translate}}</th>
+                  <!-- <th scope="col">{{'Total Picked Qty' |translate}}</th> -->
+                  <th scope="col">{{'Total Actual Picked Qty' |translate}}</th>
+                  <th scope="col">{{'Balance Quantity' |translate}}</th>
+                  <th scope="col">{{'Replacement Order Quantity' |translate}}</th>
+                  <th scope="col">{{'Total Replacement Order Qty' |translate}}</th>
+                  <th scope="col">{{'Select Location' |translate}}</th>
+                  <th scope="col">{{'Delivery Date' |translate}}</th>
+                  <th scope="col">{{'Ex Bond Number' |translate}}</th>
+                  <th scope="col">{{'Ex Bond Date' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i=index;let data of linesArray">
+                  <td class="text-left">{{i+1}}</td>
+                  <td><input type="checkbox" [checked]="data.isChecked" (click)="onSelect($event.target.checked,data)"
+                      [disabled]="rcForm.controls.confirmed.value">
+                  </td>
+                  <td [hidden]="rcForm.controls.confirmed.value || !barcodePermissionUser"><input type="text" class="form-control"
+                      [(ngModel)]="data.forBarcode"
+                      (keypress)="isProductAvailable(($event ? $event.target.value : null),data)">
+                    <button _ngcontent-phh-c380="" type="button" title="Barcode"
+                      style="background: none !important; border: none !important;"><img
+                        src="assets\subMenusIcons\Barcode Scan.svg" alt="" (click)="openScanner(data,'product')"
+                        style="height: 28px; margin-top: 6px;"></button>
+                  </td>
+                  <td>{{data.wmsoLineNumber}}</td>
+                  <td>{{data.productMasterInfo.productID}}</td>
+                  <td>{{data.productMasterInfo.productName}}</td>
+                  <td>{{data.brandName}}</td>
+                  <td>{{data.pickedQuantity}}</td>
+                  <td>{{data.totalActualPickingQuantity}}</td>
+                  <td>{{data.balancePickingQuantity}}</td>
+                  <td><span *ngIf="!data.isEdit">{{data.replacementOrderQuantity}}</span>
+                    <span *ngIf="data.isEdit"><input type="text" class="form-control" #replacementOrderQuantity
+                        [(ngModel)]="data.replacementOrderQuantity"
+                        (keyup)="validateDecimal('replacementOrderQuantity',i)" [ngModelOptions]="{standalone: true}"
+                        [disabled]="rcForm.controls.confirmed.value"
+                        (focusout)="savequantity(replacementOrderQuantity.value,data,'replacementOrderQuantity')"></span>
+                  </td>
+                  <td>{{data.totalReplacementOrderQuantity}}</td>
+                  <td>
+                    <button class="btn-secondary" *ngIf="data.locationAllocationType=='Manual'"
+                      (click)="saveAllocationType('Manual',i)">Manual</button>
+
+                    <i class="fa fa-table" *ngIf="data.locationAllocationType=='Manual'" style="cursor: pointer"
+                      (click)="openModalRecievedLocations(data,i)"></i>
+
+                    <button class="btn-success" *ngIf="data.locationAllocationType=='Auto'"
+                      (click)="saveAllocationType('Auto',i)">Auto</button>
+                  </td>
+                  <td>{{data.deliveryExpDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                  <td>{{data.exBondDate}}</td>
+                  <td>{{data.exBondDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <ngx-smart-modal customClass="nsm-centered" id="goodsrecievingForReceive" #returnLocationsModal
+        [identifier]="'returnLocationsModal'">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>{{'Pickup Locations' |translate}}</h5>
+              </div>
+              <div class="col-md-3">
+                <i class="fa fa-close" style="cursor:pointer;float: left !important;
+                margin-left: 900px;
+                font-size: 36px;" (click)="closeEvent('returnLocationsModal')"></i>
+              </div>
+              <div class="col-md-4">
+                <label class="col-sm-4 col-form-label">{{'Replacement Quantity' |translate}}</label>
+                <div class="col-sm-8">
+                  {{lineQuantity}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="wmsDataTables w-100">
+              <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+                <div class="row">
+                  <div class="col-md-0.5 pr-0">
+                    <label>Show</label>
+                  </div>
+                  <div class="col-md-1"><select [(ngModel)]="itemsPerPageForReturn" class="form-control"
+                      [ngModelOptions]="{standalone: true}"
+                      (change)="returnLocForTablePagination(pageForTableForReturn=1,'selectEntries')">
+                      <option>5</option>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select></div>
+                  <div class="col-md-0.5 pl-0"><label>Entries</label>
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1">
+                    <input type="text" [(ngModel)]="searchKeyForReturn" placeholder="Search..."
+                      [ngModelOptions]="{standalone: true}"
+                      (keyup)="returnLocForTablePagination(pageForTableForReturn=1);">
+                  </div>
+                </div>
+                <table id="example" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{'S.No' |translate}}</th>
+                      <th scope="col">{{'Include' |translate}}</th>
+                      <th scope="col">{{'Location Name' |translate}}</th>
+                      <th scope="col">{{'Availablity Quantity' |translate}}</th>
+                      <th scope="col">{{'Brand Name' |translate}}</th>
+                      <th scope="col">{{'Batch Number' |translate}}</th>
+                      <th scope="col">{{'Serial Number' |translate}}</th>
+                      <th scope="col" style="width: 20px;">{{'Picked Quantity' |translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="returnLocations.length>0">
+                    <tr
+                      *ngFor="let i=index;let data of returnLocations  | paginate: {id:'foo3',itemsPerPage: itemsPerPageForReturn,currentPage: pageForTableForReturn,totalItems: totalItemsForReturn}">
+                      <td scope="row">
+                        {{((pageForTableForReturn -1) * itemsPerPageForReturn)+i+1}}
+                      </td>
+                      <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                          [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"
+                          [disabled]="rcForm.controls.confirmed.value">
+                      </td>
+                      <td>{{data.locationInfo.locationName}}</td>
+                      <td>{{data.quantityInventoryUnit}}</td>
+                      <td>{{data.brandName}}</td>
+                      <td>{{data.batchNumber}}</td>
+                      <td>{{data.serialNumber}}</td>
+                      <td *ngIf="!data.isEdit">
+                        <span>
+                          {{data.pickedQuantity}}
+                        </span>
+                      </td>
+                      <td *ngIf="data.isEdit"><span>
+                          <input type="text" class="form-control" #pickedQuantity [value]="data.pickedQuantity"
+                            (focusout)="savequantity1(pickedQuantity.value,data)"
+                            (keyup)="validateLocationDecimal('returnLocations',i)"
+                            [disabled]="rcForm.controls.confirmed.value"></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-md-12" style="text-align: end;">
+                    <pagination-controls class="pagi" id="foo3"
+                      (pageChange)="returnLocForTablePagination((pageForTableForReturn = $event))">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="!rcForm.controls.confirmed.value">
+            <div class="text-center">
+              <button class="btn btn-green ml-1" (click)="saveLocations()">{{'Save' |translate}}</button>
+              <button class="btn btn-white m-1" (click)="resetLocations('Return')">{{'Clear'
+                |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </ngx-smart-modal>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+        <div class="row">
+          <div class="col-md-0.5 pr-0">
+            <label class="mt-1">Show</label>
+          </div>
+          <div class="" style="top:-10px">
+            <select [(ngModel)]="itemsPerPageForHeader" (change)="fetchReplacementOrders(pageForTableForHeader=1)"
+              class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+          <div class="col-md-1 mt-1"><label>Entries</label>
+          </div>
+          <div class="col-md-9"></div>
+          <div class="col-md-1" style="left: -20px;">
+            <input type="text" [(ngModel)]="searchKeyForHeader" placeholder="Search..."
+              [ngModelOptions]="{standalone: true}" (keyup)="fetchReplacementOrders(pageForTableForHeader=1)">
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr style="background-color:'blueviolet'">
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Replacement Order' |translate}}</th>
+              <th scope="col">{{'Order Number' |translate}}</th>
+              <th scope="col">{{'Customer/Warehouse' |translate}}</th>
+              <th scope="col">{{'Receipt Type' |translate}}</th>
+              <th scope="col">Status</th>
+              <th scope="col">{{'Action' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i=index;let data of finalArray | paginate: {id:'foo1',itemsPerPage: itemsPerPageForHeader,currentPage: pageForTableForHeader,totalItems: totalItemsForHeader}">
+              <td class="text-left">{{((pageForTableForHeader -1) * itemsPerPageForHeader)+i+1}}</td>
+              <th (click)="edit(data)" style="cursor:pointer;">{{data.fullReplacementOrderNumber}}</th>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td><span [hidden]="!data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                <span
+                  [hidden]="!data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo?.wareHouseIDName}}</span>
+              </td>
+              <td>{{data.orderType}}</td>
+              <td>{{data.confirmed}}</td>
+              <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm">
+                  <i _ngcontent-lty-c40="" class="fa fa-trash btn-sm" (click)="delete(data)"></i>
+                </span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mt-2">
+          <div class="col-md-12" style="text-align: end;">
+            <pagination-controls class="pagi" id="foo1"
+              (pageChange)="fetchReplacementOrders((pageForTableForHeader = $event))">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<app-barcodepopup [getBarcodeInfo]="barcodeInfo" (sendBarcodeConfirmation)="getBarcodeEvent($event)"></app-barcodepopup>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" />
+<title>Account Activation</title>
+<style>
+td > center > b > a[href] {
+color: #5669e6 !important;
+text-decoration: none !important;
+}
+
+td > center > b > span > a[href] {
+color: #b9b7b6 !important;
+text-decoration: none !important;
+}
+</style>
+<style>
+.undoreset a, .undoreset a:hover { text-decoration: none !important; }
+
+</style>
+</head>
+
+<body bgcolor="#f7f4f0" x-ms-format-detection="none">
+<table width="100%" border="0" style="border-spacing:50px !important; border-collapse: separate !important; margin:auto;" cellpadding="0" bgcolor="#f7f4f0">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         	<td>$header</td>
+        </tr>
+        <tr>
+          <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#ffffff">
+                    <tr>
+                      <td>
+                    <table width="100%" border="0" cellspacing="20" cellpadding="0" bgcolor="#ffffff">
+                      <tbody><tr>
+                      <td width="100%">
+                      	<p style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px">
+                          Dear $userName
+                        </p>
+                        </td>
+                     </tr>
+                      <tr>
+                      <td width="100%">
+                      	<p style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px;margin:  0px;">
+                       	 Welcome to Casetrackerpro. A web base case management software solution where you can manage all your attorneys.
+                        </p>
+                        </td>
+                      </tr>
+						<tr>
+						   <td>An account has been created for you. To activate your account, login with the username given, in a link given below</td>
+						</tr>
+					 <tr>
+                      <td width="100%">
+                      	<p style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px;margin: 0px;">
+    						User Name : <b>$username</b>
+                        </p>
+                        </td>
+                     <tr>
+                      <td width="100%">
+                      	<b style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px">To activate your account click the below link:</b>
+                        </td>
+                     </tr>
+					<tr>
+                      <td width="100%">
+                      	<b><a href="$url" target="_blank" style="color:#5669e6; font-family:Gotham, 'Arial', Helvetica, Arial, sans-serif; text-decoration: none;">  $url</a> </b>
+                        </td>
+                     </tr>
+					<tr>
+                      <td width="100%">
+                      	<b style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px">Thank You</b>
+                        </td>
+                     </tr>
+					<tr>
+                      <td width="100%">
+                      	<p style="color:#000000;font-family:Gotham,'Arial',Helvetica,Arial,sans-serif;font-size:14px;margin:  0px;">Team Casetrackerpro</p>
+                        </td>
+                     </tr>
+                   </tbody>
+                   </table>
+                   
+                   
+                   </td>
+                    </tr>
+                  </table>
+            
+            </td>
+        </tr>
+        
+        <tr>
+          <td>$footer</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr></tr>
+</table>
+</body>
+</html>
+                        
+                      

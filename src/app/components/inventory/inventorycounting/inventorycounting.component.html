@@ -1,0 +1,151 @@
+<div id="inBody">
+  <form>
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <ul>
+              <li ><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>Upload Excel<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    >
+                </a>
+              </li>
+              <li v><a > <i
+                    class="material-icons align-middle"> get_app
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel"><a> <i class="material-icons align-middle"> get_app
+                  </i> Download Excel </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>INVENTORY COUNTING</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>INVENTORY COUNTING
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6  mt-2">
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">Cycle Code </label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" name="" id="">
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">Counting Type
+                      </label>
+                      <div class="col-sm-8">
+                       <select name=""class="form-control" id="">
+                        <option value="">Single </option>
+                        <option value="">Double </option>
+                       </select>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">User 1</label>
+                      <div class="col-sm-8">
+                        <input id="capacity" name="capacity"
+                          placeholder="Capacity" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">User 2</label>
+                      <div class="col-sm-8">
+                        <input id="capacity" name="capacity"
+                          placeholder="Capacity" class="form-control" type="text">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-6 offset-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right mb-3">
+              <button class="btn btn-green mr-2" value="Save">SAVE</button>
+              <button class="btn btn-white" value="Clear"> CLEAR </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" data-page-length='5' class="table table-striped d-table" datatable
+              [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">S.No</th>
+                  <th scope="col">Product ID</th>
+                  <th scope="col">Product Description</th>
+                  <th scope="col">Freeze</th>
+                  <th scope="col">Location Name</th>
+                  <th scope="col">Availble Quantity</th>
+                  <th scope="col">Inventory Unit</th>
+                  <th scope="col">Counter 1 Quantity</th>
+                  <th scope="col">Counter 1 UOM</th>
+                  <th scope="col">Counter 2 Quantity</th>
+                  <th scope="col">Counter 2 UOM</th>
+                  <th scope="col">Varience</th>
+                  <th scope="col">Varience %</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td>we</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                         class="fa fa-pencil btn-sm"
+                       ></i><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue"
+                        ></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

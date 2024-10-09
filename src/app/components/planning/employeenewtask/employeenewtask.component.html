@@ -1,0 +1,45 @@
+<div id="inBody" [dir]="direction" style="min-height: unset !important;">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group row" [formGroup]="employeeTaskForm">
+          <label class="col-sm-1 col-form-label">{{'Employee' |translate}}</label>
+          <div class="col-sm-2">
+            <select class="form-control" id="assignedTos" name="assignedTos" formControlName="assignedTos"
+              (change)="onEmployeeChange($event)">
+              <option [value]="fetchUserLoginIDName" [selected]="true">{{fetchUserLoginIDName}}</option>
+              <option *ngFor="let data of wareHouseTeamsList" [value]="data.executiveIDName">
+                {{data.executiveIDName}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="">
+          <div class="panel-body " id="style-8">
+            <div class="row force-overflow">
+              <div class="masterMenus_NewMenus">
+                <ul>
+                  <li style="cursor: pointer;" routerLinkActive="active" [routerLink]="data.link"
+                    [hidden]="data.name == 'PutawayHistory' || data.name == 'PickingHistory'" *ngFor="let data of arr" style="display: flex;">
+                    <span style="font-size: 12px;">
+                      <img [src]="data.img" alt="" width="40" style="margin-top: -16px;" height="40"><br>
+                      <p style="position: relative;
+                        top: -6px;
+                        left: 39px;">{{data.totalength}}</p>
+                    </span>
+                    {{data.name |translate}}<br>
+                    <span style="color:green"></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

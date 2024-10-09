@@ -1,0 +1,792 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" [formGroup]="editInvoicingForm">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4 offset-md-8">
+            <div class="udcBtns float-right">
+              <a>
+                <button type="button" (click)="printInvoice()" title="Print PDF"
+                  style="background: none !important;border: none !important;">
+                  <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+                </button>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'INVOICING HEADER' |translate}} </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'INVOICING HEADER' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="fullInvoiceNumber" name="fullInvoiceNumber"
+                        formControlName="fullInvoiceNumber" placeholder="{{'Invoice Number' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoicing Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control" id="invoiceDate" name="invoiceDate"
+                        formControlName="invoiceDate" placeholder="{{'Invoicing Date' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'WMSO Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="fullWmsoNumber" name="fullWmsoNumber"
+                        formControlName="fullWmsoNumber" placeholder="{{'WMSO Number' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'SO Order Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control" id="salesOrderDate" name="salesOrderDate"
+                        formControlName="salesOrderDate" placeholder="" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                    <label class="col-sm-4 col-form-label">{{'Customer CustomerName' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customersCustomerName" name="customersCustomerName"
+                        formControlName="customersCustomerName">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <!--Customer-->
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Sales Order'"
+                    formGroupName="customerMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Customer ID/Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customerIDName" name="customerIDName"
+                        formControlName="customerIDName" placeholder="{{'Customer ID/Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Sales Order'"
+                    formGroupName="customerMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Customer ID' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customerID" name="customerID"
+                        formControlName="customerID" placeholder="{{'Customer ID' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Sales Order'"
+                    formGroupName="customerMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Customer Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customerName" name="customerName"
+                        formControlName="customerName" placeholder="{{'Customer Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <!--Warehouse-->
+                  <div class="form-group row"
+                    *ngIf="editInvoicingForm.controls.orderType.value=='WareHouseTransfer' || editInvoicingForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                    formGroupName="wareHouseTransferDestinationInfo">
+                    <label class="col-sm-4 col-form-label">{{'Warehouse ID/Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="wareHouseIDName" name="wareHouseIDName"
+                        formControlName="wareHouseIDName" placeholder="{{'Warehouse ID/Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row"
+                    *ngIf="editInvoicingForm.controls.orderType.value=='WareHouseTransfer' || editInvoicingForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                    formGroupName="wareHouseTransferDestinationInfo">
+                    <label class="col-sm-4 col-form-label">{{'Warehouse ID' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="wareHouseID" name="wareHouseID"
+                        formControlName="wareHouseID" placeholder="{{'Warehouse ID' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row"
+                    *ngIf="editInvoicingForm.controls.orderType.value=='WareHouseTransfer' || editInvoicingForm.controls.orderType.value=='WareHouseTransfer Returns'"
+                    formGroupName="wareHouseTransferDestinationInfo">
+                    <label class="col-sm-4 col-form-label">{{'Warehouse Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="wareHouseName" name="wareHouseName"
+                        formControlName="wareHouseName" placeholder="{{'Warehouse Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <!--Warehouse End-->
+                  <!--Supplier-->
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Purchase Returns'"
+                    formGroupName="supplierMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Supplier ID/Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="supplierIDName" name="supplierIDName"
+                        formControlName="supplierIDName" placeholder="{{'Supplier ID/Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Purchase Returns'"
+                    formGroupName="supplierMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Supplier ID' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="supplierID" name="supplierID"
+                        formControlName="supplierID" placeholder="{{'Supplier ID' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="editInvoicingForm.controls.orderType.value=='Purchase Returns'"
+                    formGroupName="supplierMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Supplier Name' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="supplierName" name="supplierName"
+                        formControlName="supplierName" placeholder="{{'Supplier Name' |translate}}" readonly>
+                    </div>
+                  </div>
+                  <!--supplier End-->
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Payment Status' |translate}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" id="paymentStatus" name="paymentStatus"
+                        formControlName="paymentStatus">
+                        <option [ngValue]="null" [selected]="true">--Select--</option>
+                        <option *ngFor="let payment of paymentStatus" [ngValue]="payment">
+                          {{payment}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="thirdPartyCustomersCheckAllocation=='Yes'">
+                    <label class="col-sm-4 col-form-label">{{'Customer CustomerAddress' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customersCustomerAddress"
+                        name="customersCustomerAddress" formControlName="customersCustomerAddress">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel portlet" formArrayName="invoiceOrderLines">
+          <div class="formBox portlet-title"
+            *ngFor="let skill of editInvoicingForm.get('invoiceOrderLines')['controls']; let i=index">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'INVOICING LINES' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'INVOICING LINES' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar" [formGroupName]="i">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row d-none" formGroupName="productMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Product ID/Name' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="productIDName" name="productIDName"
+                        [readOnly]="isReadModeM" placeholder="{{'Product ID/Name' |translate}}"
+                        formControlName="productIDName">
+                    </div>
+                  </div>
+                  <div class="form-group row" formGroupName="productMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Product ID' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="productID" name="productID"
+                        placeholder="{{'Product ID' |translate}}" formControlName="productID" [readOnly]="isReadModeM">
+                    </div>
+                  </div>
+                  <div class="form-group row" formGroupName="productMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Product Name' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="productName" name="productName"
+                        placeholder="{{'Product Name' |translate}}" formControlName="productName"
+                        [readOnly]="isReadModeM">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Brand Name' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="brandName" name="brandName"
+                        placeholder="{{'Brand Name' |translate}}" formControlName="brandName" [readOnly]="isReadModeM">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Batch Number' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <!-- <input type="text" class="form-control" id="batchNumber" name="batchNumber"
+                        placeholder="Batch Number" formControlName="batchNumber" [readOnly]="isReadModeM">
+                   -->
+                      <textarea id="bNumber" name="bNumber" [(ngModel)]="bNumber" [ngModelOptions]="{standalone: true}"
+                        placeholder="{{'Batch Numbers' |translate}}" class="form-control" type="text"
+                        readonly></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Serial Numbers' |translate}}</label>
+                    <div class="col-sm-8">
+                      <textarea id="sNumber" name="sNumber" [(ngModel)]="sNumber" [ngModelOptions]="{standalone: true}"
+                        placeholder="{{'Serial Numbers' |translate}}" class="form-control" type="text"
+                        readonly></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row d-none">
+                    <label class="col-sm-4 col-form-label">{{'Shelf Life' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="shelfLife" name="shelfLife"
+                        placeholder="{{'Shelf Life' |translate}}" formControlName="shelfLife" [readOnly]="isReadModeM">
+                    </div>
+                  </div>
+                  <div class="form-group row d-none">
+                    <label class="col-sm-4 col-form-label">{{'Order Quantity' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="quantity" name="orderQuantity"
+                        placeholder="{{'Order Quantity' |translate}}" formControlName="quantity"
+                        [readOnly]="isReadModeM">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Shipment Quantity' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="customerDispatchQuantity"
+                        name="customerDispatchQuantity" [readOnly]="isReadModeM"
+                        placeholder="{{'Shipment Quantity' |translate}}" formControlName="customerDispatchQuantity"
+                        (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row d-none">
+                    <label class="col-sm-4 col-form-label">{{'Unit Price' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="unitPrice" placeholder="{{'Unit Price' |translate}}"
+                        name="unitPrice" formControlName="unitPrice" (keyup)="calculate()"
+                        value="{{skill.controls.unitPrice.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Order Unit Price' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="orderUnitPrice"
+                        placeholder="{{'Order Unit Price' |translate}}" name="orderUnitPrice"
+                        formControlName="orderUnitPrice" (keyup)="calculate()"
+                        value="{{skill.controls.orderUnitPrice.value | decimalFilter}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row" *ngIf="showImage">
+                    <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                    <div class="col-sm-8">
+                      <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                        alt="No Image">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Customer Order Quantity' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="orderQuantity" name="Quantity"
+                        placeholder="{{'Customer Order Quantity' |translate}}" formControlName="orderQuantity" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Gross Amount' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input formControlName="grossAmount" readonly placeholder="{{'Gross Amount' |translate}}"
+                        class="form-control" type="text" value="{{skill.controls.grossAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Discount' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="discount" name="discount"
+                        placeholder="{{'Discount' |translate}}" formControlName="discount" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 pr-0 col-form-label">{{'Sales Tax' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <!-- (focusout)="calculateTaxPercentage()" -->
+                      <ng-multiselect-dropdown [placeholder]="'Select'" name="saleTaxes" [settings]="dropdownSettings"
+                        [data]="taxIDs" formControlName="saleTaxes" [disabled]="true">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Tax Amount' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input formControlName="taxAmount" readonly placeholder="{{'Tax Amount' |translate}}"
+                        class="form-control" type="text" value="{{skill.controls.taxAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tax 1%
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="tax1" name="tax1" placeholder="Tax 1%"
+                        formControlName="tax1" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tax 2%
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="tax2" name="tax2" placeholder="Tax 2%"
+                        formControlName="tax2" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tax 3%
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="tax3" name="tax3" placeholder="Tax 3%"
+                        formControlName="tax3" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tax 4% </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="tax4" name="tax4" placeholder="Tax 4%"
+                        formControlName="tax4" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tax 5%
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="tax5" name="tax5" placeholder="Tax 5%"
+                        formControlName="tax5" (keyup)="calculate()">
+                    </div>
+                  </div> -->
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Amount' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="netAmount" name="netAmount"
+                        placeholder="{{'Amount' |translate}}" formControlName="netAmount" readonly
+                        value="{{skill.controls.netAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label"> </label>
+                    <div class="col-sm-8 text-right mb-3">
+                      <button class="btn btn-green mr-1" (click)="save()" [disabled]="raisedStatus"> {{'SAVE'
+                        |translate}} </button>
+                      <button class="btn btn-white" (click)="clear()"> {{'CLEAR' |translate}} </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet" formGroupName="shipToAddress">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> {{'SHIPPING TO' |translate}} </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'SHIPPING TO' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Name' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input formControlName="name" placeholder="{{'Name' |translate}}" class="form-control" value=""
+                        type="text" [readonly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Address' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input formControlName="address" placeholder="{{'Address' |translate}}" class="form-control"
+                        value="" type="text" [readonly]="isReadMode">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Country' |translate}} </label>
+                    <div class="col-sm-8">
+                      <select id="country3" name="country3" formControlName="country" placeholder="Country"
+                        class="form-control vbrg">
+                        <option [ngValue]="null">--Select--</option>
+                        <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'State' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="state3" name="state3"
+                        placeholder="{{'State' |translate}}" formControlName="state" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <!-- <p class="ml-3 "><a (click)="redirectToCustomerMasterData()" class="red"><u>Edit more {{'SHIPPING TO' |translate}}
+                        details</u></a></p> -->
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'City' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="city3" name="city3"
+                        placeholder="{{'City' |translate}}" formControlName="city" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Pin code' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="pin3" name="pin3"
+                        placeholder="{{'Pin code' |translate}}" formControlName="pin" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row" formGroupName="contactDetails">
+                    <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="phoneNumber3" name="phoneNumber3"
+                        placeholder="{{'Phone Number' |translate}}" formControlName="phoneNumber"
+                        [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="!isEditCustomer">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center  mb-3">
+                      <button class="btn btn-green" (click)="updateCustomer()" [disabled]="raisedStatus"> {{'Update'
+                        |translate}}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="isEditCustomer">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center mb-3">
+                      <button class="btn btn-green mr-2" (click)="updateMainHeader()" [disabled]="raisedStatus">
+                        {{'Save' |translate}}
+                      </button>
+                      <button class="btn btn-white" (click)="cancelCustomer()" [disabled]="raisedStatus"> {{'Cancel'
+                        |translate}}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-soedit-shipping-details></app-soedit-shipping-details>
+        <div class="panel portlet" formGroupName="billToAddress">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> {{'BILLING TO' |translate}} </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'BILLING TO' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Name' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input formControlName="name" placeholder="{{'Name' |translate}}" class="form-control" value=""
+                        type="text" [readonly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Address' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input formControlName="address" placeholder="{{'Address' |translate}}" class="form-control"
+                        value="" type="text" [readonly]="isReadMode">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Country' |translate}} </label>
+                    <div class="col-sm-8">
+                      <select id="country3" name="country3" formControlName="country" placeholder="Country"
+                        class="form-control vbrg">
+                        <option [ngValue]="null">--Select--</option>
+                        <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'State' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="state3" name="state3"
+                        placeholder="{{'State' |translate}}" formControlName="state" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'City' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="city3" name="city3"
+                        placeholder="{{'City' |translate}}" formControlName="city" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Pin code' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="pin3" name="pin3"
+                        placeholder="{{'Pin code' |translate}}" formControlName="pin" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row" formGroupName="contactDetails">
+                    <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="phoneNumber3" name="phoneNumber3"
+                        placeholder="{{'Phone Number' |translate}}" formControlName="phoneNumber"
+                        [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="!isEditBillToAddress">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center  mb-3">
+                      <button class="btn btn-green" (click)="updateEditBillToAddress()" [disabled]="raisedStatus">
+                        {{'Update' |translate}}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="isEditBillToAddress">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center mb-3">
+                      <button class="btn btn-green mr-2" (click)="saveOutBoundInvoicing()"
+                        [disabled]="raisedStatus">{{'Save' |translate}}
+                      </button>
+                      <button class="btn btn-white" (click)="cancelOutboundEditBillToAddress()"
+                        [disabled]="raisedStatus">
+                        {{'Cancel' |translate}} </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="panel portlet" [formGroup]="shippingToForm">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> {{'SHIPPING TO' |translate}} </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'SHIPPING TO' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'SHIPPING TO' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="shipingAddress" name="shipingAddress"
+                        formControlName="shipingAddress" placeholder="{{'SHIPPING TO' |translate}}" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Country </label>
+                    <div class="col-sm-8">
+                      <select id="country3" name="country3" formControlName="country" placeholder="Country"
+                        class="form-control vbrg">
+                        <option [ngValue]="null">--Select--</option>
+                        <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">State </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="state3" name="state3" placeholder="State"
+                        formControlName="state" [readOnly]="isReadMode">
+                    </div>
+                  </div> -->
+        <!-- <p class="ml-3 "><a (click)="redirectToCustomerMasterData()" class="red"><u>Edit more {{'SHIPPING TO' |translate}}
+                        details</u></a></p> -->
+        <!--  </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">City </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="city3" name="city3" placeholder="City"
+                        formControlName="city" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Pin code' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="pin3" name="pin3" placeholder="{{'Pin code' |translate}}"
+                        formControlName="pin" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}} </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="phoneNumber3" name="phoneNumber3"
+                        placeholder="{{'Phone Number' |translate}}" formControlName="phoneNumber" [readOnly]="isReadMode">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="!isEditCustomer">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center  mb-3">
+                      <button class="btn btn-green" (click)="updateCustomer()" [disabled]="raisedStatus"> Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="isEditCustomer">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center mb-3">
+                      <button class="btn btn-green mr-2" (click)="updateMainHeader()" [disabled]="raisedStatus"> Save
+                      </button>
+                      <button class="btn btn-white" (click)="cancelCustomer()" [disabled]="raisedStatus"> Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-soedit-shipping-details></app-soedit-shipping-details>
+        <app-bill-to-address></app-bill-to-address> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.no' |translate}}</th>
+                <th scope="col">{{'Image'|translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th>{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th>{{'Batch Number' |translate}}</th>
+                <th scope="col">{{'Order Quantity' |translate}}</th>
+                <th scope="col">{{'Shipped Quantity' |translate}}</th>
+                <th scope="col">{{'Order Unit Price' |translate}}</th>
+                <th scope="col">{{'Gross Amount' |translate}}</th>
+                <th scope="col">{{'Tax Amount' |translate}}</th>
+                <th scope="col">{{'Discount' |translate}}</th>
+                <th scope="col">{{'Amount' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of invoiceLinesData; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{product.productMasterInfo.productID}}</td>
+                <td>{{product.productMasterInfo.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.brandName}}</td>
+                <td>{{product.shipmentUnit}}</td>
+                <td>{{product.batchNumber}}</td>
+                <td>{{product.customerQuantity}}</td>
+                <td>{{product.customerDispatchQuantity}}</td>
+                <td class="text-right">{{product.orderUnitPrice | decimalFilter}}</td>
+                <td class="text-right">{{product.grossAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.totalTaxAmount | decimalFilter}}</td>
+                <td class="text-right">{{product.discount}}</td>
+                <td class="text-right">{{product.netAmount | decimalFilter}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm" (click)="edit(product)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12 mt-3">
+            <div class="form-group row">
+              <div class="col-md-12 text-center">
+                <span style="font-size:12px;color:black;text-align:center">Total Amount: {{totalAmount | decimalFilter}}
+                  {{showCurrency}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 pb-3">
+      <div class="wmsDataTables row">
+        <div class="col-md-9">
+          <h5> {{'Terms and conditions' |translate}} </h5>
+          <p> {{termsAndConditions}}</p>
+        </div>
+        <div class="col-md-3 mt-4 float-right">
+          <!-- <button class="btn btn-green mr-1" (click)="printInvoice()" [disabled]="raisedStatus"> Print Invoice </button> -->
+          <button class="btn btn-white float-right" (click)="closeInvoice()" [disabled]="raisedStatus">{{'Close Invoice'
+            |translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

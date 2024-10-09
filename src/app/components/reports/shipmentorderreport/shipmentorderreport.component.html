@@ -1,0 +1,304 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="newShipmentOrderForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'SHIPMENT ORDER REPORT' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SHIPMENT ORDER REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Sales Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Purchase Returns </option>
+                          <option>WareHouseTransfer Returns </option>  
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="newShipmentOrderForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="newShipmentOrderForm.controls.orderType.value=='Purchase Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Suppiler to retrive data of Suppiler"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="suppliersIDs" [minSearchLength]="0"
+                          placeholder="{{'Supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row "
+                      *ngIf="newShipmentOrderForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Warehouse"> info </i>
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row "
+                    *ngIf="newShipmentOrderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                    <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                        title="Search Warehouse"> info </i>
+                      <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                        [datasource]="sourceWareHouses" [minSearchLength]="0"
+                        placeholder="{{'Warehouse' |translate}}">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4"
+                    *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && newShipmentOrderForm.controls.orderType.value=='Sales Order'">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Name' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0"
+                          placeholder="{{'Customers Customer Name' |translate}}"
+                          [datasource]="salesOrdersSupplierNameFiterIDs" formControlName="customersCustomerName">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Address' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0"
+                          [datasource]="salesOrdersSupplierAddressFilterIDs"
+                          placeholder="{{'Customers Customer Address' |translate}}"
+                          formControlName="customersCustomerAddress">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Dispatch From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm" formControlName="fromDate"
+                          id="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Dispatch To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm " formControlName="toDate" id="toDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4">{{'Serial Number Configuration' |translate}}</label>
+                      <div class="col-md-5">
+                        <button class="btn-danger" *ngIf="newShipmentOrderForm.controls.serialNumberCheck.value=='No'"
+                          (click)="setSerialNumberCheck('No')">No</button>
+                        <button class="btn-success" *ngIf="newShipmentOrderForm.controls.serialNumberCheck.value=='Yes'"
+                          (click)="setSerialNumberCheck('Yes')">Yes</button>
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-4 col-form-label">{{'Product Type' |translate}}</label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productType" name="productType" formControlName="productType">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row d-none">
+                      <label class="col-sm-4 col-form-label">{{'Category' |translate}}</label>
+                      <div class="col-sm-8">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName">
+                          <option [ngValue]="null" [selected]="true">--Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th class="text-info" scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th scope="col">{{'WMSO Number' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'UOM' |translate}}</th>
+                <th scope="col">{{'Product Category' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col">{{'Dispatched Quantity' |translate}}</th>
+                <th scope="col">{{'Batch Number' |translate}}</th>
+                <th scope="col">{{'Dispatch Date' |translate}}</th>
+                <th scope="col">{{'Serial Number' |translate}}</th>
+                <th scope="col">{{'Location Name' |translate}}</th>
+                <th scope="col">{{'Invoice Number' |translate}}</th>
+                <th scope="col">{{'Invoice Date' |translate}}</th>
+                <th scope="col">{{'Vehicle Number' |translate}}</th>
+                <th scope="col">{{'Vehicle Type' |translate}}</th>
+                <th scope="col">{{'WayBill Number' |translate}}</th>
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || newShipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{'Customers Customer Name' |translate}}</th>
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || newShipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{'Customers Customer Address' |translate}}</th>
+                  <th scope="col">{{'BOE No' |translate}}</th>
+                  <th scope="col">{{'BOE Date' |translate}}</th>
+                  <th scope="col">{{'Bond Number' |translate}}</th>
+                  <th scope="col">{{'Bond Date' |translate}}</th>
+                  <th scope="col">{{'Ex Bond Number' |translate}}</th>
+                  <th scope="col">{{'Ex Bond Date' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of shipmentOrderData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>
+                  <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.wmsoNumber}}</td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.productCategoryInfo.productCategoryName}}</td>
+                <td>{{report.productDescription}}</td>
+                <td>{{report.dispatchQuantity | decimalwithThreeDigits}} </td>
+                <td>{{report.batchNumbers}} </td>
+                <td class="text-center">{{report.dispatchDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td><span
+                    [hidden]="newShipmentOrderForm.controls.serialNumberCheck.value=='No'">{{report.serialNumber}}</span>
+                  <span
+                    [hidden]="newShipmentOrderForm.controls.serialNumberCheck.value=='Yes'">{{report.serialNumbers}}</span>
+                </td>
+                <td>{{report.locationName}}</td>
+                <td>{{report.invoiceNumber}}</td>
+                <td class="text-center">{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.vehicleInfo?.vehicleNumber}}</td>
+                <td>{{report.vehicleType}}</td>
+                <td>{{report.wayBillNumber}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || newShipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{report.customersCustomerName}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || newShipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{report.customersCustomerAddress}}</td>
+                  <td>{{report.referenceBillOfEntryNumber}}</td>
+                  <td>{{report.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{report.referenceBondNumber}}</td>
+                  <td>{{report.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{report.exBondNumber}}</td>
+                  <td>{{report.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

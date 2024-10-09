@@ -1,0 +1,110 @@
+<table>
+    <tbody>
+      <tr>
+        <td>
+          <div class="content">
+            <div class="row" id="container">
+              <div class="col-md-12">
+                <div class="m-3">
+                  <table border="1" class="w-100 text-center mt-2">
+                    <tr>
+                      <td style="color:black">S.No </td>
+                      <th style="color:black" scope="col">PO Number</th>
+                      <th style="color:black" scope="col">Putaway No</th>
+                      <!-- <th style="color:black" scope="col">Assigned By</th> -->
+                      <th style="color:black" scope="col"
+                        [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'"> Suppliers Customer
+                        Name</th>
+                      <th style="color:black" scope="col"
+                        [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">Suppliers Customer
+                        Address</th>
+                      <th style="color:black" scope="col">Assigned To</th>
+                      <th style="color:black" scope="col">product ID</th>
+                      <th style="color:black" scope="col">Product Name</th>
+                      <th style="color:black" scope="col">Product Description</th>
+                      <th style="color:black" scope="col">Brand Name</th>
+                      <th style="color:black" scope="col">UOM</th>
+                      <th style="color:black" scope="col">Quantity</th>
+                      <th style="color:black" scope="col">Supplier</th>
+                      <th style="color:black" scope="col">Expiry Date</th>
+                      <th style="color:black" scope="col">MFG Date</th>
+                      <th style="color:black" scope="col">Batch Number</th>
+                      <!-- <th style="color:black" scope="col">Warehouse Name</th> -->
+                      <th style="color:black" scope="col">Zone Name</th>
+                      <th style="color:black" scope="col">Rack Name</th>
+                      <th style="color:black" scope="col">Level Name</th>
+                      <th style="color:black" scope="col">Column Name</th>
+                      <th style="color:black" scope="col">Location Name</th>
+                      <th scope="col">Invoice Number</th>
+                      <th scope="col">Invoice Date</th>
+                      <th scope="col">BOE No</th>
+                      <th scope="col">BOE Date</th>
+                      <th scope="col">Bond Number</th>
+                      <th scope="col">Bond Date</th>
+                      <!-- <th style="color:black" scope="col">Created Date</th> -->
+                      <th style="color:black" scope="col">Start Date</th>
+                      <th style="color:black" scope="col">Planned Completion Date</th>
+                    </tr>
+                    <tbody [hidden]=" wmsService.printPutawayPlanningTableData.length==0"
+                      *ngFor="let data of wmsService.printPutawayPlanningTableData ;let i=index">
+                      <tr>
+                        <td>{{i + 1}}</td>
+                        <td>{{data.wmpoNumber}}</td>
+                        <td>{{data.putawayNumber}}</td>
+                        <!-- <td>{{data.putawayExecutive}} <br> {{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+                        <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">
+                          {{data.customersSupplierName}}
+                        </td>
+                        <td [hidden]="wmsService.passingDataforThirdPartyCheckPutawayPlanning=='No'">
+                          {{data.customersSupplierAddress}}</td>
+                        <td *ngIf="data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName!==null">
+                          {{data.wareHouseTeamInfo.executiveIDName}}</td>
+                        <td
+                          *ngIf="data.wareHouseTeamInfo==null ||(data.wareHouseTeamInfo && data.wareHouseTeamInfo.executiveIDName == null)">
+                          {{data.executiveIDName}} </td>
+                        <td>{{data.productMasterInfo?.productID}}</td>
+                        <td>{{data.productMasterInfo?.productName}}</td>
+                        <td>{{data.productDescription}}</td>
+                        <td>{{data.brandName}}</td>
+                        <td style="text-align: center !important;">{{data.inventoryUnit}}</td>
+                        <td>{{data.quantity| decimalwithThreeDigits}}</td>
+                        <td>{{data.supplierMasterInfo?.supplierName}}</td>
+                        <td style="text-align: center !important;">{{data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                        <td style="text-align: center !important;">{{data.mfgDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{data.batchNumber}}</td>
+                        <!-- <td>{{data.wareHouseInfo?.wareHouseName}}</td> -->
+                        <td>{{data.zoneInfo?.zoneName}}</td>
+                        <td>{{data.rackInfo?.rackName}}</td>
+                        <td>{{data.levelInfo?.levelName}}</td>
+                        <td>{{data.columnInfo?.columnName}}</td>
+                        <td>{{data.locationInfo?.locationName}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{data.billOfEntryNumber}}</td>
+                        <td>{{data.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{data.bondNumber}}</td>
+                        <td>{{data.bondDate | date: 'dd/MM/yyyy'}}</td>
+                        <!-- <td>{{data.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+                        <td style="text-align: center !important;">{{data.startTime | date: 'dd/MM/yyyy HH:mm:ss'}}
+                        </td>
+                        <td style="text-align: center !important;">{{data.plannedCompletionDate | date: 'dd/MM/yyyy
+                          HH:mm:ss'}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="footer-space">&nbsp;</div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>

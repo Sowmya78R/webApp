@@ -1,0 +1,127 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row mb-2">
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label class="col-sm-5 pr-0 col-form-label">{{'Supplier ID/Name' |translate}}</label>
+          <div class="col-sm-7">
+            <ng2-completer [(ngModel)]="supplierIDName" [datasource]="dataService" [minSearchLength]="0"
+              placeholder="{{'Supplier/IDName' |translate}}" (selected)="onSupplierChange($event)">
+            </ng2-completer>
+            <!-- <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dataService"
+              name="supplierIDName" [(ngModel)]="supplierIDName" [ngModelOptions]="{standalone: true}"
+              (focusout)="fetchZonesCapacity()">
+            </ng-multiselect-dropdown> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-2" *ngIf="permissionsList.includes('View')">
+        <div class="spaceUtilizationDashboardGraph">
+          <div class="heading text-center">
+            <h6 style="position:relative;top:10px;">{{'Warehouse Capacity' |translate}}</h6>
+          </div>
+         
+            <canvas baseChart [data]="warehouseCapacityData" [labels]="warehouseCapacityLabels"
+              [chartType]="warehouseCapacityType" [options]="pieChartOptions" [plugins]="warehouseCapacityPlugins"
+              [colors]="pieChartColors" [legend]="warehouseCapacityLegend">
+            </canvas>
+          
+        </div>
+      </div>
+      <div class="col-md-4 mb-2" *ngFor="let data of zoneNameArrayList;let i = index"
+        [hidden]="!zoneCapacityPermissionList.includes('View')">
+        <div class="spaceUtilizationDashboardGraph">
+          <div class="heading text-center">
+            <h6 style="position:relative;top:10px;">{{data.zoneName |translate}} &nbsp;<i class="fa fa-cubes"
+                (click)="getDimensions(data)"></i></h6>
+          </div>
+          <div style="display: block;" class="">
+            <ngx-charts-pie-chart [results]="data.zoneDashboard" [legend]="false" [legendTitle]="'Location Status'"
+              [view]="[400,300]" [labels]="true" [scheme]="colorScheme">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="utilPopup" #utilPopup [identifier]="'utilPopup'">
+  <div class="row" *ngIf="utilizationHeader && locDimension">
+    <div class="col-md-12">
+      <h6 class="text-center">{{utilizationHeader}}</h6>
+      <table border="1" cellpadding="4" cellspacing="5">
+        <tbody>
+          <tr>
+            <th></th>
+            <th>Location Space</th>
+            <th>Location Space(%)</th>
+            <!-- <th>No of Locations</th> -->
+          </tr>
+          <!-- <tr *ngFor="let store of storagePopupData">
+            <th style="color:green;">{{store.locationSpaceStatus}} </th>
+            <th><span *ngIf="store.spaceOccupied">{{store.spaceOccupied}} {{showrawUnits}}</span></th>
+
+            <th>{{store.locationSpaceOccupiedPercentage}}%</th>
+            <th>{{store.locationsCount}}</th>
+          </tr> -->
+          <tr>
+            <th style="color:orange;">Total Space</th>
+            <th>{{locDimension.totalSpace | decimalwithThreeDigits}} {{locDimension.totalSpaceUom}}</th>
+
+            <th>{{locDimension.totalSpacePercentage}}%</th>
+            <!-- <th><span *ngIf="locDimension.spaceOccupied">{{locDimension.spaceOccupied}}
+                {{locDimension.totalSpaceUom}}</span></th> -->
+          </tr>
+          <tr>
+            <th style="color:red;">Usage Space</th>
+            <th>{{locDimension.usableSpace | decimalwithThreeDigits}} {{locDimension.usableSpaceUom}}</th>
+
+            <th>{{locDimension.usableSpacePercentage |decimalwithThreeDigits}}%</th>
+            <!-- <th><span *ngIf="locDimension.spaceOccupied">{{locDimension.spaceOccupied}}
+                {{locDimension.totalSpaceUom}}</span></th> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ngx-smart-modal>
+
+
+<!--  <ngx-charts-pie-chart [view]="[100,300]" [scheme]="colorScheme3" [results]="zoneObJReq" [gradient]="gradient"
+                [legend]="showLegend" [legendPosition]="legendPosition">
+              </ngx-charts-pie-chart> -->
+
+<!-- <div id="inBody" *ngIf="permissionsList.includes('View')">
+  <div class="col-md-12">
+     <div class="row m-1">
+      <div class="col-sm-12">
+        <div class="row wareHouseBG"style="min-height: 262px;">
+          <div class="col-md-4">
+            <div class="heading">
+              <h6>Warehouse Capacity</h6>
+            </div>
+            <div style="display: block;">
+              <canvas baseChart [data]="warehouseCapacityData" [labels]="warehouseCapacityLabels"
+                [chartType]="warehouseCapacityType" [options]="pieChartOptions" [plugins]="warehouseCapacityPlugins"
+                [colors]="pieChartColors" [legend]="warehouseCapacityLegend">
+              </canvas>
+            </div>
+          </div>
+          <div class="col-md-4" *ngFor="let zone of zones">
+            <div class="heading text-center">
+              <h6>{{zone.zoneInfo?.zoneName}}</h6>
+            </div>
+            <div style="display: block;">
+              <ngx-charts-pie-chart [view]="pview" [scheme]="colorScheme3" [results]="zone.dashboardInfo" [gradient]="gradient"
+                [legend]="showLegend" [legendPosition]="legendPosition">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->

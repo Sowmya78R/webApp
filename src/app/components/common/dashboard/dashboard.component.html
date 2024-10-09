@@ -1,0 +1,22 @@
+<div id="inBody" [dir]="direction">
+  <div class="row mt-1">
+    <div class="col-md-12 mastermenus_top">
+      <div class="top-input-label mb-2">
+        <div class="masterMenus">
+          <ul>
+            <a>
+              <li routerLinkActive="active" *ngFor="let nav of defaultLinks" [routerLink]="nav.link">{{nav.name |translate}}</li>
+              <!-- <li routerLinkActive="active" routerLink="spaceUtilization">Space Utilization</li>
+              <li routerLinkActive="active" routerLink="inbound">Inbound</li>
+              <li routerLinkActive="active" routerLink="outbound">Outbound</li>
+              <li routerLinkActive="active" routerLink="salesAnalytics">Sales Analytics</li>
+              <li routerLinkActive="active" routerLink="purchaseAnalytics">Purchase Analytics</li>
+              <li routerLinkActive="active" routerLink="AbcAnalysis">ABC Analysis</li> -->
+            </a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

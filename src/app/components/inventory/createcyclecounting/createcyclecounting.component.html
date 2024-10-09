@@ -1,0 +1,919 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row marginseven">
+      <div class="col-md-4">
+        <div class="udcBtns">
+        </div>
+      </div>
+      <div class="col-md-6 offset-md-6">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="downloadExcelFile()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel'
+                |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> get_app </i>{{'Print PDF'
+                |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="cycleCountingForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'CYCLE COUNTING' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'CYCLE COUNTING' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-6  mt-2">
+                    <div class="form-group row" *ngIf="id">
+                      <!-- <label class="col-sm-3 col-form-label">{{'Cycle Code' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-3">
+                        <input id="cycleCode" name="cycleCode" placeholder="{{'Enter CycleCode' |translate}}"
+                          class="form-control" formControlName="cycleCode" type="text" [readonly]="id">
+                      </div> -->
+                      <label class="col-sm-3 col-form-label">{{'Cycle Counting Code' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-3">
+                        <input id="fullCycleCountingCode" name="fullCycleCountingCode" class="form-control"
+                          formControlName="fullCycleCountingCode" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Criteria Type' |translate}}</label>
+                      <div class="col-sm-3" [hidden]="id">
+                        <select class="form-control" id="criteriaType" name="criteriaType"
+                          (change)="getCriteria($event.target.value)" formControlName="criteriaType">
+                          <option value=null>-Select--</option>
+                          <option *ngFor="let ccCriteria of cycleCountingCriterias" [value]="ccCriteria.viewValue">
+                            {{ccCriteria.viewValue}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3" *ngIf="id">
+                        <input id="criteriaType" name="criteriaType" placeholder="Enter criteriaType"
+                          class="form-control" formControlName="criteriaType" type="text" readonly>
+                      </div>
+                      <div class="col-md-6" *ngIf="cycleCountingForm.controls.criteriaType.value!='Warehouse'">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="dropdownList" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}"
+                          (focusout)="setUserstoForm('Criteria')" [disabled]="dropdownDisabled || noPermissions">
+                        </ng-multiselect-dropdown>
+                      </div>
+                      <div class="col-md-6" *ngIf="cycleCountingForm.controls.criteriaType.value=='Warehouse'">
+                        <input type="text" readonly class="form-control" [(ngModel)]="selected"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="cycleCountingForm.controls.criteriaType.value=='Supplier'">
+                      <label class="col-sm-3 col-form-label">Supplier</label>
+                      <div class="col-sm-8">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="supplierIDNameIdValues" [(ngModel)]="supplierIDNames"
+                          (focusout)="fetchAllProductBySupplier()" [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Counting Type' |translate}}</label>
+                      <div class="col-sm-3">
+                        <select class="form-control" id="countingType" name="countingType"
+                          formControlName="countingType" (change)="getDropdownSettings($event.target.value)">
+                          <option value=null>-Select--</option>
+                          <option value="Single">Single</option>
+                          <option value="Double">Double</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettingsUser"
+                          [data]="wareHouseTeamsNamesList" [(ngModel)]="selectedEmployees"
+                          [ngModelOptions]="{standalone: true}" (focusout)="setUserstoForm('emp')"
+                          [disabled]="((id && role=='EMPLOYEE')?true:false)|| disableToggle || noPermissions">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Freeze Inventory' |translate}}</label>
+                      <div class="col-sm-3">
+                        <input type="checkbox" class="form-control" (click)="setFreeze($event)"
+                          [(ngModel)]="selectAllCheckboxValue" [disabled]="makeThisDisable"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="float-right">
+            <!-- <button class="btn btn-green btn-sm mr-1" (click)="updateInventory()"
+              [disabled]="disableToggle">{{'Inventory Update'
+              |translate}}</button> -->
+              <button class="btn btn-green btn-sm mr-1" (click)="createConfirm()">{{'Create Confirm'
+              |translate}}</button>
+            <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="cycleCountingForm.invalid || 
+            disableToggle">
+              {{'Save' |translate}} </button>
+          </div>
+        </div>
+      </div>
+      <!-- ignore this-->
+      <div class="row" *ngIf="!cycleCountingForm.controls.wareHouseTeamInfos.value">
+        <div class="col-md-12">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label>Show</label>
+              </div>
+             <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                  (change)="fetchAllD(page=1,$event.target.value)" class="form-control"
+                  [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+              <div class="col-md-0.5 pl-0"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="this.fetchAllD(page=1, itemsPerPage);">
+              </div>
+            </div>
+            <table class="table table-striped" style="overflow-y: auto;">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Image' | translate}}</th>
+                  <th scope="col">{{'Product IDName' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Product IDName')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product IDName')"></i></th>
+                  <th scope="col">{{'Product Description' |translate}} <i class="fa fa-sort-asc"style="position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Product Description')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Description')"></i></th>
+                  <th scope="col">{{'Brand Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Brand Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Brand Name')"></i></th>
+                  <th scope="col">{{'Freeze' |translate}}</th>
+                  <th scope="col">{{'Location' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Location')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Location')"></i></th>
+                  <th scope="col">{{'Available Quantity' |translate}} <i class="fa fa-sort-asc" style="    position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Available Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Available Quantity')"></i></th>
+                  <th scope="col">{{'Quantity Inventory Unit' |translate}} <i class="fa fa-sort-asc"style="    position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Quantity Inventory Unit')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Quantity Inventory Unit')"></i></th>
+                  <th scope="col">{{'Inventory Unit' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;"(click)="setDirection('ASC','Inventory Unit')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Inventory Unit')"></i></th>
+                  <th scope="col">{{'Variance' |translate}} <i class="fa fa-sort-asc" style="    position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Variance')"aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Variance')"></i></th>
+                  <th scope="col">{{'Variance %' |translate}} <i class="fa fa-sort-asc" style="    position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Variance %')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Variance %')"></i></th>
+                  <th scope="col">{{'Price' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                    left: -7px;" (click)="setDirection('ASC','Price')"aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Price')"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let data of productLinesData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                  <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                  <td *ngIf="data.productImageResource">
+                    <div class="tooltip-container">
+                      <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                        alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                      <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                    </div>
+                  </td>
+                  <td *ngIf="!data.productImageResource">
+                    <div class="noImageIcon">
+                      <p class="noImageIconText">
+                        {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                    </div>
+                  </td>
+  
+                  <td>{{data.productMasterInfo.productIDName}}</td>
+                  <td>{{data.productDescription}}</td>
+                  <td>{{data.brandName}}</td>
+                  <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                  <td>{{data.locationInfo.locationName}}</td>
+                  <td class="text-right">{{data.availableQuantity}}</td>
+                  <td class="text-right">{{data.quantityInventoryUnit}}</td>
+                  <td>{{data.inventoryUnit}}</td>
+                  <td class="text-right">{{data.variance}}</td>
+                  <td class="text-right">{{data.variancePercentage}}</td>
+                  <td>{{data.price}} {{data.currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" (pageChange)="getPageDetails(page = $event,'goTOSave')">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div [hidden]="!cycleCountingForm.controls.wareHouseTeamInfos.value">
+        <!-- role employee (First Employee)-->
+        <div
+          [hidden]="!(cycleCountingForm.value.wareHouseTeamInfo1 && cycleCountingForm.value.wareHouseTeamInfo1.executiveIDName==userIDName)">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div id="scrolTable" class="wmsDataTables">
+                <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions"
+                  [dtTrigger]="dtTrigger">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{'S.No' |translate}}</th>
+                      <th scope="col">{{'Product IDName' |translate}} </th>
+                      <th scope="col">{{'Freeze' |translate}}</th>
+                      <th scope="col">{{'Location' |translate}}</th>
+                      <th scope="col">
+                        Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                      <th scope="col" [hidden]="disableToggle">{{'Action'
+                        |translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of productLinesData;let i=index">
+                      <td class="text-left">{{i+1}}</td>
+                      <td>{{data.productMasterInfo.productIDName}}</td>
+                      <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                      <td>{{data.locationInfo.locationName}}</td>
+                      <td><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                        <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity min="0"
+                            max="1000" [(ngModel)]="data.counter1Quantity" [ngModelOptions]="{standalone: true}"
+                            (keyup)="validateDecimal('productLinesData','counter1Quantity',i)"
+                            (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                      </td>
+                      <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                            _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+              <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+                <div class="row">
+                  <div class="col-md-0.5 pr-0">
+                    <label>Show</label>
+                  </div>
+                 <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                      (change)="fetchAllD(page=1,$event.target.value)" class="form-control"
+                      [ngModelOptions]="{standalone: true}">
+                      <option>5</option>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select></div>
+                  <div class="col-md-0.5 pl-0"><label>Entries</label>
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1">
+                    <input type="text" [(ngModel)]="searchKey" placeholder="Search..."
+                      [ngModelOptions]="{standalone: true}" (keyup)="this.fetchAllD(page=1, itemsPerPage);">
+                  </div>
+                </div>
+                <table class="table table-striped" style="overflow-y: auto;">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{'S.No' |translate}}</th>
+                      <th scope="col">{{'Image' | translate}}</th>
+                      <th scope="col">{{'Product IDName' |translate}}<i class="fa fa-sort-asc"
+                        (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i> </th>
+                      <th scope="col">{{'Freeze' |translate}}</th>
+                      <th scope="col">{{'Location' |translate}}<i class="fa fa-sort-asc"
+                        (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                      <th scope="col">
+                        Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                      <th scope="col" [hidden]="disableToggle">{{'Action'
+                        |translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of productLinesData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                      <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                      <td *ngIf="data.productImageResource">
+                        <div class="tooltip-container">
+                          <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                            alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                          <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                        </div>
+                      </td>
+                      <td *ngIf="!data.productImageResource">
+                        <div class="noImageIcon">
+                          <p class="noImageIconText">
+                            {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                        </div>
+                      </td>
+                      <td>{{data.productMasterInfo.productIDName}}</td>
+                      <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                      <td>{{data.locationInfo.locationName}}</td>
+                      <td><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                        <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity min="0"
+                            max="1000" [(ngModel)]="data.counter1Quantity" [ngModelOptions]="{standalone: true}"
+                            (keyup)="validateDecimal('productLinesData','counter1Quantity',i)"
+                            (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                      </td>
+                      <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                            _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-2">
+                  <div class="col-md-12" style="text-align: end;">
+                    <pagination-controls class="pagi"  (pageChange)="getPageDetails(page = $event,'goTOSave')">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- role employee(Second Employee)-->
+        <div
+          [hidden]=" !(cycleCountingForm.value.wareHouseTeamInfo2 && cycleCountingForm.value.wareHouseTeamInfo2.executiveIDName==userIDName)">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div id="scrolTable" class="wmsDataTables">
+                <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions"
+                  [dtTrigger]="dtTrigger">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{'S.No' |translate}}</th>
+                      <th scope="col">{{'Product IDName' |translate}} </th>
+                      <th scope="col">{{'Freeze' |translate}}</th>
+                      <th scope="col">{{'Location' |translate}}</th>
+                      <th scope="col">
+                        Counter2({{cycleCountingForm.value.wareHouseTeamInfo2?.executiveIDName}})Quantity</th>
+                      <th scope="col" [hidden]="disableToggle">{{'Action'
+                        |translate}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of productLinesData;let i=index">
+                      <td class="text-left">{{i+1}}</td>
+                      <td class="text-right">{{data.productMasterInfo.productIDName}}</td>
+                      <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                      <td>{{data.locationInfo.locationName}}</td>
+                      <td><span *ngIf="!data.isEdit">{{data.counter2Quantity}}</span>
+                        <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter2Quantity min="0"
+                            max="1000" [(ngModel)]="data.counter2Quantity" [ngModelOptions]="{standalone: true}"
+                            (keyup)="validateDecimal('productLinesData','counter2Quantity',i)"
+                            (focusout)="manipulateOriginalData(counter2Quantity.value,'counter2Quantity',data)"></span>
+                      </td>
+                      <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                            _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+              <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+                <div class="row">
+                  <div class="col-md-0.5 pr-0">
+                    <label>Show</label>
+                  </div>
+                 <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                      (change)="fetchAllD(page=1,$event.target.value)" class="form-control"
+                      [ngModelOptions]="{standalone: true}">
+                      <option>5</option>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select></div>
+                  <div class="col-md-0.5 pl-0"><label>Entries</label>
+                  </div>
+                  <div class="col-md-9"></div>
+                  <div class="col-md-1">
+                    <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                      (keyup)="this.fetchAllD(page=1, itemsPerPage);">
+                  </div>
+                </div>
+                <table class="table table-striped" style="overflow-y: auto;">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{'S.No' |translate}}</th>
+                      <th scope="col">{{'Image' | translate}}</th>
+                      <th scope="col">{{'Product IDName' |translate}} <i class="fa fa-sort-asc"
+                        (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                      <th scope="col">{{'Freeze' |translate}}</th>
+                      <th scope="col">{{'Location' |translate}}<i class="fa fa-sort-asc"
+                        (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                      <th scope="col">
+                        Counter2({{cycleCountingForm.value.wareHouseTeamInfo2?.executiveIDName}})Quantity</th>
+                      <th scope="col" [hidden]="disableToggle">{{'Action'
+                        |translate}}</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of productLinesData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                      <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                      <td *ngIf="data.productImageResource">
+                        <div class="tooltip-container">
+                          <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                            alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                          <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                        </div>
+                      </td>
+                      <td *ngIf="!data.productImageResource">
+                        <div class="noImageIcon">
+                          <p class="noImageIconText">
+                            {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                        </div>
+                      </td>
+                      <td class="text-right">{{data.productMasterInfo.productIDName}}</td>
+                      <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                      <td>{{data.locationInfo.locationName}}</td>
+                      <td><span *ngIf="!data.isEdit">{{data.counter2Quantity}}</span>
+                        <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter2Quantity min="0"
+                            max="1000" [(ngModel)]="data.counter2Quantity" [ngModelOptions]="{standalone: true}"
+                            (keyup)="validateDecimal('productLinesData','counter2Quantity',i)"
+                            (focusout)="manipulateOriginalData(counter2Quantity.value,'counter2Quantity',data)"></span>
+                      </td>
+                      <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                            _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-2">
+                  <div class="col-md-12" style="text-align: end;">
+                    <pagination-controls class="pagi"  (pageChange)="getPageDetails(page = $event,'goTOSave')">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Single type-->
+        <div class="row"
+          [hidden]="!(cycleCountingForm.controls.wareHouseTeamInfos.value && 
+          cycleCountingForm.controls.wareHouseTeamInfos.value.length>0 && cycleCountingForm.controls.wareHouseTeamInfo1.value &&
+           !cycleCountingForm.controls.wareHouseTeamInfo2.value && cycleCountingForm.value.wareHouseTeamInfo1.executiveIDName!=userIDName)">
+          <div class="col-md-12">
+            <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+              <div class="row">
+                <div class="col-md-0.5 pr-0">
+                  <label>Show</label>
+                </div>
+               <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                    (change)="fetchAllD(page=1,$event.target.value)" class="form-control"
+                    [ngModelOptions]="{standalone: true}">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select></div>
+                <div class="col-md-0.5 pl-0"><label>Entries</label>
+                </div>
+                <div class="col-md-9"></div>
+                <div class="col-md-1">
+                  <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                    (keyup)="this.fetchAllD(page=1, itemsPerPage);">
+                </div>
+              </div>
+              <table class="table table-striped" style="overflow-y: auto;">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Image' | translate}}</th>
+                    <th scope="col">{{'Product IDName' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Freeze' |translate}}</th>
+                    <th scope="col">{{'Location' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Available Quantity' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Quantity Inventory Unit' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Inventory Unit' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">
+                      Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                    <th scope="col">{{'Variance' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Variance %' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Price' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col" [hidden]="disableToggle">{{'Action'
+                      |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let data of productLinesData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                    <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                    <td *ngIf="data.productImageResource">
+                      <div class="tooltip-container">
+                        <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                          alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                        <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="!data.productImageResource">
+                      <div class="noImageIcon">
+                        <p class="noImageIconText">
+                          {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                      </div>
+                    </td>
+                    <td>{{data.productMasterInfo.productIDName}}</td>
+                    <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                    <td>{{data.locationInfo.locationName}}</td>
+                    <td class="text-right">{{data.availableQuantity}}</td>
+                    <td class="text-right">{{data.quantityInventoryUnit}}</td>
+                    <td>{{data.inventoryUnit}}</td>
+                    <td class="text-right"><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity
+                          [(ngModel)]="data.counter1Quantity" [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter1Quantity',i)" min="0" max="1000"
+                          (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                    </td>
+                    <td class="text-right">{{data.variance}}</td>
+                    <td class="text-right">{{data.variancePercentage}}</td>
+                    <span *ngIf="!data.isEdit">{{data.price}} {{data.currency}}</span>
+                    <span *ngIf="data.isEdit"><input type="number" class="form-control" #price [value]="data.price"
+                        min="0" (focusout)="manipulateOriginalData(price.value,'price',data)"> {{data.currency}}</span>
+                    <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                          _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row mt-2">
+                <div class="col-md-12" style="text-align: end;">
+                  <pagination-controls class="pagi"  (pageChange)="getPageDetails(page = $event,'goTOSave')">
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+            <!-- <div id="scrolTable" class="wmsDataTables">
+              <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Product IDName' |translate}} </th>
+                    <th scope="col">{{'Freeze' |translate}}</th>
+                    <th scope="col">{{'Location' |translate}}</th>
+                    <th scope="col">{{'Available Quantity' |translate}}</th>
+                    <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                    <th scope="col">{{'Inventory Unit' |translate}}</th>
+                    <th scope="col">
+                      Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                    <th scope="col">{{'Variance' |translate}}</th>
+                    <th scope="col">{{'Variance %' |translate}}</th>
+                    <th scope="col">{{'Price' |translate}}</th>
+                    <th scope="col" [hidden]="disableToggle">{{'Action'
+                      |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of productLinesData;let i=index">
+                    <td class="text-left">{{i+1}}</td>
+                    <td>{{data.productMasterInfo.productIDName}}</td>
+                    <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                    <td>{{data.locationInfo.locationName}}</td>
+                    <td class="text-right">{{data.availableQuantity}}</td>
+                    <td class="text-right">{{data.quantityInventoryUnit}}</td>
+                    <td>{{data.inventoryUnit}}</td>
+                    <td class="text-right"><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity
+                          [(ngModel)]="data.counter1Quantity" [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter1Quantity',i)" min="0" max="1000"
+                          (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                    </td>
+                    <td class="text-right">{{data.variance}}</td>
+                    <td class="text-right">{{data.variancePercentage}}</td>
+                    <span *ngIf="!data.isEdit">{{data.price}} {{data.currency}}</span>
+                    <span *ngIf="data.isEdit"><input type="number" class="form-control" #price [value]="data.price"
+                        min="0" (focusout)="manipulateOriginalData(price.value,'price',data)"> {{data.currency}}</span>
+                    <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                          _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+          </div>
+        </div>
+        <!-- role  not an employee with double type-->
+        <div class="row" [hidden]="!(cycleCountingForm.controls.wareHouseTeamInfos.value &&
+           cycleCountingForm.controls.wareHouseTeamInfos.value.length>0 && 
+           cycleCountingForm.controls.wareHouseTeamInfo2.value&& cycleCountingForm.controls.wareHouseTeamInfo1.value
+            && cycleCountingForm.value.wareHouseTeamInfo1.executiveIDName!=userIDName && 
+            cycleCountingForm.value.wareHouseTeamInfo2.executiveIDName!=userIDName)">
+          <div class="col-md-12">
+            <!-- <div id="scrolTable" class="wmsDataTables">
+              <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Product IDName' |translate}} </th>
+                    <th scope="col">{{'Freeze' |translate}}</th>
+                    <th scope="col">{{'Location' |translate}}</th>
+                    <th scope="col">{{'Available Quantity' |translate}}</th>
+                    <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                    <th scope="col">{{'Inventory Unit' |translate}}</th>
+                    <th scope="col">
+                      Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                    <th scope="col">
+                      Counter2({{cycleCountingForm.value.wareHouseTeamInfo2?.executiveIDName}})Quantity</th>
+                    <th scope="col">{{'Variance' |translate}}</th>
+                    <th scope="col">{{'Variance %' |translate}}</th>
+                    <th scope="col">{{'Price' |translate}}</th>
+                    <th scope="col" [hidden]="disableToggle">{{'Action'
+                      |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of productLinesData;let i=index">
+                    <td class="text-left">{{i+1}}</td>
+                    <td>{{data.productMasterInfo.productIDName}}</td>
+                    <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                    <td>{{data.locationInfo.locationName}}</td>
+                    <td>{{data.availableQuantity}}</td>
+                    <td>{{data.quantityInventoryUnit}}</td>
+                    <td>{{data.inventoryUnit}}</td>
+                    <td><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity
+                          [value]="data.counter1Quantity" min="0" max="1000" [(ngModel)]="data.counter1Quantity"
+                          [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter1Quantity',i)"
+                          (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                    </td>
+                    <td><span *ngIf="!data.isEdit">{{data.counter2Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter2Quantity min="0"
+                          max="1000" [(ngModel)]="data.counter2Quantity" [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter2Quantity',i)"
+                          (focusout)="manipulateOriginalData(counter2Quantity.value,'counter2Quantity',data)"></span>
+                    </td>
+                    <td>{{data.variance}}</td>
+                    <td>{{data.variancePercentage}}</td>
+                    <td>
+                      <span *ngIf="!data.isEdit">{{data.price}} {{data.currency}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #price [value]="data.price"
+                          min="0" (focusout)="manipulateOriginalData(price.value,'price',data)">
+                        {{data.currency}}</span>
+                    </td>
+                    <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                          _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+            <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+              <div class="row">
+                <div class="col-md-0.5 pr-0">
+                  <label>Show</label>
+                </div>
+               <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                    (change)="fetchAllD(page=1,$event.target.value)" class="form-control"
+                    [ngModelOptions]="{standalone: true}">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select></div>
+                <div class="col-md-0.5 pl-0"><label>Entries</label>
+                </div>
+                <div class="col-md-9"></div>
+                <div class="col-md-1">
+                  <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                    (keyup)="this.fetchAllD(page=1, itemsPerPage);">
+                </div>
+              </div>
+              <table class="table table-striped" style="overflow-y: auto;">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Image' | translate}}</th>
+                    <th scope="col">{{'Product IDName' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i> </th>
+                    <th scope="col">{{'Freeze' |translate}}</th>
+                    <th scope="col">{{'Location' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Available Quantity' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Quantity Inventory Unit' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Inventory Unit' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">
+                      Counter1({{cycleCountingForm.value.wareHouseTeamInfo1?.executiveIDName}})Quantity</th>
+                    <th scope="col">
+                      Counter2({{cycleCountingForm.value.wareHouseTeamInfo2?.executiveIDName}})Quantity</th>
+                    <th scope="col">{{'Variance' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Variance %' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col">{{'Price' |translate}} <i class="fa fa-sort-asc"
+                      (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+                    <th scope="col" [hidden]="disableToggle">{{'Action'
+                      |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let data of productLinesData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;">
+                    <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                    <td *ngIf="data.productImageResource">
+                      <div class="tooltip-container">
+                        <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                          alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                        <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="!data.productImageResource">
+                      <div class="noImageIcon">
+                        <p class="noImageIconText">
+                          {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                      </div>
+                    </td>
+                    <td>{{data.productMasterInfo.productIDName}}</td>
+                    <td><input type="checkbox" class="form-control" [checked]="data.freezeInventory" disabled></td>
+                    <td>{{data.locationInfo.locationName}}</td>
+                    <td>{{data.availableQuantity}}</td>
+                    <td>{{data.quantityInventoryUnit}}</td>
+                    <td>{{data.inventoryUnit}}</td>
+                    <td><span *ngIf="!data.isEdit">{{data.counter1Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter1Quantity
+                          [value]="data.counter1Quantity" min="0" max="1000" [(ngModel)]="data.counter1Quantity"
+                          [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter1Quantity',i)"
+                          (focusout)="manipulateOriginalData(counter1Quantity.value,'counter1Quantity',data)"></span>
+                    </td>
+                    <td><span *ngIf="!data.isEdit">{{data.counter2Quantity}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #counter2Quantity min="0"
+                          max="1000" [(ngModel)]="data.counter2Quantity" [ngModelOptions]="{standalone: true}"
+                          (keyup)="validateDecimal('productLinesData','counter2Quantity',i)"
+                          (focusout)="manipulateOriginalData(counter2Quantity.value,'counter2Quantity',data)"></span>
+                    </td>
+                    <td>{{data.variance}}</td>
+                    <td>{{data.variancePercentage}}</td>
+                    <td>
+                      <span *ngIf="!data.isEdit">{{data.price}} {{data.currency}}</span>
+                      <span *ngIf="data.isEdit"><input type="number" class="form-control" #price [value]="data.price"
+                          min="0" (focusout)="manipulateOriginalData(price.value,'price',data)">
+                        {{data.currency}}</span>
+                    </td>
+                    <td [hidden]="disableToggle"><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                          _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row mt-2">
+                <div class="col-md-12" style="text-align: end;">
+                  <pagination-controls class="pagi"  (pageChange)="getPageDetails(page = $event,'goTOSave')">
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right mb-3">
+              <button class="btn btn-green mr-2" (click)="openModal()" *ngIf="permissionToggle"
+                [disabled]="cycleCountingForm.invalid || disableToggle || productLinesData.length==0 ">
+                {{'Submit' |translate}}</button>
+              <button class="btn btn-green mr-2" (click)="openModal()" *ngIf="!permissionToggle"
+                [disabled]="cycleCountingForm.invalid || disableToggle || productLinesData.length==0 ">
+                {{'Submit' |translate}}</button>
+              <!-- <button class="btn btn-green mr-1"
+                *ngIf="headerData && headerData.statusStages.length>0 && !permissionToggle && (totalStatusCount == headerData.statusStages[headerData.statusStages.length-1].statusSequence && headerData.statusStages[headerData.statusStages.length-1].status != 'Rejected')"
+                [disabled]="approveCCcheck ||headerData && headerData.statusStages[headerData.statusStages.length-1].status == 'Rejected'"
+                (click)="noApprovalsPerform()">{{'Confirm'
+                |translate}}
+              </button> -->
+              <button class="btn btn-white mr-1" *ngIf="!permissionToggle && !disableToggle"
+                (click)="noApprovalsPerform('Rejected')">{{'Reject'
+                |translate}}
+              </button>
+              <button class="btn btn-white" (click)="perform('Rejected')"
+                *ngIf="headerData && headerData.statusStages.length>0 && permissionToggle && headerData.statusStages && statusObj && !disableToggle"
+                [disabled]="approveCCcheck || headerData.statusStages[headerData.statusStages.length-1].status == 'Rejected'">{{'Reject'
+                |translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="ccConfig" #ccConfig [identifier]="'ccConfig'">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h5 class="text-center">{{'Do you proceed with inventory adjustments' |translate}}</h5>
+    </div>
+  </div>
+  <div class="row ml-3">
+    <div class="col-md-12 mt-3">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="counter" [checked]="counterValue1"
+              (click)="setCounterforPerform('Counter1')">
+            <label class="form-check-label">{{'Counter1' |translate}}</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="counter" [checked]="counterValue2"
+              (click)="setCounterforPerform('Counter2')">
+            <label class="form-check-label">{{'Counter2' |translate}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="float-right">
+        <button class="btn btn-green mr-1"
+          *ngIf="headerData && headerData.statusStages.length>0 && !permissionToggle && (totalStatusCount == headerData.statusStages[headerData.statusStages.length-1].statusSequence && headerData.statusStages[headerData.statusStages.length-1].status != 'Rejected')"
+          [disabled]="approveCCcheck ||headerData && headerData.statusStages[headerData.statusStages.length-1].status == 'Rejected'"
+          (click)="noApprovalsPerform()">{{'Confirm'
+          |translate}}
+        </button>
+        <button class="btn btn-green mr-1" (click)="perform()"
+          *ngIf="headerData && headerData.statusStages.length>0 && permissionToggle && headerData.statusStages && statusObj"
+          [disabled]="approveCCcheck ||headerData && headerData.statusStages[headerData.statusStages.length-1].status == 'Rejected'">{{'Confirm'
+          |translate}}
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</ngx-smart-modal>
+<!-- <app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup> -->

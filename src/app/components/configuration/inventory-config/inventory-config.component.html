@@ -1,0 +1,342 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Process Config' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Process Config' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <form *ngIf="configPermissionsList.includes('View')">
+                  <div id="inBody" style="background-color:white" [dir]="direction">
+                    <div class="col-md-12 mt-5">
+                      <div class="row mb-2" [formGroup]="adjustmentsForm">
+                        <div class="col-md-1"><label>{{'Inventory Adjustments' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'adjustmentsForm','Inventory Adjustment')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'adjustmentsForm','adjustments')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForAdjustments">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="selected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'adjustmentsForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('adjustments')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="purchaseOrderForm">
+                        <div class="col-md-1"><label>{{'Purchase Order' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'purchaseOrderForm','Purchase Order')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'purchaseOrderForm','poData')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForPO">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="poSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'purchaseOrderForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('poData')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="internalTransfersForm">
+                        <div class="col-md-1"><label>{{'Internal Transfers' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'internalTransfersForm','Internal Transfers')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'internalTransfersForm','iTData')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForIT">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="iTSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'internalTransfersForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('iTData')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="cycleCountingForm">
+                        <div class="col-md-1"><label>{{'Cycle Counting' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'cycleCountingForm','Cycle Counting')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'cycleCountingForm','ccData')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForCC">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="ccSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'cycleCountingForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('ccData')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="wtCreateForm">
+                        <div class="col-md-1"><label>{{'Warehouse Transfer Create' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'wtCreateForm','Warehouse Transfer Create')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'wtCreateForm','wtDataCreate')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForWTCreate">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="wtCreateSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'wtCreateForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('wtDataCreate')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="wtApproveForm">
+                        <div class="col-md-1"><label>{{'Warehouse Transfer Approve' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'wtApproveForm','Warehouse Transfer Approve')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'wtApproveForm','wtDataApprove')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForWTApprove">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="wtApproveSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'wtApproveForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('wtDataApprove')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                      <div class="row mb-2" [formGroup]="purchaseReceiveLocationForm">
+                        <div class="col-md-1"><label>{{'Purchase Receive Location' |translate}}</label></div>
+                        <div class="col-md-2" formGroupName="role">
+                          <select class="form-control" formControlName="roleName"
+                            (change)="getUsers($event.target.value,'purchaseReceiveLocationForm','Purchase Receive Location')">
+                            <option value=null>Select Role</option>
+                            <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="status"
+                            (change)="setStatusSequence($event.target.value,'purchaseReceiveLocationForm','prlData')">
+                            <option>Select</option>
+                            <option *ngFor="let data of statusConfigForPRL">{{data.status}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <select class="form-control" formControlName="comparisonType">
+                            <option value=null>Select</option>
+                            <option value="Greater Than">Greater Than</option>
+                            <option value="Greater Than or EqualTo">Greater Than or EqualTo</option>
+                            <option value="Less Than">Less Than</option>
+                            <option value="Less Than or EqualTo">Less Than or EqualTo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" formGroupName="processStatusPolicies">
+                          <input type="text" class="form-control" formControlName="comparisonValue" placeholder="{{'value' |translate}}">
+                        </div>
+                        <div class="col-md-2">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="prlSelected" [ngModelOptions]="{standalone: true}"
+                            (focusout)="setUserstoForm($event,'purchaseReceiveLocationForm')">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div class="col-md-1"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('prlData')"
+                            aria-hidden="true"></i></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="float-right">
+                          <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+                          <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<ngx-smart-modal customClass="nsm-centered" id="spaceUtilization" #spaceUtilization [identifier]="'spaceUtilization'">
+  <div class="row" [hidden]="!popupData.processStatusPolicies"
+    *ngIf="popupData && popupData.processStatusPolicies.length>0; else emptyText">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table class="table table-striped processGroup">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Status Sequence</th>
+              <th scope="col">Role</th>
+              <th>Users</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let functionality of popupData.processStatusPolicies;">
+              <ng-container *ngFor="let subFunctionality of functionality.statusRoleConfigurations; let i = index">
+                <!-- <ng-container *ngFor="let user of subFunctionality.userInfos; let j = index"> -->
+                <tr>
+                  <td *ngIf="i=== 0;" [attr.rowspan]="functionality.statusRoleConfigurations.length">
+                    <span>{{functionality.status}}</span>
+                  </td>
+                  <td *ngIf="i=== 0;" [attr.rowspan]="functionality.statusRoleConfigurations.length">
+                    <span>{{functionality.statusSequence}}</span>
+                  </td>
+                  <td>
+                    <span>{{subFunctionality.role.roleName}}</span>
+                  </td>
+                  <td>
+                    <span *ngFor="let user of subFunctionality.userInfos">{{user.userIDName}} </span>
+                  </td>
+                </tr>
+                <!-- </ng-container> -->
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyText>No Data Found</ng-template>
+</ngx-smart-modal>

@@ -1,0 +1,96 @@
+.wtDataTables {
+  background-color: #ffffff;
+  padding: 25px;
+  font-size: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 6px 1px #ccc;
+}
+.wtDataTables .page-link {
+  padding: 0.3rem 0.75rem;
+}
+
+// .wtDataTables .table.table-striped thead {
+//   background-color: #805ce6;
+//   color: #707070;
+// }
+.wtDataTables .table-striped thead td,
+.table-striped thead th {
+  border-bottom-width: 0px;
+  font-size: 12px;
+}
+.wtDataTables .table td,
+.table th {
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-top: none;
+  vertical-align: left;
+  font-size: 13px;
+}
+
+.wtDataTables .table th {
+  font-size: 13px;
+  text-align: left;
+
+}
+
+.wtDataTables .table td span.btn i {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.wtDataTables .table td span.btn i:hover {
+  background: #049be3;
+}
+
+.wtDataTables .table td:first-child,
+.table th:first-child {
+  border-left: 1px solid #dee2e6;
+}
+
+.wtDataTables .table tbody {
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+  font-size: 12px;
+}
+
+.wtDataTables .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #eeedf2;
+}
+
+.wtDataTables table.dataTable {
+  border-collapse: collapse !important;
+}
+
+.wtDataTables .page-item.active .page-link {
+  color: #fff;
+  background-color: #2db3f3;
+  border-color: #2db3f3;
+}
+
+.wtDataTables .page-link {
+  border-radius: 6px;
+  color: #15d6ce;
+}
+.wmsDataTables {
+  overflow-y: auto;
+  display: block;
+}
+
+.wmsDataTables ::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: lightgray !important;
+}
+
+.wmsDataTables ::-webkit-scrollbar {
+  border-radius: 5px;
+  height: 10px;
+  background-color: #ededfb !important;
+
+
+}
+
+.wmsDataTables ::-webkit-scrollbar-thumb {
+  background-color: #ededfb !important;
+  border-radius: 5px;
+}

@@ -1,0 +1,107 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="permissionForm">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'UserId:' |translate}}</label> 
+          <div class="col-sm-6 mb-3" formGroupName="userInfo">
+            <select class="form-control" formControlName="userIDName" name="userIDName"
+              (change)="setUserInfo($event.target.value,'yes')">
+              <option value="null">--Select User--</option>
+              <option *ngFor="let user of users" [value]="user.userIDName">{{user.userIDName}}</option>
+            </select>
+            <!-- <ng2-completer formControlName="userIDName" name="userIDName" [datasource]="userIDNames"
+            [minSearchLength]="0" placeholder="Select User" (selected)="setUserInfo($event,'yes')">
+          </ng2-completer> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'OrganizationId:' |translate}}</label>
+          <div class="col-sm-6 mb-3">
+            <select class="form-control" [(ngModel)]="childOrganizationDropdown" [ngModelOptions]="{standalone: true}"
+              (change)="setOrgInfo($event.target.value)" [disabled]="disabledToggle">
+              <option value="null">--Select Organisation--</option>
+              <option *ngFor="let org of orgData" [value]="org.organizationIDName">{{org.organizationIDName}}</option>
+            </select>
+            <!-- <ng2-completer [(ngModel)]="childOrganizationDropdown" [ngModelOptions]="{standalone: true}" [datasource]="orgIDNames"
+            [minSearchLength]="0" placeholder="Select User" (selected)="setOrgInfo($event)" [disabled]="disabledToggle">
+          </ng2-completer> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'WarehouseIdName:' |translate}}</label>
+          <div class="col-sm-6 mb-3">
+            <select class="form-control" [(ngModel)]="childWareHouseDropdown" [ngModelOptions]="{standalone: true}"
+              (change)="checkUser($event.target.value)" [disabled]="disabledToggle">
+              <option value="null">--Select WareHouseIdName--</option>
+              <option *ngFor="let ware of warehouses" [value]="ware.wareHouseIDName">{{ware.wareHouseIDName}}</option>
+            </select>
+            <!-- <ng2-completer [(ngModel)]="childWareHouseDropdown" [ngModelOptions]="{standalone: true}" [datasource]="wareHouseIDNames"
+            [minSearchLength]="0" placeholder="Select User" (selected)="checkUser($event)">
+          </ng2-completer> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row mt-3">
+          <label class="mt-1">{{'Default WarehouseIdName:' |translate}}</label>
+          <div class="col-sm-6 mb-3" formGroupName="defaultWareHouseInfo">
+            <select class="form-control" formControlName="wareHouseIDName" name="wareHouseIDName"
+              (change)="setWareHouseInfo($event.target.value)">
+              <option value="null">--Select WareHouseIdName--</option>
+              <option *ngFor="let ware of warehouses" [value]="ware.wareHouseIDName">{{ware.wareHouseIDName}}</option>
+            </select>
+            <!-- <ng2-completer formControlName="wareHouseIDName" [datasource]="wareHouseIDNames"
+            [minSearchLength]="0" placeholder="Select User" (selected)="setWareHouseInfo($event)">
+          </ng2-completer> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-right  mb-3 mt-3">
+        <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+        <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th>{{'User IDName' |translate}}</th>
+                <th>{{'Organization IDName' |translate}}</th>
+                <th>{{'Warehouse IDName' |translate}}</th>
+                <th>{{'Permissions' |translate}}</th>
+                <th>{{'Actions' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of finalArray;let i=index">
+                <td><span *ngIf="data.isShowUser==true">{{data.user}}</span></td>
+                <td><span *ngIf="data.isShowOrg==true">{{data.organisation}}</span></td>
+                <td><span>{{data.warehouse}}</span></td>
+                <td><span><input type="checkbox" [checked]="data.View" (click)="setCheckboxValue($event,data,'View')"
+                      [disabled]="permissionForm.controls._id.value!=data._id || !configPermissionsList.includes('View')">View</span> &nbsp;
+                  <span><input type="checkbox" [checked]="data.Update" (click)="setCheckboxValue($event,data,'Update')"
+                      [disabled]="permissionForm.controls._id.value!=data._id || !configPermissionsList.includes('Update')">Update</span> &nbsp;
+                  <span><input type="checkbox" [checked]="data.Delete" (click)="setCheckboxValue($event,data,'Delete')"
+                      [disabled]="permissionForm.controls._id.value!=data._id || !configPermissionsList.includes('Delete')">Delete</span>
+                </td>
+                <td><span *ngIf="data.isShowUser==true" _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i
+                      _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data.user,'yes')"></i><i
+                      _ngcontent-lty-c40="" class="fa fa-trash btn-blue" (click)="delete(data._id)"></i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

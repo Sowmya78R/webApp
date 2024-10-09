@@ -1,0 +1,92 @@
+<div id="inBody" [formGroup]="applicationURLConfigForm" [dir]="direction">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel portlet">
+        <div class="formBox portlet-title">
+          <div class="row">
+
+            <div class="panel-heading formTitle w-auto">
+              <h4>{{'Application URL Config' |translate}}</h4>
+              <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                    aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+            </div>
+            <div class="formTitleHover">
+              <h4>{{'Application URL Config' |translate}}
+                <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+              </h4>
+            </div>
+          </div>
+          <div id="style-8" class="panel-body scrollbar"style="height: 114px;">
+            <div class="row force-overflow">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Type' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                        <select name="" class="form-control" id="">
+                          <option value="">Mobile APP</option>
+                          <option value="">FMS</option>
+                          <option value="">MES</option>
+                          <option value="">ERP</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'URL' |translate}}
+                      </label>
+                      <div class="col-sm-9">
+                       <input type="text" class="form-control" formControlName="applicationURL">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-right">
+            <button class="btn btn-green mr-2"(click)="save()">{{'Save' |translate}}</button>
+            <button class="btn btn-white"(click)="clear()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:-10px;">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <p class="maintainTableHeader">{{'Application URL Config' |translate}}</p>
+        <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Type' |translate}}</th>
+              <th scope="col">{{'URL' |translate}}</th>
+              <th scope="col">{{'Action' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of applicationURLsResponseList; let i = index">
+             <td class="text-left">{{i+1}}</td>
+              <td>{{data.name}}</td>
+              <td>{{data.applicationURL}}</td>
+               <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm" (click)="edit(data)"></i><i
+                class="fa fa-trash btn-blue"(click)="delete(data)"></i></span></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+

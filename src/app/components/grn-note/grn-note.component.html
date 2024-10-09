@@ -1,0 +1,1455 @@
+<app-grn-excels></app-grn-excels>
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12" [formGroup]="GRNoteForm">
+    <div class="row">
+      <div class="col-md-12">
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Inward Shipment"
+            [ngModelOptions]="{standalone: true}" [disabled]="GRNoteForm.controls._id.value"
+            (click)="changeNoteType('Unloading','Inward Shipment')"><span class="ml-1">{{'Inward Shipment'
+            |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Outward Shipment"
+            [ngModelOptions]="{standalone: true}" [disabled]="GRNoteForm.controls._id.value"
+            (click)="changeNoteType('Loading','Outward Shipment')"><span class="ml-1">{{'Outward Shipment'
+            |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Sales Return"
+            [ngModelOptions]="{standalone: true}" [disabled]="true"
+            (click)="changeNoteType('Others','Sales Return')"><span class="ml-1">{{'Sale Return' |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Sub-Contractror Supliers"
+            [ngModelOptions]="{standalone: true}" [disabled]="true"
+            (click)="changeNoteType('Others','Sub-Contractror Supliers')"><span class="ml-1">{{'Sub-Contractror
+            Supliers' |translate}}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="row" [hidden]="true">
+      <div class="col-md-12">
+        <div class="top-input-label" style="padding-bottom: 0;">
+          <ul>
+            
+            <li>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Order No' |translate}}</label>
+                <div class="col-sm-8 top-input" *ngIf="noteType == 'Inward Shipment'">
+                  <input type="text" class="form-control col-form-label-sm" id="wmpoNumber" formControlName="wmpoNumber"
+                    name="wmpoNumber" readonly>
+                </div>
+                <div class="col-sm-8 top-input" *ngIf="noteType != 'Inward Shipment'">
+                  <ng2-completer name="wmsoNumber" [datasource]="wmsoNumbers" id="wmsoNumber"
+                    formControlName="wmsoNumber" [minSearchLength]="0" placeholder="WMSO No"
+                    (selected)="onWMSONoChange($event)">
+                  </ng2-completer>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'GATE ENTRY' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'GATE ENTRY' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body">
+              <div class="row force-overflow">
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Number' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="invoiceNumber"
+                        formControlName="invoiceNumber" placeholder="{{'Invoice Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Date' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control col-form-label-sm" id="invoiceDate"
+                        formControlName="invoiceDate" placeholder="{{'Invoice Date' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Total Qty' |translate}}<i
+                        class="red">*</i></label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control col-form-label-sm" id="invoiceTotalQuantity"
+                        formControlName="invoiceTotalQuantity" placeholder="{{'Invoice Total Qty' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                    <div class="col-sm-4" *ngIf="!makeThisDisabled">
+                      <select class="form-control selectPanl" formControlName="invoiceTotalQuantityUom"
+                        style="margin-left:-14px">
+                        <option [value]="null">--Select--</option>
+                        <option *ngFor="let unit of units" [value]="unit.unitCode">
+                          {{unit.unitCode}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4" *ngIf="makeThisDisabled">
+                      <input type="text" readonly class="form-control" formControlName="invoiceTotalQuantityUom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Transporter' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [(ngModel)]="spDummyID" [ngModelOptions]="{standalone: true}" [datasource]="spIDs"
+                        [minSearchLength]="0" placeholder="Search"
+                        (selected)="setSearchValueToText($event,'serviceProviderIDName')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control col-form-label-sm" id="serviceProviderIDName"
+                        formControlName="serviceProviderIDName" placeholder="{{'Transporter' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Container Number' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="containerIDS" [minSearchLength]="0" placeholder="Search"
+                        [(ngModel)]="dummyContainer" [ngModelOptions]="{standalone: true}"
+                        (selected)="setSearchValueToText($event,'carrierName')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6 pr-2">
+                      <input type="text" class="form-control col-form-label-sm" id="carrierName"
+                        formControlName="carrierName" placeholder="{{'Container Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Vehicle Number' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="vehicleIDs" [minSearchLength]="0" placeholder="Search"
+                        [(ngModel)]="dummyVehicle" [ngModelOptions]="{standalone: true}"
+                        (selected)="setSearchValueToText($event,'vehicleNumber')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6 pr-2">
+                      <input type="text" class="form-control col-form-label-sm" id="vehicleNumber"
+                        formControlName="vehicleNumber" placeholder="{{'Vehicle Number' |translate}}"
+                        (focusout)="setVehicleType()" [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-group row" *ngIf="showWayBillNumber">
+                    <label class="col-sm-4 col-form-label">{{'WayBill Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="waybillNumber" style="width:200px"
+                        formControlName="waybillNumber" placeholder="{{'WayBill Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div> -->
+
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="vehicleType"
+                        formControlName="vehicleType" placeholder="{{'Vehicle Type' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="showLrNumber">
+                    <label class="col-sm-4 col-form-label">{{'L/R Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="lrNumber"
+                        formControlName="lrNumber" placeholder="{{'L/R Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Inward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'Customer AssignedTo' | translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="salesCheckIDs" [(ngModel)]="selectedEmpforSales" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.salesOrderStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="showLoading">
+                    <div class="col-sm-4  col-form-label">{{'Loading' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="wareHouseTeamsListIDs" [(ngModel)]="selectedEmp" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.startDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Inward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'Shipment AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="shipmentCheckIDs" [(ngModel)]="selectedEmpforShipment"
+                        [ngModelOptions]="{standalone: true}" (focusout)="setTo($event)"
+                        [disabled]="GRNoteForm.controls.shipmentOrderStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Entry No' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfEntryNumber" id="billOfEntryNumber" formControlName="billOfEntryNumber"
+                        placeholder="{{'Bill Of Entry No' |translate}}" class="form-control" type="text"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Entry')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Lading No' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfLandingNumber" id="billOfLandingNumber" formControlName="billOfLandingNumber"
+                        placeholder="{{'Bill Of Lading No' |translate}}" class="form-control" type="text"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Landing')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Entry Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfEntryDate" id="billOfEntryDate" formControlName="billOfEntryDate"
+                        placeholder="{{'billOfEntry Date' |translate}}" class="form-control" type="date"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Entry')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Lading Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfLandingDate" id="billOfLandingDate" formControlName="billOfLandingDate"
+                        placeholder="{{'billOfLanding Date' |translate}}" class="form-control" type="date"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Landing')">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row" *ngIf="showAssignedTo">
+                    <div class="col-sm-4  col-form-label">{{'Unloading' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="wareHouseTeamsListIDs" [(ngModel)]="selectedEmp" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.startDate.value">
+                        <span class="caret" style="font-size: 100px;"></span>
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4  col-form-label">{{'Quality Check AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="qualityCheckIDs" [(ngModel)]="selectedEmpforQualityCheck"
+                        [ngModelOptions]="{standalone: true}" (focusout)="setTo($event)"
+                        [disabled]="GRNoteForm.controls.qualityCheckStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'GRN AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="grnCheckIds" [(ngModel)]="selectedEmpforGRN" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.grnStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload1 hidden (change)="uploadMultipleFiles($event,'invoiceImagesArray')"
+                        multiple>
+                      <i (click)="upload1.click()" class="upload1 fa fa-upload"></i>
+                    </div>
+                    <div class="col-sm-7">
+                      <div class="form-group row" *ngFor="let data of invoiceImagesArray;let i=index"
+                        [hidden]="invoiceImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'invoiceImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Form 38' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload hidden (change)="uploadMultipleFiles($event,'form38ImagesArray')"
+                        multiple>
+                      <i (click)="upload.click()" class="upload fa fa-upload"></i>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group row" *ngFor="let data of form38ImagesArray;let i=index"
+                        [hidden]="form38ImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'form38ImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'LR/AWB/BL' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload2 hidden (change)="uploadMultipleFiles($event,'lrImagesArray')"
+                        multiple>
+                      <i (click)="upload2.click()" class="upload2 fa fa-upload"></i>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group row" *ngFor="let data of lrImagesArray;let i=index"
+                        [hidden]="lrImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'lrImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4">
+           
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label">Status</label>
+              <div class="col-sm-7">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" 
+                         type="checkbox" 
+                         id="inlineCheckbox1" 
+                         value="Created"
+                         [checked]="true"
+                         (change)="onCheckBoxClick($event.target.checked, 'Created')"> 
+                  <label class="form-check-label" for="inlineCheckbox1">Created</label> 
+                </div>
+                
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Gate In"
+                         (change)="onCheckBoxClick($event.target.checked, 'Gate In')"
+                          [checked]="true">
+                  <label class="form-check-label" for="inlineCheckbox2">Gate In</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Gate Out"
+                         (change)="onCheckBoxClick($event.target.checked, 'Gate Out')"
+                         [(ngModel)]="gateOutChecked" [ngModelOptions]="{ standalone: true }">
+                  <label class="form-check-label" for="inlineCheckbox3">Gate Out</label>
+                </div> 
+                
+                <!-- <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="statusDropdown"
+                  [(ngModel)]="statuses" [ngModelOptions]="{standalone: true}" (focusout)="getAll(page, itemsPerPage)">
+                </ng-multiselect-dropdown> -->
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-md-4"style="position:relative;left:100px">
+            <div class="form-group row" *ngIf="noteData.length > 0">
+              <label class="col-sm-1 col-form-label">Status</label>
+              <div class="col-sm-10 mt-1">
+                <label *ngFor="let status of statusOptions" class="radio-inline" [style.color]="status.color">
+                  <input type="radio" class="m-1" [(ngModel)]="reqObj.status" name="status" [ngModelOptions]="{ standalone: true }"
+                         [value]="status.value" (change)="scrollRight(status.value, 'inward')">
+                  {{ status.label }}
+                </label>
+              </div>
+            </div>
+            
+            <!-- <div class="" >
+              <select (click)="scrollRight($event.target.value,'outward')" [hidden]="noteType==='Inward Shipment'"
+                class="form-control">
+                <option>Select</option>
+                <option>Sales</option>
+                <option>Quality Check</option>
+                <option>Loading</option>
+                <option>Shipment</option>
+              </select>
+              <select (click)="scrollRight($event.target.value,'inward')" [hidden]="noteType==='Outward Shipment'"
+                class="form-control">
+                <option>Select</option>
+                <option>UnLoading</option>
+                <option>Quality Check</option>
+                <option>GRN</option>
+              </select>
+            </div> -->
+          </div>
+         
+          <div class="col-md-4">
+            <div class="row float-right">
+              <button class="btn btn-green mr-1" (click)="save()" [disabled]="GRNoteForm.invalid">
+                {{'Save' |translate}}
+              </button>
+              <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Start -->
+    <div class="row">
+      <div class="col-md-12">
+      <!--   <div class="col-md-2" *ngIf="noteData.length>0">
+          <select (click)="scrollRight($event.target.value,'outward')" [hidden]="noteType==='Inward Shipment'"
+            class="form-control">
+            <option>Select</option>
+            <option>Sales</option>
+            <option>Quality Check</option>
+            <option>Loading</option>
+            <option>Shipment</option>
+          </select>
+          <select (click)="scrollRight($event.target.value,'inward')" [hidden]="noteType==='Outward Shipment'"
+            class="form-control">
+            <option>Select</option>
+            <option>UnLoading</option>
+            <option>Quality Check</option>
+            <option>GRN</option>
+          </select>
+        </div> -->
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+           <div class="col-md-1"><select [(ngModel)]="itemsPerPage"
+                (change)="fetchAllDFirst(page=1,$event)" class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="getAll(page=1, itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead [hidden]="noteType === 'Inward Shipment'">
+              <tr style="border-bottom: 1px solid white">
+                <td colspan="12"></td>
+                <th colspan="7" id="My_td">{{ 'Sales' | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Sales')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Sales')" aria-hidden="true"></i>
+                </th>
+                <th colspan="7" id="My_qctd">{{ 'Quality Check' | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Quality Check')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Quality Check')" aria-hidden="true"></i>
+                </th>
+                <th colspan="7" id="My_Loadingtd">{{ 'Loading' | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Loading')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Loading')" aria-hidden="true"></i>
+                </th>
+                <th colspan="7" id="My_Shipmenttd">{{ 'Shipment' | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Shipment')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Shipment')" aria-hidden="true"></i>
+                </th>
+                <td colspan="2"></td>
+              </tr>
+              <tr style="background-color: blueviolet;">
+                <th *ngFor="let key of tableHeadings">
+                  {{ key | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', key)" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', key)" aria-hidden="true"></i>
+                </th>
+              </tr>
+            </thead>
+            
+          <tbody [hidden]="noteType==='Inward Shipment'">
+            <tr *ngFor="let i=index;let data of noteData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};">
+              <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+              <th style="cursor: pointer" (click)="edit(data)">{{data.invoiceNumber}}</th>
+              <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.gateOutDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo.supplierIDName}}</span>
+                <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo.customerIDName}}</span>
+                <span
+                  *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+              </td>
+              <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.vehicleInfo.vehicleNumber}}</td>
+              <td>{{data.vehicleType}}</td>
+              <td>{{data.serviceProviderInfo?.serviceProviderIDName}}</td>
+              <td>{{data.lrNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}}&nbsp;{{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.salesOrderAssignedTo}}<br>{{data.salesOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.salesOrderAssignedBy}}<br>{{data.salesOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.salesOrderStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.salesOrderEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.salesOrderCompletedBy}}</td>
+              <td><span *ngIf="!data.salesOrderEndDate">
+                  <input type="datetime-local" class="form-control" id="salesOrderPlannedCompletionDate"
+                    [disabled]="makeThisDisabled" [(ngModel)]="data.salesOrderPlannedCompletionDate"
+                    (change)="save(data,'Sales')" [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.salesOrderEndDate"> {{data.salesOrderPlannedCompletionDate| date: 'dd/MM/yyyy
+                  HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.salesOrderStartDate && data.salesOrderEndDate">Completed</span>
+                <span *ngIf="data.salesOrderStartDate && !data.salesOrderEndDate">
+                  <button class="btn btn-primary"
+                    (click)="onStatusChange(data,'eDate','Sales')">Complete</button></span>
+                <span *ngIf="!data.salesOrderStartDate"><button class="btn btn-primary"
+                    [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                    (click)="onStatusChange(data,'startDate','Sales')">Start</button></span>
+              </td>
+              <td>{{data.qualityCheckAssignedTo}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckAssignedBy}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.qualityCheckCompletedBy}}</td>
+              <td><span *ngIf="!data.qualityCheckEndDate">
+                  <input type="datetime-local" class="form-control" id="qualityCheckPlannedCompletionDate"
+                    [(ngModel)]="data.qualityCheckPlannedCompletionDate" (change)="save(data,'Quality Check')"
+                    [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.qualityCheckEndDate"> {{data.qualityCheckPlannedCompletionDate| date: 'dd/MM/yyyy
+                  HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.qualityCheckStartDate && data.qualityCheckEndDate">Completed</span>
+                <span *ngIf="data.qualityCheckStartDate && !data.qualityCheckEndDate">
+                  <button class="btn btn-primary"
+                    (click)="onStatusChange(data,'eDate','Quality Check')">Complete</button></span>
+                <span *ngIf="!data.qualityCheckStartDate"><button class="btn btn-primary"
+                    [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                    (click)="onStatusChange(data,'startDate','Quality Check')">Start</button></span>
+              </td>
+              <td>{{data.assignedTo}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.assignedBy}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.completedBy}}</td>
+              <td><span *ngIf="!data.endDate">
+                  <input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                    [disabled]="makeThisDisabled" [(ngModel)]="data.plannedCompletionDate"
+                    (change)="save(data,'Loading')" [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.endDate"> {{data.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                <span *ngIf="data.startDate && !data.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange(data,'eDate','Loading')"
+                    [disabled]="data.status=='GATE OUT'">Complete</button></span>
+                <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                    [disabled]="data.status=='GATE OUT' || (data.status=='Created'&& data.noteType=='Inward Shipment')"
+                    (click)="onStatusChange(data,'startDate','Loading')">Start</button></span>
+              </td>
+              <td>{{data.shipmentOrderAssignedTo}}<br>{{data.shipmentOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.shipmentOrderAssignedBy}}<br>{{data.shipmentOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.shipmentOrderStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.shipmentOrderEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.shipmentOrderCompletedBy}}</td>
+              <td><span *ngIf="!data.shipmentOrderEndDate">
+                  <input type="datetime-local" class="form-control" id="shipmentOrderPlannedCompletionDate"
+                    [disabled]="makeThisDisabled" [(ngModel)]="data.shipmentOrderPlannedCompletionDate"
+                    (change)="save(data,'Shipment')" [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.shipmentOrderEndDate"> {{data.shipmentOrderPlannedCompletionDate| date: 'dd/MM/yyyy
+                  HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.shipmentOrderStartDate && data.shipmentOrderEndDate">Completed</span>
+                <span *ngIf="data.shipmentOrderStartDate && !data.shipmentOrderEndDate">
+                  <button class="btn btn-primary"
+                    (click)="onStatusChange(data,'eDate','Shipment')">Complete</button></span>
+                <span *ngIf="!data.shipmentOrderStartDate"><button class="btn btn-primary"
+                    [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                    (click)="onStatusChange(data,'startDate','Shipment')">Start</button></span>
+              </td>
+              <td><span *ngIf="data.status=='GATE OUT'">{{data.status}}</span>
+                <span *ngIf="data.status=='GATE IN'"><button class="btn btn-green mt-1"
+                    (click)="save(data,'','gateOut')" [disabled]="!data.endDate">GateOut</button></span>
+                <span *ngIf="data.status=='Created'"><button class="btn btn-green mt-1"
+                    (click)="save(data,'','gateIn')"
+                    [disabled]="(!data.vehicleInfo.vehicleNumber && data.noteType=='Inward Shipment')">Gate
+                    In</button></span>
+              </td>
+              <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(data)"></i></span>
+              </td>
+            </tr>
+          </tbody>
+         
+       
+            <thead [hidden]="noteType === 'Outward Shipment'">
+              <tr style="border-bottom: 1px solid white;">
+                <!-- Columns for Gate Entry Details -->
+                <th colspan="13">Gate Entry Details <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Gate Entry Details')" aria-hidden="true"></i> <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Gate Entry Details')" aria-hidden="true"></i></th>
+          
+                <!-- Columns for UnLoading -->
+                <th colspan="7" id="My_Unloadingtd">UnLoading <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'UnLoading')" aria-hidden="true"></i> <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'UnLoading')" aria-hidden="true"></i></th>
+          
+                <!-- Columns for Quality Check -->
+                <th colspan="7" id="My_qcInwardtd">Quality Check <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'Quality Check')" aria-hidden="true"></i> <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'Quality Check')" aria-hidden="true"></i></th>
+          
+                <!-- Columns for GRN -->
+                <th colspan="7"  id="My_GRNtd">GRN <i class="fa fa-sort-asc" (click)="setDirection('ASC', 'GRN')" aria-hidden="true"></i> <i class="fa fa-sort-desc" (click)="setDirection('DESC', 'GRN')" aria-hidden="true"></i></th>
+          
+                <td colspan="2"></td>
+              </tr>
+              <tr style="">
+                <!-- Dynamic column headers -->
+                <th *ngFor="let key of tableHeadingsForGateOut">
+                  {{ key | translate }}
+                  <i class="fa fa-sort-asc" (click)="setDirection('ASC', key)" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" (click)="setDirection('DESC', key)" aria-hidden="true"></i>
+                </th>
+              </tr>
+            </thead>
+            <!-- Add your table body and rows here -->
+        
+          
+          <tbody [hidden]="noteType==='Outward Shipment'">
+            <tr *ngFor="let i=index;let data of noteData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};">
+              <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+              <th style="cursor: pointer" (click)="edit(data)">{{data.invoiceNumber}}</th>
+              <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.gateOutDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.fullWmpoNumber}}</td>
+              <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo.supplierIDName}}</span>
+                <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo.customerIDName}}</span>
+                <span
+                  *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+              </td>
+              <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{data.vehicleInfo.vehicleNumber}}</td>
+              <td>{{data.vehicleType}}</td>
+              <td>{{data.serviceProviderInfo?.serviceProviderIDName}}</td>
+              <td>{{data.equipmentInfo?.equipmentID}}</td>
+              <td>{{data.lrNumber}}</td>
+              <td>{{data.invoiceTotalQuantity}}&nbsp;{{data.invoiceTotalQuantityUom}}</td>
+              <td>{{data.assignedTo}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.assignedBy}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.completedBy}}</td>
+              <td><span *ngIf="!data.endDate">
+                  <input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                    [disabled]="makeThisDisabled" [(ngModel)]="data.plannedCompletionDate"
+                    (change)="save(data,'UnLoading')" [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.endDate"> {{data.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                <span *ngIf="data.startDate && !data.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange(data,'eDate','UnLoading')"
+                    [disabled]="data.status=='GATE OUT'">Complete</button></span>
+                <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                    [disabled]="data.status=='GATE OUT' || data.status=='Created'"
+                    (click)="onStatusChange(data,'startDate','UnLoading')">Start</button></span>
+              </td>
+              <td>{{data.qualityCheckAssignedTo}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckAssignedBy}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </td>
+              <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.qualityCheckCompletedBy}}</td>
+              <td><span *ngIf="!data.qualityCheckEndDate">
+                  <input type="datetime-local" class="form-control" id="qualityCheckPlannedCompletionDate"
+                    [(ngModel)]="data.qualityCheckPlannedCompletionDate" (change)="save(data,'Quality Check')"
+                    [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.qualityCheckEndDate"> {{data.qualityCheckPlannedCompletionDate| date: 'dd/MM/yyyy
+                  HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.qualityCheckStartDate && data.qualityCheckEndDate">Completed</span>
+                <span *ngIf="data.qualityCheckStartDate && !data.qualityCheckEndDate">
+                  <button class="btn btn-primary"
+                    (click)="onStatusChange(data,'eDate','Quality Check')">Complete</button></span>
+                <span *ngIf="!data.qualityCheckStartDate"><button class="btn btn-primary"
+                    [disabled]="data.status=='Created'"
+                    (click)="onStatusChange(data,'startDate','Quality Check')">Start</button></span>
+              </td>
+              <td>{{data.grnAssignedTo}}<br>{{data.grnAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.grnAssignedBy}}<br>{{data.grnAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.grnStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.grnEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+              <td>{{data.grnCompletedBy}}</td>
+              <td><span *ngIf="!data.grnEndDate">
+                  <input type="datetime-local" class="form-control" id="grnPlannedCompletionDate"
+                    [disabled]="makeThisDisabled" [(ngModel)]="data.grnPlannedCompletionDate"
+                    (change)="save(data,'GRN')" [ngModelOptions]="{standalone: true}">
+                </span>
+                <span *ngIf="data.grnEndDate"> {{data.grnPlannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+              </td>
+              <td><span *ngIf="data.grnStartDate && data.grnEndDate">Completed</span>
+                <span *ngIf="data.grnStartDate && !data.grnEndDate">
+                  <button class="btn btn-primary"
+                    (click)="onStatusChange(data,'eDate','GRN')">Complete</button></span>
+                <span *ngIf="!data.grnStartDate"><button class="btn btn-primary" [disabled]="data.status=='Created'"
+                    (click)="onStatusChange(data,'startDate','GRN')">Start</button></span>
+              </td>
+              <td><span *ngIf="data.status=='GATE OUT'"><span class="text-success">{{data.status}}</span></span>
+                <span *ngIf="data.status=='GATE IN'"><button class="btn btn-green mt-1"
+                    (click)="save(data,'','gateOut')" [disabled]="!data.endDate">GateOut</button></span>
+                <span *ngIf="data.status=='Created'"><button class="btn btn-green mt-1"
+                    (click)="save(data,'','gateIn')" [disabled]="!data.vehicleInfo.vehicleNumber">Gate
+                    In</button></span>
+              </td>
+              <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(data)"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="getAll((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End -->
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+
+<!-- 
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12" [formGroup]="GRNoteForm">
+    <div class="row">
+      <div class="col-md-12">
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Inward Shipment"
+            [ngModelOptions]="{standalone: true}" [disabled]="GRNoteForm.controls._id.value"
+            (click)="changeNoteType('Unloading','Inward Shipment')"><span class="ml-1">{{'Inward Shipment'
+            |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Outward Shipment"
+            [ngModelOptions]="{standalone: true}" [disabled]="GRNoteForm.controls._id.value"
+            (click)="changeNoteType('Loading','Outward Shipment')"><span class="ml-1">{{'Outward Shipment'
+            |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Sales Return"
+            [ngModelOptions]="{standalone: true}" [disabled]="true"
+            (click)="changeNoteType('Others','Sales Return')"><span class="ml-1">{{'Sale Return' |translate}}</span>
+        </label>
+        <label class="radio-inline m-1 d-none">
+          <input type="radio" name="optradio" [(ngModel)]="noteType" value="Sub-Contractror Supliers"
+            [ngModelOptions]="{standalone: true}" [disabled]="true"
+            (click)="changeNoteType('Others','Sub-Contractror Supliers')"><span class="ml-1">{{'Sub-Contractror
+            Supliers' |translate}}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="row" [hidden]="true">
+      <div class="col-md-12">
+        <div class="top-input-label" style="padding-bottom: 0;">
+          <ul>
+           
+            <li>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Order No' |translate}}</label>
+                <div class="col-sm-8 top-input" *ngIf="noteType == 'Inward Shipment'">
+                  <input type="text" class="form-control col-form-label-sm" id="wmpoNumber" formControlName="wmpoNumber"
+                    name="wmpoNumber" readonly>
+                </div>
+                <div class="col-sm-8 top-input" *ngIf="noteType != 'Inward Shipment'">
+                  <ng2-completer name="wmsoNumber" [datasource]="wmsoNumbers" id="wmsoNumber"
+                    formControlName="wmsoNumber" [minSearchLength]="0" placeholder="WMSO No"
+                    (selected)="onWMSONoChange($event)">
+                  </ng2-completer>
+                </div>
+              </div>
+            </li>
+            
+          </ul>
+         
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'GATE ENTRY' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'GATE ENTRY' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body">
+              <div class="row force-overflow">
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Number' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="invoiceNumber"
+                        formControlName="invoiceNumber" placeholder="{{'Invoice Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Date' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control col-form-label-sm" id="invoiceDate"
+                        formControlName="invoiceDate" placeholder="{{'Invoice Date' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice Total Qty' |translate}}<i
+                        class="red">*</i></label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control col-form-label-sm" id="invoiceTotalQuantity"
+                        formControlName="invoiceTotalQuantity" placeholder="{{'Invoice Total Qty' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                    <div class="col-sm-4" *ngIf="!makeThisDisabled">
+                      <select class="form-control selectPanl" formControlName="invoiceTotalQuantityUom"
+                        style="margin-left:-14px">
+                        <option [value]="null">--Select--</option>
+                        <option *ngFor="let unit of units" [value]="unit.unitCode">
+                          {{unit.unitCode}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4" *ngIf="makeThisDisabled">
+                      <input type="text" readonly class="form-control" formControlName="invoiceTotalQuantityUom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Transporter' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [(ngModel)]="spDummyID" [ngModelOptions]="{standalone: true}" [datasource]="spIDs"
+                        [minSearchLength]="0" placeholder="Search"
+                        (selected)="setSearchValueToText($event,'serviceProviderIDName')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control col-form-label-sm" id="serviceProviderIDName"
+                        formControlName="serviceProviderIDName" placeholder="{{'Transporter' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Container Number' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="containerIDS" [minSearchLength]="0" placeholder="Search"
+                        [(ngModel)]="dummyContainer" [ngModelOptions]="{standalone: true}"
+                        (selected)="setSearchValueToText($event,'carrierName')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6 pr-2">
+                      <input type="text" class="form-control col-form-label-sm" id="carrierName"
+                        formControlName="carrierName" placeholder="{{'Container Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Vehicle Number' |translate}}</label>
+                    <div class="col-sm-2">
+                      <ng2-completer [datasource]="vehicleIDs" [minSearchLength]="0" placeholder="Search"
+                        [(ngModel)]="dummyVehicle" [ngModelOptions]="{standalone: true}"
+                        (selected)="setSearchValueToText($event,'vehicleNumber')" [disabled]="makeThisDisabled">
+                      </ng2-completer>
+                    </div>
+                    <div class="col-md-6 pr-2">
+                      <input type="text" class="form-control col-form-label-sm" id="vehicleNumber"
+                        formControlName="vehicleNumber" placeholder="{{'Vehicle Number' |translate}}"
+                        (focusout)="setVehicleType()" [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Vehicle Type' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="vehicleType"
+                        formControlName="vehicleType" placeholder="{{'Vehicle Type' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="showWayBillNumber">
+                    <label class="col-sm-4 col-form-label">{{'WayBill Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="waybillNumber" style="width:200px"
+                        formControlName="waybillNumber" placeholder="{{'WayBill Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+                  
+
+
+                  <div class="form-group row" *ngIf="showLrNumber">
+                    <label class="col-sm-4 col-form-label">{{'L/R Number' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control col-form-label-sm" id="waybillNumber"
+                        formControlName="waybillNumber" placeholder="{{'L/R Number' |translate}}"
+                        [readonly]="makeThisDisabled">
+                    </div>
+                  </div>
+
+                  <div class="form-group row" [hidden]="noteType==='Inward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'Customer AssignedTo' | translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="salesCheckIDs" [(ngModel)]="selectedEmpforSales" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.salesOrderStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group row" *ngIf="showLoading">
+                    <div class="col-sm-4  col-form-label">{{'Loading' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="wareHouseTeamsListIDs" [(ngModel)]="selectedEmp" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.startDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Inward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'Shipment AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="shipmentCheckIDs" [(ngModel)]="selectedEmpforShipment"
+                        [ngModelOptions]="{standalone: true}" (focusout)="setTo($event)"
+                        [disabled]="GRNoteForm.controls.shipmentOrderStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Entry No' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfEntryNumber" id="billOfEntryNumber" formControlName="billOfEntryNumber"
+                        placeholder="{{'Bill Of Entry No' |translate}}" class="form-control" type="text"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Entry')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Lading No' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfLandingNumber" id="billOfLandingNumber" formControlName="billOfLandingNumber"
+                        placeholder="{{'Bill Of Lading No' |translate}}" class="form-control" type="text"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Landing')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Entry Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfEntryDate" id="billOfEntryDate" formControlName="billOfEntryDate"
+                        placeholder="{{'billOfEntry Date' |translate}}" class="form-control" type="date"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Entry')">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <label class="col-sm-4 col-form-label">{{'Bill Of Lading Date' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input name="billOfLandingDate" id="billOfLandingDate" formControlName="billOfLandingDate"
+                        placeholder="{{'billOfLanding Date' |translate}}" class="form-control" type="date"
+                        [readonly]="makeThisDisabled" (focusout)="getConcatDateNumber('Landing')">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row" *ngIf="showAssignedTo">
+                    <div class="col-sm-4  col-form-label">{{'Unloading' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="wareHouseTeamsListIDs" [(ngModel)]="selectedEmp" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.startDate.value">
+                        <span class="caret" style="font-size: 100px;"></span>
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4  col-form-label">{{'Quality Check AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="qualityCheckIDs" [(ngModel)]="selectedEmpforQualityCheck"
+                        [ngModelOptions]="{standalone: true}" (focusout)="setTo($event)"
+                        [disabled]="GRNoteForm.controls.qualityCheckStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="noteType==='Outward Shipment'">
+                    <div class="col-sm-4  col-form-label">{{'GRN AssignedTo' |translate}}</div>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                        [data]="grnCheckIds" [(ngModel)]="selectedEmpforGRN" [ngModelOptions]="{standalone: true}"
+                        (focusout)="setTo($event)" [disabled]="GRNoteForm.controls.grnStartDate.value">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Invoice' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload1 hidden (change)="uploadMultipleFiles($event,'invoiceImagesArray')"
+                        multiple>
+                      <i (click)="upload1.click()" class="upload1 fa fa-upload"></i>
+                    </div>
+                    <div class="col-sm-7">
+                      <div class="form-group row" *ngFor="let data of invoiceImagesArray;let i=index"
+                        [hidden]="invoiceImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'invoiceImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Form 38' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload hidden (change)="uploadMultipleFiles($event,'form38ImagesArray')"
+                        multiple>
+                      <i (click)="upload.click()" class="upload fa fa-upload"></i>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group row" *ngFor="let data of form38ImagesArray;let i=index"
+                        [hidden]="form38ImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'form38ImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'LR/AWB/BL' |translate}}</label>
+                    <div class="input-container col-md-1 mt-1">
+                      <input type="file" #upload2 hidden (change)="uploadMultipleFiles($event,'lrImagesArray')"
+                        multiple>
+                      <i (click)="upload2.click()" class="upload2 fa fa-upload"></i>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group row" *ngFor="let data of lrImagesArray;let i=index"
+                        [hidden]="lrImagesArray.length==0">
+                        <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                        <i class="fa fa-times" (click)="deleteImageMethod(data,i,'lrImagesArray')">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+   
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label">Status</label>
+              <div class="col-sm-7">
+                <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings" [data]="statusDropdown"
+                  [(ngModel)]="statuses" [ngModelOptions]="{standalone: true}" (focusout)="getAll()">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+          </div>
+          <div class="col-md-4">
+            <div class="row float-right">
+              <button class="btn btn-green mr-1" (click)="save()" [disabled]="GRNoteForm.invalid">
+                {{'Save' |translate}}
+              </button>
+              <button class="btn btn-secondary" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-2" *ngIf="noteData.length>0">
+          <select (click)="scrollRight($event.target.value,'outward')" [hidden]="noteType==='Inward Shipment'"
+            class="form-control">
+            <option>Select</option>
+            <option>Sales</option>
+            <option>Quality Check</option>
+            <option>Loading</option>
+            <option>Shipment</option>
+          </select>
+          <select (click)="scrollRight($event.target.value,'inward')" [hidden]="noteType==='Outward Shipment'"
+            class="form-control">
+            <option>Select</option>
+            <option>UnLoading</option>
+            <option>Quality Check</option>
+            <option>GRN</option>
+          </select>
+        </div>
+        <div class="wmsDataTables">
+          <table  class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead [hidden]="noteType==='Inward Shipment'">
+              <tr style="border-bottom: 1px;border-bottom: 1px solid;
+              border-color: white;">
+
+                <td colspan="12"></td>
+                <td colspan="7" style="color:white;text-align:center" id="My_td">{{'Sales' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_qctd">{{'Quality Check' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_Loadingtd">{{'Loading' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_Shipmenttd">{{'Shipment' |translate}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Invoice Number' |translate}}</th>
+                <th scope="col">{{'Gate In D&T' |translate}}</th>
+                <th scope="col">{{'Gate Out D&T' |translate}}</th>
+                <th scope="col">{{'Order ID' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th scope="col">{{'Invoice Date' |translate}}</th>
+                <th scope="col">{{'Vehicle Number' |translate}}</th>
+                <th scope="col">{{'Vehicle Type' |translate}}</th>
+                <th scope="col">{{'Transporter' |translate}}</th>
+              
+                <th scope="col">{{'LR Number' |translate}}</th>
+             
+                <th scope="col">{{'Invoice Qty' |translate}}</th>
+               
+
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'Sales Status' |translate}}</th>
+
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'Quality Check Status' |translate}}</th>
+
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'Loading Status' |translate}}</th>
+
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'Shipment Status' |translate}}</th>
+
+                <th scope="col">{{'Status' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody [hidden]="noteType==='Inward Shipment'">
+              <tr *ngFor="let data of noteData;let i=index">
+                <td scope="row">{{i+1}}</td>
+                <th style="cursor: pointer" (click)="edit(data)">{{data.invoiceNumber}}</th>
+                <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.gateOutDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.fullWmsoNumber}}</td>
+                <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo.supplierIDName}}</span>
+                  <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.vehicleInfo.vehicleNumber}}</td>
+                <td>{{data.vehicleType}}</td>
+                <td>{{data.serviceProviderInfo?.serviceProviderIDName}}</td>
+                <td>{{data.waybillNumber}}</td>
+                <td>{{data.invoiceTotalQuantity}}&nbsp;{{data.invoiceTotalQuantityUom}}</td>
+                <td>{{data.salesOrderAssignedTo}}<br>{{data.salesOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.salesOrderAssignedBy}}<br>{{data.salesOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.salesOrderStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.salesOrderEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.salesOrderCompletedBy}}</td>
+                <td><span *ngIf="!data.salesOrderEndDate">
+                    <input type="datetime-local" class="form-control" id="salesOrderPlannedCompletionDate"
+                      [disabled]="makeThisDisabled" [(ngModel)]="data.salesOrderPlannedCompletionDate"
+                      (change)="save(data,'Sales')" [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.salesOrderEndDate"> {{data.salesOrderPlannedCompletionDate| date: 'dd/MM/yyyy
+                    HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.salesOrderStartDate && data.salesOrderEndDate">Completed</span>
+                  <span *ngIf="data.salesOrderStartDate && !data.salesOrderEndDate">
+                    <button class="btn btn-primary"
+                      (click)="onStatusChange(data,'eDate','Sales')">Complete</button></span>
+                  <span *ngIf="!data.salesOrderStartDate"><button class="btn btn-primary"
+                      [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                      (click)="onStatusChange(data,'startDate','Sales')">Start</button></span>
+                </td>
+
+                <td>{{data.qualityCheckAssignedTo}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.qualityCheckAssignedBy}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.qualityCheckCompletedBy}}</td>
+                <td><span *ngIf="!data.qualityCheckEndDate">
+                    <input type="datetime-local" class="form-control" id="qualityCheckPlannedCompletionDate"
+                      [(ngModel)]="data.qualityCheckPlannedCompletionDate" (change)="save(data,'Quality Check')"
+                      [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.qualityCheckEndDate"> {{data.qualityCheckPlannedCompletionDate| date: 'dd/MM/yyyy
+                    HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.qualityCheckStartDate && data.qualityCheckEndDate">Completed</span>
+                  <span *ngIf="data.qualityCheckStartDate && !data.qualityCheckEndDate">
+                    <button class="btn btn-primary"
+                      (click)="onStatusChange(data,'eDate','Quality Check')">Complete</button></span>
+                  <span *ngIf="!data.qualityCheckStartDate"><button class="btn btn-primary"
+                      [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                      (click)="onStatusChange(data,'startDate','Quality Check')">Start</button></span>
+                </td>
+                <td>{{data.assignedTo}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.assignedBy}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.completedBy}}</td>
+                <td><span *ngIf="!data.endDate">
+                    <input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                      [disabled]="makeThisDisabled" [(ngModel)]="data.plannedCompletionDate"
+                      (change)="save(data,'Loading')" [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.endDate"> {{data.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                  <span *ngIf="data.startDate && !data.endDate">
+                    <button class="btn btn-primary" (click)="onStatusChange(data,'eDate','Loading')"
+                      [disabled]="data.status=='GATE OUT'">Complete</button></span>
+                  <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                      [disabled]="data.status=='GATE OUT' || (data.status=='Created'&& data.noteType=='Inward Shipment')"
+                      (click)="onStatusChange(data,'startDate','Loading')">Start</button></span>
+                </td>
+                <td>{{data.shipmentOrderAssignedTo}}<br>{{data.shipmentOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.shipmentOrderAssignedBy}}<br>{{data.shipmentOrderAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.shipmentOrderStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.shipmentOrderEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.shipmentOrderCompletedBy}}</td>
+                <td><span *ngIf="!data.shipmentOrderEndDate">
+                    <input type="datetime-local" class="form-control" id="shipmentOrderPlannedCompletionDate"
+                      [disabled]="makeThisDisabled" [(ngModel)]="data.shipmentOrderPlannedCompletionDate"
+                      (change)="save(data,'Shipment')" [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.shipmentOrderEndDate"> {{data.shipmentOrderPlannedCompletionDate| date: 'dd/MM/yyyy
+                    HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.shipmentOrderStartDate && data.shipmentOrderEndDate">Completed</span>
+                  <span *ngIf="data.shipmentOrderStartDate && !data.shipmentOrderEndDate">
+                    <button class="btn btn-primary"
+                      (click)="onStatusChange(data,'eDate','Shipment')">Complete</button></span>
+                  <span *ngIf="!data.shipmentOrderStartDate"><button class="btn btn-primary"
+                      [disabled]="(data.status=='Created'&& data.noteType=='Inward Shipment')"
+                      (click)="onStatusChange(data,'startDate','Shipment')">Start</button></span>
+                </td>
+
+                <td><span *ngIf="data.status=='GATE OUT'">{{data.status}}</span>
+                  <span *ngIf="data.status=='GATE IN'"><button class="btn btn-green mt-1"
+                      (click)="save(data,'','gateOut')" [disabled]="!data.endDate">GateOut</button></span>
+                  <span *ngIf="data.status=='Created'"><button class="btn btn-green mt-1"
+                      (click)="save(data,'','gateIn')"
+                      [disabled]="(!data.vehicleInfo.vehicleNumber && data.noteType=='Inward Shipment')">Gate
+                      In</button></span>
+                </td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(data)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+            <thead [hidden]="noteType==='Outward Shipment'">
+              <tr style="border-bottom: 1px;border-bottom: 1px solid;border-color: white;">
+                <td colspan="13" style="color:white;text-align:center">{{'Gate Entry Details' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_Unloadingtd">{{'UnLoading' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_qcInwardtd">{{'Quality Check' |translate}}</td>
+                <td colspan="7" style="color:white;text-align:center" id="My_GRNtd">{{'GRN' |translate}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Invoice Number' |translate}}</th>
+                <th scope="col">{{'Gate In D&T' |translate}}</th>
+                <th scope="col">{{'Gate Out D&T' |translate}}</th>
+                <th scope="col">{{'Order ID' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th scope="col">{{'Invoice Date' |translate}}</th>
+                <th scope="col">{{'Vehicle Number' |translate}}</th>
+                <th scope="col">{{'Vehicle Type' |translate}}</th>
+                <th scope="col">{{'Transporter' |translate}}</th>
+                <th scope="col">{{'Carrier Name' |translate}}</th>
+                <th scope="col">{{'LR Number' |translate}}</th>
+                <th scope="col">{{'Invoice Qty' |translate}}</th>
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'UnLoading Status' |translate}}</th>
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'Quality Check Status' |translate}}</th>
+                <th scope="col">{{'Assigned To' |translate}}</th>
+                <th scope="col">{{'Assigned By' |translate}}</th>
+                <th scope="col">{{'Start Time' |translate}}</th>
+                <th scope="col">{{'End Time' |translate}}</th>
+                <th scope="col">{{'Completed By' |translate}}</th>
+                <th scope="col">{{'Planned Completion Date' |translate}}</th>
+                <th scope="col">{{'GRN Status' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody [hidden]="noteType==='Outward Shipment'">
+              <tr *ngFor="let data of noteData;let i=index">
+                <td scope="row">{{i+1}}</td>
+                <th style="cursor: pointer" (click)="edit(data)">{{data.invoiceNumber}}</th>
+                <td>{{data.gateInDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.gateOutDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.fullWmpoNumber}}</td>
+                <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo.supplierIDName}}</span>
+                  <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{data.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.vehicleInfo.vehicleNumber}}</td>
+                <td>{{data.vehicleType}}</td>
+                <td>{{data.serviceProviderInfo?.serviceProviderIDName}}</td>
+                <td>{{data.equipmentInfo?.equipmentID}}</td>
+                <td>{{data.waybillNumber}}</td>
+                <td>{{data.invoiceTotalQuantity}}&nbsp;{{data.invoiceTotalQuantityUom}}</td>
+                <td>{{data.assignedTo}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.assignedBy}}<br>{{data.assignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.completedBy}}</td>
+                <td><span *ngIf="!data.endDate">
+                    <input type="datetime-local" class="form-control" id="plannedCompletionDate"
+                      [disabled]="makeThisDisabled" [(ngModel)]="data.plannedCompletionDate"
+                      (change)="save(data,'UnLoading')" [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.endDate"> {{data.plannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                  <span *ngIf="data.startDate && !data.endDate">
+                    <button class="btn btn-primary" (click)="onStatusChange(data,'eDate','UnLoading')"
+                      [disabled]="data.status=='GATE OUT'">Complete</button></span>
+                  <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                      [disabled]="data.status=='GATE OUT' || data.status=='Created'"
+                      (click)="onStatusChange(data,'startDate','UnLoading')">Start</button></span>
+                </td>
+
+                <td>{{data.qualityCheckAssignedTo}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.qualityCheckAssignedBy}}<br>{{data.qualityCheckAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+                </td>
+                <td>{{data.qualityCheckStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.qualityCheckEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.qualityCheckCompletedBy}}</td>
+                <td><span *ngIf="!data.qualityCheckEndDate">
+                    <input type="datetime-local" class="form-control" id="qualityCheckPlannedCompletionDate"
+                      [(ngModel)]="data.qualityCheckPlannedCompletionDate" (change)="save(data,'Quality Check')"
+                      [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.qualityCheckEndDate"> {{data.qualityCheckPlannedCompletionDate| date: 'dd/MM/yyyy
+                    HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.qualityCheckStartDate && data.qualityCheckEndDate">Completed</span>
+                  <span *ngIf="data.qualityCheckStartDate && !data.qualityCheckEndDate">
+                    <button class="btn btn-primary"
+                      (click)="onStatusChange(data,'eDate','Quality Check')">Complete</button></span>
+                  <span *ngIf="!data.qualityCheckStartDate"><button class="btn btn-primary"
+                      [disabled]="data.status=='Created'"
+                      (click)="onStatusChange(data,'startDate','Quality Check')">Start</button></span>
+                </td>
+
+                <td>{{data.grnAssignedTo}}<br>{{data.grnAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.grnAssignedBy}}<br>{{data.grnAssignedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.grnStartDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.grnEndDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{data.grnCompletedBy}}</td>
+                <td><span *ngIf="!data.grnEndDate">
+                    <input type="datetime-local" class="form-control" id="grnPlannedCompletionDate"
+                      [disabled]="makeThisDisabled" [(ngModel)]="data.grnPlannedCompletionDate"
+                      (change)="save(data,'GRN')" [ngModelOptions]="{standalone: true}">
+                  </span>
+                  <span *ngIf="data.grnEndDate"> {{data.grnPlannedCompletionDate| date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+                </td>
+                <td><span *ngIf="data.grnStartDate && data.grnEndDate">Completed</span>
+                  <span *ngIf="data.grnStartDate && !data.grnEndDate">
+                    <button class="btn btn-primary"
+                      (click)="onStatusChange(data,'eDate','GRN')">Complete</button></span>
+                  <span *ngIf="!data.grnStartDate"><button class="btn btn-primary" [disabled]="data.status=='Created'"
+                      (click)="onStatusChange(data,'startDate','GRN')">Start</button></span>
+                </td>
+                <td><span *ngIf="data.status=='GATE OUT'"><span class="text-success">{{data.status}}</span></span>
+                  <span *ngIf="data.status=='GATE IN'"><button class="btn btn-green mt-1"
+                      (click)="save(data,'','gateOut')" [disabled]="!data.endDate">GateOut</button></span>
+                  <span *ngIf="data.status=='Created'"><button class="btn btn-green mt-1"
+                      (click)="save(data,'','gateIn')" [disabled]="!data.vehicleInfo.vehicleNumber">Gate
+                      In</button></span>
+                </td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue" (click)="delete(data)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+ -->

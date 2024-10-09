@@ -1,0 +1,336 @@
+<div id="inBody" [dir]="direction">
+  <div [formGroup]="PBSForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" #import (click)="import.value = null" class="hidden" type="file" accept=".xlsx"
+                (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="getAllRecordsToDownload()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+              </i>{{'Upload Excel' |translate}}<input id="upfile" #import (click)="import.value = null"  class="hidden" type="file" accept=".xlsx"
+                (change)="uploadExcel($event)">
+            </a>
+          </li>
+
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i class="material-icons align-middle"> description
+              </i> Log File </a>
+            </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'SUPPLIER DETAILS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SUPPLIER DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier ID/Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search supplier to retrive data of supplier">{{'info' |translate}}</i>
+                        <ng2-completer name="supplierIDName" id="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="supplierIDName" [minSearchLength]="0"
+                          placeholder="{{'SupplierIDName' |translate}}" (selected)="getSelected('supplierIDName')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input name="supplierName" [readOnly]="isReadMode" formControlName="supplierName"
+                          placeholder="{{'Supplier Name' |translate}}" class="form-control vblr" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Supplier ID' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="supplierID" name="supplierID" [readOnly]="isReadMode" formControlName="supplierID"
+                          placeholder="{{'Supplier ID' |translate}}" class="form-control vblr" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-5 mt-3 col-form-label">{{'Supplier Type' |translate}}</label>
+                      <div class="col-sm-7 mt-3 input-group">
+                        <select class="form-control" id="supplierType" name="supplierType"
+                          formControlName="supplierType">
+                          <option [ngValue]="undefined">--Select--</option>
+                          <option *ngFor="let supplierType of supplierTypes" [ngValue]="supplierType">
+                            {{supplierType}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'PRODUCT DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'PRODUCT DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar" formGroupName="productMasterInfo">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product ID/Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" id="productIDName" formControlName="productIDName"
+                          [datasource]="dataService" [minSearchLength]="0" (selected)="getSelected('productIDName')"
+                          placeholder="{{'ProductIDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Description' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="productDescription" name="productDescription" formControlName="productDescription"
+                          placeholder="{{'Product Description' |translate}}" class="form-control vbrg" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'MOQ' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="moq" name="moq" formControlName="moq" placeholder="{{'MOQ' |translate}}"
+                          class="form-control vbrg" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row mt-4" *ngIf="imageAvailble">
+                      <label class="col-sm-5 col-form-label">{{'Receiving Unit' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <ng2-completer id="receivingUnit" formControlName="receivingUnit" name="receivingUnit"
+                          [datasource]="receivingUnitValues" [minSearchLength]="0"
+                          placeholder="{{'receivingUnit' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Price' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="price" name="price" formControlName="price" placeholder="{{'Price' |translate}}"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Brand' | translate}}
+                      </label>
+                      <div class="col-sm-5" style="width: 146px;">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="brandConfigureIDs" name="Sub-Category 1" formControlName="brandNames"
+                          name="brandNames" placeholder="Brand Configurations">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row" *ngIf="showImage">
+                      <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                      <div class="col-sm-8">
+                        <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                          alt="No Image">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Lead Time' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="leadTime" name="leadTime" formControlName="leadTime"
+                          placeholder="{{'Lead Time' |translate}}" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row mt-4" *ngIf="imageNotAvailble">
+                      <label class="col-sm-5 col-form-label">{{'Receiving Unit' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <ng2-completer id="receivingUnit" formControlName="receivingUnit" name="receivingUnit"
+                          [datasource]="receivingUnitValues" [minSearchLength]="0" placeholder="receivingUnit">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Currency' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="currency" name="currency" formControlName="currency"
+                          name="country">
+                          <option value="null">--Select--</option>
+                          <option *ngFor="let currency of currencies" [ngValue]="currency.currency">
+                            {{currency.currency}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Lead Time' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <input id="leadTime" name="leadTime" formControlName="leadTime" placeholder="{{'Lead Time' |translate}}"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Receiving Unit' |translate}}
+                      </label>
+                      <div class="col-sm-7 input-group">
+                        <ng2-completer id="receivingUnit" formControlName="receivingUnit"
+                        name="receivingUnit" [datasource]="receivingUnitValues"
+                        [minSearchLength]="0" placeholder="receivingUnit">
+                      </ng2-completer>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+
+              <div class="col-sm-12 text-right mb-3">
+                <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="!PBSForm.valid">{{'SAVE'
+                  |translate}}
+                </button>
+                <button class="btn btn-white" value="Clear" (click)="clear()">{{'CLEAR' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+              <div class="dataTables_length" id="DataTables_Table_0_length">
+                <label>Show <select [(ngModel)]="itemsPerPage" (change)="fetchAllProductsBySupplierID(page=1)" class=""
+                    [ngModelOptions]="{standalone: true}">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select>
+                  Entries</label>
+              </div>
+              <div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search: <input type="text"
+                    [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                    (keyup)="fetchAllProductsBySupplierID(page=1)"></label></div>
+            </div>
+           
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S No' |translate}}</td>
+                  <td scope="col">{{'Image' | translate}}</td>
+                  <td scope="col">{{'Supplier ID' |translate}}</td>
+                  <td scope="col">{{'Supplier Name' |translate}}</td>
+                  <td scope="col">{{'Supplier Type' |translate}}</td>
+                  <td scope="col">{{'Product ID/Name' |translate}}</td>
+                  <td scope="col">{{'Product Description' |translate}}</td>
+                  <td scope="col">{{'MOQ' |translate}}</td>
+                  <td scope="col">{{'Lead Time' |translate}}</td>
+                  <td scope="col">{{'Price' |translate}}</td>
+                  <td scope="col">{{'Currency' |translate}}</td>
+                  <td scope="col">{{'Brand Names' |translate}}</td>
+                  <td scope="col">{{'Action' |translate}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                *ngFor="let i=index;let product of productsBySupplier.productMasterInfos | paginate: {id:'foo',itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="product.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + product.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{product.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!product.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(product.productName)}}</p>
+                  </div>
+                </td>
+                <th style="cursor: pointer" (click)="edit(productsBySupplier, product)">
+                  {{productsBySupplier.supplierID}}</th>
+                <td>{{productsBySupplier.supplierName}}</td>
+                <td>{{productsBySupplier.supplierType}}</td>
+                <td>{{product.productIDName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.moq}} {{product.receivingUnit}}</td>
+                <td class="text-center">{{product.leadTime}}</td>
+                <td class="text-right">{{product.price}}</td>
+                <td class="text-center">{{product.currency}}</td>
+                <td>{{product.brandNames}}</td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                      (click)="delete(productsBySupplier, product)"></i></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo" (pageChange)="fetchAllProductsBySupplierID((page = $event))">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

@@ -1,0 +1,108 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+
+      <div class="col-md-2">
+        <div class="udcBtns">
+          <ul>
+            <li (click)="forCreate()"><a> <i class="material-icons align-middle"> description
+                </i>{{'Create Billing PO' |translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 offset-md-4">
+      </div>
+    </div>
+   <!--  <div class="way_icon">
+      <h3>Welcome <i class="fa fa-home"></i></h3>
+      <a href="#"><i class="fa fa-home"></i></a>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  class="table table-striped" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <td>#</td>
+                <td>{{'Billing PO No' |translate}}</td>
+                <td>{{'Supplier ID/Name' |translate}}</td>
+                <td>{{'Created Date' |translate}}</td>
+                <td>{{'Status' |translate}}</td>
+                <td>{{'Action' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of billingPurchaseOrders; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{order.billingpoNumber}}</td>
+                <td>{{order.supplierMasterInfo.supplierIDName}}</td>
+                <td class="text-center">{{order.createdDate | date: 'MM/dd/yyyy'}}</td>
+                <td>{{order.status}}</td>
+                <!-- <td>
+                  <span class="btn btn-pink btn-sm"
+                    *ngIf="order.raisePO === false && order.billingPOStatus === false && permissionsList.includes('Delete')"
+                    (click)="deleteBillingPO(order._id)"><i class="fa fa-pencil btn-sm"
+                      (click)="editBillingPO(order._id)"></i><i class="fa fa-trash btn-blue"></i></span>
+                  <span class="text-success" *ngIf="order.raisePO && order.billingPOStatus === false">Raised PO</span>
+                  <span class="text-success" *ngIf="order.raisePO && order.billingPOStatus">Confirmed</span>
+                </td> -->
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"
+                    *ngIf="order.raisePO === false && order.billingPOStatus === false"><i _ngcontent-lty-c40=""
+                      class="fa fa-pencil btn-sm" (click)="editBillingPO(order._id)"></i><i _ngcontent-lty-c40=""
+                      class="fa fa-trash btn-blue"
+                      (click)="deleteBillingPO(order._id)"></i></span>
+                  <span class="text-success" *ngIf="order.raisePO && order.billingPOStatus === false">Raised PO</span>
+                  <span class="text-success" *ngIf="order.raisePO && order.billingPOStatus">Confirmed</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  class="table table-striped" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger2">
+            <thead>
+              <tr>
+                <td>#</td>
+                <td>{{'Billing PO No' |translate}}</td>
+                <td>{{'Pallet Position Booked' |translate}}</td>
+                <td>{{'Pallet Position Amount' |translate}}</td>
+                <td>{{'Add Pallet Position Booked' |translate}}</td>
+                <td>{{'Add Pallet Position Amount' |translate}}</td>
+                <td>{{'Flat Rate Amount' |translate}}</td>
+                <td>{{'Variable Rate Amount' |translate}}</td>
+                <td>{{'Mechanical Rate Amount' |translate}}</td>
+                <td>{{'Packing Charges' |translate}}</td>
+                <td>{{'Labour Charges' |translate}}</td>
+                <td>{{'Total Amount' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of billingPurchaseOrders; let i = index;">
+
+                <td class="text-left">{{i+1}}</td>
+                <td>{{order.billingpoNumber}}</td>
+                <td>{{order.palletPositionHired?.palletPositionBooked}}</td>
+                <td class="text-center">{{order.palletPositionHired?.amount | decimalFilter}}</td>
+                <td>{{order.additionalPalletPositionHired?.palletPositionBooked}}</td>
+                <td class="text-center">{{order.additionalPalletPositionHired?.amount | decimalFilter}}</td>
+                <td class="text-center">{{order.flatRate?.loading.amount + order.flatRate.unloading?.amount | decimalFilter}}</td>
+                <td class="text-center">{{order.variableRate?.loading.amount + order.variablpeRate.unloading?.amount | decimalFilter}}</td>
+                <td class="text-center">{{order.mechanicalRate?.loadingAmount + order.mechanicalRate?.unloadingAmount | decimalFilter}}</td>
+                <td class="text-center">{{order.packingMaterialAmount | decimalFilter}}</td>
+                <td class="text-center">{{order.labourChargesAmount | decimalFilter}}</td>
+                <td class="text-center">{{order.totalAmount | decimalFilter}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

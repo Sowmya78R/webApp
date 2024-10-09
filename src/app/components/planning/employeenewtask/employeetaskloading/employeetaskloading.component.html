@@ -1,0 +1,77 @@
+<div id="inBody">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table class="table table-striped w-100" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'SO Number' |translate}}</th>
+              <th scope="col">{{'Invoice Number' |translate}}</th>
+              <th scope="col">{{'Invoice Date' |translate}}</th>
+              <th scope="col">{{'Invoice Total Quantity' |translate}}</th>
+              <th scope="col">{{'Status' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of loadingList;let i=index">
+              <td class="text-left">{{i+1}}</td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td>{{data.invoiceNumber}}</td>
+              <td>{{data.invoiceDate | date : 'MM/dd/yyyy'}}</td>
+              <td>{{data.invoiceTotalQuantity}}</td>
+              <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                <span *ngIf="data.startDate && !data.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)">Complete</button></span>
+                <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="panel portlet" *ngIf="loadingList.length>0">
+  <div class="formBox portlet-title" style="border: 1px solid white;position: relative;
+  left: 10px;">
+    <h6 class="text-uppercase text-primary text-center">Loading</h6>
+    <div id="style-8" class="panel-body scrollbar" style="height: 229px;">
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+          <div class="">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-warning" *ngFor="let data of loadingList;let i=index">
+                  <table class="w-100">
+                    <tbody>
+                      <tr>
+                       <td class="text-left">{{i+1}}</td>
+                        <td>{{data.invoiceNumber}}</td>
+                        <td>{{data.invoiceTotalQuantity}}{{data.invoiceTotalQuantityUom}}</td>
+                        <td>{{data.plannedCompletionDate | date: 'dd/MM/yyyy HH:mm:ss a '}}</td>
+                        <td><span *ngIf="data.startDate && data.endDate">Completed</span>
+                          <span *ngIf="data.startDate && !data.endDate">
+                            <button class="btn btn-primary"
+                              (click)="onStatusChange('status',data)">Complete</button></span>
+                          <span *ngIf="!data.startDate"><button class="btn btn-primary"
+                              (click)="onStatusChange('startDate',data)">Start</button></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->

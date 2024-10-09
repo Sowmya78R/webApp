@@ -1,0 +1,476 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="getAllShipmentOrderForDownload()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="shipmentOrderForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'SHIPMENT ORDER REPORT' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'SHIPMENT ORDER REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Sales Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Purchase Returns </option>
+                          <option>WareHouseTransfer Returns </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="shipmentOrderForm.controls.orderType.value=='Purchase Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Suppiler' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Suppiler to retrive data of Suppiler"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="suppliersIDs" [minSearchLength]="0" placeholder="{{'Supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="shipmentOrderForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Warehouse"> info </i>
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="shipmentOrderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Warehouse"> info </i>
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row " *ngIf="shipmentOrderForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row ">
+                      <label class="col-sm-4 col-form-label">{{'Product Category' |translate}}</label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="productCategoryName" formControlName="productCategoryName"
+                          [datasource]="productCategoryNameIDs" [minSearchLength]="0"
+                          placeholder="{{'Product Category' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+
+                    <div class="form-group row"
+                      *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && shipmentOrderForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Name' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0"
+                          placeholder="{{'Customers Customer Name' |translate}}"
+                          [datasource]="salesOrdersSupplierNameFiterIDs" formControlName="customersCustomerName">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && shipmentOrderForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customers Customer Address' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer name="wareHouseName" [minSearchLength]="0"
+                          [datasource]="salesOrdersSupplierAddressFilterIDs"
+                          placeholder="{{'Customers Customer Address' |translate}}"
+                          formControlName="customersCustomerAddress">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Dispatch From' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm" formControlName="fromDate"
+                          id="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Dispatch To' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" class="form-control col-form-label-sm " formControlName="toDate" id="toDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4">{{'Shipment Order Values' |translate}}</label>
+                      <div class="col-sm-2">
+                        <input type="checkbox" class="form-control" formControlName="dummyCheckBoxValue"
+                          (click)="onCheckCHanges($event)">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(1,$event)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="generate(page, itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th scope="col">
+                  {{'S.No' | translate}}</th>
+                <th scope="col">
+                  {{'Supplier/Customer/Warehouse IDName' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Supplier/Customer/Warehouse IDName')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Supplier/Customer/Warehouse IDName')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Dispatch Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Dispatch Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Dispatch Date')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'WMSO Number' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'WMSO Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'WMSO Number')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Product ID' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Product ID')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Product ID')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Product Name' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Product Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Product Name')" aria-hidden="true"></i>
+                </th>
+                
+                <th scope="col">
+                  {{'Product Description' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Product Description')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Product Description')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'UOM' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;" (click)="setDirection('ASC', 'UOM')"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'UOM')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Product Category Name' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Product Category Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Product Category Name')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Order Quantity' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Order Quantity')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Order Quantity')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Shipped Quantity' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Shipped Quantity')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Shipped Quantity')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Total Dispatched Quantity' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Total Dispatched Quantity')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Total Dispatched Quantity')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Batch Number' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Batch Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Batch Number')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Invoice Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Invoice Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Invoice Date')" aria-hidden="true"></i>
+                </th>
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{'Customers Customer Name' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Customers Customer Name')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Customers Customer Name')" aria-hidden="true"></i>
+                </th>
+                <th scope="col"
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{'Customers Customer Address' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Customers Customer Address')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Customers Customer Address')" aria-hidden="true"></i>
+                </th>
+                <th scope="col" [hidden]="priceCheck">
+                  {{'Order Unit Price' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Order Unit Price')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Order Unit Price')" aria-hidden="true"></i>
+                </th>
+                <th scope="col" [hidden]="priceCheck">
+                  {{'Tax Amount' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Tax Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Tax Amount')" aria-hidden="true"></i>
+                </th>
+                <th scope="col" [hidden]="priceCheck">
+                  {{'Gross Amount' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Gross Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Gross Amount')" aria-hidden="true"></i>
+                </th>
+                <th scope="col" [hidden]="priceCheck">
+                  {{'Net Amount' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Net Amount')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Net Amount')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Invoice Number' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Invoice Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Invoice Number')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'BOE No' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'BOE No')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'BOE No')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'BOE Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'BOE Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'BOE Date')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Bond Number' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Bond Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Bond Number')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Bond Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Bond Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Bond Date')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Ex Bond Number' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Ex Bond Number')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Ex Bond Number')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Ex Bond Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Ex Bond Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Ex Bond Date')" aria-hidden="true"></i>
+                </th>
+                <th scope="col">
+                  {{'Order Date' | translate}}
+                  <i class="fa fa-sort-asc" style="position: relative; left: -7px;"
+                    (click)="setDirection('ASC', 'Order Date')" aria-hidden="true"></i>
+                  <i class="fa fa-sort-desc" style="position: relative; left: -7px;"
+                    (click)="setDirection('DESC', 'Order Date')" aria-hidden="true"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let i=index;let report of shipmentOrderData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+                <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td>
+                  <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+                </td>
+                <td class="text-center">{{report.dispatchDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{report.wmsoNumber}}</td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td>{{report.productDescription}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.productCategoryInfo.productCategoryName}}</td>
+                <td>{{report.quantity | decimalwithThreeDigits}}</td>
+                <td>{{report.dispatchQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.totalCustomerDispatchQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.batchNumbers}}</td>
+                <td class="text-center">{{report.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{report.customersCustomerName}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || shipmentOrderForm.controls.orderType.value!='Sales Order'">
+                  {{report.customersCustomerAddress}}</td>
+                <td [hidden]="priceCheck">{{report.orderUnitPrice}}</td>
+                <td [hidden]="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                <td [hidden]="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                <td [hidden]="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                <td>{{report.invoiceNumber}}</td>
+                <td>{{report.referenceBillOfEntryNumber}}</td>
+                <td>{{report.referenceBillOfEntryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.referenceBondNumber}}</td>
+                <td>{{report.referenceBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{report.exBondNumber}}</td>
+                <td>{{report.exBondDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{report.orderDate | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

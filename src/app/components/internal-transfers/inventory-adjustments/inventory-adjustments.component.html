@@ -1,0 +1,872 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="udcBtns">
+          <ul>
+            <li (click)="openCreateModal()"><a><i class="material-icons align-middle"> description </i>{{'Create
+                Inventory Adjustments' |translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle" style="width: 303px;">
+                <h4>{{'INVENTORY ADJUSTMENTS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'INVENTORY ADJUSTMENTS' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <form [formGroup]="inventoryAdjustmentForm">
+              <div id="style-8" class="panel-body">
+                <div class="row force-overflow">
+                  <div class="col-md-4">
+                    <div class="form-group row" formGroupName="locationInfo">
+                      <label class="col-sm-5 col-form-label">
+                        {{'Location Name' |translate}} <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search location to retrive data of location"> info </i>
+                        <ng2-completer name="locationName" formControlName="locationName" [datasource]="dataService"
+                          [minSearchLength]="0" placeholder="{{'Location Name' |translate}}"
+                          [inputClass]="'form-control form-control-inline'">>
+                          <!-- (selected)="onLocationNameChange()" -->
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-5 col-form-label">
+                        {{'ProductID/Name' |translate}} <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon"> info </i>
+                        <input id="productIDName" name="productIDName" placeholder="{{'Product ID/Name' |translate}}"
+                          [readonly]="isReadMode" formControlName="productID" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-5 col-form-label">{{'Product ID' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="productID" name="productID" placeholder="{{'Product ID' |translate}}"
+                          (focus)="onFocusForElement('productID')" [readonly]="isReadMode"
+                          (focusout)="onFocusOutForElement()" formControlName="productID" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-5 col-form-label">{{'Product Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="productName" name="productName" placeholder="{{'Product Name' |translate}}"
+                          (focus)="onFocusForElement('productName')" [readonly]="isReadMode"
+                          (focusout)="onFocusOutForElement()" formControlName="productName" class="form-control"
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Type' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" id="productType" name="productType" formControlName="productType"
+                          [ngClass]="{'valiError': shouldShowErrors('productType', inventoryAdjustmentForm,'inventoryAdjustmentForm'), 'valiSucess': shouldShowSuccess('productType','inventoryAdjustmentForm')}"
+                          (focus)="onFocusForElement('productType')" (focusout)="onFocusOutForElement()">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let productType of productTypes" [ngValue]="productType.value">
+                            {{productType.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Class' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="productClass" name="productClass" placeholder="{{'Product Class' |translate}}"
+                          [ngClass]="{'valiError': shouldShowErrors('productClass', inventoryAdjustmentForm,'inventoryAdjustmentForm'), 'valiSucess': shouldShowSuccess('productClass','inventoryAdjustmentForm')}"
+                          (focus)="onFocusForElement('productClass')" (focusout)="onFocusOutForElement()"
+                          formControlName="productClass" class="form-control" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Category' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7" formGroupName="productCategoryInfo">
+                        <select class="form-control" id="productCategoryName" name="productCategoryName"
+                          formControlName="productCategoryName" readonly
+                          [ngClass]="{'valiError': shouldShowErrors('productCategoryName', inventoryAdjustmentForm)}"
+                          (focus)="onFocusForElement('productCategoryName')" (focusout)="onFocusOutForElement()">
+                          <option [ngValue]="null">-Select--</option>
+                          <option *ngFor="let productCategory of productCategories"
+                            [ngValue]="productCategory.productCategoryName">
+                            {{productCategory.productCategoryName}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Brand Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="brandName" class="form-control" formControlName="brandName" type="text"
+                          placeholder="{{'Brand Name' |translate}}" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Product Description' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="productDescription" class="form-control" formControlName="productDescription"
+                          type="text" placeholder="{{'Product Description' |translate}}" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Addition' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="addition" placeholder="{{'Addition' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('addition')"
+                          (keyup)="validateDecimal('addition','inventoryAdjustmentForm')"
+                          (focusout)="onFocusOutForElement();calculateAdjustedQty('addition',$event.target.value)"
+                          formControlName="addition">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Reduction' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="reduction" placeholder="{{'Reduction' |translate}}" class="form-control"
+                          type="text" (focus)="onFocusForElement('reduction')"
+                          (keyup)="validateDecimal('reduction','inventoryAdjustmentForm')"
+                          (focusout)="onFocusOutForElement();calculateAdjustedQty('reduction',$event.target.value)"
+                          formControlName="reduction">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Adjusted Quantity' |translate}}<i class="red">*</i>
+                      </label>
+
+                      <div class="col-sm-7">
+                        <input name="adjustedQuantity" placeholder="{{'Adjusted Quantity' |translate}}"
+                          class="form-control" type="text" readonly formControlName="adjustedQuantity">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Reason' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-7">
+                        <input name=" " placeholder="{{'Reason' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('reason')" (focusout)="onFocusOutForElement()"
+                          formControlName="reason">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Currency' |translate}}</label>
+                      <div class="col-sm-7" *ngIf="priceToggle">
+                        <input name="currency" class="form-control" formControlName="currency"
+                          placeholder="{{'Currency' |translate}}" type="text" readonly>
+                      </div>
+                      <div class="col-sm-7" [hidden]="priceToggle">
+                        <select class="form-control" formControlName="currency">
+                          <option value="null">--Select--</option>
+                          <option *ngFor="let currency of currencies" [value]="currency.currency">
+                            {{currency.currency}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" *ngIf="showImage">
+                      <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                      <div class="col-sm-8">
+                        <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                          alt="No Image">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Quantity Inventory Unit' |translate}}<i
+                          class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="quantityInventoryUnit" placeholder="{{'Quantity Inventory Unit' |translate}}"
+                          class="form-control" type="text" [readonly]="isReadMode"
+                          formControlName="quantityInventoryUnit" (focusout)="getPriceToggle()">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Available Quantity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="availableQuantity" placeholder="{{'Available Quantity' |translate}}"
+                          class="form-control" type="text" (focus)="onFocusForElement('availableQuantity')"
+                          [readonly]="isReadMode" (focusout)="onFocusOutForElement()"
+                          formControlName="availableQuantity">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Reserved Quantity' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input name="reservedQuantity" placeholder="{{'Reserved Quantity' |translate}}"
+                          class="form-control" type="text" (focus)="onFocusForElement('reservedQuantity')"
+                          [readonly]="isReadMode" (focusout)="onFocusOutForElement()"
+                          formControlName="reservedQuantity">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Price' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input name="productPurchasePrice" class="form-control" formControlName="productPurchasePrice"
+                          placeholder="{{'Price' |translate}}" type="text" [readonly]="priceToggle"
+                          value="{{inventoryReceivingForm.controls.productPurchasePrice.value | decimalFilter}}">
+                      </div>
+                    </div>
+                    <div class="form-group row mt-4">
+                      <label class="col-sm-5 col-form-label"></label>
+                      <div class="col-sm-7 text-center">
+                        <button class="btn btn-green mr-1" (click)="save()"
+                          [disabled]="inventoryAdjustmentForm.invalid">
+                          {{'SAVE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-right">
+          <div class="">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+            <div class="col-md-1">
+              <select [(ngModel)]="itemsPerPage" (change)="fetchAllDfirst(first=1,$event)" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+            </div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="fetchAllInventories(first=1, itemsPerPage);">
+            </div>
+          </div>
+          <!--  <div class="row m-2">
+            <div class="">
+              <label>Show</label>
+            </div>
+            <div class="" style="top:-10px">
+              <select [(ngModel)]="itemsPerPage"
+                (change)="fetchAllDfirst(first,$event)" class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+            </div>
+            <div class="col-md-1 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="fetchAllInventories(first, itemsPerPage);">
+            </div>
+          </div> -->
+          <table class="table table-striped" style="overflow-y: auto;display: block;">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                                left: -7px;" (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;left: -7px;" aria-hidden="true"
+                    (click)="setDirection('DESC',key)"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let inventory of filteredInventoryListByProduct | paginate: {itemsPerPage: itemsPerPage,currentPage: first,totalItems: totalItemsList,id:'first'};let i=index;"
+                [ngStyle]="{'color':(inventory.inventoryAvailability ? 'black' : 'red')}">
+                <td class="text-left">{{((first-1) * itemsPerPage)+i+1}}</td>
+                <td>{{inventory.productMasterInfo.productIDName}}</td>
+                <td>{{inventory.zoneInfo.zoneName}}</td>
+                <td>{{inventory.locationInfo.locationName}}</td>
+                <td>{{inventory.quantityInventoryUnit | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                <td>{{inventory.availableQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                <td>{{inventory.reservedQuantity | decimalFilter}} {{inventory.inventoryUnit}}</td>
+                <td>{{inventory.batchNumber}}</td>
+                <td>{{inventory.mfgDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{inventory.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{inventory.expiryDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{inventory.serialNumber}}</td>
+                <td><span class="btn btn-pink btn-sm" style="cursor: pointer;">
+                    <i class="fa fa-pencil btn-sm" (click)="onLocationNameChange(inventory)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" (pageChange)="fetchAllInventories((first = $event))" id="first">
+                </pagination-controls>
+              </div>
+            </div>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Status</label>
+          <div class="col-sm-10 mt-1">
+            <label class="radio-inline ml-2" style="color:grey">
+              <input type="radio" value="All" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="fetchAllInventoryAdjustments(1, itemsPerPage)" name="status" name="statusOptions">
+              ALL
+            </label>
+            <label class="radio-inline ml-2" style="color:grey">
+              <input type="radio" value="Created" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="fetchAllInventoryAdjustments(1, itemsPerPage)" name="status" name="statusOptions">
+              Created
+            </label>
+            <label class="radio-inline ml-2" style="color:green">
+              <input type="radio" value="Completed" class="m-1" [(ngModel)]="myObj.status"
+                (ngModelChange)="fetchAllInventoryAdjustments(1, itemsPerPage)" name="status" name="statusOptions">
+              Completed
+            </label>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label>Show</label>
+            </div>
+            <div class="col-md-1"><select [(ngModel)]="itemsPerPage" (change)="fetchAllDsecond(second=1,$event)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-0.5 pl-0"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="fetchAllInventoryAdjustments(second=1,itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th *ngFor="let key of inventoryAdjustmentsKeys">{{key |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection1('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection1('DESC',key)"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventoryAdjustment of inventoryAdjustments | paginate: {itemsPerPage: newItemsPerPage,
+                  currentPage: second,
+                  totalItems: totalItems,id:'second'};let i=index;">
+                <td class="text-left">{{((second-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="inventoryAdjustment.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + inventoryAdjustment.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip"
+                      class="tooltip-text">{{inventoryAdjustment.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!inventoryAdjustment.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(inventoryAdjustment.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td *ngIf="!permissionToggle">
+                  <div class="row">
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.showComplete && !inventoryAdjustment.isCompleteorReject">
+                      <button class="btn btn-primary" (click)="statusSave(inventoryAdjustment,null)">Complete</button>
+                    </div>
+                    <div class="col-md-12">
+
+                      <div class="row" *ngIf="inventoryAdjustment.isViewToggle == false">
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-down" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeDownToggle(inventoryAdjustment)">
+                          </i>
+                        </div>
+                        <div class="col-sm-4">
+                          <span
+                            *ngIf="(inventoryAdjustment.isViewToggle == false && !inventoryAdjustment.showComplete) || inventoryAdjustment.isCompleteorReject">
+                            <p *ngIf="inventoryAdjustment.statusStages && inventoryAdjustment.statusStages.length">
+                              {{ inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length - 1].status }}
+                            </p>
+                          </span>
+                        </div>
+
+                      </div>
+                      <div class="row" *ngIf="inventoryAdjustment.isViewToggle == true">
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-up" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeUpToggle(inventoryAdjustment)">
+                          </i>
+                        </div>
+                        <div class="col-sm-4">
+                          <span>
+                            <p *ngFor="let start of inventoryAdjustment.statusStages">
+                              {{start.status}} {{start.statusSubmittedBy}}
+                              {{start.statusSubmittedDate |
+                              date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </td>
+                <td *ngIf="permissionToggle && inventoryAdjustment.statusStages && statusObj">
+                  <div class="row">
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].statusSequence == statusObj.statusSequence && !inventoryAdjustment.isCompleteorReject">
+                      <span>
+                        <select [value]="inventoryAdjustment.dummyStage"
+                          (change)="statusSave(inventoryAdjustment,$event)">
+                          <option selected disabled value="null">Select</option>
+                          <option>{{statusObj.status}}</option>
+                          <option>Rejected</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.showComplete && !inventoryAdjustment.isCompleteorReject">
+
+                      <button class="btn btn-primary" (click)="statusSave(inventoryAdjustment,null)">Complete</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row" *ngIf="inventoryAdjustment.isViewToggle == false">
+                      <div class="col-sm-10">
+                        <span
+                          *ngIf="(inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].statusSequence != statusObj.statusSequence && !inventoryAdjustment.showComplete) || inventoryAdjustment.isCompleteorReject">
+                          <p>{{inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].status}} </p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-down" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeDownToggle(inventoryAdjustment)">
+                        </i>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="inventoryAdjustment.isViewToggle == true">
+                      <div class="col-sm-10">
+                        <span>
+                          <p *ngFor="let start of inventoryAdjustment.statusStages">
+                            {{start.status}} {{start.statusSubmittedBy}}
+                            {{start.statusSubmittedDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-up" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeUpToggle(inventoryAdjustment)">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td> {{inventoryAdjustment.fullInventoryAdjustmentTransactionID}}</td>
+                <td>{{inventoryAdjustment.locationInfo.locationName}} </td>
+                <td>{{inventoryAdjustment.productMasterInfo.productID}} </td>
+                <td>{{inventoryAdjustment.productMasterInfo.productName}} </td>
+                <td>{{inventoryAdjustment.productDescription}}</td>
+                <td class="text-center">{{inventoryAdjustment.inventoryUnit}}</td>
+                <td class="text-center">{{inventoryAdjustment.brandName}}</td>
+                <td> {{inventoryAdjustment.productPurchasePrice | decimalFilter}}</td>
+                <td>{{inventoryAdjustment.adjustedQuantity | decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.availableQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.reservedQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.adjustedQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.reason}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="fetchAllInventoryAdjustments((second = $event))"
+                id="second">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End -->
+    <!--   <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th>{{'S No' |translate}}</th>
+                <th>{{'Status' |translate}}</th>
+                <th>{{'Transaction ID' |translate}}</th>
+                <th>{{'Location Name' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'Product Description' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'BrandName' |translate}}</th>
+                <th>{{'Product Purchase Price' | translate}}</th>
+                <th>{{'Received Quantity/Quantity Inventory Unit' |translate}}</th>
+                <th>{{'Available Quantity' |translate}}</th>
+                <th>{{'Reserved Quantity' |translate}}</th>
+                <th>{{'Adjusted Quantity' |translate}}</th>
+                <th>{{'Reason' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventoryAdjustment of inventoryAdjustments; let i=index;">
+                <td>{{ i + 1}}</td>
+                <td *ngIf="!permissionToggle">
+                  <div class="row">
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.showComplete && !inventoryAdjustment.isCompleteorReject">
+                      <button class="btn btn-primary" (click)="statusSave(inventoryAdjustment,null)">Complete</button>
+                    </div>
+                    <div class="col-md-12">
+
+                      <div class="row" *ngIf="inventoryAdjustment.isViewToggle == false">
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-down" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeDownToggle(inventoryAdjustment)">
+                          </i>
+                        </div>
+                        <div class="col-sm-4">
+                          <span
+                            *ngIf="(inventoryAdjustment.isViewToggle == false && !inventoryAdjustment.showComplete) ||  inventoryAdjustment.isCompleteorReject">
+                            <p>{{inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].status
+                              }} </p>
+                          </span>
+                        </div>
+
+                      </div>
+                      <div class="row" *ngIf="inventoryAdjustment.isViewToggle == true">
+                        <div class="col-sm-2">
+                          <i class="fa fa-arrow-up" aria-hidden="true"
+                            style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                            (click)="changeUpToggle(inventoryAdjustment)">
+                          </i>
+                        </div>
+                        <div class="col-sm-4">
+                          <span>
+                            <p *ngFor="let start of inventoryAdjustment.statusStages">
+                              {{start.status}} {{start.statusSubmittedBy}}
+                              {{start.statusSubmittedDate |
+                              date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </td>
+                <td *ngIf="permissionToggle && inventoryAdjustment.statusStages && statusObj">
+                  <div class="row">
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].statusSequence == statusObj.statusSequence && !inventoryAdjustment.isCompleteorReject">
+                      <span>
+                        <select [value]="inventoryAdjustment.dummyStage"
+                          (change)="statusSave(inventoryAdjustment,$event)">
+                          <option selected disabled value="null">Select</option>
+                          <option>{{statusObj.status}}</option>
+                          <option>Rejected</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="col-md-6"
+                      *ngIf="inventoryAdjustment.showComplete && !inventoryAdjustment.isCompleteorReject">
+
+                      <button class="btn btn-primary" (click)="statusSave(inventoryAdjustment,null)">Complete</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row" *ngIf="inventoryAdjustment.isViewToggle == false">
+                      <div class="col-sm-10">
+                        <span
+                          *ngIf="(inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].statusSequence != statusObj.statusSequence && !inventoryAdjustment.showComplete) || inventoryAdjustment.isCompleteorReject">
+                          <p>{{inventoryAdjustment.statusStages[inventoryAdjustment.statusStages.length-1].status}} </p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-down" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeDownToggle(inventoryAdjustment)">
+                        </i>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="inventoryAdjustment.isViewToggle == true">
+                      <div class="col-sm-10">
+                        <span>
+                          <p *ngFor="let start of inventoryAdjustment.statusStages">
+                            {{start.status}} {{start.statusSubmittedBy}}
+                            {{start.statusSubmittedDate |
+                            date:'dd/MM/yyyy HH:mm:ss'}}<br></p>
+                        </span>
+                      </div>
+                      <div class="col-sm-2">
+                        <i class="fa fa-arrow-up" aria-hidden="true"
+                          style="font-size:12px;padding:5px;border-radius:50%;height:25px;cursor: pointer;"
+                          (click)="changeUpToggle(inventoryAdjustment)">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td> {{inventoryAdjustment.fullInventoryAdjustmentTransactionID}}</td>
+                <td>{{inventoryAdjustment.locationInfo.locationName}} </td>
+                <td>{{inventoryAdjustment.productMasterInfo.productID}} </td>
+                <td>{{inventoryAdjustment.productMasterInfo.productName}} </td>
+                <td>{{inventoryAdjustment.productDescription}}</td>
+                <td class="text-center">{{inventoryAdjustment.inventoryUnit}}</td>
+                <td class="text-center">{{inventoryAdjustment.brandName}}</td>
+                <td> {{inventoryAdjustment.productPurchasePrice | decimalFilter}}</td>
+                <td>{{inventoryAdjustment.adjustedQuantity | decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.availableQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.reservedQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.adjustedQuantity| decimalwithTenDigits}}</td>
+                <td>{{inventoryAdjustment.reason}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <ngx-smart-modal customClass="nsm-centered" id="standardspare" #openModal [identifier]="'openModal'">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>{{'Create Inventory Adjustments' |translate}}</h5>
+      </div>
+      <div class="col-md-12">
+        <form *ngIf="inventoryReceivingForm" [formGroup]="inventoryReceivingForm">
+          <div class="row force-overflow">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Location Name' |translate}}<i class="red">*</i>
+                </label>
+                <div class="col-sm-7 p-1" formGroupName="locationInfo">
+                  <ng2-completer name="locationName" formControlName="locationName" [minSearchLength]="0"
+                    placeholder="{{'Location Name' |translate}}" [datasource]="locationNames"
+                    [ngClass]="{'valiError': shouldShowErrors('locationName', inventoryReceivingForm,'inventoryReceivingForm', 'locationInfo'), 'valiSucess': shouldShowSuccess('locationName','inventoryAdjustmentForm', 'locationInfo')}">
+                  </ng2-completer>
+                </div>
+
+              </div>
+              <div class="form-group row" formGroupName="supplierMasterInfo">
+                <label class="col-sm-5 col-form-label">Supplier ID/Name <i class="red">*</i></label>
+                <div class="col-sm-7 p-1">
+                  <ng2-completer name="supplierIDName" formControlName="supplierIDName" [datasource]="supplierService"
+                    [minSearchLength]="0" placeholder="Supplier/IDName" (selected)="onSupplierIDNameChange()" [ngClass]="{'valiError': shouldShowErrors('supplierIDName', inventoryReceivingForm,
+                    'inventoryReceivingForm', 'supplierMasterInfo'), 'valiSucess': shouldShowSuccess('supplierIDName',
+                    'inventoryReceivingForm', 'supplierMasterInfo')}">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Product ID/Name' |translate}} <i class="red">*</i>
+                </label>
+                <div class="col-sm-7 p-1" formGroupName="productMasterInfo">
+                  <!-- <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                    title="Search product to retrive data of product"> info </i> -->
+                  <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="productIDNames"
+                    [minSearchLength]="0" placeholder="{{'Product ID/Name' |translate}}"
+                    (selected)="onProductIDSelect($event)"
+                    [ngClass]="{'valiError': shouldShowErrors('productIDName', inventoryReceivingForm,'inventoryReceivingForm', 'productMasterInfo'), 'valiSucess': shouldShowSuccess('productIDName','inventoryReceivingForm', 'productMasterInfo')}">
+                  </ng2-completer>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Product Type' |translate}}</label>
+                <div class="col-sm-7 p-1">
+                  <input name="productType" placeholder="{{'Product Type' |translate}}" readonly class="form-control"
+                    formControlName="productType" type="text">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">{{'Product Class' |translate}}</label>
+                <div class="col-sm-7 p-1">
+                  <input name="productClass" placeholder="{{'Product Class' |translate}}" readonly class="form-control"
+                    formControlName="productClass" type="text">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Price</label>
+                <div class="col-sm-5 p-1">
+                  <input name="productPurchasePrice" class="form-control" formControlName="productPurchasePrice"
+                    placeholder="Price" type="text"
+                    value="{{inventoryReceivingForm.controls.productPurchasePrice.value | decimalFilter}} ">
+                </div>
+                <div class="col-sm-2 p-1">
+                  <input name="currency" class="form-control" formControlName="currency" placeholder="currency"
+                    type="text" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Receive Quantity</label>
+                <div class="col-sm-7 p-1">
+                  <input name="receiveQuantity" class="form-control" formControlName="receiveQuantity"
+                    placeholder="Receive Quantity" type="text"
+                    (keyup)="validateDecimal('receiveQuantity','inventoryReceivingForm')">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" *ngIf="showImage">
+                <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}} </label>
+                <div class="col-sm-8">
+                  <img id="prdLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                    alt="No Image">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Category</label>
+                <div class="col-sm-7 p-1" formGroupName="productCategoryInfo">
+                  <select class="form-control" id="productCategoryName" name="productCategoryName"
+                    formControlName="productCategoryName" readonly (focus)="onFocusForElement('productCategoryName')"
+                    (focusout)="onFocusOutForElement()">
+                    <option [ngValue]="null">-Select--</option>
+                    <option *ngFor="let productCategory of productCategories"
+                      [ngValue]="productCategory.productCategoryName">
+                      {{productCategory.productCategoryName}}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- [ngClass]="{'valiError': shouldShowErrors('productCategoryName', inventoryReceivingForm,'inventoryReceivingForm',
+                'productCategoryInfo'), 'valiSucess': shouldShowSuccess('productCategoryName','inventoryReceivingForm', 'productCategoryInfo')}" -->
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Manufacturing Date</label>
+                <div class="col-sm-7 p-1">
+                  <input name="mfgDate" class="form-control" formControlName="mfgDate" type="date"
+                    (change)="getExpiryDate($event.target.value)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Expiry Date</label>
+                <div class="col-sm-7 p-1">
+                  <input name="expiryDate" class="form-control" formControlName="expiryDate" type="date">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Batch No
+                </label>
+                <div class="col-sm-7 p-1">
+                  <input name="batchNumber" class="form-control" formControlName="batchNumber" type="text"
+                    placeholder="Batch No">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Brand Name'| translate}}
+                </label>
+                <div class="col-sm-8">
+                  <select class="form-control selectPanl" formControlName="brandName">
+                    <option [value]="null">--Select--</option>
+                    <option *ngFor="let unit of brandNames" [value]="unit">
+                      {{unit}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Product Description'| translate}}
+                </label>
+                <div class="col-sm-8">
+                  <input name="productDescription" class="form-control" formControlName="productDescription" type="text"
+                    placeholder="{{'Product Description' |translate}}" readonly>
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Serial No
+                </label>
+                <div class="col-sm-7 p-1">
+                  <input name="serialNumber" class="form-control" formControlName="serialNumber" type="text"
+                    placeholder="Serial No">
+                </div>
+              </div> -->
+              <div class="form-group row" *ngIf="serialNumberCheck == 'Yes'">
+                <label class="col-sm-5 col-form-label">Serial Numbers</label>
+                <div class="col-sm-7 p-1">
+                  <textarea id="sNumber" name="sNumber" [(ngModel)]="sNumber" [ngModelOptions]="{standalone: true}"
+                    placeholder="Serial Numbers" class="form-control" type="text"
+                    (focusout)="getSerialNumbers()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-12">
+        <div class="float-right">
+          <button class="btn btn-green m-1" (click)="saveReceive()"
+            [disabled]="isButtonDisabled(inventoryReceivingForm)">Save</button>
+          <button class="btn btn-white" (click)="clearCreateForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </ngx-smart-modal>
+</div>

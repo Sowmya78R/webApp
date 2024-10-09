@@ -1,0 +1,93 @@
+
+
+<div id="inBody">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables">
+        <table class="table table-striped w-100" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">{{'S.No' |translate}}</th>
+              <th scope="col">{{'Image' | translate}}</th>
+              <th scope="col">{{'SO Number' |translate}}</th>         
+              <th scope="col">{{'Product ID' |translate}}</th>
+              <th scope="col">{{'Product Name' |translate}}</th>
+              <th scope="col">{{'Quantity' |translate}}</th>
+              <th scope="col">{{'Status' |translate}}</th>            
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of labellingData;let i=index">
+              <td class="text-left">{{i+1}}</td>
+              <td *ngIf="data.productImageResource">
+                <div class="tooltip-container">
+                  <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                    alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                  <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                </div>
+              </td>
+              <td *ngIf="!data.productImageResource">
+                <div class="noImageIcon">
+                  <p class="noImageIconText">
+                    {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                </div>
+              </td>
+              <td>{{data.fullWmsoNumber}}</td>
+              <td style="width:140px;text-align:left">{{data.productMasterInfo?.productID}}</td>
+              <td style="width:140px;text-align:left">{{data.productMasterInfo?.productName}}</td>
+              <td>{{data.pickedQuantity | decimalwithThreeDigits}} {{data.inventoryUnit}}</td>
+              <td><span *ngIf="data.labelingInfo?.startDate && !data.labelingInfo.endDate">
+                  <button class="btn btn-primary" (click)="onStatusChange('status',data)" style="width: 95px;">Complete</button></span>
+                <span *ngIf="!data.labelingInfo.startDate"><button class="btn btn-primary" style="width: 95px;"
+                    (click)="onStatusChange('startDate',data)">Start</button></span>
+              </td>            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 
+<div class="panel portlet" *ngIf="labellingData.length>0">
+  <div class="formBox portlet-title" style="border: 1px solid white;position: relative;
+  left: 10px;">
+    <h6 class="text-uppercase text-primary text-center">labelling</h6>
+    <div id="style-8" class="panel-body scrollbar" style="height: 229px;">
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+          <div class="">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-warning" *ngFor="let data of labellingData;let i=index">
+                <table class="w-100">
+                  <tbody>
+                    <tr>
+                     <td class="text-left">{{i+1}}</td>
+                      <td>{{data.wmsoNumber}}</td>
+                      <td style="width:140px;text-align:left">{{data.productMasterInfo?.productIDName}}</td>
+                      
+                      <td>{{data.pickedQuantity}} {{data.inventoryUnit}}</td>
+           
+                      <td><span *ngIf="data.labelingInfo?.startDate && !data.labelingInfo.endDate">
+                          <button class="btn btn-primary" (click)="onStatusChange('status',data)" style="width: 95px;">Complete</button></span>
+                        <span *ngIf="!data.labelingInfo.startDate"><button class="btn btn-primary" style="width: 95px;"
+                            (click)="onStatusChange('startDate',data)">Start</button></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+ -->

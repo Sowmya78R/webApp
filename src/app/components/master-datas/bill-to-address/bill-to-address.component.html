@@ -1,0 +1,278 @@
+<div id="inBody" *ngIf="!showOnlyForm" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="udcBtns">
+        </div>
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25pxp;height: 23px;">
+            </button>
+          </a>
+          <!-- <ul>
+             <li><a href=""> <i class="material-icons align-middle"> open_in_browser </i> Upload Excel
+              </a></li>
+            <li><a (click)="exportAsXLSX()"> <i class="material-icons align-middle"> get_app </i>{{'Download Excel'
+                |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="row" [formGroup]="billToAddressForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'BILL TO ADDRESS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'BILL TO ADDRESS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Shipping From' |translate}}<i class="red">*</i> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="shippingFrom" name="shippingFrom"
+                        placeholder="{{'Shipping From' |translate}}" formControlName="shippingFrom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Address' |translate}}<i class="red">*</i> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="address1" name="address1"
+                        placeholder="{{'Address' |translate}}" formControlName="address">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Country' |translate}}</label>
+                    <div class="col-sm-8">
+                      <select id="country1" name="country1" formControlName="country" class="form-control">
+                        <option [ngValue]=null>--Select--</option>
+                        <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'City' |translate}}<i class="red">*</i> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="city1" name="city1"
+                        placeholder="{{'City' |translate}}" formControlName="city">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'State' |translate}}<i class="red">*</i> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="state1" name="state1"
+                        placeholder="{{'State' |translate}}" formControlName="state">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Pin' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="pin1" name="pin1" placeholder="{{'Pin' |translate}}"
+                        formControlName="pin">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="phoneNumber1" name="phoneNumber1"
+                        placeholder="{{'Phone Number' |translate}}" formControlName="phoneNumber">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Email' |translate}}<i class="red">*</i></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="email1" name="email1"
+                        placeholder="{{'Email' |translate}}" formControlName="email">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="form-group row drop-status">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label"> </label>
+                <div class="col-sm-8 text-right ">
+                  <button class="btn btn-green mr-1" (click)="save()">{{'SAVE' |translate}}</button>
+                  <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <div class="">
+            <div id="scrolTable" class="wmsDataTables">
+              <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr>
+                    <td>{{'S.No' |translate}}</td>
+                    <td>{{'Shipping Address' |translate}}</td>
+                    <td>{{'Address' |translate}}</td>
+                    <td>{{'City' |translate}}</td>
+                    <td>{{'State' |translate}}</td>
+                    <td>{{'Country' |translate}}</td>
+                    <td>{{'Email ID' |translate}}</td>
+                    <td>{{'Phone Number' |translate}}</td>
+                    <td>{{'Action' |translate}}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of billToAddressData; let i = index">
+                    <td class="text-left">{{i+1}}</td>
+                    <th style="cursor:pointer;" (click)="edit(data)">{{data.shippingFrom}}</th>
+                    <td>{{data.address}}</td>
+                    <td>{{data.city}}</td>
+                    <td>{{data.state}}</td>
+                    <td>{{data.country}}</td>
+                    <td>{{data.email}}</td>
+                    <td>{{data.phoneNumber}}</td>
+                    <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                          (click)="delete(data)"></i></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div [formGroup]="billToAddressForm" *ngIf="showOnlyForm">
+  <div>
+    <div class="panel portlet">
+      <div class="formBox portlet-title">
+        <div class="row">
+          <div class="panel-heading formTitle w-auto">
+            <h4> {{'BILL TO ADDRESS' |translate}}</h4>
+            <div class="float-right"><span class="clickable"><i class="fa fa-angle-up" aria-hidden="true"></i></span> |
+              <i class="material-icons fullscreen">
+                unfold_less </i>
+            </div>
+          </div>
+          <div class="formTitleHover">
+            <h4>{{'BILL TO ADDRESS' |translate}}
+              <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+            </h4>
+          </div>
+        </div>
+        <div id="style-8" class="panel-body scrollbar">
+          <div class="row force-overflow">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Shipping From' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="shippingFrom" name="shippingFrom"
+                    placeholder="{{'Shipping From' |translate}}" [readOnly]="isReadMode" formControlName="shippingFrom">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Address' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="address" name="address"
+                    placeholder="{{'Address' |translate}}" [readOnly]="isReadMode" formControlName="address">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Country' |translate}}<i class="red">*</i>
+                </label>
+                <div class="col-sm-8">
+                  <select id="country" name="country" formControlName="country" class="form-control">
+                    <option [ngValue]=null>--Select--</option>
+                    <option *ngFor="let country of countries" [ngValue]="country.name">{{country.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'City' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="city" name="city" placeholder="{{'City' |translate}}"
+                    [readOnly]="isReadMode" formControlName="city">
+                </div>
+              </div>
+              <p class="ml-3" [hidden]="raisedStatus"><a (click)="redirectToBillToAddress()" class="red"><u>Edit More
+                    Bill To Address details</u></a></p>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'State' |translate}}<i class="red">*</i> </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="state" name="state" placeholder="{{'State' |translate}}"
+                    [readOnly]="isReadMode" formControlName="state">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Pin' |translate}}<i class="red">*</i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="pin" name="pin" placeholder="{{'Pin' |translate}}"
+                    [readOnly]="isReadMode" formControlName="pin">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Phone Number' |translate}} <i class="red">*</i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [readOnly]="isReadMode"
+                    placeholder="{{'Phone Number' |translate}}" formControlName="phoneNumber">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{{'Email' |translate}}<i class="red">*</i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="email" name="email" placeholder="{{'Email' |translate}}"
+                    [readOnly]="isReadMode" formControlName="email">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="!isEditBillToAddress">
+              <div class="form-group row">
+                <div class="col-sm-12 text-center  mb-3">
+                  <!-- (click)="updateEditBillToAddress()" -->
+
+                  <button class="btn btn-green" [disabled]="raisedStatus"> Update
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="isEditBillToAddress">
+              <div class="form-group row">
+                <div class="col-sm-12 text-center mb-3">
+                  <button class="btn btn-green mr-2" (click)="saveOutBoundInvoicing()"
+                    [disabled]="raisedStatus">{{'Save' |translate}}
+                  </button>
+                  <button class="btn btn-white" (click)="cancelOutboundEditBillToAddress()" [disabled]="raisedStatus">
+                    Cancel </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

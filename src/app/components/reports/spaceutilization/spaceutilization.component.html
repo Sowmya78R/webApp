@@ -1,0 +1,213 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <form [formGroup]="spaceUtilizationReportForm">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-9">
+          </div>
+          <div class="col-md-3">
+            <div class="udcBtns float-right">
+              <a>
+                <button type="button" (click)="exportAsXLSX()" title="Download Excel"
+                  style="background: none !important;border: none !important;">
+                  <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+                </button>
+              </a>
+              <a>
+                <button type="button" (click)="generatePDF()" title="Print PDF"
+                  style="background: none !important;border: none !important;">
+                  <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+                </button>
+              </a>
+              <!-- <ul>
+                <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+                </li>
+                <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+                </li>
+              </ul> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel portlet" style="margin-top: -10px;">
+              <div class="formBox portlet-title">
+                <div class="row">
+                  <div class="panel-heading formTitle w-auto">
+                    <h4>{{'Space Utilization' |translate}}</h4>
+                    <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                          class="fa fa-angle-up"></i></span>
+                      |
+                      <i class="material-icons fullscreen"> unfold_less </i>
+                    </div>
+                  </div>
+                  <div class="formTitleHover">
+                    <h4>{{'Space Utilization' |translate}} <div class="float-right"><i
+                          class="material-icons fullscreen">
+                          close </i>
+                      </div>
+                    </h4>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row force-overflow">
+                    <div class="col-md-4">
+
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Warehouse' |translate}}</label>
+                        <div class="col-sm-6">
+                          <input type="text" name="" class="form-control" id="" readonly
+                            formControlName="wareHouseNames">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Zone' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="zoneDropDownList" name="zoneName" formControlName="zoneNames">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Location' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="locationDropDownList" name="locationName" formControlName="locationNames">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Rack' |translate}}</label>
+                        <div class="col-sm-8">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="rackDropDownList" name="rackName" formControlName="rackNames">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">{{'Suppiler' |translate}}
+                        </label>
+                        <div class="col-sm-7">
+                          <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                            [data]="supplierIDNames" name="supplierIDNames" formControlName="supplierIDNames">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <td>{{'S.No' |translate}}</td>
+                <td>{{'Zone Name' |translate}}</td>
+                <td>{{'Rack Name' |translate}}</td>
+                <td>{{'UOM' |translate}}</td>
+                <td>{{'Level Name' |translate}}</td>
+                <td>{{'Column Name' |translate}}</td>
+                <td>{{'Location Name' |translate}}</td>
+                <td>{{'Total Space' |translate}}</td>
+                <td>{{'used Space' |translate}}</td>
+                <td>{{'Location Space Status' |translate}}</td>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of spaceUtilizationResponceLocationList; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{data.zoneInfo?.zoneName}}</td>
+                <td>{{data.rackInfo?.rackName}}</td>
+                <td>{{data.totalSpaceUom}}</td>
+
+                <td>{{data.levelInfo?.levelName}}</td>
+                <td>{{data.columnInfo?.columnName}}</td>
+                <td>{{data.locationName}}</td>
+                <td>{{data.totalSpace}} </td>
+                <td>{{data.usableSpace | decimalFilter}}</td>
+                <td>{{data.locationSpaceStatus}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-11">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Completely Available Location' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{completeCountList ? completeCountList:0}}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Partial Available Location' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{partialAvailbleList ? partialAvailbleList:0}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Not Available Location' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{UnAvailableList ? UnAvailableList:0}}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Total Location' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{totalLocationCount ? totalLocationCount:0}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Total Space' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{totalSpaceReqObj | decimalFilter}} {{totalSpaceUomReqObj}}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Total Usuable Space' |translate}}</label>
+                      <div class="col-sm-7 mt-2">
+                        {{totalusableReqObj | decimalFilter}} {{totalUsuableSpaceUomReqObj}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

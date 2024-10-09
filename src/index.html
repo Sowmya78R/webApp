@@ -1,13 +1,102 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>App</title>
-  <base href="/">
+  <title>Warehouse Management - Datalabs India</title>
+  <base href="">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.png" sizes="35*35">
+  <link rel="stylesheet" href="assets/loader.style.css">
+  <link rel="stylesheet" href="assets/components.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" rel="stylesheet">
+
+
 </head>
+
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="bg">
+      <div class="loader" id="loader-1"></div>
+    </div>
+  </app-root>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="assets/app.min.js"></script>
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    $(document).on('click', '.panel-heading span.clickable', function (e) {
+      var $this = $(this);
+      if (!$this.hasClass('panel-collapsed')) {
+        $this.parents('.panel').find('.panel-body').slideUp();
+        $this.addClass('panel-collapsed');
+        $this.find('i').removeClass('fa fa-angle-up').addClass('fa fa-angle-down');
+
+      } else {
+        $this.parents('.panel').find('.panel-body').slideDown();
+        $this.removeClass('panel-collapsed');
+        $this.find('i').removeClass('fa fa-angle-down').addClass('fa fa-angle-up');
+
+      }
+    });
+
+    $(function () {
+      $('.pop').on('click', function () {
+        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+        $('#imagemodal').modal('show');
+      });
+    });
+    jQuery('img.svg').each(function () {
+      var $img = jQuery(this);
+      var imgID = $img.attr('id');
+      var imgClass = $img.attr('class');
+      var imgURL = $img.attr('src');
+
+      jQuery.get(imgURL, function (data) {
+        // Get the SVG tag, ignore the rest
+        var $svg = jQuery(data).find('svg');
+
+        // Add replaced image's ID to the new SVG
+        if (typeof imgID !== 'undefined') {
+          $svg = $svg.attr('id', imgID);
+        }
+        // Add replaced image's classes to the new SVG
+        if (typeof imgClass !== 'undefined') {
+          $svg = $svg.attr('class', imgClass + ' replaced-svg');
+        }
+
+        // Remove any invalid XML tags as per http://validator.w3.org
+        $svg = $svg.removeAttr('xmlns:a');
+
+        // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
+        if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+          $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
+        }
+
+        // Replace image with new SVG
+        $img.replaceWith($svg);
+
+      }, 'xml');
+
+    });
+
+  </script>
 </body>
+
 </html>

@@ -1,0 +1,1036 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <form [formGroup]="whTransferForm" *ngIf="whTransferForm">
+      <div class="row" *ngIf="!inSource">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-2">
+              <!--  <div class="form-group row mt-2">
+                <label class="col-sm-4 form-label">{{'POD' |translate}}</label>
+                <div class="col-sm-8">
+                  <div class="row">
+                    <div class="input-container col-md-1 mt-1" *ngIf="inSource">
+                      <input type="file" #upload1 hidden (change)="uploadMultipleFiles($event)" multiple>
+                      <i (click)="upload1.click()" class="upload1 fa fa-upload"></i>
+                    </div>
+                    <div class="form-group row" *ngFor="let data of uploadFiles;let i=index"
+                      [hidden]="uploadFiles.length==0">
+                      <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                      <i class="fa fa-times" (click)="deleteImageMethod(data,i)">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <div class="col-md-1">
+              <div class="udcBtns float-right">
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-12 mastermenus_top">
+          <div class="top-input-label">
+            <div class="row">
+              <div class="col-md-3" *ngIf="!inSource">
+                <div class="form-group row" formGroupName="sourceWareHouseInfo">
+                  <label class="col-sm-5 col-form-label">{{'Source Warehouse' |translate}}</label>
+                  <!-- <div class="col-sm-6" *ngIf="!whTransferForm.controls._id.value">
+                    <ng2-completer formControlName="wareHouseIDName" [datasource]="sourceWareHouses"
+                      [minSearchLength]="0" placeholder="{{'Warehouse IDName' |translate}}"
+                      (selected)="framingSourceObj($event?$event.originalObject:null)">
+                    </ng2-completer>
+                  </div> -->
+                  <div class="col-sm-7" *ngIf="whTransferForm.controls._id.value">
+                    <input type="text" class="form-control" formControlName="wareHouseIDName" readonly>
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="!inSource && showDraft">
+                  <label class="col-sm-5 col-form-label">{{'Bill To Address' |translate}}</label>
+                  <div class="col-sm-7">
+                    <select [(ngModel)]="overAllBillTo" [ngModelOptions]="{standalone: true}" class="form-control "
+                      type="text" (change)="setJsonto($event,'billToAddress')">
+                      <option *ngFor="let ib of billTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+                
+              <div class="col-md-3" formGroupName="destinationWareHouseInfo" *ngIf="inSource">
+                <div class="form-group row">
+                  <label class="col-sm-6 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" formControlName="wareHouseIDName" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="!inSource">
+                <div class="form-group row">
+                  <label class="col-sm-6 col-form-label">{{'Expected Delivery Date' |translate}}</label>
+                  <div class="col-sm-6">
+                    <input type="date" class="form-control" [(ngModel)]="expectedDeliveryDate"
+                      [ngModelOptions]="{standalone: true}" (change)="setDeliveryDate($event)">
+                  </div>
+                </div>
+                  <div class="form-group row" *ngIf="!inSource && showDraft">
+                    <label class="col-sm-6 col-form-label">{{'Ship To Address' |translate}}</label>
+                    <div class="col-sm-6">
+                      <select [(ngModel)]="overAllShipTo" [ngModelOptions]="{standalone: true}" class="form-control "
+                        type="text" (change)="setJsonto($event,'shipToAddress')">
+                        <option *ngFor="let ib of shipTOAddressDropdown" [value]="ib.name">{{ib.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-6" *ngIf="whTransferForm.controls.statusStages.value">
+                <div class="row"
+                  *ngIf="whTransferForm.controls.statusStages.value[whTransferForm.controls.statusStages.value.length-1].status !='Rejected'">
+                  <div class="col-md-12">
+                    <div class="row" *ngIf="!inSource && showDraft && !noApprovals">
+                      <div class="col-md-3">
+                        <button class="btn btn-info" style="margin:5px;width:116px" (click)="navigate()">Add
+                          Items</button>
+                          <button class="btn btn-green" style="margin:5px" (click)="updateDraft()">{{'Update'
+                            |translate}}</button>
+                      </div>
+                      <div class="col-md-3">
+                       
+                      </div>
+                      <div class="col-md-3">
+                        <button class="btn btn-green" style="margin:5px" (click)="save()"
+                          *ngIf="createPermissionToggle && createStatusObj">{{'Create Order'
+                          |translate}}</button>
+                      </div>
+                      <div class="col-md-3">
+                        <button class="btn btn-green" style="margin:5px" (click)="reject('fromTable','forCreate')"
+                          *ngIf="createPermissionToggle && createStatusObj">{{'Reject'
+                          |translate}}</button>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="!inSource && showDraft && noApprovals">
+                      <div class="col-md-2">
+                        <button class="btn btn-info" style="width:86px"(click)="navigate()">Add Items</button>
+                        <button class="btn btn-green" style="margin-top: 2px;"(click)="updateDraft()">{{'Update'|translate}}</button>
+                      </div>
+                      <div class="col-md-3">
+                        <button class="btn btn-green" (click)="save()" *ngIf="!createPermissionToggle">{{'Create Order'
+                          |translate}}</button>
+                          <button class="btn btn-green" style="width: 119px;margin-top: 2px;"
+                          (click)="reject('fromTable','forCreate')" *ngIf="!createPermissionToggle">{{'Reject'
+                          |translate}}</button>
+                      </div>
+                      <div class="col-md-3 text-right">
+                        <div class="form-group row mt-2">
+                          <label class="col-sm-4 form-label">{{'POD' |translate}}</label>
+                          <div class="col-sm-8">
+                            <div class="row">
+                              <div class="input-container col-md-1 mt-1" *ngIf="inSource">
+                                <input type="file" #upload1 hidden (change)="uploadMultipleFiles($event)" multiple>
+                                <i (click)="upload1.click()" class="upload1 fa fa-upload"></i>
+                              </div>
+                              <div class="form-group row" *ngFor="let data of uploadFiles;let i=index"
+                                [hidden]="uploadFiles.length==0">
+                                <span (click)="downloadFile(data)" style="cursor:pointer">{{data}}</span>
+                                <i class="fa fa-times" (click)="deleteImageMethod(data,i)">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                       
+                      </div>
+                      <div class="col-md-3 text-right">
+                        <a>
+                          <button type="button" (click)="generatePDF()" title="Print PDF"
+                            style="background: none !important;border: none !important;">
+                            <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+                          </button>
+                        </a>
+
+                      </div>
+
+                    
+                    </div>
+                    <div class="float-right"
+                      *ngIf="inSource && whTransferForm.value.raiseWTStatus ==false && !showApprove">
+                      <button class="btn btn-green" style="margin:5px" (click)="confirm('fromTable')">{{'Confirm'
+                        |translate}}</button>
+                    </div>
+                    <div class="float-right" *ngIf="inSource && showApprove && !sourcenoApprovals">
+                      <button class="btn btn-green" style="margin:5px;" (click)="update()">{{'Update'
+                        |translate}}</button>
+                      <button class="btn btn-info" style="margin:5px" (click)="reject('fromTable','')"
+                        *ngIf="approvePermissionToggle && approveStatusObj">{{'Reject'
+                        |translate}}</button>
+                      <button class="btn btn-green" style="margin:5px" (click)="validate('fromTable')"
+                        *ngIf="approvePermissionToggle && approveStatusObj">{{'Approve'
+                        |translate}}</button>
+                    </div>
+                    <div class="float-right" *ngIf="inSource && showApprove && sourcenoApprovals">
+                      <button class="btn btn-green" style="margin:5px" (click)="update()">{{'Update'
+                        |translate}}</button>
+                      <button class="btn btn-info" style="margin:5px" (click)="reject('fromTable','')"
+                        *ngIf="!approvePermissionToggle">{{'Reject'
+                        |translate}}</button>
+                      <button class="btn btn-green" style="margin:5px" (click)="validate('fromTable')"
+                        *ngIf="!approvePermissionToggle">{{'Approve'
+                        |translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                
+              </div>
+              <div class="col-md-3" *ngIf="inSource && showApprove">
+                <button class="btn btn-green mr-1 float-right" (click)="setOrderQty()">
+                  Customer OrderQty = Order Quantity </button>
+              </div>
+             
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <ngx-smart-modal customClass="nsm-centered" identifier="closePOPopup" #closePOPopup>
+      <div class="mb-3">
+        <h6 *ngIf="closePOPopup.hasData()">{{closePOPopup.getData()}}</h6>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-green mr-1" (click)="[transfer('fromTable'), closePOPopup.close()]"> YES
+        </button>
+        <button class="btn btn-white" (click)="closePOPopup.close()"> No </button>
+      </div>
+    </ngx-smart-modal>
+    <div class="row" *ngIf="!showTable">
+      <div class="col-md-6" [formGroup]="wareHouseTransferLine">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4>{{'WAREHOUSE TRANSFERS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> {{'WAREHOUSE TRANSFERS' |translate}}
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row force-overflow">
+                <div class="col-md-6">
+                  <div class="form-group row" formGroupName="productCategoryInfo">
+                    <label class="col-sm-4 col-form-label">{{'Product Catgeory' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <select class="form-control" id="productCategoryName" name="productCategoryName"
+                        formControlName="productCategoryName" (change)="getProductsList($event.target.value)">
+                        <option value="null">-Select--</option>
+                        <option *ngFor="let productCategory of productCategories"
+                          [value]="productCategory.productCategoryName">
+                          {{productCategory.productCategoryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row" formGroupName="productMasterInfo">
+                    <label class="col-sm-4 col-form-label">{{'Product ID/Name' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                        title="Search product to retrive data of product"> info </i>
+                      <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="productsData"
+                        (selected)="onProductIDNameChange($event)" [minSearchLength]="0"
+                        placeholder="{{'Product ID/Name' |translate}}">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  <div class="form-group row d-none">
+                    <label class="col-sm-4 col-form-label">{{'Unit Price' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" formControlName="unitPrice" class="form-control"
+                        value="{{wareHouseTransferLine.controls.unitPrice.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Order Unit Price' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" formControlName="orderUnitPrice" class="form-control"
+                        value="{{wareHouseTransferLine.controls.orderUnitPrice.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Quantity Inventory Unit' |translate}}</label>
+                    <div class="col-sm-4">
+                      <input type="text" formControlName="quantityInventoryUnit" class="form-control" readonly>
+                    </div>
+                    <div class="col-sm-4">
+                      <input type="text" formControlName="inventoryUnit" class="form-control" readonly>
+                      <!-- <select class="form-control selectPanl" formControlName="inventoryUnit">
+                        <option value="null">--Select--</option>
+                        <option *ngFor="let unit of units" [value]="unit.unitCode">
+                          {{unit.unitCode}}</option>
+                      </select> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Requested Date' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control" formControlName="requestedDate">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row" *ngIf="showImage">
+                    <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}}</label>
+                    <div class="col-sm-8">
+                      <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                        alt="No Image">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">{{'Customer Order Quantity' |translate}}<i class="red">*</i>
+                    </label>
+                    <div class="col-sm-4 mr-0">
+                      <input id="customerOrderQuantity" name="customerOrderQuantity"
+                        formControlName="customerOrderQuantity" (keyup)="calculateReceivedQty()" class="form-control"
+                        type="text" oninput="validity.valid||(value='');" min="0"
+                        [readonly]="globalFormObj.wareHouseIDName == whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                    </div>
+                    <div class="col-sm-3 pl-0"
+                      *ngIf="globalFormObj.wareHouseIDName != whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                      <select class="form-control selectPanl" (change)="calculateReceivedQty()"
+                        formControlName="shipmentUnit">
+                        <option [value]="null">--Select--</option>
+                        <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                          {{unit.unitCode}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3 pl-0"
+                      *ngIf="globalFormObj.wareHouseIDName == whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                      <input type="text" readonly formControlName="shipmentUnit" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Order Quantity' |translate}}<span
+                        class="red">*</span></label>
+                    <div class="col-sm-4">
+                      <input type="number" class="form-control" formControlName="orderQuantity"
+                        (focusout)="calculateReceivedQty('transfer')"
+                        [readonly]="globalFormObj.wareHouseIDName != whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                    </div>
+                    <!-- <div class="col-sm-3 pl-0"
+                      *ngIf="globalFormObj.wareHouseIDName == whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                       <select class="form-control selectPanl" (change)="calculateReceivedQty('transfer')"
+                        formControlName="inventoryUnit">
+                        <option [value]="null">--Select--</option>
+                        <option *ngFor="let unit of units" [ngValue]="unit.unitCode">
+                          {{unit.unitCode}}</option>
+                      </select>
+                    </div> -->
+                    <div class="col-sm-3 pl-0">
+                      <input type="text" readonly formControlName="shipmentUnit" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Transfer Quantity' |translate}}</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" formControlName="transferQuantity" readonly>
+                    </div>
+                    <div class="col-sm-3 pl-0">
+                      <input type="text" readonly formControlName="inventoryUnit" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="taxExemption=='Yes'">
+                    <label class="col-sm-3 pr-0 col-form-label">{{'Sales Tax' |translate}}
+                    </label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" name="saleTaxes" [settings]="dropdownSettings"
+                        [data]="taxIDs" [formControl]="wareHouseTransferLine.controls['saleTaxes']"
+                        (focusout)="calculateTaxPercentage()">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row" [hidden]="taxExemption=='Yes'">
+                    <label class="col-sm-4 col-form-label">{{'Tax Amount' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input formControlName="taxAmount" readonly placeholder="{{'Tax Amount' |translate}}"
+                        class="form-control" type="text"
+                        value="{{wareHouseTransferLine.controls.taxAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Gross Amount' |translate}}</label>
+                    <div class="col-sm-8">
+                      <input formControlName="grossAmount" readonly placeholder="{{'Gross Amount' |translate}}"
+                        class="form-control" type="text"
+                        value="{{wareHouseTransferLine.controls.grossAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Discount' |translate}}<span class="red">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" formControlName="discount" (keyup)="calculate()">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Amount' |translate}}
+                    </label>
+                    <div class="col-sm-8">
+                      <input id="netAmount" name="netAmount" formControlName="netAmount" readonly
+                        placeholder="{{'Amount' |translate}}" class="form-control" type="text"
+                        value="{{wareHouseTransferLine.controls.netAmount.value | decimalFilter}}">
+                    </div>
+                  </div>
+
+                  <div
+                    *ngIf="globalFormObj.wareHouseIDName == whTransferForm.controls.sourceWareHouseInfo.value.wareHouseIDName">
+                    <div class="form-group row"
+                      *ngIf="wareHouseTransferLine.controls.locationAllocationType.value=='Manual'">
+                      <label class="col-sm-5 col-form-label">{{'Locations' |translate}}</label>
+                      <div class="col-sm-5">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search location to retrive data of location"> info </i>
+                        <input type="text" [placeholder]="'Select'" [(ngModel)]="returnShowValues"
+                          [ngModelOptions]="{standalone: true}"
+                          [readonly]="whTransferForm.controls.status.value == 'Confirmed'">
+                      </div>
+                      <div class="col-sm-2 mt-2"><i
+                          [hidden]="whTransferForm.controls.status.value && whTransferForm.controls.status.value!='Created'"
+                          class="fa fa-search" style="margin-left: 20px;cursor: pointer;"
+                          (click)="openModalRecievedLocations()"></i></div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-5">{{'Location Allocation Type' |translate}}</label>
+                      <div class="col-md-7">
+                        <button class="btn-secondary" *ngIf="allocationType=='Manual'"
+                          (click)="saveAllocationType('Manual')"
+                          [disabled]="whTransferForm.controls.status.value && whTransferForm.controls.status.value!='Created'">{{'Manual'
+                          |translate}}</button>
+                        <button class="btn-success" *ngIf="allocationType=='Auto'" (click)="saveAllocationType('Auto')"
+                          [disabled]="whTransferForm.controls.status.value && whTransferForm.controls.status.value!='Created'">{{'Auto'
+                          |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <div class="col-sm-12 text-center  mb-3 mt-3">
+                      <button class="btn btn-green mr-1" (click)="save()"
+                        [disabled]="(whTransferForm.controls.status.value && (whTransferForm.controls.status.value!='Created' || !showDraft))
+                        || !wareHouseTransferLine.controls.customerOrderQuantity.value || wareHouseTransferLine.controls.customerOrderQuantity.value==0">
+                        {{'SAVE' |translate}} </button>
+                      <button class="btn btn-white" (click)="reset()"
+                        [disabled]="whTransferForm.controls.status.value && whTransferForm.controls.status.value!='Created'">
+                        {{'CLEAR' |translate}} </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" [formGroup]="whTransferForm">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> {{'WAREHOUSE TRANSFERS' |translate}} </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+
+              <div class="formTitleHover">
+                <h4> {{'WAREHOUSE TRANSFERS' |translate}} <i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+
+            </div>
+            <div id="style-8" class="panel-body scrollbar">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="scrolTable" class="">
+                    <!-- datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger" -->
+                    <table id="example" class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>{{'Sr.No' |translate}}</th>
+                          <th>{{'Product ID Name' |translate}}</th>
+                          <th>{{'Quantity' |translate}}</th>
+                          <th>{{'Transfer Quantity' |translate}}</th>
+                          <th>{{'Inventory Unit' |translate}}</th>
+                          <th>{{'Action' |translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="whTransferForm.controls.wareHouseTransferLines.value">
+                        <tr *ngFor="let data of whTransferForm.controls.wareHouseTransferLines.value;let i=index">
+                          <td class="text-left">{{i+1}}</td>
+                          <td>{{data.productMasterInfo.productIDName}}</td>
+                          <td>{{data.quantityInventoryUnit}}</td>
+                          <td>{{data.transferQuantity}}</td>
+                          <td>{{data.inventoryUnit}}</td>
+                          <td>
+                            <span class="btn btn-pink btn-sm">
+                              <i _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i>
+                              <i _ngcontent-lty-c40="" class="fa fa-trash btn-blue"
+                                *ngIf="whTransferForm.controls.status.value=='Created'" (click)="delete(data._id)"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <!--  <tbody *ngIf="filteredInventoryByProduct.length === 0">
+                        <tr>
+                          <th colspan="6" class="text-center"> No records found in Inventory </th>
+                        </tr>
+                      </tbody> -->
+                    </table>
+                    <div class="row"
+                      [hidden]="whTransferForm.controls.status.value && whTransferForm.controls.status.value!='Created'">
+                      <div class="col-md-12">
+                        <div class="text-center">
+                          <button class="btn-warning ml-2"
+                            *ngIf="globalFormObj.wareHouseIDName == whTransferForm.value.sourceWareHouseInfo.wareHouseIDName"
+                            (click)="reject()">{{'Reject' |translate}}</button>
+                          <button class="btn-info ml-2" (click)="validate()">{{'Validate' |translate}}</button>
+                          <button class="btn-success ml-2" (click)="transfer()" [disabled]="enableTransfer"
+                            *ngIf="globalFormObj.wareHouseIDName == whTransferForm.value.sourceWareHouseInfo.wareHouseIDName">{{'Transfer'
+                            |translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showTable && overAllLines.length > 0">
+      <!-- inSource table true-->
+      <!-- <div class="row" *ngIf="inSource">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Specification' |translate}}</th>
+                  <th scope="col">{{'Order UOM' |translate}}</th>
+                  <th scope="col">{{'Customer order Quantity' |translate}}</th>
+                  <th scope="col">{{'Brand' |translate}}</th>
+                  <th scope="col">{{'Order Quantity' |translate}}</th>
+                  <th scope="col">{{'Inventory UOM' |translate}}</th>
+                  <th scope="col">{{'Transfer Quantity' |translate}}</th>
+                  <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                  <th scope="col">{{'Order unit Price' |translate}}</th>
+                  <th scope="col">{{'Special Price' |translate}}</th>
+                  <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+                  <th scope="col">{{'Gross Amount' |translate}}</th>
+                  <th scope="col">{{'Tax Amount' |translate}}</th>
+                  <th scope="col">{{'Allocation Type' |translate}}</th>
+                  <th scope="col">{{'Select Locations' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of overAllLines;let i=index">
+                  <td>{{i+1}} </td>
+                  <td>{{data.productMasterInfo.productID}}</td>
+                  <td>{{data.productMasterInfo.productName}}</td>
+                  <td>{{data.productDescription }}</td>
+                  <td class="text-center">{{data.shipmentUnit}} </td>
+                  <td>
+                    <span>{{data.customerOrderQuantity}} </span>
+                  </td>
+                  <td>{{data.brandName}} </td>
+                  <td><span *ngIf="!showApprove">
+                      {{data.orderQuantity}}</span>
+                    <span *ngIf="showApprove">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.orderQuantity" [ngModelOptions]="{standalone: true}"
+                        (keyup)="validateDecimal('orderQuantity',i)"
+                        (focusout)="calculateTransferQty(data,i);orderQuantityValidation(data,$event)">
+                    </span>
+                  </td>
+                  <td class="text-center"> {{data.inventoryUnit}}</td>
+                  <td><span *ngIf="data.uomConversionAvailability == 'Yes'">{{data.transferQuantity}}</span>
+                    <span *ngIf="data.uomConversionAvailability != 'Yes'">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.transferQuantity" [ngModelOptions]="{standalone: true}"
+                        (keyup)="validateDecimal('transferQuantity',i)" (focusout)="getCFCount(data,i)">
+                    </span>
+                  </td>
+                  <td [ngStyle]="{'color':(data.quantityInventoryUnit === 0) ?'red':'black'}">
+                    {{data.quantityInventoryUnit | decimalFilter}}</td>
+                  <td class="text-right">{{data.orderUnitPrice | decimalFilter }}</td>
+                  <td>{{data.specialOrderUnitPrice }}</td>
+                  <td class="text-center">{{data.expectedDeliveryDate | date : 'MM/dd/yyyy'}}</td>
+
+                  <td class="text-right">{{data.grossAmount | decimalFilter}}</td>
+                  <td class="text-right">{{data.taxAmount| decimalFilter}}</td>
+                  <td>
+                    <span *ngIf="!showApprove">{{data.locationAllocationType}}</span>
+                    <span *ngIf="showApprove">
+                      <button class="btn-secondary" *ngIf="data.locationAllocationType=='Manual'"
+                        (click)="saveAllocationType('Manual','fromTable',data)">{{'Manual'
+                        |translate}}</button>
+                      <button class="btn-success" *ngIf="data.locationAllocationType=='Auto'"
+                        (click)="saveAllocationType('Auto','fromTable',data)">{{'Auto'
+                        |translate}}</button>
+                    </span>
+                  </td>
+                  <td><span *ngIf="data.locationAllocationType=='Manual' && showApprove"><i class="fa fa-table"
+                        (click)="openModalRecievedLocations('fromTable',data,i)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="text-center">
+                  <h6 class="text-center" *ngIf="overAllLines.length>0">{{'Total Amount:' |translate}}
+                    {{totalAmountWithDecimals}}
+                    {{overAllLines[0].currency}}
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="row" *ngIf="inSource">
+        <div class="col-md-12">
+          <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label>Show</label>
+              </div>
+             <div class="col-md-1"><select [(ngModel)]="itemsPerPageCreate"
+                  (change)="editbyId(idForUpdate,createPage=1)" class="form-control"
+                  [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+              <div class="col-md-0.5 pl-0"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="editbyId(idForUpdate,createPage=1)">
+              </div>
+            </div>
+            <table id="example" class="table table-striped">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Image' | translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Specification' |translate}}</th>
+                  <th scope="col">{{'Order UOM' |translate}}</th>
+                  <th scope="col">{{'Customer order Quantity' |translate}}</th>
+                  <th scope="col">{{'Brand' |translate}}</th>
+                  <th scope="col">{{'Order Quantity' |translate}}</th>
+                  <th scope="col">{{'Inventory UOM' |translate}}</th>
+                  <th scope="col">{{'Transfer Quantity' |translate}}</th>
+                  <th scope="col">{{'Quantity Inventory Unit' |translate}}</th>
+                  <th scope="col">{{'Order unit Price' |translate}}</th>
+                  <th scope="col">{{'Special Price' |translate}}</th>
+                  <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+                  <th scope="col">{{'Gross Amount' |translate}}</th>
+                  <th scope="col">{{'Tax Amount' |translate}}</th>
+                  <th scope="col">{{'Allocation Type' |translate}}</th>
+                  <th scope="col">{{'Select Locations' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let i=index;let data of overAllLines| paginate: {id:'foo',itemsPerPage: itemsPerPageCreate,currentPage: createPage,totalItems: createTotalItems}">
+                  <td>{{i+1}}</td>
+                  <td *ngIf="data.productImageResource">
+                    <div class="tooltip-container">
+                      <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                        alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                      <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                    </div>
+                  </td>
+                  <td *ngIf="!data.productImageResource">
+                    <div class="noImageIcon">
+                      <p class="noImageIconText">
+                        {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                    </div>
+                  </td>
+                  <td>{{data.productMasterInfo.productID}}</td>
+                  <td>{{data.productMasterInfo.productName}}</td>
+                  <td>{{data.productDescription }}</td>
+                  <td class="text-center">{{data.shipmentUnit}} </td>
+                  <td>
+                    <span>{{data.customerOrderQuantity}} </span>
+                  </td>
+                  <td>{{data.brandName}} </td>
+                  <td><span *ngIf="!showApprove">
+                      {{data.orderQuantity}}</span>
+                    <span *ngIf="showApprove">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.orderQuantity" [ngModelOptions]="{standalone: true}"
+                        (keyup)="validateDecimal('orderQuantity',i)"
+                        (focusout)="calculateTransferQty(data,i);orderQuantityValidation(data,$event)">
+                    </span>
+                  </td>
+                  <td class="text-center"> {{data.inventoryUnit}}</td>
+                  <td><span *ngIf="data.uomConversionAvailability == 'Yes'">{{data.transferQuantity}}</span>
+                    <span *ngIf="data.uomConversionAvailability != 'Yes'">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.transferQuantity" [ngModelOptions]="{standalone: true}"
+                        (keyup)="validateDecimal('transferQuantity',i)" (focusout)="getCFCount(data,i)">
+                    </span>
+                  </td>
+                  <td [ngStyle]="{'color':(data.quantityInventoryUnit === 0) ?'red':'black'}">
+                    {{data.quantityInventoryUnit | decimalFilter}}</td>
+                  <td class="text-right">{{data.orderUnitPrice | decimalFilter }}</td>
+                  <td>{{data.specialOrderUnitPrice }}</td>
+                  <td class="text-center">{{data.expectedDeliveryDate | date : 'MM/dd/yyyy'}}</td>
+
+                  <td class="text-right">{{data.grossAmount | decimalFilter}}</td>
+                  <td class="text-right">{{data.taxAmount| decimalFilter}}</td>
+                  <td>
+                    <span *ngIf="!showApprove">{{data.locationAllocationType}}</span>
+                    <span *ngIf="showApprove">
+                      <button class="btn-secondary" *ngIf="data.locationAllocationType=='Manual'"
+                        (click)="saveAllocationType('Manual','fromTable',data)">{{'Manual'
+                        |translate}}</button>
+                      <button class="btn-success" *ngIf="data.locationAllocationType=='Auto'"
+                        (click)="saveAllocationType('Auto','fromTable',data)">{{'Auto'
+                        |translate}}</button>
+                    </span>
+                  </td>
+                  <td><span *ngIf="data.locationAllocationType=='Manual' && showApprove"><i class="fa fa-table"
+                        (click)="openModalRecievedLocations('fromTable',data,i)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo" (pageChange)="update();editbyId(idForUpdate,createPage = $event)">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- insource false table-->
+      <div class="row" *ngIf="!inSource">
+        <div class="col-md-12">
+          <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+            <div class="row">
+              <div class="col-md-0.5 pr-0">
+                <label>Show</label>
+              </div>
+             <div class="col-md-1"><select [(ngModel)]="itemsPerPageCreate"
+                  (change)="editbyId(idForUpdate,createPage=1)" class="form-control"
+                  [ngModelOptions]="{standalone: true}">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select></div>
+              <div class="col-md-0.5 pl-0"><label>Entries</label>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-1">
+                <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                  (keyup)="editbyId(idForUpdate,createPage=1)">
+              </div>
+            </div>
+            <table id="example" class="table table-striped">
+              <thead>
+                <tr style="background-color:'blueviolet'">
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Image' | translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Specification' |translate}}</th>
+                  <th scope="col">{{'Order UOM' |translate}}</th>
+                  <th scope="col">{{'Customer order Quantity' |translate}}</th>
+                  <th scope="col">{{'Brand' |translate}}</th>
+                  <th scope="col">{{'Order unit Price' |translate}}</th>
+                  <th scope="col">{{'Special Price' |translate}}</th>
+                  <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+                  <th scope="col">{{'Gross Amount' |translate}}</th>
+                  <th scope="col">{{'Tax Amount' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'Source WareHouseIDName' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'ShipFrom Address' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let i=index;let data of overAllLines| paginate: {id:'foo1',itemsPerPage: itemsPerPageCreate,currentPage: createPage,totalItems: createTotalItems}">
+                  <td>{{i+1}} </td>
+                  <td *ngIf="data.productImageResource">
+                    <div class="tooltip-container">
+                      <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                        alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                      <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                    </div>
+                  </td>
+                  <td *ngIf="!data.productImageResource">
+                    <div class="noImageIcon">
+                      <p class="noImageIconText">
+                        {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                    </div>
+                  </td>
+                  <td>{{data.productMasterInfo.productID}}</td>
+                  <td>{{data.productMasterInfo.productName}}</td>
+                  <td>{{data.productDescription }}</td>
+                  <td>{{data.shipmentUnit}} </td>
+                  <td>
+                    <span *ngIf="!showDraft">
+                      {{data.customerOrderQuantity}}</span>
+                    <span *ngIf="showDraft">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.customerOrderQuantity" [ngModelOptions]="{standalone: true}"
+                        (focusout)="calculate(data,i)" (keyup)="validateDecimal('customerOrderQuantity',i)">
+                    </span>
+                  </td>
+                  <td>{{data.brandName}} </td>
+                  <td style="text-align: right !important">{{data.orderUnitPrice | decimalFilter}}</td>
+                  <td>{{data.specialOrderUnitPrice | decimalFilter }}</td>
+                  <td>
+                    <span *ngIf="!showDraft">{{data.expectedDeliveryDate |
+                      date:'MM/dd/yyyy'}}</span>
+                    <span *ngIf="showDraft">
+                      <input type="date" [(ngModel)]="data.expectedDeliveryDate" class="form-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </span>
+                  </td>
+                  <td style="text-align: right !important">{{data.grossAmount | decimalFilter}}</td>
+                  <td style="text-align: right !important">{{data.taxAmount | decimalFilter}}</td>
+                  <td *ngIf="!inSource && showDraft">{{data.sourceWareHouseInfo.wareHouseIDName}}</td>
+                  <td *ngIf="!inSource && showDraft">
+                    <span *ngIf="data.shipFromAddresses && data.shipFromAddress">
+                      <select class="form-control" [(ngModel)]="data.shipFromAddress.name"
+                        [ngModelOptions]="{standalone: true}" (change)="setshipFrominTable($event,i,data)">
+                        <option *ngFor="let ware of data.shipFromAddresses" [value]="ware.name">{{ware.name}}</option>
+                      </select>
+                    </span>
+                    <span *ngIf="!data.shipFromAddresses && data.shipFromAddress">{{data.shipFromAddress.name}}</span>
+                  </td>
+                  <td scope="col" *ngIf="!inSource && showDraft"><span _ngcontent-lty-c40=""
+                      class="btn btn-pink btn-sm"><i _ngcontent-lty-c40="" class="fa fa-trash btn-blue"
+                        (click)="delete(data)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row mt-2">
+              <div class="col-md-12" style="text-align: end;">
+                <pagination-controls class="pagi" id="foo1" (pageChange)="update();editbyId(idForUpdate,createPage = $event)">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-center">
+            <p style="font-size:12px;color:black;text-align: center" *ngIf="overAllLines.length>0">{{'Total
+              Amount:' |translate}}
+              {{totalAmountWithDecimals}}
+              {{overAllLines[0].currency}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row" *ngIf="!inSource">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">{{'S.No' |translate}}</th>
+                  <th scope="col">{{'Product ID' |translate}}</th>
+                  <th scope="col">{{'Product Name' |translate}}</th>
+                  <th scope="col">{{'Product Specification' |translate}}</th>
+                  <th scope="col">{{'Order UOM' |translate}}</th>
+                  <th scope="col">{{'Customer order Quantity' |translate}}</th>
+                  <th scope="col">{{'Brand' |translate}}</th>
+                  <th scope="col">{{'Order unit Price' |translate}}</th>
+                  <th scope="col">{{'Special Price' |translate}}</th>
+                  <th scope="col">{{'Expected Delivery Date' |translate}}</th>
+                  <th scope="col">{{'Gross Amount' |translate}}</th>
+                  <th scope="col">{{'Tax Amount' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'Source WareHouseIDName' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'ShipFrom Address' |translate}}</th>
+                  <th scope="col" *ngIf="!inSource && showDraft">{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of overAllLines;let i=index">
+                  <td>{{i+1}} </td>
+                  <td>{{data.productMasterInfo.productID}}</td>
+                  <td>{{data.productMasterInfo.productName}}</td>
+                  <td>{{data.productDescription }}</td>
+                  <td>{{data.shipmentUnit}} </td>
+                  <td>
+                    <span *ngIf="!showDraft">
+                      {{data.customerOrderQuantity}}</span>
+                    <span *ngIf="showDraft">
+                      <input type="text" name="test_name" min="0" oninput="validity.valid||(value='');"
+                        [(ngModel)]="data.customerOrderQuantity" [ngModelOptions]="{standalone: true}"
+                        (focusout)="calculate(data,i)" (keyup)="validateDecimal('customerOrderQuantity',i)">
+                    </span>
+                  </td>
+                  <td>{{data.brandName}} </td>
+                  <td style="text-align: right !important">{{data.orderUnitPrice | decimalFilter}}</td>
+                  <td>{{data.specialOrderUnitPrice | decimalFilter }}</td>
+                  <td>
+                    <span *ngIf="!showDraft">{{data.expectedDeliveryDate |
+                      date:'MM/dd/yyyy'}}</span>
+                    <span *ngIf="showDraft">
+                      <input type="date" [(ngModel)]="data.expectedDeliveryDate" class="form-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </span>
+                  </td>
+                  <td style="text-align: right !important">{{data.grossAmount | decimalFilter}}</td>
+                  <td style="text-align: right !important">{{data.taxAmount | decimalFilter}}</td>
+                  <td *ngIf="!inSource && showDraft">{{data.sourceWareHouseInfo.wareHouseIDName}}</td>
+                  <td *ngIf="!inSource && showDraft">
+                    <span *ngIf="data.shipFromAddresses && data.shipFromAddress">
+                      <select class="form-control" [(ngModel)]="data.shipFromAddress.name"
+                        [ngModelOptions]="{standalone: true}" (change)="setshipFrominTable($event,i,data)">
+                        <option *ngFor="let ware of data.shipFromAddresses" [value]="ware.name">{{ware.name}}</option>
+                      </select>
+                    </span>
+                    <span *ngIf="!data.shipFromAddresses && data.shipFromAddress">{{data.shipFromAddress.name}}</span>
+                  </td>
+                  <td scope="col" *ngIf="!inSource && showDraft"><span _ngcontent-lty-c40=""
+                      class="btn btn-pink btn-sm"><i _ngcontent-lty-c40="" class="fa fa-trash btn-blue"
+                        (click)="delete(data)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="text-center">
+                  <p style="font-size:12px;color:black;text-align: center" *ngIf="overAllLines.length>0">{{'Total
+                    Amount:' |translate}}
+                    {{totalAmountWithDecimals}}
+                    {{overAllLines[0].currency}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="row">
+        <div class="col-md-6">
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<ngx-smart-modal customClass="nsm-centered" id="goodsrecieving" #pickupLocationsModal
+  [identifier]="'pickupLocationsModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <h5>{{'Locations' |translate}}</h5>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row">
+            <ng2-completer [datasource]="batchNumberIDs" [minSearchLength]="0" placeholder="Search BatchNumber's"
+              (selected)="returnLocationsByBatchNumber($event)">
+            </ng2-completer>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row">
+            <ng2-completer [datasource]="serialNumberIDs" [minSearchLength]="0" placeholder="Search SerialNumber's"
+              (selected)="returnLocationsBySerialNumber($event)">
+            </ng2-completer>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="float-right">
+            <div class="form-group row">
+              <ng2-completer name="locationIDName" [datasource]="pickupLocationValues" [minSearchLength]="0"
+                placeholder="Search LocationIDs" (selected)="returnLocationsByLocationName($event)">
+              </ng2-completer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="wmsDataTables p-2">
+        <div id="style-8" class="panel-body scrollbar" style="height:auto">
+          <!-- datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" -->
+          <table id="example" class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Include' |translate}}</th>
+                <th scope="col">{{'Location Name' |translate}}</th>
+                <th scope="col">{{'Availablity Quantity' |translate}}</th>
+                <th scope="col">{{'Brand Name' |translate}}</th>
+                <th scope="col">{{'Batch Number' |translate}}</th>
+                <th scope="col">{{'Serial Number' |translate}}</th>
+                <th scope="col" style="width: 20px;">{{'Picked Quantity' |translate}}</th>
+                <!-- <th scope="col">Action</th> -->
+              </tr>
+            </thead>
+            <tbody *ngIf="pickupLocations.length>0">
+              <tr *ngFor="let data of pickupLocations;let i=index">
+                <td scope="row">{{i+1}}</td>
+                <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                    [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                <td>{{data.locationInfo.locationName}}</td>
+                <td>{{data.quantityInventoryUnit}}</td>
+                <td>{{data.brandName}}</td>
+                <td>{{data.batchNumber}}</td>
+                <td>{{data.serialNumber}}</td>
+                <td *ngIf="!data.isEdit">
+                  <span>
+                    {{data.pickedQuantity}}
+                  </span>
+                </td>
+                <td *ngIf="data.isEdit"><span>
+                    <input type="text" class="form-control" #pickedQuantity [value]="data.pickedQuantity"
+                      (focusout)="savequantity(pickedQuantity.value,data)"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="float-right">
+        <button class="btn btn-green" (click)="savePickupLocations()">{{'Save' |translate}}</button>
+        <button class="btn btn-white" (click)="resetRecieveLocations()">{{'CLEAR' |translate}}</button>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

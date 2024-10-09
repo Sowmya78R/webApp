@@ -1,0 +1,377 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row" [formGroup]="inventoryForm">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'INVENTORY' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i aria-hidden="true"
+                      class="fa fa-angle-up"></i></span>
+                  |
+                  <i class="material-icons fullscreen"> unfold_less </i>
+                </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'INVENTORY' |translate}} <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                  </div>
+                </h4>
+              </div>
+            </div>
+            <div class="panel-body scrollbar" id="style-8" style="height:280px">
+              <div class="row force-overflow">
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Product ID/Name' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="productIDNameValues" [formControl]="inventoryForm.controls['productIDNames']">
+                    </ng-multiselect-dropdown>
+                      <!-- <ejs-multiselect #multiCheck [dataSource]='productsIDNamesforScroll' [fields]='fields'
+                        popupHeight='200px' [mode]="'CheckBox'" [allowFiltering]='false' [placeholder]="'Select'"
+                        (open)="onOpen($event,'dropdownObj')">
+                      </ejs-multiselect> -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Category' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="categoryDrop"
+                      [formControl]="inventoryForm.controls['productCategoryNames']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Zone Name' |translate}}</label>
+                    <div class="col-sm-7">
+                      <!-- <ng2-completer id="zoneName" name="zoneName" formControlName="zoneName" [datasource]="zoneNameIDs"
+                        [minSearchLength]="0" (selected)="getSelectedValue($event)" placeholder="{{'Zone Name' |translate}}">
+                      </ng2-completer> -->
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="zoneNameIDs"
+                      [formControl]="inventoryForm.controls['zoneNames']"
+                       (focusout)="getSelectedValue()">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Rack Name' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="rackIDs"
+                      [formControl]="inventoryForm.controls['rackNames']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Location Name' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown #multiCheck [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="locationsIDs" 
+                      [formControl]="inventoryForm.controls['locationNames']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Product Description' |translate}}</label>
+                    <div class="col-sm-7">
+                      <!-- <ng2-completer id="productDescription" name="productDescription" formControlName="productDescription"
+                      [datasource]="productDes" [minSearchLength]="0"
+                      placeholder="{{'Product Description' |translate}}">
+                    </ng2-completer> -->
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="productDes"
+                      [formControl]="inventoryForm.controls['productDescriptions']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Supplier' |translate}}</label>
+                    <div class="col-sm-7">
+                      <!-- <ng2-completer id="supplierIDName" name="supplierIDName" [datasource]="suppliersIDs"
+                        [minSearchLength]="0" placeholder="{{'SupplierIDName' |translate}}"
+                        formControlName="supplierIDName" [disabled]="supplierIDName">
+                      </ng2-completer> -->
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="suppliersIDs"
+                      [formControl]="inventoryForm.controls['supplierIDNames']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Batch Number' |translate}}</label>
+                    <div class="col-sm-7">
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="batchNumberIDs"
+                      [formControl]="inventoryForm.controls['batchNumbers']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Created Date From' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="createdDateFrom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Created Date To' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="createdDateTo">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+                  
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Serial Number' |translate}}</label>
+                    <div class="col-sm-7">
+                      <!-- <ng2-completer id="s/erialNumber" name="serialNumber" [datasource]="serialNumberIDs"
+                        [minSearchLength]="0" placeholder="{{'Serial Number' |translate}}"
+                        formControlName="serialNumber">
+                      </ng2-completer> -->
+                      <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="serialNumberIDs"
+                      [formControl]="inventoryForm.controls['serialNumbers']">
+                    </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'MFG Date From' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="mfgDateFrom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'MFG Date To' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="mfgDateTo">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Expiry Date From' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="expiryDateFrom">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{'Expiry Date To' |translate}}</label>
+                    <div class="col-sm-6">
+                      <input type="date" class="form-control" formControlName="expiryDateTo">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 text-right">
+                  <div class="form-group row ">
+                    <div class="col-sm-12">
+                      <button class="btn btn-green m-1" (click)="fetchAllInventories(1)">{{'GENERATE'
+                        |translate}}</button>
+                      <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      <button type="button" value="Download Excel" (click)="getAllInventoriesForDownload()"
+                        title="Download Excel" style="background: none !important;border: none !important;">
+                        <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4 text-right">
+        <div class="udcBtns">
+          <button class="btn-primary btn-sm" (click)="update()" style="margin-right: 14px;">
+            {{'Update' |translate}}</button>
+          <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+              style="width: 25px;height: 23px;margin-right: 16px;">
+            <input id="upfile" class="hidden" style="background: none !important;border: none !important;" type="file"
+              accept=".xlsx" (change)="uploadExcel($event)">
+          </a>
+          <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets\Log file 2.png" title="Log File" alt=""
+              style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            <input id="upfile" class="hidden" style="background: none !important;border: none !important;" type="file"
+              accept=".xlsx">
+          </a>
+          <a>
+            <button type="button" value="Download Excel" (click)="exportAsXLSX('empty')" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets\Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                  (change)="uploadExcel($event)">
+              </a>
+            </li>
+            <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                  class="material-icons align-middle"> description
+                </i> Log File </a>
+            </li>
+            <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                </i>{{'Download Excel' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11"></div>
+      <div class="col-md-1">
+        <div>
+          <!--  <button class="btn-primary btn-sm" (click)="update()">{{'Update' |translate}}</button> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="style-8" class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class=""><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(page=1,$event)"
+                class="form-control shortWidth" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+              <div class="col-md-1 mt-1"><label>Entries</label> 
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left: -20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="this.fetchAllInventories(page=1, itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped" style="overflow-y: auto;display: block;">
+            <thead>
+              <tr style="background-color:'blueviolet'">
+                <th *ngFor="let key of tableHeadings">{{key |translate}} <i class="fa fa-sort-asc"
+                  style="    position: relative;left: -7px;" 
+                    (click)="setDirection('ASC',key)" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="    position: relative;
+                    left: -7px;" aria-hidden="true" (click)="setDirection('DESC',key)"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let inventory of inventories | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems};let i=index;"
+                [ngStyle]="{'color':(inventory.inventoryAvailability ? 'black' : 'red')}">
+                <td class="text-left">{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td *ngIf="inventory.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + inventory.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{inventory.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!inventory.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(inventory.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td>{{inventory.fullInventoryID}} </td>
+                <td>{{inventory.productMasterInfo.productID}}</td>
+                <td>{{inventory.productMasterInfo.productName}}</td>
+                <td>{{inventory.productDescription}}</td>
+                <td>{{inventory.inventoryUnit}}</td>
+                <td>{{inventory.brandName}} </td>
+                <td><span *ngIf="!inventory.isEdit">{{inventory.mfgDate | date: 'dd/MM/yyyy'}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <input type="date" class="form-control" #mfgDate [value]="inventory.mfgDate"
+                      (focusout)="manipulateOriginalData(mfgDate.value,'mfgDate',inventory)">
+                  </span>
+                </td>
+                <!-- <td>{{inventory.expiryDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td> -->
+                <td><span *ngIf="!inventory.isEdit">{{inventory.expiryDate | date: 'dd/MM/yyyy'}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <input type="date" class="form-control" #expiryDate [value]="inventory.expiryDate"
+                      (focusout)="manipulateOriginalData(expiryDate.value,'expiryDate',inventory)">
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="!inventory.isEdit">{{inventory.batchNumber}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <input type="text" class="form-control" #batchNumber [value]="inventory.batchNumber"
+                      (focusout)="manipulateOriginalData(batchNumber.value,'batchNumber',inventory)">
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="!inventory.isEdit">{{inventory.serialNumber}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <input type="text" class="form-control" #serialNumber [value]="inventory.serialNumber"
+                      (focusout)="manipulateOriginalData(serialNumber.value,'serialNumber',inventory)">
+                  </span>
+                </td>
+                <td>{{inventory.quantityInventoryUnit | decimalwithTenDigits}}</td>
+                <td>{{inventory.availableQuantity | decimalwithTenDigits}}</td>
+                <td>{{inventory.reservedQuantity | decimalwithTenDigits}}</td>
+                <td><span *ngIf="inventory.supplierMasterInfo">{{inventory.supplierMasterInfo.supplierIDName}}</span>
+                  <span
+                    *ngIf="inventory.wareHouseTransferSourceInfo">{{inventory.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                  <span *ngIf="inventory.customerMasterInfo">{{inventory.customerMasterInfo.customerIDName}}</span>
+                </td>
+                <td>{{inventory.locationInfo.locationName}}</td>
+                
+                <td>{{inventory.zoneInfo.zoneName}}</td>
+                <td>{{inventory.rackInfo.rackName}}</td>
+                <td>{{inventory.levelInfo.levelName}}</td>
+                <td>{{inventory.columnInfo?.columnName}}</td>
+                <td>
+                  <span *ngIf="!inventory.isEdit">{{inventory.packingRemarks}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <input type="text" class="form-control" #packingRemarks [value]="inventory.packingRemarks"
+                      (focusout)="manipulateOriginalData(packingRemarks.value,'packingRemarks',inventory)">
+                  </span>
+                </td>
+                <td>{{inventory.productPurchasePrice | decimalFilter}} {{inventory.currency}}</td>
+                <td>{{inventory.productPurchasePrice * inventory.availableQuantity | decimalFilter}}</td>
+                <td>{{inventory.productCategoryInfo?.productCategoryName}}</td>
+                <!-- <td>{{inventory.productSubCategory1Name}}</td>
+                <td>{{inventory.productSubCategory2Name}}</td>
+                <td>{{inventory.productSubCategory3Name}}</td> -->
+                <td>{{inventory.productType}}</td>
+                <td>{{inventory.productClass}}</td>
+                <td>{{inventory.invoiceNumber}}</td>
+                <td>{{inventory.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.billOfEntryNumber}}</td>
+                <td>{{inventory.billOfEntryDate | date: 'dd/MM/yyyy'}}</td>                       
+                <td>{{inventory.bondNumber}}</td>
+                <td>{{inventory.bondDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{inventory.createdDate | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                <td><span *ngIf="!inventory.isEdit">{{inventory.inventoryAvailability}}</span>
+                  <span *ngIf="inventory.isEdit">
+                    <select class="form-control" #inventoryAvailability [value]="inventory.inventoryAvailability"
+                      (focusout)="manipulateOriginalData(inventoryAvailability.value,'inventoryAvailability',inventory)">
+                      <option value="true">true</option>
+                      <option value="false">false</option>
+                    </select>
+                  </span>
+                </td>
+                <td><span class="btn btn-pink btn-sm"><i class="fa fa-pencil btn-sm"
+                      (click)="edit(inventory)"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="fetchAllInventories((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

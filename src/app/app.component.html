@@ -1,1 +1,35 @@
+<!-- <div id="loading" *ngIf="showLoader">
+    <mat-spinner></mat-spinner>
+</div> -->
+<div class="bg bg-color"
+  *ngIf="showLoader || (isShowMasterMenu && (router.url=='/homepage') || (showNavbar && (router.url.includes('subMenu'))))">
+  <div class="loader" id="loader-1"></div>
+</div>
+<app-nav-bar *ngIf="showNavbar" [helpData]="pageLevelHelp"></app-nav-bar>
+<app-master-menus *ngIf="isShowMasterMenu" [navLinks]="masterDatasOrReportsOrConfigData">
+</app-master-menus>
 <router-outlet></router-outlet>
+<!-- <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [title]="chartOptions.title"
+  ></apx-chart> -->
+<!-- <app-footer *ngIf="showNavbar"></app-footer> -->
+
+
+<!-- <ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6>Do you want to delete?</h6>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-green mr-2" (click)="modalRef.hide()">Confirm</button>
+    <button type="button" class="btn btn-white" (click)="modalRef.hide()">Cancel</button>
+  </div>
+</ng-template> -->

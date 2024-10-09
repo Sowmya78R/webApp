@@ -1,0 +1,51 @@
+<div  [formGroup]="multiDimentionalproductForm">
+  <div class="row d-none">
+    <div class="col-md-12 mastermenus_top">
+      <div class="top-input-label mb-2">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label">From Date</label>
+              <div class="col-sm-8 top-input">
+                <input type="date" name="" class="form-control" id="" formControlName="fromDate">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label">To Date:</label>
+              <div class="col-sm-8 top-input">
+                <input type="date" name="" class="form-control" id="" formControlName="toDate">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <div class="">
+      <div class="wmsDataTables"> 
+        <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions" 
+          [dtTrigger]="dtTrigger"> 
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Name</th>
+              <th>Products</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let abcmatrixgroup of finalArr;let i=index">
+              <td class="text-left">{{i+1}}</td>
+            <td>{{abcmatrixgroup.name}}</td>
+            <td>{{abcmatrixgroup.productID}}</td>
+            </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

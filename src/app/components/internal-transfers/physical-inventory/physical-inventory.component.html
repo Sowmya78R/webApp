@@ -1,0 +1,348 @@
+<div id="inBody">
+  <div class="col-md-12">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="top-input-label">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Cycle Counting Criteria: <i class="red">*</i>
+                </label>
+                <i class="col-sm-1 material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                  title="Search cyclecounting criteria to retrive data of cyclecounting criteria"> info </i>
+                <div class="col-sm-6 top-input">
+                  <select class="form-control" id="cycleCountingCriteria" name="cycleCountingCriteria"
+                    (change)="getCriteria($event.target.value)">
+                    <option [value]="undefined">-Select--</option>
+                    <option *ngFor="let cycleCountingCriteria of cycleCountingCriterias"
+                      [value]="cycleCountingCriteria.value">
+                      {{cycleCountingCriteria.viewValue}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <form #ccHeaderForm="ngForm">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Search:</label>
+                  <div class="col-sm-10 top-input">
+                    <ng2-completer name="infoValue" [(ngModel)]="infoValue" [datasource]="dataService"
+                      [minSearchLength]="0" placeholder="Search" (selected)="onInfoChange(ccHeaderForm.value)">
+                    </ng2-completer>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <form [formGroup]="cycleCountingForm">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4> CYCLE COUNTING</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4> CYCLE COUNTING
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar"style="height:217px;">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-5 col-form-label">Product ID/Name </label>
+                      <div class="col-sm-7">
+                        <input id="productIDName" name="productIDName" placeholder="Product ID/Name"
+                          class="form-control" (focus)="onFocusForElement('productIDName')"
+                          (focusout)="onFocusOutForElement()" type="text" formControlName="productIDName"
+                          [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Inventory Unit
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="inventoryUnit" name="inventoryUnit" placeholder="Inventory Unit"
+                          (focus)="onFocusForElement('inventoryUnit')" (focusout)="onFocusOutForElement()"
+                          class="form-control" type="text" formControlName="inventoryUnit" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Batch Number
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="batchNumber" name="batchNumber" placeholder="Batch Number"
+                          (focus)="onFocusForElement('batchNumber')" (focusout)="onFocusOutForElement()"
+                          formControlName="batchNumber" class="form-control" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="wareHouseInfo">
+                      <label class="col-sm-5 col-form-label">Warehouse Name
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="fullName" placeholder="Warehouse Name" class="form-control"
+                          (focus)="onFocusForElement('wareHouseName')" (focusout)="onFocusOutForElement()"
+                          formControlName="wareHouseName" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="zoneInfo">
+                      <label class="col-sm-5 col-form-label">Zone Name
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="zoneName" name="zoneName" placeholder="Zone Name" class="form-control"
+                          (focus)="onFocusForElement('zoneName')" (focusout)="onFocusOutForElement()"
+                          formControlName="zoneName" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="rackInfo">
+                      <label class="col-sm-5 col-form-label">Rack Name
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="rackName" name="rackName" placeholder="Rack Name" class="form-control"
+                          (focus)="onFocusForElement('productID')" (focusout)="onFocusOutForElement()"
+                          formControlName="rackName" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="levelInfo">
+                      <label class="col-sm-5 col-form-label">Level Name
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="levelName" name="levelName" placeholder="Level Name" class="form-control"
+                          (focus)="onFocusForElement('levelName')" (focusout)="onFocusOutForElement()"
+                          formControlName="levelName" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row" formGroupName="locationInfo">
+                      <label class="col-sm-5 col-form-label">Location Name
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="locationName" name="locationName" placeholder="Location Name"
+                          (focus)="onFocusForElement('locationName')" (focusout)="onFocusOutForElement()"
+                          formControlName="locationName" class="form-control" type="text" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Quantity Inventory Unit
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="quantityInventoryUnit" name="quantityInventoryUnit"
+                          placeholder="Quantity Inventory Unit" (focus)="onFocusForElement('quantityInventoryUnit')"
+                          (focusout)="onFocusOutForElement()" formControlName="quantityInventoryUnit"
+                          class="form-control" type="number" [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Available Quantity
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="availableQuantity" name="availableQuantity" placeholder="Available Quantity"
+                          (focus)="onFocusForElement('availableQuantity')" (focusout)="onFocusOutForElement()"
+                          formControlName="availableQuantity" class="form-control" type="number"
+                          [readOnly]="isReadMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Actual Quantity <i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="actualQuantity" name="actualQuantity" placeholder="Actual Quantity"
+                          (focus)="onFocusForElement('actualQuantity')" (focusout)="onFocusOutForElement()"
+                          formControlName="actualQuantity" class="form-control" type="text"
+                           #callActualQuantity (keyup)="getValue($event.target.value)">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">Cycle Counting Executive
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="cycleCountingExecutive" name="cycleCountingExecutive" [readOnly]="isReadMode"
+                          placeholder="Cycle Counting Executive" (focus)="onFocusForElement('cycleCountingExecutive')"
+                          (focusout)="onFocusOutForElement()" formControlName="cycleCountingExecutive"
+                          class="form-control" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-green mr-1" (click)="save()" [disabled]="cycleCountingForm.invalid"> SAVE
+                    </button>
+                    <button class="btn btn-white" (click)="clear()"> CLEAR </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle">
+                <h4> Graphical Rep of Cycle Counting </h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span>
+                  | <i class="material-icons fullscreen">
+                    unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4> Graphical Rep of Cycle Counting
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                </h4>
+              </div>
+            </div>
+            <form #inventoryAccuracyForm="ngForm">
+              <div class="row"style="margin-top: -20px;">
+                <div class="col-md-10">
+                  <div class="top-input-label">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">From:
+                          </label>
+                          <div class="col-sm-10 top-input">
+                            <input name="min" id="min" type="date"
+                              class="form-control date-range-filter border-radius-none" ngModel
+                              (ngModelChange)="getDate('fromDate', $event)" data-date-format="yyyy-mm-dd"
+                              placeholder="From Date:">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">To:
+                          </label>
+                          <div class="col-sm-10 top-input">
+                            <input name="max" id="max" type="date" class="form-control date-range-filter" ngModel
+                              (ngModelChange)="getDate('toDate', $event)" data-date-format="yyyy-mm-dd"
+                              placeholder="To Date:">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group row">
+                    <div class="col-sm-12 top-input" style="padding: 0px;">
+                      <input type="button" class="btn btn-green" style="margin-right: 5px;" value="Filter"
+                        (click)="filterDataFromDates()">
+                      <input type="reset" class="btn btn-white" value="Reset" (click)="reset()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div id="style-8" class="panel-body scrollbar"style="margin-top: -39px;overflow-y: hidden;">
+              <div class="row force-overflow">
+                <div class="col-md-12" style="display: block; margin: 15px auto;">
+                  <ngx-charts-gauge [min]="minValue" [max]="maxValue" [view]="inventoryAccuracyView"
+                    [scheme]="inventoryAccuracycolorScheme" [results]="inventoryAccuracySingle"
+                    [legend]="inventoryAccuracylegend" [legendPosition]="inventoryAccuracylegendPosition">
+                  </ngx-charts-gauge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <h6 class="text-center">INVENTORY DETAILS</h6>
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col" *ngFor="let key of inventoryKeys;">{{key}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inventory of filteredInventories; let i=index;">
+                <td scope="row">{{ i + 1}}</td>
+                <td> {{inventory.productMasterInfo.productID}} </td>
+                <td> {{inventory.productMasterInfo.productName}} </td>
+                <td> {{inventory.productMasterInfo.productIDName}} </td>
+                <td> {{inventory.productCategoryInfo?.productCategoryName}}</td>
+                <td> {{inventory.productType}}</td>
+                <td> {{inventory.productClass}}</td>
+                <td> {{inventory.inventoryUnit}} </td>
+                <td> {{inventory.wareHouseInfo.wareHouseName}} </td>
+                <td> {{inventory.zoneInfo.zoneName}} </td>
+                <td> {{inventory.rackInfo.rackName}} </td>
+                <td> {{inventory.levelInfo.levelName}} </td>
+                <td> {{inventory.locationInfo.locationName}} </td>
+                <td> {{inventory.quantityInventoryUnit}}  {{inventory.inventoryUnit}} </td>
+                <td> {{inventory.availableQuantity}} {{inventory.inventoryUnit}}</td>
+                <td> {{inventory.reservedQuantity}} {{inventory.inventoryUnit}}</td>
+                <td> {{inventory.batchNumber}} </td>
+                <td> {{inventory.expiryDate | date: 'MM/dd/yyyy'}} </td>
+                <td> {{inventory.remainingShelfLife}} </td>
+                <td><span class="btn btn-pink btn-sm"><i (click)="edit(inventory)"
+                      class="fa fa-pencil btn-sm"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <h6 class="text-center">CYCLE COUNTING HISTORY</h6>
+          <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger2"
+            class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th scope="col" *ngFor="let key of cycleCountingKeys">{{key}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of cycleCountingData; let i = index">
+               <td class="text-left">{{i+1}}</td>
+                <td>{{report.cycleCountNumber}}</td>
+                <td>{{report.cycleCountingCriteria}}</td>
+                <td>{{report.createdDate | date: 'MM/dd/yyyy'}}</td>
+                <td>{{report.cycleCountingLines[0].productMasterInfo.productIDName}}</td>
+                <td>{{report.cycleCountingLines[0].batchNumber}}</td>
+                <td>{{report.cycleCountingLines[0].actualQuantity}} {{report.cycleCountingLines[0].inventoryUnit}}</td>
+                <td>{{report.cycleCountingLines[0].availableQuantity}} {{report.cycleCountingLines[0].inventoryUnit}}</td>
+                <td>{{report.cycleCountingLines[0].cycleCountingExecutive}}</td>
+                <td>{{report.cycleCountingLines[0].wareHouseInfo.wareHouseName}}</td>
+                <td>{{report.cycleCountingLines[0].zoneInfo.zoneName}}</td>
+                <td>{{report.cycleCountingLines[0].rackInfo.rackName}}</td>
+                <td>{{report.cycleCountingLines[0].levelInfo.levelName}}</td>
+                <td>{{report.cycleCountingLines[0].locationInfo.locationName}}</td>
+                <td><span class="btn btn-pink btn-sm" style="cursor: pointer;" *ngIf="report.status === 'Closed'">Cycle
+                    counting Completed</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-smart-modal customClass="nsm-centered	" #cycleCountingPopup [identifier]="'cycleCountingPopup'">
+  <div class="mb-3">
+    <h6 *ngIf="cycleCountingPopup.hasData()">{{cycleCountingPopup.getData()}}</h6>
+  </div>
+  <div class="text-right">
+    <button class="btn btn-green mr-1" (click)="[saveInInventoryAdjustment(), cycleCountingPopup.close()]"> YES
+    </button>
+    <button class="btn btn-white" (click)="cycleCountingPopup.close()"> No </button>
+  </div>
+</ngx-smart-modal>

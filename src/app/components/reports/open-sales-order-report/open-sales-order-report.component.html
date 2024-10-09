@@ -1,0 +1,217 @@
+<div id="inBody" class="hideFromPrinting" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button"  (click)="exportAsXLSX()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="salesOrderForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'OPEN SALES ORDER REPORT' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'OPEN SALES ORDER REPORT' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row ">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType" (change)="makeEmpty()">
+                          <option>Sales Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Purchase Returns </option>
+                          <option>WareHouseTransfer Returns </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="salesOrderForm.controls.orderType.value=='Sales Order'">
+                      <label class="col-sm-4 col-form-label">{{'Customer' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of Customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="salesOrderForm.controls.orderType.value=='Purchase Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Suppiler' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Suppiler to retrive data of Suppiler"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="suppliersIDs" [minSearchLength]="0"
+                          placeholder="{{'Supplier' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                      *ngIf="salesOrderForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                      <div class="col-sm-8">
+                        <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row"
+                    *ngIf="salesOrderForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                    <label class="col-sm-4 col-form-label">{{'Destination Warehouse' |translate}}</label>
+                    <div class="col-sm-8">
+                      <ng2-completer formControlName="wareHouseTransferDestinationInfoWareHouseIDName"
+                        [datasource]="sourceWareHouses" [minSearchLength]="0"
+                        placeholder="{{'Warehouse IDName' |translate}}"
+                        [inputClass]="'form-control form-control-inline'">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                  
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Expected Delivery From' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <input type="date" formControlName="fromDate" class="form-control col-form-label-sm"
+                          id="fromDate" name="fromDate">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}"
+                          [inputClass]="'form-control form-control-inline'">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Expected Delivery To' |translate}}
+                      </label>
+                      <div class="col-sm-4 top-input">
+                        <input type="date" formControlName="toDate" class="form-control col-form-label-sm" id="toDate"
+                          name="toDate">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th>{{'Expected Delivery Date' |translate}}</th>
+                <th>{{'WMSO Number' |translate}}</th>
+                <th>{{'Product ID' |translate}}</th>
+                <th>{{'Product Name' |translate}}</th>
+                <th>{{'UOM' |translate}}</th>
+                <th>{{'Order Quantity' |translate}}</th>
+                <th>{{'Order Unit' |translate}}</th>
+                <th>{{'Customer Order Quantity' |translate}}</th>
+                <th>{{'Unit Price' |translate}}</th>
+                <th>{{'Order Unit Price' |translate}}</th>
+                <th>{{'Tax Amount' |translate}}</th>
+                <th>{{'Gross Amount' |translate}}</th>
+                <th>{{'Net Amount' |translate}}</th>
+                <th>{{'Order Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of salesOrderData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td>
+                  <span *ngIf="report.supplierMasterInfo">{{report.supplierMasterInfo?.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo?.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferDestinationInfo">{{report.wareHouseTransferDestinationInfo?.wareHouseIDName}}</span>
+                </td>
+                <td class="text-center">{{report.expectedDeliveryDate | date: 'dd/MM/yyyy' }} </td>
+                <td>{{report.wmsoNumber}}</td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.inventoryUnit}}</td>
+                <td>{{report.quantity | decimalwithThreeDigits}}</td>
+                <td>{{report.shipmentUnit}}</td>
+                <td>{{report.orderedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.unitPrice}}</td>
+                <td>{{report.orderUnitPrice | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                <td class="text-center">{{report.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div id="inBody">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="udcBtns">
+          <ul>
+            <li><a routerLink="../maintenanceCreatePlanning"> <i class="material-icons align-middle"> description </i>Create Maintenance Planning</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <div class="top-input-label">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">From:
+                  </label>
+                  <div class="col-sm-7 top-input">
+                    <input type="text" name="" class="form-control" id="">
+                   <!--  <input name="min" id="min" type="date" class="form-control date-range-filter border-radius-none"
+                      ngModel (ngModelChange)="getDate('fromDate', $event)" data-date-format="yyyy-mm-dd"
+                      placeholder="From Date:"> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">To:
+                  </label>
+                  <div class="col-sm-7 top-input">
+                    <input type="text" name="" class="form-control" id="">
+                   <!--  <input name="max" id="max" type="date" class="form-control date-range-filter" ngModel
+                      (ngModelChange)="getDate('toDate', $event)" data-date-format="yyyy-mm-dd" placeholder="To Date:"> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group row">
+                  <div class="col-sm-12 top-input">
+                    <input type="button" class="btn btn-green" style="margin-right: 5px;" value="Filter">
+                    <input type="reset" class="btn btn-white" value="Reset">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+               <!--  <div class="form-group row float-right mr-3">
+                  <div class="dsplInLine">
+                    <select (change)="filterProductsList($event.target.value)" class="form-control"
+                      [disabled]="!permissionsList.includes('Update')">
+                      <option value="0">All</option>
+                      <option *ngFor="let productStatusType of productStatusTypes" value="{{productStatusType}}">
+                        {{productStatusType}}</option>
+                    </select>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables ">
+          <table id="example" class="table table-striped d-table " datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">Equipment ID</th>
+                <th scope="col">Equipment Name</th>
+                <th scope="col">Planned Date</th>
+                <th scope="col">Actual Start Date</th>
+                <th scope="col">Actual End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Eq1012</td>
+                <td>MRLS</td>
+                <td class="text-center">01-02-2023</td>
+                <td class="text-center">02-03-2023</td>
+                <td class="text-center">03-03-2023</td>
+                <td>Completed</td>
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                  class="fa fa-pencil btn-sm"></i><i _ngcontent-lty-c40=""></i></span>
+            </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,491 @@
+<form *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div id="inBody">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'User Barcode Config' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'User Barcode Config' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+
+                <div class="row mb-2" [formGroup]="purchaseOrderForm">
+                  <div class="col-md-3"><label>{{'Purchase Order' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'purchaseOrderForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'purchaseOrderForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('adjustments')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="goodsReceivingForm">
+                  <div class="col-md-3"><label>{{'Goods Receiving' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'goodsReceivingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="transferSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'goodsReceivingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" aria-hidden="true"
+                      (click)="getTable('transfers')"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="putawayForm">
+                  <div class="col-md-3"><label>{{'Putaway' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'putawayForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="physicalSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'putawayForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('physicalCounting')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="salesOrderForm">
+                  <div class="col-md-3"><label>{{'Sales Order' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'salesOrderForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="cycleCountingSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'salesOrderForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('cycleCounting')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="pickingForm">
+                  <div class="col-md-3"><label>{{'Picking' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'pickingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="purchaseReturnSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'pickingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('purchaseReturn')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="shipmentOrderForm">
+                  <div class="col-md-3"><label>{{'Shipment Order' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'shipmentOrderForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="shipmentOrderSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'shipmentOrderForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('shipmentOrder')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="invoiceForm">
+                  <div class="col-md-3"><label>{{'Invoice' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'invoiceForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="invoiceSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'invoiceForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('invoice')"
+                      aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="replenishmentForm">
+                  <div class="col-md-3"><label>{{'Replenishment' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'replenishmentForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="replenishmentSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'replenishmentForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('replishments')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="purchaseReturnsForm">
+                  <div class="col-md-3"><label>{{'Purchase Returns' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'purchaseReturnsForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="purchaseReturn1Selected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'purchaseReturnsForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('purchaseReturns1')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="salesReturnsForm">
+                  <div class="col-md-3"><label>{{'Sales Returns' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'salesReturnsForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="salesReturnsSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'salesReturnsForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('salesReturns')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="warehouseTransfersForm">
+                  <div class="col-md-3"><label>{{'Warehouse Transfers' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'warehouseTransfersForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="warehouseTransfersSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'warehouseTransfersForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('warehouseTransfers')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="inboundCapacityPlanningForm">
+                  <div class="col-md-3"><label>{{'Inbound Capacity Planning' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'inboundCapacityPlanningForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="inboundPlanningSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'inboundCapacityPlanningForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('inboundPlanning')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="outboundCapacityPlanningForm">
+                  <div class="col-md-3"><label>{{'Outbound Capacity Planning' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'outboundCapacityPlanningForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="outboundPlanningSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'outboundCapacityPlanningForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('outboundPlanning')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="packingForm">
+                  <div class="col-md-3"><label>{{'Packing' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'packingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="packingSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'packingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('packings')"
+                      aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="repackingForm">
+                  <div class="col-md-3"><label>{{'Re-packing' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'repackingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="repackingSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'repackingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('repackings')"
+                      aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="copackingForm">
+                  <div class="col-md-3"><label>{{'Co-packing' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'copackingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="copackingSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'copackingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('copackings')"
+                      aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="labellingForm">
+                  <div class="col-md-3"><label>{{'Labeling' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'labellingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="labellingSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'labellingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('labellings')"
+                      aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="internalTransfersForm">
+                  <div class="col-md-3"><label>{{'Internal Transfers' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'internalTransfersForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="internalTransfersSelected"
+                      [ngModelOptions]="{standalone: true}" (focusout)="setUserstoForm($event,'internalTransfersForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('internalTranfers')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="inventoryAdjustmentsForm">
+                  <div class="col-md-3"><label>{{'Inventory Adjustments' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'inventoryAdjustmentsForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="inventoryAdjustmentsSelected"
+                      [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'inventoryAdjustmentsForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('inventoryAdjustments')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="cycleCountingForm">
+                  <div class="col-md-3"><label>{{'Cycle Counting' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'cycleCountingForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="cycleCounting1Selected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'cycleCountingForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('cycleCountings1')" aria-hidden="true"></i></div>
+                </div>
+                <div class="row mb-2" [formGroup]="inventoryForm">
+                  <div class="col-md-3"><label>{{'Inventory' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'inventoryForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="inventorySelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'inventoryForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;" (click)="getTable('inventorys')"
+                      aria-hidden="true"></i></div>
+                </div>
+
+                <!-- Damage Stock -->
+                <div class="row mb-2" [formGroup]="damagedStockForm">
+                  <div class="col-md-3"><label>{{'Damaged Stock' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'damagedStockForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="damageStockSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'damagedStockForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('damagedStockList')" aria-hidden="true"></i></div>
+                </div>
+
+                <!-- Replacement Order -->
+                <div class="row mb-2" [formGroup]="replacementOrderForm">
+                  <div class="col-md-3"><label>{{'Replacement Order' |translate}}</label></div>
+                  <div class="col-md-3" formGroupName="role">
+                    <select class="form-control" formControlName="roleName"
+                      (change)="getUsers($event.target.value,'replacementOrderForm')">
+                      <option value=null>Select Role</option>
+                      <option *ngFor="let data of rolesList">{{data.roleName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="dropdownList" [(ngModel)]="replacementOrderSelected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="setUserstoForm($event,'replacementOrderForm')">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-3"><i class="fa fa-table" style="cursor: pointer;"
+                      (click)="getTable('replacementOrderList')" aria-hidden="true"></i></div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10"></div>
+      <div class="col-md-2">
+        <div>
+          <button class="btn btn-green mr-1" (click)="save()">{{'Save' |translate}}</button>
+          <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<ngx-smart-modal customClass="nsm-centered" id="spaceUtilization" #spaceUtilization [identifier]="'spaceUtilization'">
+  <div class="row" *ngIf="popupData && popupData.roleConfigurations.length>0; else emptyText">
+    <div class="col-md-12">
+      <div id="scrolTable" class="wmsDataTables">
+        <table class="table table-striped processGroup">
+          <thead>
+            <tr>
+              <th scope="col">{{'Role' |translate}}</th>
+              <th>{{'Users' |translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let functionality of popupData.roleConfigurations;">
+              <ng-container *ngFor="let subFunctionality of functionality.userInfos; let i = index">
+                <tr>
+                  <td *ngIf="i=== 0;" [attr.rowspan]="functionality.userInfos.length">
+                    <span>{{functionality.role.roleName}}</span>
+                  </td>
+                  <td>
+                    <span>{{subFunctionality.userIDName}}</span>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyText>No Data Found</ng-template>
+</ngx-smart-modal>

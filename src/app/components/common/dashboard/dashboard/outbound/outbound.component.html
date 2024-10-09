@@ -1,0 +1,135 @@
+<div id="inBody">
+  <div class="row" [dir]="direction">
+    <div class="col-md-12 text-center">
+      <div class="backgrounInboundDashboard text-center">
+        <ul style="position: relative;top:20px;">
+          <li>
+            <div class="custom-control custom-checkbox checkbox-xl">
+              <input type="radio" name="optradio" [checked]="radio1"
+                (click)="getOrderType('Sales Order')" style="margin-left:-20px">
+              <span style="color:black;" class="ml-1">{{'Sales Order' |translate}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="custom-control custom-checkbox checkbox-xl">
+              <input type="radio" name="optradio" [checked]="radio2"
+                (click)="getOrderType('WareHouseTransfer')" style="margin-left:-20px">
+              <span style="color:black;" class="ml-1">{{'WarehouseTransfer' |translate}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="custom-control custom-checkbox checkbox-xl">
+              <input type="radio" name="optradio" [checked]="radio3"
+                (click)="getOrderType('Purchase Returns')" style="margin-left:-20px">
+              <span style="color:black;" class="ml-1">{{'Purchase Returns' |translate}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="custom-control custom-checkbox checkbox-xl">
+              <input type="radio" name="optradio" [checked]="radio3"
+                (click)="getOrderType('WareHouseTransfer Returns')" style="margin-left:-20px">
+              <span style="color:black;" class="ml-1">{{'WarehouseTransfer Returns' |translate}}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" *ngIf="permissionsList.includes('View')">
+      <div class="panel portlet">
+        <div class="formBox portlet-title" style="border: 1px solid white;">
+          <h6 class="text-center ">{{'Pending sales order' |translate}}</h6>
+          <div id="style-8" class="panel-body scrollbar" style="height: 229px;">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+                <div class="alert alert-warning" *ngFor="let data of pendingSalesorderList">
+                  <table class="w-100 text-center">
+                    <tr>
+                      <td>{{data.wmsoNumber}}</td>
+                      <!-- <td>{{data.customerMasterInfo?.customerIDName}}</td> -->
+                      <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                        <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                      <span *ngIf="data.wareHouseTransferDestinationInfo">{{data.wareHouseTransferDestinationInfo.wareHouseIDName}}</span></td>
+                      <td>{{data.expectedDeliveryDate | date}}</td>
+                    </tr>
+                    <tr>
+                      <th>{{data.productMasterInfo?.productIDName}}</th>
+                      <th>{{data.quantity | decimalwithThreeDigits}} {{data.inventoryUnit}}</th>
+                      <th class="text-danger">{{data.message}} <i class="fa fa-truck" style="font-size: 15px;margin: 2px;"></i></th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="pendingShipments.includes('View')">
+      <div class="panel portlet">
+        <div class="formBox portlet-title" style="border: 1px solid white;">
+          <h6 class="text-center ">{{'Pending shipments' |translate}}</h6>
+          <div id="style-8" class="panel-body scrollbar"style="height: 229px;">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+                <div class="alert alert-warning" *ngFor="let data of pendingShipmentList">
+                  <table class="w-100 text-center">
+                    <tr>
+                      <td>{{data.wmsoNumber}}</td>
+                      <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                        <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                      <span *ngIf="data.wareHouseTransferDestinationInfo">{{data.wareHouseTransferDestinationInfo.wareHouseIDName}}</span></td>
+                     
+                      <td>{{data.expectedDeliveryDate | date }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{data.productMasterInfo?.productIDName}}</th>
+                        <th>{{data.quantity | decimalwithThreeDigits}} {{data.shipmentUnit}}</th>
+                        <th class="text-danger">{{data.message}} <i class="fa fa-truck" style="font-size: 15px;margin: 2px;"></i></th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="pendingPicking.includes('View')">
+      <div class="panel portlet">
+        <div class="formBox portlet-title" style="border: 1px solid white;position: relative;top: -35px">
+          <h6 class="text-center">{{'Pending picking' |translate}}</h6>
+          <div id="style-8" class="panel-body scrollbar"style="height: 229px;">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 class="text-primary text-uppercase text-capitalize text-center"></h6>
+                <div class="alert alert-warning" *ngFor="let data of pendingpickingresponseList">
+                  <table class="w-100 text-center">
+                    <tr>
+                      <td>{{data.pickingNumber}}</td>
+                      <td><span *ngIf="data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                        <span *ngIf="data.customerMasterInfo">{{data.customerMasterInfo?.customerIDName}}</span>
+                      <span *ngIf="data.wareHouseTransferDestinationInfo">{{data.wareHouseTransferDestinationInfo.wareHouseIDName}}</span></td>
+                     
+                      <td>{{data.createdDate | date}}</td>
+                    </tr>
+                    <tr>
+                      <th>{{data.productMasterInfo?.productIDName}}</th>
+                      <th>{{data.pickedQuantity | decimalwithThreeDigits}} {{data.storageUnit}}</th>
+                      <th class="text-danger">{{data.message}} <span class="material-icons fa-flip-horizontal "style="font-size: 16px;
+                        margin: 0px 2px">shopping_cart</span></th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>

@@ -1,0 +1,342 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <!--     <div class="row">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 offset-md-4">
+        <div class="udcBtns float-right">
+          <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i> Download Excel</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <form [formGroup]="purchaseReturnsForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'RETURN' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'RETURNS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label ">{{'Order Type' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <select class="form-control" formControlName="orderType" [disabled]="readOnlyMode"
+                          (change)="changeOrderType($event.target.value)">
+                          <option value="Purchase Order">Purchase Order</option>
+                          <option value="WareHouseTransfer">WareHouse Transfer</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'PO Number' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer name="fullWmpoNumber" [datasource]="wmpoIDs" id="fullWmpoNumber"
+                          formControlName="fullWmpoNumber" [minSearchLength]="0" placeholder="{{'PO Number' |translate}}"
+                          (selected)="onWMPONoChange($event)" [disabled]="purchaseReturnsForm.controls._id.value"
+                          [inputClass]="'form-control form-control-inline'">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-4" formGroupName="supplierMasterInfo"
+                    [hidden]="!purchaseReturnsForm.controls.supplierMasterInfo.value.supplierIDName">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier ID' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="supplierID" [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Supplier Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="supplierName"
+                          [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" formGroupName="wareHouseTransferSourceInfo"
+                    [hidden]="!purchaseReturnsForm.controls.wareHouseTransferSourceInfo.value.wareHouseIDName">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse ID' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="wareHouseID" [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'WareHouse Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="wareHouseName"
+                          [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Customers customer Name' |translate}}
+                      </label>
+                      <div class="col-sm-7 top-input">
+                        <input type="text" class="form-control" formControlName="customersSupplierName"
+                          [readonly]="readOnlyMode" placeholder="{{'Customers customer Name' |translate}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Customers customer Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" formControlName="customersSupplierAddress"
+                          [readonly]="readOnlyMode" placeholder="{{'Customers customer Address' |translate}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label ">{{'Receipt Date' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input type="date" name="receiptDate" class="form-control" formControlName="receiptDate"
+                          [readonly]="readOnlyMode">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label"> </label>
+                <div class="col-sm-8 text-right mb-3">
+                  <button class="btn btn-green mr-1" (click)="generate()" [disabled]="!purchaseReturnsForm.controls.wmpoNumber.value ||
+                  purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed'">{{'Create'
+                    |translate}}</button>
+                  <button class="btn btn-green mr-1" (click)="confirm()" [disabled]="!purchaseReturnsForm.controls._id.value ||
+                  purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed'">{{'Confirm'
+                    |translate}}</button>
+                  <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped d-table">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Image' |translate}}</th>
+                <th scope="col">{{'Select' |translate}}</th>
+                <th scope="col">{{'PO Line No' |translate}}</th>
+                <th scope="col">{{'Product ID' |translate}}</th>
+                <th scope="col">{{'Product Name' |translate}}</th>
+                <th scope="col">{{'Product Description' |translate}}</th>
+                <th scope="col" *ngIf="permissionToggle">{{'Total Receive Quantity' |translate}}</th>
+                <th scope="col">{{'Total Return Quantity' |translate}}</th>
+                <th scope="col">{{'Dispatched Quantity' |translate}}</th>
+                <th scope="col">{{'Return Quantity' |translate}}</th>
+                <th scope="col">{{'Select Location' |translate}}</th>
+                <th scope="col">{{'Delivery Expected Date' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="linesArray">
+              <tr *ngFor="let data of linesArray;let i=index">
+                <td class="text-left">{{i+1}}</td>
+                <td *ngIf="data.productImageResource">
+                  <div class="tooltip-container">
+                    <img [src]="'data:image/jpg;base64,' + data.productImageResource" class="pImageIcon"
+                      alt="No Preview available" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+                    <span *ngIf="showTooltip" class="tooltip-text">{{data.productMasterInfo.productName}}</span>
+                  </div>
+                </td>
+                <td *ngIf="!data.productImageResource">
+                  <div class="noImageIcon">
+                    <p class="noImageIconText">
+                      {{configService.getImageShortCut(data.productMasterInfo.productName)}}</p>
+                  </div>
+                </td>
+                <td><input type="checkbox" [checked]="data.isChecked" (click)="onSelect($event.target.checked,data)"
+                    [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe"></td>
+                <td>{{data.poLineNumber}}</td>
+                <td>{{data.productMasterInfo.productID}}</td>
+                <td>{{data.productMasterInfo.productName}}</td>
+                <td>{{data.productDescription}}</td>
+                <td *ngIf="permissionToggle">{{data.totalReceivedQuantity}}</td>
+                <td>{{data.totalReturnQuantity}}</td>
+                <td>{{data.totalActualReturnQuantity}}</td>
+                <td><span *ngIf="!data.isEdit">{{data.returnQuantity}}</span>
+                  <span *ngIf="data.isEdit"><input type="text" class="form-control" #returnQuantity
+                      [(ngModel)]="data.returnQuantity" (keyup)="validateDecimal('returnQuantity',i)"
+                      [ngModelOptions]="{standalone: true}"
+                      [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe"
+                      (focusout)="savequantity(returnQuantity.value,data,'returnQuantity')"></span>
+                </td>
+                <td><i class="fa fa-table" style="cursor: pointer" (click)="openModalRecievedLocations(data,i)"></i>
+                </td>
+                <td><span *ngIf="!data.isEdit">{{data.eta | date:'dd-MM-yyyy'}}</span>
+                  <span *ngIf="data.isEdit"><input type="date" class="form-control" #eta [value]="data.eta"
+                      (focusout)="saveETADate(eta.value,data,'eta')"
+                      [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ngx-smart-modal customClass="nsm-centered" id="goodsrecieving" #pickupLocationsModal
+      [identifier]="'pickupLocationsModal'">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <h5>{{'Locations' |translate}}</h5>
+            </div>
+            <div class="col-md-3" *ngIf="permissionToggle">
+              <div class="form-group row">
+                <select class="form-control" [(ngModel)]="locationType" (change)="getOnlyLocations($event.target.value)"
+                  [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe">
+                  <option>All</option>
+                  <option>Receive</option>
+                  <option>Return</option>
+                </select>
+              </div>
+            </div>
+            <!--<div class="col-md-3" *ngIf="serialNumberCheckFrmConfig=='Yes'">
+            <div class="form-group row">
+              <ng2-completer [datasource]="serialNumberIDs" [minSearchLength]="0"
+                placeholder="Search SerialNumber's"
+                (selected)="returnLocationsBySerialNumber($event)">
+              </ng2-completer>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="float-right">
+              <div class="form-group row">
+                <ng2-completer name="locationIDName" [datasource]="pickupLocationValues"
+                  [minSearchLength]="0" placeholder="Search LocationIDs"
+                  (selected)="returnLocationsByLocationName($event)">
+                </ng2-completer>
+              </div>
+            </div>
+          </div> -->
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="wmsDataTables p-2">
+            <div id="style-8" class="panel-body scrollbar" style="height:auto">
+              <table id="example" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">{{'S.No' |translate}}</th>
+                    <th scope="col">{{'Include' |translate}}</th>
+                    <th scope="col">{{'Location Name' |translate}}</th>
+                    <th scope="col">{{'Availablity Quantity' |translate}}</th>
+                    <!-- <th scope="col">Batch Number</th>
+                  <th scope="col" [hidden]="serialNumberCheckFrmConfig =='No'">Serial Number</th> -->
+                    <th scope="col" style="width: 20px;">{{'Picked Quantity' |translate}}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="pickupLocations.length>0">
+                  <tr *ngFor="let data of pickupLocations;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td><input type="checkbox" [checked]="data.isChecked" (click)="read1($event,data)"
+                        [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"
+                        [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe">
+                    </td>
+                    <td>{{data.locationInfo.locationName}}</td>
+                    <td>{{data.quantityInventoryUnit}} {{data.inventoryUnit}}</td>
+                    <!-- <td>{{data.batchNumber}}</td>
+                  <td [hidden]="serialNumberCheckFrmConfig =='No'">{{data.serialNumber}}</td> -->
+                    <td *ngIf="!data.isEdit">
+                      <span>
+                        {{data.pickedQuantity}}
+                      </span>
+                    </td>
+                    <td *ngIf="data.isEdit"><span>
+                        <input type="text" class="form-control" #pickedQuantity [value]="data.pickedQuantity"
+                          (focusout)="savePicked(pickedQuantity.value,data)" step=".0001"
+                          [disabled]="purchaseReturnsForm.controls.purchaseReturnStatus.value=='Confirmed' || disableMe"></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="purchaseReturnsForm.controls.purchaseReturnStatus.value!='Confirmed'">
+          <div class=" float-right">
+            <button class="btn btn-green" (click)="savePickupLocations()">{{'Save' |translate}}</button>
+            <button class="btn btn-white" (click)="resetRecieveLocations()">{{'Clear' |translate}}</button>
+          </div>
+        </div>
+      </div>
+    </ngx-smart-modal>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="scrolTable" class="wmsDataTables">
+          <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Return ID' |translate}}</th>
+                <th scope="col">{{'Order Number' |translate}}</th>
+                <th scope="col">{{'Supplier/Warehouse ID/Name' |translate}}</th>
+                <th scope="col">{{'Receipt Type' |translate}}</th>
+                <th scope="col">{{'Status' |translate}}</th>
+                <th scope="col">{{'Action' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of PRData;let i=index">
+               <td class="text-left">{{i+1}}</td>
+                <th (click)="edit(data)" style="cursor:pointer;">{{data.fullWmprNumber}}</th>
+                <td>{{data.fullWmpoNumber}} </td>
+                <td><span [hidden]="!data.supplierMasterInfo">{{data.supplierMasterInfo?.supplierIDName}}</span>
+                  <span
+                    [hidden]="!data.wareHouseTransferSourceInfo">{{data.wareHouseTransferSourceInfo?.wareHouseIDName}}</span>
+                </td>
+                <td>{{data.receiptType}}</td>
+               <!--  <td>{{data.purchaseReturnStatus}}</td> --> 
+               <td [ngStyle]="{'color':(data.purchaseReturnStatus=='Confirmed') ?'#15d6cc':'grey'}">{{data.purchaseReturnStatus}}</td>
+                <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm">
+                    <!-- <i _ngcontent-lty-c40="" class="fa fa-pencil btn-sm" (click)="edit(data)"></i> -->
+                    <i _ngcontent-lty-c40="" class="fa fa-trash btn-sm" (click)="delete(data)"></i>
+                  </span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

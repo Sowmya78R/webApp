@@ -1,0 +1,103 @@
+<div class="row" [dir]="direction">
+  <div class="col-md-12 mt-4">
+    <h6 class="text-center">{{'Region Wise' |translate}}</h6>
+  </div>
+</div>
+<div class="row d-none" [formGroup]="regionWiseDetailsForm"> 
+  <div class="col-md-12"> 
+    <div class="row">
+      <div class="col-md-12 text-center"> 
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label">{{'Select Type' |translate}}</label>
+          <div class="col-sm-7">
+            <select class="form-control" formControlName="type" (change)="changeOfType($event.target.value)">
+              <option [selected]="true">--Select--</option>
+              <option value="Last 6 Weeks">Last 6 Weeks</option>
+              <option value="Last 3 Months">Last 3 Months</option>
+              <option value="Last 6 Months">Last 6 Months</option>
+              <option value="Last 12 Months">Last 12 Months</option>
+              <option value="Previous Month">Previous Month</option>
+              <option value="Current Month to Current Date">Current Month to Current Date</option>
+              <option value="Last Quarter">Last Quarter</option>
+              <option value="Financial Year to Date">Financial Year to Date</option>
+              <option value="Previous Financial Year">Previous Financial Year</option>
+              <option value="Custom Dates">Custom Dates</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-1 text-center "style="margin-left:27px;">
+      <div class="col-md-6">
+        <div class="form-group row"style="margin-left: -59px;">
+          <label class="col-sm-6 col-form-label">{{'From Date' |translate}}
+          </label>
+          <div class="col-sm-6">
+            <input type="date" name="expectedDeliveryDateFrom" class="form-control"
+             formControlName="expectedDeliveryDateFrom" id="expectedDeliveryDateFrom"
+            style="width: 117px;margin-left: -34px">
+          </div>
+        </div> 
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row"style="margin-left: -47px;">
+          <label class="col-sm-6 col-form-label">{{'To Date' |translate}}
+          </label>
+          <div class="col-sm-6">
+            <input type="date" name="expectedDeliveryDateTo" class="form-control" 
+            formControlName="expectedDeliveryDateTo" id="expectedDeliveryDateTo"
+            style="width: 117px;margin-left: -25px">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+<div class="row">
+  <div class="col-md-12 mt-2">  
+    <div class="text-right">
+      <i class="fa fa-table fa-2x" (click)="openModalPopUp()"style="position:relative;
+      top:-30px;
+      border-radius:50%;cursor:pointer" data-toggle="tooltip"title="Download Table"></i>
+    </div>
+  </div>
+</div> 
+<ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="dataToDisplay" [gradient]="gradient"
+  [legend]="showLegend" [legendPosition]="legendPosition" [doughnut]="isDoughnut" (select)="onSelect($event)"
+  (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+</ngx-charts-pie-chart>
+
+<ngx-smart-modal customClass="nsm-centered" id="regionWiseSalesOrder" #regionWiseSalesOrder [identifier]="'regionWiseSalesOrder'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="wmsDataTables w-100">
+       
+        <div class="row ">
+          <div class="col-md-12">
+            <div class="text-right">
+              <i class="fa fa-download tableDownload"></i>
+            </div>
+          </div>
+        </div>
+          <table id="example" class="table table-striped"
+          datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">{{'Sr.No' |translate}}</th>
+                <th scope="col">{{'Period' |translate}} </th>
+                <th scope="col">{{'Quantity' |translate}}</th>               
+              </tr>
+            </thead>
+            <tbody>
+             <tr *ngFor="let data of dataToDisplay;let i= index">
+              <td class="text-left">{{i+1}}</td>
+               <td>{{data.name}}</td>
+               <td>{{data.value}}</td>
+             </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

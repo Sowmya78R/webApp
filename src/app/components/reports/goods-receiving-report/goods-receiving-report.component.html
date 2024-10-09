@@ -1,0 +1,410 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <div class="udcBtns float-right">
+          <a>
+            <button type="button" (click)="getAllGooddReceivingForDownload()" title="Download Excel"
+              style="background: none !important;border: none !important;">
+              <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+            </button>
+          </a>
+          <a>
+            <button type="button" (click)="generatePDF()" title="Print PDF"
+              style="background: none !important;border: none !important;">
+              <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+            </button>
+          </a>
+          <!-- <ul>
+            <li (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app </i>{{'Download Excel' |translate}}</a>
+            </li>
+            <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> print </i>{{'Print PDF' |translate}}</a>
+            </li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="grnForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet" style="margin-top: -10px;">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'GOODS SUMMARY' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'GOODS SUMMARY' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Order Type' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" formControlName="orderType"
+                          (change)="makeEmpty();makeFieldsHidenAndShow()">
+                          <option>Purchase Order</option>
+                          <option>WareHouseTransfer</option>
+                          <option>Sales Returns</option>
+                          <option>WareHouseTransfer Returns</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="grnForm.controls.orderType.value=='Purchase Order'">
+                      <label class="col-sm-4 col-form-label">{{'Suppiler ID/Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search Suppiler to retrive data of Suppiler"> info </i>
+                        <ng2-completer name="supplierIDName" formControlName="supplierIDName"
+                          [datasource]="supplierIDName" [minSearchLength]="0"
+                          placeholder="{{'Suppiler ID/Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="grnForm.controls.orderType.value=='WareHouseTransfer'">
+                      <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="grnForm.controls.orderType.value=='WareHouseTransfer Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Source Warehouse' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer formControlName="wareHouseTransferSourceInfoWareHouseIDName"
+                          [datasource]="sourceWareHouses" [minSearchLength]="0"
+                          placeholder="{{'Warehouse IDName' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-grou p row " *ngIf="grnForm.controls.orderType.value=='Sales Returns'">
+                      <label class="col-sm-4 col-form-label">{{'Customer ID/Name' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search customer to retrive data of customer"> info </i>
+                        <ng2-completer name="customerIDName" formControlName="customerIDName"
+                          [datasource]="customerIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Customer ID/Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label ">{{'Product ID/Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product"> info </i>
+                        <ng2-completer name="productIDName" formControlName="productIDName" [datasource]="dataService"
+                          [minSearchLength]="0" placeholder="{{'Product ID/Name' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4"
+                    *ngIf="thirdPartyCustomersCheckAllocation=='Yes' && grnForm.controls.orderType.value=='Purchase Order'">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Customer Supplier Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer name="customersSupplierName" [datasource]="customerServiceNameFilterIDs"
+                          [minSearchLength]="0" placeholder="{{'Customer Supplier Name' |translate}}"
+                          formControlName="customersSupplierName">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label ">{{'Customer’s Supplier Address' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <ng2-completer name="productIDName" [datasource]="customerServiceAddresFilterIDs"
+                          formControlName="customersSupplierAddress" [minSearchLength]="0"
+                          placeholder="{{'Customer’s Supplier Address' |translate}}">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Grn From:' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" formControlName="fromDate" class="form-control col-form-label-sm">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Grn To:' |translate}}
+                      </label>
+                      <div class="col-sm-5 top-input">
+                        <input type="date" formControlName="toDate" class="form-control col-form-label-sm">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-6">{{ 'Goods Receiving Values' | translate }}</label>
+                      <div class="col-md-2">
+                        <input type="checkbox" class="form-control" formControlName="dummyCheckValue"
+                          (click)="onCheckCHanges($event)">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row mt-1">
+                      <label class="col-sm-8 col-form-label"> </label>
+                      <div class="col-sm-4 text-right">
+                        <button class="btn btn-green m-1" (click)="generate()">{{'GENERATE' |translate}}</button>
+                        <button class="btn btn-white" (click)="clear()">{{'CLEAR' |translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables" style="min-height:auto;overflow-y: hidden;">
+          <div class="row">
+            <div class="col-md-0.5 pr-0">
+              <label class="mt-1">Show</label>
+            </div>
+            <div class="" style="top:-10px"><select [(ngModel)]="itemsPerPage" (change)="fetchAllD(1,$event)"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select></div>
+            <div class="col-md-1 mt-1"><label>Entries</label>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-1" style="left:-20px;">
+              <input type="text" [(ngModel)]="searchKey" placeholder="Search..." [ngModelOptions]="{standalone: true}"
+                (keyup)="generate(page, itemsPerPage);">
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{'S.No' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','Sr.No')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+                      left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Sr.No')"></i> </th>
+                <th>{{'GRN Date' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','GRN Date')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+                            left: -7px;" aria-hidden="true" (click)="setDirection('DESC','GRN Date')"></i>
+                </th>
+                <th>{{'WMPO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+                  left: -7px;" (click)="setDirection('ASC','WMPO Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+  left: -7px;" aria-hidden="true" (click)="setDirection('DESC','WMPO Number')"></i> </th>
+                <th>{{'Reference PO Number' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+      left: -7px;" (click)="setDirection('ASC','Reference PO Number')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Reference PO Number')"></i> </th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Supplier/Customer/Warehouse IDName')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Supplier/Customer/Warehouse IDName')"></i> </th>
+                <th>{{'Product ID' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Product ID')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product ID')"></i> </th>
+                <th>{{'Product Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Product Name')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Product Name')"></i> </th>
+                <th>{{'UOM' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','UOM')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','UOM')"></i> </th>
+                <th>{{'Order Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Order Quantity')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Quantity')"></i> </th>
+                <th>{{'Total Supplier Received Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Total Supplier Received Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Total Supplier Received Quantity')"></i> </th>
+                <th>{{'Total Supplier Return Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Total Supplier Return Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Total Supplier Return Quantity')"></i> </th>
+                <th>{{'Total Supplier Receivable Quantity' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Total Supplier Receivable Quantity')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Total Supplier Receivable Quantity')"></i> </th>
+                <th [hidden]="priceCheck">{{'Order Unit Price' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Order Unit Price')" aria-hidden="true"></i> <i class="fa fa-sort-desc"
+                    style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Order Unit Price')"></i> </th>
+                <th [hidden]="priceCheck">{{'Tax Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Tax Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Tax Amount')"></i> </th>
+                <th [hidden]="priceCheck">{{'Gross Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Gross Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Gross Amount')"></i> </th>
+                <th [hidden]="priceCheck">{{'Net Amount' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Net Amount')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Net Amount')"></i> </th>
+                <th
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Name' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Customer’s Supplier Name')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Customer’s Supplier Name')"></i> </th>
+                <th
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Address' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Customer’s Supplier Address')" aria-hidden="true"></i> <i
+                    class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Customer’s Supplier Address')"></i> </th>
+                <th>
+                  {{'Status' |translate}} <i class="fa fa-sort-asc" style="position: relative;
+  left: -7px;" (click)="setDirection('ASC','Status')" aria-hidden="true"></i> <i class="fa fa-sort-desc" style="position: relative;
+left: -7px;" aria-hidden="true" (click)="setDirection('DESC','Status')"></i> </th>
+              </tr>
+            </thead>
+            <tbody>
+            
+              <tr
+              *ngFor="let i=index;let report of grnReportData | paginate: {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+              <td>{{((page-1) * itemsPerPage)+i+1}}</td>
+                <td class="text-center">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                <td>{{report.wmpoNumber}}</td>
+                <td>{{report.referencePONumber}}</td>
+                <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.receivingUnit}}</td>
+                <td><span *ngIf="report.orderedQuantity">{{report.orderedQuantity | decimalwithThreeDigits}}</span></td>
+                <td>{{report.totalSupplierReceivedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.totalSupplierReturnQuantity}}</td>
+
+
+                <td>{{report.supplierReceivableQuantity | decimalwithThreeDigits}}</td>
+                <td [hidden]="priceCheck">{{report.orderUnitPrice}}</td>
+                <td [hidden]="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                <td [hidden]="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                <td [hidden]="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierName}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierAddress}}</td>
+
+                <td [ngStyle]="{'color':(report.status=='Not Received') ?'grey':
+                  (report.status=='Partially Received') ?'green':
+                  (report.status=='Completely Received') ?'#15d6cc':''}">{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mt-2">
+            <div class="col-md-12" style="text-align: end;">
+              <pagination-controls class="pagi" (pageChange)="generate((page = $event))">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  <div class="row">
+      <div class="col-md-12">
+        <div  class="wmsDataTables">
+          <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+            class="table table-striped " style="overflow-y: auto;display: block;border-bottom: none;max-width:auto;">
+            <thead>
+              <tr>
+                <th >{{'S.No' |translate}}</th>
+                <th >{{'GRN Date' |translate}}</th>
+                <th >{{'WMPO Number' |translate}}</th>
+                <th >{{'Reference PO Number' |translate}}</th>
+                <th>{{'Supplier/Customer/Warehouse IDName' |translate}}</th>
+                <th >{{'Product ID' |translate}}</th>
+                <th >{{'Product Name' |translate}}</th>
+                <th >{{'UOM' |translate}}</th>
+                <th >{{'Order Quantity' |translate}}</th>              
+                <th>{{'Total Supplier Received Quantity' |translate}}</th>
+                <th>{{'Total Supplier Return Quantity' |translate}}</th>
+                <th>{{'Total Supplier Receivable Quantity' |translate}}</th>
+                <th  [hidden] ="priceCheck">{{'Order Unit Price' |translate}}</th>
+                <th  [hidden] ="priceCheck">{{'Tax Amount' |translate}}</th>
+                <th  [hidden] ="priceCheck">{{'Gross Amount' |translate}}</th>
+                <th  [hidden] ="priceCheck">{{'Net Amount' |translate}}</th>
+                <th
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Name' |translate}}</th>
+                <th
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{'Customer’s Supplier Address' |translate}}</th>
+                <th >{{'Status' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of grnReportData; let i = index">
+                <td class="text-left">{{i+1}}</td>
+                <td class="text-center">{{report.grnDate | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                <td>{{report.wmpoNumber}}</td>
+                <td>{{report.referencePONumber}}</td>
+                <td><span *ngIf="report.supplierIDName">{{report.supplierIDName}}</span>
+                  <span *ngIf="report.customerMasterInfo">{{report.customerMasterInfo.customerIDName}}</span>
+                  <span
+                    *ngIf="report.wareHouseTransferSourceInfo">{{report.wareHouseTransferSourceInfo.wareHouseIDName}}</span>
+                </td>
+                <td>{{report.productID}}</td>
+                <td>{{report.productName}}</td>
+                <td class="text-center">{{report.receivingUnit}}</td>
+
+                <td><span *ngIf="report.orderedQuantity">{{report.orderedQuantity | decimalwithThreeDigits}}</span></td>
+              
+
+
+                
+                <td>{{report.totalSupplierReceivedQuantity | decimalwithThreeDigits}}</td>
+                <td>{{report.totalSupplierReturnQuantity}}</td>
+
+                
+                <td>{{report.supplierReceivableQuantity | decimalwithThreeDigits}}</td>
+                <td [hidden] ="priceCheck">{{report.orderUnitPrice}}</td>
+                <td [hidden] ="priceCheck">{{report.taxAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.grossAmount | decimalFilter}}</td>
+                <td [hidden] ="priceCheck">{{report.netAmount | decimalFilter}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierName}}</td>
+                <td
+                  [hidden]="thirdPartyCustomersCheckAllocation=='No' || grnForm.controls.orderType.value!='Purchase Order'">
+                  {{report.customersSupplierAddress}}</td>
+
+                <td [ngStyle]="{'color':(report.status=='Not Received') ?'grey':
+                  (report.status=='Partially Received') ?'green':
+                  (report.status=='Completely Received') ?'#15d6cc':''}">{{report.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

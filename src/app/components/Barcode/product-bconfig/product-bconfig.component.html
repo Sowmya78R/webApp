@@ -1,0 +1,120 @@
+<form [formGroup]="productForm" [dir]="direction">
+  <div id="inBody">
+    <div class="col-md-12">
+      <div class="row marginseven">
+        <div class="col-md-9">
+          <div class="udcBtns">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="udcBtns float-right">
+            <a>
+              <button type="button" (click)="generatePDF()" title="Print PDF"
+                style="background: none !important;border: none !important;">
+                <img src="assets/printpdf.png" alt="" style="width: 33px;height: 30px;margin-right: 12px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="generatePDF()"><a> <i class="material-icons align-middle"> get_app </i> {{'Generate PDF' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'Product Barcode Config' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'Product Barcode Config' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <!-- <div class="div">
+                <img id="logoImage" style="width: 175px;height: 80px;border-radius: 10px;margin-top:5px"
+                alt="No Preivew available">
+              </div> -->
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group row mt-3">
+                    <label class="mt-1">{{'Product IDName' |translate}}</label>
+                    <div class="col-sm-6 mb-3" formGroupName="productMasterInfo">
+                      <ng2-completer formControlName="productIDName" name="productIDName" [datasource]="productIdNames"
+                        [minSearchLength]="0" placeholder="{{'Select Product' |translate}}"
+                        (selected)="onSelectProduct($event)">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row mt-3">
+                    <label class="mt-1">{{'Unit' |translate}}</label>
+                    <div class="col-sm-6 mb-3">
+                      <ng2-completer formControlName="unitCode" name="unitCode" [datasource]="unitCodes"
+                        [minSearchLength]="0" placeholder="{{'Select Units' |translate}}">
+                      </ng2-completer>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group row mt-3">
+                    <label class="mt-1">{{'UPC EAN Number' |translate}}</label>
+                    <div class="col-sm-6 mb-3">
+                      <input type="text" class="form-control" formControlName="upcEANNumber"
+                        placeholder="{{'upcEANNumber' |translate}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-green mr-2 mt-1" value="Save" (click)="save()">{{'SAVE' |translate}}
+                  </button>
+                  <button class="btn btn-white mt-1" value="Clear" (click)="clear()">{{'CLEAR' |translate}}</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wmsDataTables">
+            <table id="example" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th class="text-center">{{'Include' |translate}}<input type="checkbox" class="form-control"
+                      (click)="selectAllData($event)" [(ngModel)]="selectAllCheckboxValue"
+                      [ngModelOptions]="{standalone: true}"></th>
+                  <th>{{'Product IDName' |translate}}</th>
+                  <th>{{'Unit' |translate}}</th>
+                  <th>{{'UPC EAN Number' |translate}}</th>
+                  <th>{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let receipt of overAllRecords; let i = index;">
+                  <td class="text-center"><input type="checkbox" [checked]="receipt.isChecked" (click)="read($event,receipt)"
+                      [(ngModel)]="receipt.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                  <td>{{receipt.productMasterInfo.productIDName}}</td>
+                  <td>{{receipt.unitCode}}</td>
+                  <td>{{receipt.upcEANNumber}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm"><i _ngcontent-lty-c40=""
+                        class="fa fa-trash btn-blue" (click)="delete(receipt._id)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

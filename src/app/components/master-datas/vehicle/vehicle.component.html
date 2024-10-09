@@ -1,0 +1,429 @@
+<div id="inBody" [dir]="direction">
+  <form [formGroup]="vehicleForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-12 ">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i class="material-icons align-middle"> description
+              </i> Log File </a>
+            </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>Upload Excel<input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i class="material-icons align-middle"> get_app
+                </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i> Download Excel </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'VEHICLE DETAILS' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'VEHICLE DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Vehicle Number' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="vehicleNumber" name="vehicleNumber" formControlName="vehicleNumber"
+                          placeholder="{{'Vehicle Number' |translate}}" class="form-control" type="text"
+                          [readonly]="isReadMode"
+                          [ngClass]="{'valiError': shouldShowErrors('vehicleNumber', vehicleForm),'valiSucess': shouldShowSuccess('vehicleNumber')}"
+                          (focus)="onFocusForElement('vehicleNumber')" (focusout)="onFocusOutForElement()"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Vehicle Name' |translate}}<i class="red">*</i></label>
+                      <div class="col-sm-7">
+                        <input id="vehicleName" name="vehicleName" formControlName="vehicleName"
+                          placeholder="{{'Vehicle Name' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('vehicleType')" (focusout)="onFocusOutForElement()"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Type of Vehicle' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="vehicleType" name="vehicleType" formControlName="vehicleType"
+                          placeholder="{{'Type of Vehicle' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('vehicleType')" (focusout)="onFocusOutForElement()"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Registration State' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="addressLine1" name="registrationState" formControlName="registrationState"
+                          placeholder="{{'Registration State' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <!--  [ngClass]="{'valiError': shouldShowErrors('registrationState', vehicleForm),'valiSucess': shouldShowSuccess('registrationState')}"
+                          (focus)="onFocusForElement('registrationState')" (focusout)="onFocusOutForElement()" -->
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Chasis Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="chasisNumber" formControlName="chasisNumber"
+                          placeholder="{{'Chasis Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!-- [ngClass]="{'valiError': shouldShowErrors('chasisNumber', vehicleForm),'valiSucess': shouldShowSuccess('chasisNumber')}"
+                          (focus)="onFocusForElement('chasisNumber')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Vehicle Capacity' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="vehicleCapacity" name="vehicleCapacity" formControlName="vehicleCapacity"
+                          placeholder="{{'Vehicle Capacity' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--   [ngClass]="{'valiError': shouldShowErrors('vehicleCapacity', vehicleForm),'valiSucess': shouldShowSuccess('vehicleCapacity')}"
+                          (focus)="onFocusForElement('vehicleCapacity')" (focusout)="onFocusOutForElement()" -->
+
+                    <div class="form-group row" formGroupName="equipmentInfo">
+                      <label class="col-sm-5 col-form-label">{{'Equipment ID/Name' |translate}}</label>
+                      <div class="col-sm-7">
+                        <ng2-completer id="equipmentIDName" name="equipmentIDName" formControlName="equipmentIDName"
+                          [datasource]="equipmentIds" (selected)="onSelectedEquipmentType($event)" [minSearchLength]="0"
+                          placeholder="{{'equipment ID Name' |translate}}" [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                        <!--  <input id="equipmentIDName" name="equipmentIDName" formControlName="equipmentIDName"
+                          placeholder="equipment ID Name" class="form-control"  type="text"readonly
+                          [ngClass]="{'valiError': shouldShowErrors('equipmentIDName', vehicleForm),'valiSucess':
+                           shouldShowSuccess('equipmentIDName')}"
+                          (focus)="onFocusForElement('equipmentIDName')" (focusout)="onFocusOutForElement()"> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Equipment Type' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input type="text" name="equipmentType" class="form-control" formControlName="equipmentType"
+                          id="equipmentType" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'VECHICLE ATTRIBUTES' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'VECHICLE ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'No of Shifts' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="noOfShifts" formControlName="noOfShifts" (keyup)="getDayCapacity()"
+                          placeholder="{{'No of Shifts' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--   [ngClass]="{'valiError': shouldShowErrors('noOfShifts', vehicleForm),'valiSucess': shouldShowSuccess('noOfShifts')}"
+                          (focus)="onFocusForElement('noOfShifts')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Hours per Shift' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="hoursPerShift" formControlName="hoursPerShift"
+                          (keyup)="getDayCapacity()" placeholder="{{'Hours per Shift' |translate}}" class="form-control"
+                          type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors('hoursPerShift', vehicleForm),'valiSucess': shouldShowSuccess('hoursPerShift')}"
+                          (focus)="onFocusForElement('hoursPerShift')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Day Capacity' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="addressLine1" name="dayCapacity" formControlName="dayCapacity" readonly
+                          placeholder="{{'Day Capacity' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('dayCapacity')" (focusout)="onFocusOutForElement()">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'No of days week' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="noOfDaysPerWeek" formControlName="noOfDaysPerWeek"
+                          (keyup)="getWeeklyCapacity()" placeholder="{{'No of days week' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- [ngClass]="{'valiError': shouldShowErrors('noOfDaysPerWeek', vehicleForm),'valiSucess': shouldShowSuccess('noOfDaysPerWeek')}"
+                          (focus)="onFocusForElement('noOfDaysPerWeek')" (focusout)="onFocusOutForElement()" -->
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Weekly Capacity' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="addressLine1" name="weeklyCapacity" formControlName="weeklyCappacity" readonly
+                          placeholder="{{'Weekly Capacity' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('weeklyCappacity')" (focusout)="onFocusOutForElement()">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Utilization' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="addressLine1" name="utilization" formControlName="utilization"
+                          placeholder="{{'Utilization' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('utilization')" (focusout)="onFocusOutForElement()"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Efficiency' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="efficiency" formControlName="efficency"
+                          placeholder="{{'Efficiency' |translate}}" class="form-control" type="text"
+                          (focus)="onFocusForElement('efficency')" (focusout)="onFocusOutForElement()"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Sequence Number' |translate}}</label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="sequenceNumber" formControlName="sequenceNumber"
+                          placeholder="{{'Sequence Number' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <!--  [ngClass]="{'valiError': shouldShowErrors('sequenceNumber', vehicleForm),'valiSucess': shouldShowSuccess('sequenceNumber')}"
+                          (focus)="onFocusForElement('sequenceNumber')" (focusout)="onFocusOutForElement()" -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle">
+                  <h4>{{'CONTACT DETAILS' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'CONTACT DETAILS' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Owner' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="owner" formControlName="owner" placeholder="{{'Owner' |translate}}"
+                          class="form-control" value="" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--   [ngClass]="{'valiError': shouldShowErrors('owner', vehicleForm),'valiSucess': shouldShowSuccess('owner')}"
+                          (focus)="onFocusForElement('owner')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Driver Name' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="fullName" name="driverName" formControlName="driverName"
+                          placeholder="{{'Driver Name' |translate}}" class="form-control" value="" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <!--  [ngClass]="{'valiError': shouldShowErrors('driverName', vehicleForm),'valiSucess': shouldShowSuccess('driverName')}"
+                          (focus)="onFocusForElement('driverName')" (focusout)="onFocusOutForElement()" -->
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Contact No' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="addressLine1" name="contactNumber" formControlName="contactNumber"
+                          class="form-control" value="" type="text" [readonly]="makeReadOnly"
+                          placeholder="{{'Contact Number' |translate}}">
+                      </div>
+                    </div>
+                    <!--   [ngClass]="{'valiError': shouldShowErrors('contactNumber', vehicleForm),'valiSucess': shouldShowSuccess('contactNumber')}"
+                          (focus)="onFocusForElement('contactNumber')" (focusout)="onFocusOutForElement()" -->
+                    <div class="form-group row">
+                      <label class="col-sm-5 col-form-label">{{'Rate' |translate}}
+                      </label>
+                      <div class="col-sm-7">
+                        <input id="rate" name="rate" formControlName="vehicleRate" placeholder="{{'Rate' |translate}}"
+                          class="form-control" value="" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--   [ngClass]="{'valiError': shouldShowErrors('vehicleRate', vehicleForm),'valiSucess': shouldShowSuccess('vehicleRate')}"
+                          (focus)="onFocusForElement('vehicleRate')" (focusout)="onFocusOutForElement()" -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row drop-status ">
+            <label class="col-sm-1 col-form-label">{{'Status:' |translate}} </label>
+            <div class="col-sm-3">
+              <select class="form-control" formControlName="status" name="status">
+                <option [ngValue]="null">--Select--</option>
+                <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!--  [ngClass]="{'my-error': shouldShowErrors('status', vehicleForm)}" (focus)="onFocusForElement('status')"
+                (focusout)="onFocusOutForElement()" -->
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right">
+              <button class="btn btn-green mr-2" value="Save" (click)="save()" [disabled]="vehicleForm.invalid">{{'Save'
+                |translate}}
+              </button>
+              <button class="btn btn-white" value="Clear" (click)="clear()">{{'Clear' |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div  class="wmsDataTables">
+            <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="overflow-y: auto;display: block;border-bottom: none;">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S.No' |translate}}</td>
+                  <td scope="col">{{'Vehicle No' |translate}}</td>
+                  <td scope="col">{{'Vehicle Name' |translate}}</td>
+                  <td scope="col">{{'Chasis No' |translate}}</td>
+                  <td scope="col">{{'Type of Vehicle' |translate}}</td>
+                  <td scope="col">{{'Equipment ID/Name' |translate}}</td>
+                  <td scope="col">{{'Equipment Type' |translate}}</td>
+                  <td scope="col">{{'Vehicle Capacity' |translate}}</td>
+                  <td scope="col">{{'Registration State' |translate}}</td>
+                  <td scope="col">{{'Owner' |translate}}</td>
+                  <td scope="col">{{'Driver Name' |translate}}</td>
+                  <td scope="col">{{'Contact No' |translate}}</td>
+                  <td scope="col">{{'No.of Shifts' |translate}}</td>
+                  <td scope="col">{{'Hours per Shift' |translate}}</td>
+                  <td scope="col">{{'Days Capacity' |translate}}</td>
+                  <td scope="col">{{'No of days per week' |translate}}</td>
+                  <td scope="col">{{'Weekly Capacity' |translate}}</td>
+                  <td scope="col">{{'Efficiency' |translate}}</td>
+                  <td scope="col">{{'Utilization' |translate}}</td>
+                  <td scope="col">{{'Rate' |translate}}</td>
+                  <td scope="col">{{'Status' |translate}}</td>
+                  <td scope="col">{{'Action' |translate}}</td>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let vehicle of vehicles; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor:pointer" (click)="edit(vehicle)">{{vehicle.vehicleNumber}}</th>
+                  <td>{{vehicle.vehicleName}}</td>
+                  <td>{{vehicle.chasisNumber}}</td>
+                  <td>{{vehicle.vehicleType}}</td>
+                  <td>{{vehicle.equipmentInfo?.equipmentIDName}}</td>
+                  <td>{{vehicle.equipmentType}}</td>
+                  <td>{{vehicle.vehicleCapacity}}</td>
+                  <td>{{vehicle.registrationState}}</td>
+                  <td>{{vehicle.owner}}</td>
+                  <td>{{vehicle.driverName}}</td>
+                  <td>{{vehicle.contactNumber}}</td>
+                  <td>{{vehicle.noOfShifts}}</td>
+                  <td>{{vehicle.hoursPerShift}}</td>
+                  <td>{{vehicle.dayCapacity}}</td>
+                  <td>{{vehicle.noOfDaysPerWeek}}</td>
+                  <td>{{vehicle.weeklyCappacity}}</td>
+                  <td>{{vehicle.efficency}}</td>
+                  <td>{{vehicle.utilization}}</td>
+                  <td>{{vehicle.vehicleRate}}</td>
+                  <td>{{vehicle.status}}</td>
+                  <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                        (click)="delete(vehicle)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="vehicleInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

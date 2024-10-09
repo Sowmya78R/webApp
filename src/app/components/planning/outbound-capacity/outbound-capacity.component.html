@@ -1,0 +1,145 @@
+<div id="inBody" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  datatable [dtOptions]="dtOptions" class="table table-striped"
+            *ngIf="soProducts.length > 0">
+            <thead>
+              <tr>
+               <td>{{'S.No' |translate}}</td>
+               <td>{{'WMSO No' |translate}}</td>
+               <td>{{'Product ID/Name' |translate}}</td>
+               <td>{{'UOM' |translate}}</td>
+               <td>{{'Customer/Warehouse IDName' |translate}}</td>
+               <td>{{'Order Date' |translate}}</td>
+               <td>{{'Expected Delivery Date' |translate}}</td>
+               <td>{{'Quantity' |translate}}</td>
+               <td>{{'Order Type' |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of soProducts; let i = index;">
+                <td class="text-left">{{i+1}}</td>
+                <td>{{product.fullWmsoNumber}}</td>
+                <td>{{product.productMasterInfo.productIDName}}</td>
+                <td class="text-center">{{product.inventoryUnit}}</td>
+                <td>{{product.idName}}</td>
+                <td class="text-center">{{product.soOrderDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{product.expectedDeliveryDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{product.quantity | decimalwithThreeDigits}}</td>
+                <td>{{product.orderType}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table datatable [dtOptions]="dtOptions" *ngIf="soProducts.length === 0"
+            class="table table-striped">
+            <thead>
+              <tr>
+                <td *ngFor="let key of filteredSOProductKeys">{{key |translate}}</td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  datatable [dtOptions]="dtOptions" class="table table-striped"
+            *ngIf="productsList.length > 0" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <td *ngFor="let key of dayWiseKeys"><span *ngIf="key=='Product'">{{key |translate}}</span>
+                  <span *ngIf="key!='Product'">{{key | date: 'dd/MM/yyyy'}}</span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of productsList; let i = index;">
+                <td class="bgColorTwoDim">{{product.name |translate}}</td>
+                <td>{{product.day1.quantity}}</td>
+                <td>{{product.day2.quantity}}</td>
+                <td>{{product.day3.quantity}}</td>
+                <td>{{product.day4.quantity}}</td>
+                <td>{{product.day5.quantity}}</td>
+                <td>{{product.day6.quantity}}</td>
+                <td>{{product.day7.quantity}}</td>
+                <td>{{product.day8.quantity}}</td>
+                <td>{{product.day9.quantity}}</td>
+                <td>{{product.day10.quantity}}</td>
+                <td>{{product.day11.quantity}}</td>
+                <td>{{product.day12.quantity}}</td>
+                <td>{{product.day13.quantity}}</td>
+                <td>{{product.day14.quantity}}</td>
+                <td>{{product.day15.quantity}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table  datatable [dtOptions]="dtOptions" class="table table-striped"
+            *ngIf="productsList.length === 0" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <td *ngFor="let key of dayWiseKeys"><span *ngIf="key=='Product'">{{key |translate}}</span>
+                  <span *ngIf="key!='Product'">{{key | date: 'dd/MM/yyyy'}}</span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="wmsDataTables">
+          <table  datatable [dtOptions]="dtOptions" class="table table-striped"
+            *ngIf="equipmentsAndExecutivesList.length > 0" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <td *ngFor="let key of dayWiseKeysForEE"><span *ngIf="key=='Equipments/Executives'">{{key |translate}}</span>
+                  <span *ngIf="key!='Equipments/Executives'">{{key | date: 'dd/MM/yyyy'}}</span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of equipmentsAndExecutivesList; let i = index;">
+                <td class="bgColorTwoDim">{{product.name |translate}}</td>
+                <td>{{product.day1.quantity}}</td>
+                <td>{{product.day2.quantity}}</td>
+                <td>{{product.day3.quantity}}</td>
+                <td>{{product.day4.quantity}}</td>
+                <td>{{product.day5.quantity}}</td>
+                <td>{{product.day6.quantity}}</td>
+                <td>{{product.day7.quantity}}</td>
+                <td>{{product.day8.quantity}}</td>
+                <td>{{product.day9.quantity}}</td>
+                <td>{{product.day10.quantity}}</td>
+                <td>{{product.day11.quantity}}</td>
+                <td>{{product.day12.quantity}}</td>
+                <td>{{product.day13.quantity}}</td>
+                <td>{{product.day14.quantity}}</td>
+                <td>{{product.day15.quantity}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table datatable [dtOptions]="dtOptions" class="table table-striped"
+            *ngIf="equipmentsAndExecutivesList.length === 0" style="overflow-y: auto;display: block;border-bottom: none;">
+            <thead>
+              <tr>
+                <td *ngFor="let key of dayWiseKeysForEE"><span *ngIf="key=='Equipments/Executives'">{{key |translate}}</span>
+                  <span *ngIf="key!='Equipments/Executives'">{{key | date: 'dd/MM/yyyy'}}</span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

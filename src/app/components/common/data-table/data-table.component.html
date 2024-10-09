@@ -1,0 +1,24 @@
+<table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped d-table">
+  <thead>
+    <tr>
+      <th scope="col" *ngFor="let key of cycleCountingKeys">{{key}}</th>
+    </tr>
+  </thead>
+  <tbody> 
+    <tr *ngFor="let report of cycleCountingData; let i = index">
+     <td class="text-left">{{i+1}}</td>
+      <td>{{report.cycleCountNumber}}</td>
+      <td>{{report.cycleCountingCriteria}}</td>
+      <td>{{report.createdDate | date: 'MM/dd/yyyy'}}</td>
+      <td>{{report.productIDName}}</td>
+      <td>{{report.batchNumber}}</td>
+      <td>{{report.actualQuantity}}</td>
+      <td>{{report.availableQuantity}}</td>
+      <td>{{report.wareHouseName}}</td>
+      <td>{{report.zoneName}}</td>
+      <td>{{report.rackName}}</td>
+      <td>{{report.levelName}}</td>
+      <td>{{report.locationName}}</td>
+    </tr>
+  </tbody>
+</table>

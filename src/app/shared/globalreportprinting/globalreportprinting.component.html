@@ -1,0 +1,26 @@
+ <div *ngIf="selectedValue =='spaceUtilizationBilling'">
+  <app-spaceutilizationbilling (emitTripSheet)="trigeerTripSheet()"></app-spaceutilizationbilling>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>
+
+<div *ngIf="splitAgain =='createcyclecounting'">
+  <app-createcyclecounting (emitTripSheet)="trigeerTripSheet()"></app-createcyclecounting>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>
+
+<div *ngIf="selectedValue =='Inward'">
+  <app-inward (emitTripSheet)="trigeerTripSheet()"></app-inward>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>
+<div *ngIf="selectedValue =='outward'">
+  <app-outward (emitTripSheet)="trigeerTripSheet()"></app-outward>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>
+<div *ngIf="selectedValue =='maintainInvoicing'">
+  <app-maintain-invoicing (emitTripSheet)="trigeerTripSheet()"></app-maintain-invoicing>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>
+<div *ngIf="selectedValue =='purchase-request'">
+  <app-purchase-request (emitTripSheet)="trigeerTripSheet()"></app-purchase-request>
+  <app-globalmainprint [tripInput]="tripInput"></app-globalmainprint>
+</div>

@@ -1,0 +1,438 @@
+<div [dir]="direction">
+  <div id="wmsTopHomeMenu" class="row" [ngStyle]="{'background-image': logoImage1 ? 'url(' + logoImage1 + ')' : 'url(assets/topMenuBG.jpg)'}">
+    <div class="col-md-2" [hidden]="!logo1">
+      <div class="wmsLogoHome">
+        <a><img id="logo1" width="90%" height="" alt="" style="width: 195px; height: 136px;
+          margin: 10px; position: relative; top: -19px;left: 1px"></a>
+      </div>
+    </div>
+    <div class="col-md-2" [hidden]="logo1">
+      <div class="wmsLogoHome">
+        <a> <img src="assets/logo_white.png" class="img-fluid img-responsive p-2" alt="" /></a>
+      </div>
+    </div>
+    <div class="col-md-10 topMenuright">
+      <ul>
+        <li>
+          <select (change)="useLanguage($event.target.value)" [(ngModel)]="configService.language" class="form-control"
+          [ngStyle]="{'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColor,
+            'color': organizationFontColor ? organizationFontColor : deafultColor}">
+          <option value="en"> {{'English' | translate}}</option>
+          <option value="ar">{{'Arabic' | translate}}</option>
+          <option value="dut">{{'Dutch' | translate}}</option>
+          <option value="fr">{{'France' | translate}}</option>
+          <option value="ge">{{'German' | translate}}</option>
+          <option value="ko">{{'Korean' | translate}}</option>
+          <option value="la">{{'Latin' | translate}}</option>
+          <option value="por">{{'portuguese' | translate}}</option>
+          <option value="sp">{{'Spain' | translate}}</option>
+          <option value="sw">{{'Swedish' | translate}}</option>
+          </select>
+        </li>
+        <li>
+          <input class="form-control" [(ngModel)]="configService.organizationValue" readonly
+          [ngStyle]="{
+            'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColorCombo,
+            'color': organizationFontColor ? organizationFontColor : deafultColorCombo
+          }"style="margin-left: 21px;position: relative;left:-26px;border-radius:1px;background-color:transparent">
+        </li>
+        <li><select [(ngModel)]="configService.wareHouseValue" class="form-control"
+            (change)="getAllCalls($event.target.value)"
+            [ngStyle]="{
+              'border': '1px solid'+ organizationFontColor ? '1px solid'+ organizationFontColor:deafultColor,
+              'color': organizationFontColor ? organizationFontColor : deafultColor
+            }">
+            <option value="null">--select--</option>
+            <option *ngFor="let warehouse of configService.wareHouseDropdown">{{warehouse}}</option>
+          </select>
+        </li>
+        <li><a routerLink="/homepage"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+       
+        <li><a> <i class="fa fa-question-circle" aria-hidden="true" title="Help" (click)="openCreateModal()"></i> </a>
+        </li>
+        <li *ngIf="footerLinks && footerLinks.length>0">
+          <div class="dropdown show" style="font-size: 24px;margin-top: -8px;">
+            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <i class="material-icons">insert_link</i></a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <div *ngFor="let link of footerLinks; let i = index">
+                <a class="dropdown-item" routerLink="{{link.route}}">{{link.name}}</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="dropdown show">
+            <a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user-circle" aria-hidden="true"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item"> <i class="material-icons"> perm_identity </i>{{userDetails.firstName}}
+                {{userDetails.lastName}}</a>
+              <a class="dropdown-item" routerLink="/changePassword"> <i class="material-icons"> perm_identity </i>{{'Reset Password' |translate}}</a>
+              <a class="dropdown-item" (click)="logout()"> <i class="material-icons"> keyboard_tab </i>{{'Logout' |translate}}</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="wmsHomeLeftTitle" class="row">
+    <div class="col-md-12 pl-0">
+      <p [ngStyle]="{color:homeTextColor?homeTextColor:deafultColorWareHouseColor}" style="position:relative;top:20px">{{homeTitletext |translate}} </p>
+    </div>
+  </div>
+  <div id="bodyInrCenter" style="margin-top: -5px;min-height:550px;">
+    <div class="row">
+      <div class="col-md-2">
+        <div *ngIf="logoList.logoName">
+           <img id="logoImage" class="img-fluid img-responsive" alt="No Preivew available">
+        </div>
+        <span *ngIf="homepageSideTitleHeading"><h6 style="margin:auto" class="mt-3 mb-2 ml-1 m-1">{{homepageSideTitleHeading |translate}}</h6>
+       </span>
+        <p>{{homeUpdatedText || homeUpdatedText |translate}}</p>
+      </div>
+      <div class="col-md-10">
+        <div class="row homeRightPanl">
+          <div class="col-md-8">
+            <div class="wmsHomeMenus">
+              <div class="row wmsHomeMenusvalign">
+                <div class="col-md-3 col-sm-4 HmenusBg" *ngFor="let process of navLinks; let i = index">
+                  <a routerLink="{{process.route}}" (click)="getProcess(process.name); getModuleName(process.name);showSubMenu(process)">
+                    <img src="assets/inMenusIcons/{{process.name}}.svg" width="40" height="35" />
+                   <!--  <img [src]="'assets/inMenusIcons/icons-0' + i + '.svg'" /> -->
+                    <p>{{process.rename ? process.rename : process.name |translate}}</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 pl-0">
+            <div class="homeNotifcation"style="padding: 10px;height: 300px;">
+              <div class="row notfctionTitle">
+                <div class="col-md-8 text-left">
+                  <h6><i class="fa fa-bell" aria-hidden="true"></i>{{'Notifications' |translate}}</h6>
+                </div>
+                <div class="col-md-4 text-right"><a (click)="openModalPopup()">{{'View all' |translate}}</a></div>
+              </div>
+              <div class="" *ngIf="notificationDataList.length>0" style="overflow: hidden;">
+                <div id="style-8" class="panel-body" style="height: 250px; overflow: hidden;">
+                  <div class="marquee" #marquee
+                                            style="background: none !important;height: 253px;">
+                                            <div class="marquee-content">
+                    <div class="row" *ngIf="expiredCheck">
+                      <div class="col-md-12 text-left"
+                           *ngIf="notificationDataList[0].notificationMessages && notificationDataList[0].notificationMessages.length != 0">
+                        <p *ngFor="let data of notificationDataList[0].notificationMessages" class="d-flex justify-content-start">
+                          <a class="d-flex justify-content-start">
+                            <i class="fa fa-cubes ntiBG_red" aria-hidden="true"></i>
+                          {{data |translate}}.
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[1].notificationMessages && notificationDataList[1].notificationMessages.length!=0 && inExpiryCheck">
+                    <p *ngFor="let data of notificationDataList[1].notificationMessages"
+                      class="d-flex justify-content-start"><a class="d-flex justify-content-start">
+                        <!--  <span class='material-icons ntiBG_orange'>production_quantity_limits</span> -->
+                        <i class="fa fa-warning ntiBG_orange" aria-hidden="true"></i>
+                        {{data |translate}}.
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[2].notificationMessages && notificationDataList[2].notificationMessages.length!=0 && putawayCheck">
+                    <p *ngFor="let data of notificationDataList[2].notificationMessages"
+                      class="d-flex justify-content-start"><a class="d-flex justify-content-start">
+                        <span class='material-icons ntiBG_blue'>shopping_cart</span>
+                        <!--   <i class="fa fa-home ntiBG_blue" aria-hidden="true"></i>  -->
+                        <!--   <span class='material-icons ntiBG_orange'>production_quantity_limits</span> -->
+                        <!--    <i class="fa fa-print ntiBG_orange" aria-hidden="true"></i> -->
+                        {{data |translate}}.
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[3].notificationMessages && notificationDataList[3].notificationMessages.length!=0 && pickingCheck">
+                    <p *ngFor="let data of notificationDataList[3].notificationMessages"
+                      class="d-flex justify-content-start">
+                      <a class="d-flex justify-content-start">
+                        <span class='material-icons ntiBG_blue fa-flip-horizontal'>shopping_cart</span>
+                        <!--   <i class="fa fa-home fa-flip-horizontal ntiBG_blue" aria-hidden="true"></i>  -->
+                        <!--   <i class="fa fa-print ntiBG_green" aria-hidden="true"></i> -->
+                        {{data |translate}}.
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[4].notificationMessages && notificationDataList[4].notificationMessages.length!=0 && zoneCheck">
+                    <p *ngFor="let data of notificationDataList[4].notificationMessages"
+                      class="d-flex justify-content-start">
+                      <a class="d-flex justify-content-start">
+                        <span class="material-icons ntiBG_yellow">other_houses </span>
+                        <!--    <span class='material-icons-sharp ntiBG_yellow'>other_houses</span> -->
+
+                        <!--   <i class="fa-warehouse ntiBG_yellow" aria-hidden="true"></i> -->
+                        {{data |translate}}.
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[5].notificationMessages && notificationDataList[5].notificationMessages.length!=0 && poCheck">
+                    <p style="padding:10px" *ngFor="let data of notificationDataList[5].notificationMessages"
+                      class="text-left">
+                      <a class="text-left">
+                        <i class="fa fa-truck ntiBG_blue" aria-hidden="true"></i>
+                        {{data.name |translate}}</a>
+                      <i class="fa fa-arrow-down text-primary"
+                        style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+                        *ngIf="data.isToggle==false" (click)="expandToggle(data)" aria-hidden="true">
+                      </i>
+                      <i class="fa fa-arrow-up text-primary" aria-hidden="true"
+                        style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+                        *ngIf="data.isToggle==true" (click)="expandToggle(data)"></i>
+                      <a class="text-left"><span [hidden]="!data.isToggle" *ngFor="let sub of data.values">
+                          <ol style="color:black">
+                            <li type="disc" style="color:black">
+                              {{sub |translate}}</li>
+                          </ol>
+                        </span></a>
+                    </p>
+                  </div>
+                  <div class="text-left"
+                    *ngIf="notificationDataList[6].notificationMessages && notificationDataList[6].notificationMessages.length!=0 && soCheck">
+                    <p *ngFor="let data of notificationDataList[6].notificationMessages" class="text-left">
+                      <a class="text-left">
+                        <i class="fa fa-truck fa-flip-horizontal ntiBG_blue" aria-hidden="true"></i>
+                        {{data.name |translate}}</a>
+                      <i class="fa fa-arrow-down text-primary"
+                        style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+                        *ngIf="data.isToggle==false" (click)="expandToggle(data)" aria-hidden="true">
+                      </i>
+                      <i class="fa fa-arrow-up text-primary"
+                        style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+                        *ngIf="data.isToggle==true" (click)="expandToggle(data)"></i>
+                      <a class="text-left"><span [hidden]="!data.isToggle" *ngFor="let sub of data.values">
+                          <ol style="color:black">
+                            <li type="disc" style="color:black">
+                              {{sub |translate}}</li>
+                          </ol>
+                        </span></a>
+                    </p>
+                  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="homeNotifcation" *ngIf="inventoryGraphPermissions.includes('View')" style="height: 295px">
+              <div class="row notfctionTitle text-left">
+                <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="10000">
+                  <div class="carousel-inner">
+                    <div *ngFor="let data of zoneNameArrayList; let i = index" class="carousel-item" [class.active]="i === 0">
+                      <div class="heading text-center">
+                        <h6 style="position:relative;top:-10px;z-index: 1;">{{ data.zoneName | translate }} &nbsp;<i class="fa fa-cubes"
+                          (click)="getDimensions(data)"></i></h6> 
+                      </div>
+                      <div class="d-block w-100 h-auto" style="position: relative;top:-50px">
+                        <ngx-charts-pie-chart [results]="data.zoneDashboard"
+                                              [legend]="false"
+                                              [legendTitle]="'Location Status'"
+                                              [view]="[400, 300]" 
+                                              [labels]="true"
+                                              [scheme]="colorScheme">
+                        </ngx-charts-pie-chart>
+                      </div>
+                    </div>
+                  </div>
+                 <!--  <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a> -->
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <app-footer></app-footer> -->
+
+  <ngx-smart-modal customClass="nsm-centered" id="homePageNotification" #homePageModal [identifier]="'homePageModal'">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h5 class="text-center text-primary">{{'Notifications' |translate}}</h5>
+      </div>
+    </div>
+    <div class="row" *ngIf="viewAllNotifications.length>0">
+      <div id="style-8" class="panel-body scrollbar" style="height: 410px;width:500px">
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[0].notificationMessages && viewAllNotifications[0].notificationMessages.length!=0 && expiredCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;" id=""
+            *ngFor="let data of viewAllNotifications[0].notificationMessages"
+            class="d-flex justify-content-start alert-warning"><a class="d-flex justify-content-start">
+              <!--   <i class="fa fa-print ntiBG_red" style="height:23px;" aria-hidden="true"></i> -->
+              <i class="fa fa-cubes ntiBG_red" aria-hidden="true"></i>
+              {{data}}.
+            </a></p>
+        </div>
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[1].notificationMessages && viewAllNotifications[1].notificationMessages.length!=0 && inExpiryCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[1].notificationMessages"
+            class="d-flex justify-content-start alert-warning">
+            <a class="d-flex justify-content-start">
+              <!--     <i class="fa fa-print ntiBG_orange  pl-1 pr-1 mt-1 ml-1" aria-hidden="true"></i> -->
+              <i class="fa fa-warning ntiBG_orange" aria-hidden="true"></i>
+              {{data}}.
+            </a>
+          </p>
+        </div>
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[2].notificationMessages && viewAllNotifications[2].notificationMessages.length!=0 && putawayCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[2].notificationMessages"
+            class="d-flex justify-content-start alert-warning">
+            <a class="d-flex justify-content-start">
+              <span class='material-icons ntiBG_blue'>shopping_cart</span>
+              <!--   <i class="fa fa-print ntiBG_orange pl-1 pr-1 mt-1 ml-1" aria-hidden="true"></i> -->
+              {{data}}.</a>
+          </p>
+        </div>
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[3].notificationMessages && viewAllNotifications[3].notificationMessages.length!=0 && pickingCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[3].notificationMessages"
+            class="d-flex justify-content-start alert-warning">
+            <a class="d-flex justify-content-start">
+              <span class='material-icons ntiBG_blue'>shopping_cart</span>
+              <!--  <i class="fa fa-print ntiBG_green pl-1 pr-1 mt-1 ml-1" aria-hidden="true"></i> -->
+              {{data}}.</a>
+          </p>
+        </div>
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[4].notificationMessages && viewAllNotifications[4].notificationMessages.length!=0 && zoneCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[4].notificationMessages"
+            class="d-flex justify-content-start alert-warning">
+            <a class="d-flex justify-content-start">
+              <span class="material-icons ntiBG_yellow">other_houses </span>
+              <!--  <i class="fa fa-print ntiBG_green pl-1 pr-1 mt-1 ml-1" aria-hidden="true"></i> -->
+              {{data}}.</a>
+          </p>
+        </div>
+        <div class="col-md-12"
+          *ngIf="viewAllNotifications[5].notificationMessages && viewAllNotifications[5].notificationMessages.length!=0 && poCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[5].notificationMessages" class="text-left alert-warning">
+            <a class="text-left">
+              <i class="fa fa-truck ntiBG_blue" aria-hidden="true"></i>
+              <!--  <i class="fa fa-print ntiBG_blue pl-1 pr-1 mt-1 ml-1"  aria-hidden="true"></i> -->
+              {{data.name}}</a>
+            <i class="fa fa-arrow-down bg-primary"
+              style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+              *ngIf="data.isViewToggle==false" (click)="expandToggle1(data)" aria-hidden="true">
+            </i>
+            <i class="fa fa-arrow-up bg-primary"
+              style="color:white;font-size:12px;padding:5px;border-radius:50%;height:25px;"
+              *ngIf="data.isViewToggle==true" (click)="expandToggle1(data)"></i>
+            <a class="text-left"><span [hidden]="!data.isViewToggle" *ngFor="let sub of data.values">
+                <ol style="list-style: disc;color:black;">
+                  <li style="color:black">
+                    {{sub}}
+                  </li>
+                </ol>
+              </span>
+            </a>
+          </p>
+        </div>
+        <div class="col-md-12 text-left"
+          *ngIf="viewAllNotifications[6].notificationMessages && viewAllNotifications[6].notificationMessages.length!=0 && soCheck">
+          <p style="padding:10px;font-size: 14px;font-weight: 500;"
+            *ngFor="let data of viewAllNotifications[6].notificationMessages" class="text-left alert-warning">
+            <a class="text-left">
+              <i class="fa fa-truck fa-flip-horizontal ntiBG_blue" aria-hidden="true"></i>
+              <!--   <i class="fa fa-print ntiBG_blue pl-1 pr-1 mt-1 ml-1"  aria-hidden="true"></i> -->
+              {{data.name}}</a>
+            <i class="fa fa-arrow-down bg-primary" style="color:white;font-size:12px;padding:5px;border-radius:50%"
+              *ngIf="data.isViewToggle==false" (click)="expandToggle1(data)" aria-hidden="true">
+            </i>
+            <i class="fa fa-arrow-up bg-primary"
+              style="color:white;font-size:12px;padding:5px;border-radius:50%;width: 23px"
+              *ngIf="data.isViewToggle==true" (click)="expandToggle1(data)"></i>
+            <a class="text-left alert-warning"><span [hidden]="!data.isViewToggle" *ngFor="let sub of data.values">
+                <ol style="list-style: disc;color:black;">
+                  <li style="color:black">
+                    {{sub}}
+                  </li>
+                </ol>
+              </span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ngx-smart-modal>
+  <ngx-smart-modal customClass="nsm-centered" id="standardspare" #openModal [identifier]="'openModal'">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h5 class="text-uppercase text-primary text-center">{{'Help File' |translate}}</h5>
+      </div>
+      <div class="col-md-8 text-center" *ngIf="changeFileData">
+        <h6>{{changeFileData.MAIN |translate}}</h6>
+        <ul style="color:black;list-style-type: disc;text-align: center; ">
+          <li style="color:black;list-style-type: disc;" *ngFor="let item of changeFileData.LIST">{{item.ELEM |translate}}</li>
+        </ul>
+      </div>
+    </div>
+  </ngx-smart-modal>
+  <!-- <ngx-smart-modal customClass="nsm-centered" id="standardspare" #openModal [identifier]="'openModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <h5>{{'Help File' |translate}}</h5>
+    </div>
+    <div class="col-md-12" *ngIf="changeFileData">
+      <h6>{{changeFileData.MAIN}}</h6>
+      <ul style="color:black;list-style-type: disc;">
+        <li style="color:black;list-style-type: disc;" *ngFor="let item of changeFileData.LIST">{{item.ELEM}}</li>
+      </ul>
+    </div>
+  </div>
+</ngx-smart-modal> -->
+
+</div>
+<ngx-smart-modal customClass="nsm-centered" id="utilPopup" #utilPopup [identifier]="'utilPopup'">
+  <div class="row" *ngIf="utilizationHeader && locDimension">
+    <div class="col-md-12">
+      <h6 class="text-center">{{utilizationHeader}}</h6>
+      <table border="1" cellpadding="4" cellspacing="5">
+        <tbody>
+          <tr>
+            <th></th>
+            <th>Location Space</th>
+            <th>Location Space(%)</th>
+            
+          </tr>
+          <tr>
+            <th style="color:orange;">Total Space</th>
+            <th>{{locDimension.totalSpace | decimalwithThreeDigits}} {{locDimension.totalSpaceUom}}</th>
+            <th>{{locDimension.totalSpacePercentage}}%</th>
+          </tr>
+          <tr>
+            <th style="color:red;">Usage Space</th>
+            <th>{{locDimension.usableSpace | decimalwithThreeDigits}} {{locDimension.usableSpaceUom}}</th>
+            <th>{{locDimension.usableSpacePercentage |decimalwithThreeDigits}}%</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ngx-smart-modal>

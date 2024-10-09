@@ -1,0 +1,526 @@
+<div id="inBody" *ngIf="configPermissionsList.includes('View')" [dir]="direction">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel portlet">
+          <div class="formBox portlet-title">
+            <div class="row">
+              <div class="panel-heading formTitle w-auto">
+                <h4>{{'PARAMETERS' |translate}}</h4>
+                <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                      aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+              </div>
+              <div class="formTitleHover">
+                <h4>{{'PARAMETERS' |translate}}<i class="material-icons rotetIcon"> unfold_less </i>
+                  <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                  </div>
+                </h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Storage Types' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="storageTypes" (onAdd)="onItemAdded($event, 'storageTypeCode')"
+                      (onRemove)="onItemRemoved($event, 'storageTypeCode')" [displayBy]="'storageTypeCode'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Category' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="productCategories" (onAdd)="onItemAdded($event, 'productCategory')"
+                      (onRemove)="onItemRemoved($event, 'productCategory')" [displayBy]="'productCategoryName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Sub-Category 1'|translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="productSubCategory1sResponseList"
+                      (onAdd)="onItemAdded($event, 'productSubCategory1sResponseList')"
+                      (onRemove)="onItemRemoved($event, 'productSubCategory1sResponseList')"
+                      [displayBy]="'productSubCategory1Name'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Sub-Category 2'|translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="productSubCategory2sResponseList"
+                      (onAdd)="onItemAdded($event, 'productSubCategory2sResponseList')"
+                      (onRemove)="onItemRemoved($event, 'productSubCategory2sResponseList')"
+                      [displayBy]="'productSubCategory2Name'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Sub-Category 3'|translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="productSubCategory3sResponseList"
+                      (onAdd)="onItemAdded($event, 'productSubCategory3sResponseList')"
+                      (onRemove)="onItemRemoved($event, 'productSubCategory3sResponseList')"
+                      [displayBy]="'productSubCategory3Name'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Brand Configuration'|translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="brandConfigurationResponceList"
+                      (onAdd)="onItemAdded($event, 'brandConfigurationResponceList')"
+                      (onRemove)="onItemRemoved($event, 'brandConfigurationResponceList')" [displayBy]="'brandName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Cross Docking Mapping' |translate}}</label>
+                  <div class="col-md-3">
+                    <ng2-completer id="locationName" name="locationName" class="form-control"
+                      [datasource]="locationNameValues" style="border: none;" [minSearchLength]="0"
+                      (selected)="getLocationValue($event)" placeholder="Location Name">
+                    </ng2-completer>
+                  </div>
+                  <div class="input-container col-md-3">
+                    <tag-input [(ngModel)]="crossDockingMappings" (onRemove)="onItemRemoved($event, 'locationName')"
+                      [displayBy]="'locationName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <!--   <div class="form-group row">
+                  <label class="col-md-2">{{'Cross Docking Mapping' |translate}}</label>
+                  <div class="col-md-3">
+                    <ng2-completer id="locationName" name="locationName" class="form-control"
+                      [datasource]="locationNameValues" style="border: none;" [clearSelected]="true"
+                      [minSearchLength]="0" (selected)="getLocationValue($event)" placeholder="Location Name">
+                    </ng2-completer>
+                  </div>
+                  <div class="input-container col-md-3">
+                    <tag-input [(ngModel)]="crossDockingMappings" (onRemove)="onItemRemoved($event, 'locationName')"
+                      [displayBy]="'locationName'">
+                    </tag-input>
+                  </div>
+                </div> -->
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Return Zone Mapping' |translate}}</label>
+                  <div class="col-md-3">
+                    <ng2-completer id="zoneName" name="zoneName" class="form-control" [datasource]="zoneValues"
+                      style="border: none;" [clearSelected]="true" [minSearchLength]="0"
+                      (selected)="getReturnLocationValue($event)" placeholder="{{'Zone Name' |translate}}">
+                    </ng2-completer>
+                  </div>
+                  <div class="input-container col-md-3">
+                    <tag-input [(ngModel)]="returnLocationMappings"
+                      (onRemove)="onItemRemoved($event, 'returnLocationMap')" [displayBy]="'zoneName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Zone Space Utilization' |translate}}</label>
+                  <!-- <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="zoneCapacityData.zoneCapacity"
+                      (onAdd)="onItemAdded($event, 'zoneCapacityName')"
+                      (onRemove)="onItemRemoved($event, 'zoneCapacityName')">
+                    </tag-input>
+                  </div> -->
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="zoneCapacityData" (onAdd)="onItemAdded($event, 'zoneCapacityName')"
+                      (onRemove)="onItemRemoved($event, 'zoneCapacityName')" [displayBy]="'zoneCapacity'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Return Mapping' |translate}}</label>
+                  <div class="col-md-3">
+                    <div class="custom-control custom-checkbox checkbox-xl" style="display: inline; margin: 0px;">
+                      <input type="checkbox" [checked]="palletConfigurationToggle"
+                        (change)="savePalletConfiguration($event)">
+                      <label for="checkbox-3"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Picking Location Allocation Type' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-secondary" *ngIf="locAllocation.pickingLocationAllocationType=='Manual'"
+                      (click)="saveAllocationType('Manual')">{{'Manual' |translate}}</button>
+                    <button class="btn-success" *ngIf="locAllocation.pickingLocationAllocationType=='Auto'"
+                      (click)="saveAllocationType('Auto')">{{'Auto' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Receive Location Allocation Type' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-secondary" *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Manual'"
+                      (click)="saveReceiveAllocationType('Manual')">{{'Manual' |translate}}</button>
+                    <button class="btn-success" *ngIf="locReceiveAllocation.putawayLocationAllocationType=='Auto'"
+                      (click)="saveReceiveAllocationType('Auto')">{{'Auto' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Return Location Allocation Type' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-secondary"
+                      *ngIf="locReturnAllocation.putawayReturnLocationAllocationType=='Manual'"
+                      (click)="saveReturnAllocationType('Manual')">{{'Manual' |translate}}</button>
+                    <button class="btn-success" *ngIf="locReturnAllocation.putawayReturnLocationAllocationType=='Auto'"
+                      (click)="saveReturnAllocationType('Auto')">{{'Auto' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Serial Number Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="serialNumberAllocation.serialNumberCheck=='No'"
+                      (click)="saveSerialConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="serialNumberAllocation.serialNumberCheck=='Yes'"
+                      (click)="saveSerialConfiguration('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Sales Order With Inventory' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="reqObjsalesOrderWithInventory.inventoryCheck=='No'"
+                      (click)="saveSalesOrderWithinventory('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="reqObjsalesOrderWithInventory.inventoryCheck=='Yes'"
+                      (click)="saveSalesOrderWithinventory('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Third Party Customer Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="thirdPartyCustomersCheckAllocation.thirdPartyCustomersCheck=='No'"
+                      (click)="saveThirdpartyConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success"
+                      *ngIf="thirdPartyCustomersCheckAllocation.thirdPartyCustomersCheck=='Yes'"
+                      (click)="saveThirdpartyConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Barcode Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="barcodeConfigAllocation.barcodeCheck=='No'"
+                      (click)="saveBarcodeConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="barcodeConfigAllocation.barcodeCheck=='Yes'"
+                      (click)="saveBarcodeConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Auto Putaway Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="autoPutaway.putawayGeneration=='No'"
+                      (click)="saveAutoPutawayConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="autoPutaway.putawayGeneration=='Yes'"
+                      (click)="saveAutoPutawayConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Grn Invoice Confirmation' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="grnInvoiceConfigurations.grnInvoiceConfirmation=='No'"
+                      (click)="saveGrnInvoiceConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf=" this.grnInvoiceConfigurations.grnInvoiceConfirmation=='Yes'"
+                      (click)="saveGrnInvoiceConfiguration('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Picking Generation Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.pickingGenerationConfigurations.pickingGeneration=='No'"
+                      (click)="savePickingConfigrationGenerations('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf=" this.pickingGenerationConfigurations.pickingGeneration=='Yes'"
+                      (click)="savePickingConfigrationGenerations('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Shipment Generation Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.shipmentGenerationConfigurations.shipmentGeneration=='No'"
+                      (click)="saveorUpdateShipmentGenerationConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.shipmentGenerationConfigurations.shipmentGeneration=='Yes'"
+                      (click)="saveorUpdateShipmentGenerationConfiguration('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Product Dimensions ByLocation' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.productDimensionByLocationConfigurations.calculateDimensions=='No'"
+                      (click)="saveorUpdatePDByLocationsConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.productDimensionByLocationConfigurations.calculateDimensions=='Yes'"
+                      (click)="saveorUpdatePDByLocationsConfiguration('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Product By Customer' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.productDimensionByCustomerConfigurations.mapping=='No'"
+                      (click)="saveorUpdateProductByCustomerDimansionConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.productDimensionByCustomerConfigurations.mapping=='Yes'"
+                      (click)="saveorUpdateProductByCustomerDimansionConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Product By Supplier' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.productDimensionBySupplierConfigurations.mapping=='No'"
+                      (click)="saveorUpdateProductBySupplierDimansionConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.productDimensionBySupplierConfigurations.mapping=='Yes'"
+                      (click)="saveorUpdateProductBySupplierDimansionConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Sales Order Table View' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.productDimensionBySalesOrderConfigurations.viewType=='No'"
+                      (click)="saveorUpdateSalesOrderDimensionConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.productDimensionBySalesOrderConfigurations.viewType=='Yes'"
+                      (click)="saveorUpdateSalesOrderDimensionConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Copy Customer to Supplier' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.copyCustomerToSuppliersConfigurations.copy=='No'"
+                      (click)="saveorUpdateCopyCustomerToSuppliers('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.copyCustomerToSuppliersConfigurations.copy=='Yes'"
+                      (click)="saveorUpdateCopyCustomerToSuppliers('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'GRN Manual Upload Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="grnUploadConfig.receivedType=='No'"
+                      (click)="saveGRNUploadConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="grnUploadConfig.receivedType=='Yes'"
+                      (click)="saveGRNUploadConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Putaway Quality Check Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="putawayQC.qualityCheck=='No'"
+                      (click)="savePutawayQConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="putawayQC.qualityCheck=='Yes'"
+                      (click)="savePutawayQConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Picking Quality Check Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="pickingQC.qualityCheck=='No'"
+                      (click)="savePickingQConfig('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="pickingQC.qualityCheck=='Yes'"
+                      (click)="savePickingQConfig('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row" [formGroup]="conversionForm">
+                  <label class="col-md-2">{{'SpaceUtilization Conversion Unit Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <select class="form-control" formControlName="unitCode" (change)="saveConversionUnitConfig($event)">
+                      <option [value]="null">--Select--</option>
+                      <option *ngFor="let unit of units" [value]="unit.unitCode">
+                        {{unit.unitCode}}</option>
+                    </select>
+                    <!-- <button class="btn-danger" *ngIf="this.spaceUtilizationConversionUnitConfigurations.unitCode=='No'"
+                      (click)="saveorUpdateSpaceUtilizationConversionUnitConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success"
+                      *ngIf="this.spaceUtilizationConversionUnitConfigurations.unitCode=='Yes'"
+                      (click)="saveorUpdateSpaceUtilizationConversionUnitConfiguration('Yes')">{{'Yes' |translate}}</button> -->
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Discount Configuration' |translate}}</label>
+                  <div class="col-md-3">
+                    <button class="btn-danger" *ngIf="this.discountConfigurations.discountConfirmationCheck=='No'"
+                      (click)="saveorUpdateDiscountConfiguration('No')">{{'No' |translate}}</button>
+                    <button class="btn-success" *ngIf="this.discountConfigurations.discountConfirmationCheck=='Yes'"
+                      (click)="saveorUpdateDiscountConfiguration('Yes')">{{'Yes' |translate}}</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Image Config' |translate}}</label>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="imageDropdown" [(ngModel)]="imageselected" [ngModelOptions]="{standalone: true}"
+                      (focusout)="imageConfigSave($event)">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Source WareHouse' |translate}}</label>
+                  <div class="col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                      [data]="sourceWareHouses" [(ngModel)]="wareHouseselected" [ngModelOptions]="{standalone: true}">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="col-md-2">
+                    <button (click)="sourceWarehouseConfigSave()" class="form-control">Save</button>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Shipment Time Slot' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="shipmentTimeSlots" (onAdd)="onItemAdded($event, 'shipmentTime')"
+                      (onRemove)="onItemRemoved($event, 'shipmentTimeSlotName')" [displayBy]="'shipmentTimeSlotName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Payment Mode' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="paymentModes" (onAdd)="onItemAdded($event, 'paymentMode')"
+                      (onRemove)="onItemRemoved($event, 'paymentModeName')" [displayBy]="'paymentModeName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Pallet Size' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="palletSizes" (onAdd)="onItemAdded($event, 'palletSize')"
+                      (onRemove)="onItemRemoved($event, 'palletSizeName')" [displayBy]="'palletSizeName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Country' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="countries" (onAdd)="onItemAdded($event, 'country')"
+                      (onRemove)="onItemRemoved($event, 'Country')" [displayBy]="'name'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Currency' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="currencies" (onAdd)="onItemAdded($event, 'Currency')"
+                      (onRemove)="onItemRemoved($event, 'currency')" [displayBy]="'currency'">
+                    </tag-input>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Equipment Type' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="equipmentType" (onAdd)="onItemAdded($event, 'equipType')"
+                      (onRemove)="onItemRemoved($event, 'deleteEquipment')" [displayBy]="'name'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Tax Group' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="taxGroups" (onAdd)="onItemAdded($event, 'taxGroup')"
+                      (onRemove)="onItemRemoved($event, 'taxGroup')" [displayBy]="'taxGroup'">
+                    </tag-input>
+                  </div>
+                </div>
+                <!-- <div class="form-group row">
+                  <label class="col-md-2">Tax Type</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="countryTaxTypesList" (onAdd)="onItemAdded($event, 'taxType')"
+                      (onRemove)="onItemRemoved($event, 'taxType')" [displayBy]="'taxTypes'">
+                    </tag-input>
+                  </div>
+                </div> -->
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Units' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="units" (onAdd)="onItemAdded($event, 'unit')"
+                      (onRemove)="onItemRemoved($event, 'unitCode')" [displayBy]="'unitCode'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Terms of Payments' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="termOfPayments" (onAdd)="onItemAdded($event, 'term')"
+                      (onRemove)="onItemRemoved($event, 'termOfPayment')" [displayBy]="'termsOfPaymentCode'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Packing Type' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="pickingTypes" (onAdd)="onItemAdded($event, 'pickingType')"
+                      (onRemove)="onItemRemoved($event, 'packingTypeDelete')" [displayBy]="'packingTypeName'">
+                    </tag-input>
+                  </div>
+                </div>
+
+                <div class="form-group row" *ngIf="getRole()">
+                  <label class="col-md-2">{{'Roles' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="rolesList" (onAdd)="onItemAdded($event, 'role')"
+                      (onRemove)="onItemRemoved($event, 'role')" [displayBy]="'roleName'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Terms And Conditions for PO' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="termsAndConditionsForPO"
+                      (onAdd)="onItemAdded($event, 'termsAndConditionsForPO')"
+                      (onRemove)="onItemRemoved($event, 'termsAndConditions')" [displayBy]="'termsAndConditions'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Terms And Conditions for SO' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="termsAndConditionsForSO"
+                      (onAdd)="onItemAdded($event, 'termsAndConditionsForSO')"
+                      (onRemove)="onItemRemoved($event, 'termsAndConditions')" [displayBy]="'termsAndConditions'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Terms And Conditions for Invoice' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="termsAndConditionsForInvoice"
+                      (onAdd)="onItemAdded($event, 'termsAndConditionsForInvoice')"
+                      (onRemove)="onItemRemoved($event, 'termsAndConditions')" [displayBy]="'termsAndConditions'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Login Text' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="loginPageTexts" (onAdd)="onItemAdded($event, 'loginText')"
+                      (onRemove)="onItemRemoved($event, 'loginText')" [displayBy]="'loginText'">
+                    </tag-input>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Home Text' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="homePageTexts" (onAdd)="onItemAdded($event, 'homePageText')"
+                      (onRemove)="onItemRemoved($event, 'homePage')" [displayBy]="'homePage'">
+                    </tag-input>
+                  </div>
+                </div>
+                <!-- <div class="form-group row">
+                  <label class="col-md-2">Column</label>
+                  <div class="input-container col-md-6">
+                    <tag-input [(ngModel)]="columns" (onAdd)="onItemAdded($event, 'column')"
+                      (onRemove)="onItemRemoved($event, 'column')" [displayBy]="'column'">
+                    </tag-input>
+                  </div>
+                </div> -->
+                <div class="form-group row">
+                  <label class="col-md-2">{{'Logo' |translate}}</label>
+                  <div class="input-container col-md-6">
+                    <input type="file" #upload hidden (change)="uploadFiles($event)" accept="image/png, image/jpeg">
+                    <button (click)="upload.click()" class="upload btn border-0 btn-info">{{'Upload' |translate}}</button>
+                    {{logoList.logoName}}<i *ngIf="logoList.logoName" class="fa fa-times"
+                      (click)="deleteApplicationLogo()"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

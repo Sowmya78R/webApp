@@ -1,0 +1,338 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form #rackForm="ngForm">
+    <div class="col-md-12">
+      <div class="row" *ngIf="permissionsList.includes('Update')">
+        <div class="col-md-12">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'RACK ATTRIBUTES' |translate}} </h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen"> unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'RACK ATTRIBUTES' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i></div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body scrollbar">
+                <div class="row force-overflow">
+                  <div class="col-md-4 mt-2">
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">{{'Rack Name' |translate}}<i class="red">*</i> </label>
+                      <div class="col-sm-5">
+                        <input id="rackName" name="rackName" #rackName="ngModel" [(ngModel)]="rackDetails.rackName"
+                          placeholder="{{'Rack Name' |translate}}" class="form-control extraLongWidth"
+                          [readonly]="isReadMode"
+                          [ngClass]="{'valiError': shouldShowErrors(rackName), 'valiSucess': shouldShowSuccess(rackName)}"
+                          (focus)="onFocusForElement(rackName)" (focusout)="onFocusOutForElement()" required
+                           type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">{{'Zone Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-9">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search zone to retrive data of zone"> info </i>
+                        <ng2-completer id="zoneName" name="zoneName" #zoneName="ngModel"
+                          class="'form-control form-control-inline'" [(ngModel)]="rackDetails.zoneInfo.zoneName"
+                          [datasource]="zoneNameValues" [minSearchLength]="0"
+                          (selected)="getSelectedValue('zone', $event)" placeholder="{{'Zone Name' |translate}}"
+                          required [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Storage Type' |translate}}
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search storageType to retrive data of storageType"> info </i>
+                        <ng2-completer id="storageTypeCode" name="storageTypeCode" #storageTypeCode="ngModel"
+                          [(ngModel)]="rackDetails.storageType.storageTypeCode" [datasource]="storageTypeValues"
+                          [minSearchLength]="0" (selected)="getSelectedValue('storageType', $event)"
+                          placeholder="{{'Storage Type' |translate}}" [disabled]="makeThisDisabled">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row ">
+                      <label class="col-sm-3 col-form-label">{{'Capacity' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input id="capacity" name="capacity" #capacity="ngModel" [(ngModel)]="rackDetails.capacity"
+                          placeholder="{{'Capacity' |translate}}" class="form-control extraLongWidth" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mt-2">
+
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Height' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input id="height" name="height" #height="ngModel" [(ngModel)]="rackDetails.height"
+                          placeholder="{{'Height' |translate}}" class="form-control extraLongWidth" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Width' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input id="width" name="width" #width="ngModel" [(ngModel)]="rackDetails.width"
+                          placeholder="{{'Width' |translate}}" class="form-control" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <!--  [ngClass]="{'valiError': shouldShowErrors(width), 'valiSucess': shouldShowSuccess(width)}"
+                          (focus)="onFocusForElement(width)" (focusout)="onFocusOutForElement()" -->
+                    <!-- <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Sequence</label>
+                      <div class="col-sm-8">
+                        <input id="sequence" name="sequence" #sequence="ngModel" [(ngModel)]="rackDetails.sequence"
+                          placeholder="Sequence" class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div> -->
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'X-Coordinate' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input id="xcoordinate" name="xcoordinate" #xcoordinate="ngModel"
+                          [(ngModel)]="rackDetails.xcoordinate" placeholder="{{'X-Coordinate' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Y-Coordinate' |translate}}</label>
+                      <div class="col-sm-5">
+                        <input id="ycoordinate" name="ycoordinate" #ycoordinate="ngModel"
+                          [(ngModel)]="rackDetails.ycoordinate" placeholder="{{'Y-Coordinate' |translate}}"
+                          class="form-control" type="text" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <!--    [ngClass]="{'valiError': shouldShowErrors(height), 'valiSucess': shouldShowSuccess(height)}"
+                          (focus)="onFocusForElement(height)" (focusout)="onFocusOutForElement()" -->
+                    
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Mode' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control extraLongWidth" [(ngModel)]="rackDetails.mode" name="mode" id="mode"
+                          [disabled]="makeThisDisabled">
+                          <option selected disabled value="null">Select</option>
+                          <option>1deep</option>
+                          <option>2deep</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Columns' |translate}}<i class="red">*</i></label>
+                      <!-- <div class="col-sm-8"> -->
+                      <!-- <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="dropdownList" name="columns" [(ngModel)]="rackDetails.columnHelpers">
+                        </ng-multiselect-dropdown> -->
+                      <div class="col-sm-3">
+                        <input type="text" [placeholder]="'Select'" name="columnHelpers" id="columnHelpers" required
+                          [(ngModel)]="columnsShowValues" [readOnly]="makeReadOnly" class="form-control extraLongWidth">
+                      </div>
+                      <div class="col-sm-2 mt-2"><i class="fa fa-search" style="margin-left: 20px;cursor: pointer;"
+                          (click)="openModalColumns(rackDetails)"></i></div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">{{'Column Direction' |translate}}</label>
+                      <div class="col-sm-5">
+                        <select class="form-control" [(ngModel)]="rackDetails.columnDirection" name="columnDirection"
+                          id="columnDirection" [disabled]="makeThisDisabled">
+                          <option selected disabled value="null">Select</option>
+                          <option>Left</option>
+                          <option>Right</option>
+                          <option>Top</option>
+                          <option>Bottom</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!--   [ngClass]="{'valiError': shouldShowErrors(sequence), 'valiSucess': shouldShowSuccess(sequence)}"
+                          (focus)="onFocusForElement(sequence)" (focusout)="onFocusOutForElement()" -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row drop-status ">
+            <label class="col-sm-1 col-form-label">{{'Status:' |translate}}</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="status" name="status" required [(ngModel)]="rackDetails.status"
+                #status="ngModel" (change)="onFocusForElement(status)" [disabled]="makeThisDisabled">
+                <option [ngValue]="null" selected>--Select--</option>
+                <option *ngFor="let key of statuss" [ngValue]="key">{{key}}</option>
+              </select>
+            </div>
+            <!--  [ngClass]="{'valiError': shouldShowErrors(status), 'valiSucess': shouldShowSuccess(status)}"
+                (focusout)="onFocusOutForElement()" -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 text-right mb-3">
+              <button class="btn btn-green mr-1" value="Save" (click)="save(rackForm)" [disabled]="rackForm.invalid">
+                {{'Save' |translate}} </button>
+              <button class="btn btn-white" value="Clear" (click)="clearRackData(rackForm)">{{'Clear'
+                |translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" data-page-length='5' class="table table-striped d-table" datatable
+              [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td scope="col">{{'S.No' |translate}}</td>
+                  <td scope="col">{{'Rack Name' |translate}}</td>
+                  <td scope="col">{{'Zone Name' |translate}}</td>
+                  <td scope="col">{{'Storage Type' |translate}}</td>
+                  <td scope="col">{{'Capacity' |translate}}</td>
+                  <td scope="col">{{'Height' |translate}}</td>
+                  <td scope="col">{{'Width' |translate}}</td>
+                  <td scope="col">{{'X-Coordinate' |translate}}</td>
+                  <td scope="col">{{'Y-coordinate' |translate}}</td>
+                  <td scope="col">{{'Mode' |translate}}</td>
+                  <td scope="col">{{'Column Name' |translate}}</td>                 
+                  <th scope="col">{{'Status' |translate}}</th>
+                  <th scope="col">{{'Action' |translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of racks; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor:pointer" (click)="editRackDetails(detail)">{{detail.rackName}}</th>
+                  <td>{{detail.zoneInfo?.zoneName}}</td>
+                  <td>{{detail.storageType?.storageTypeCode}}</td>
+                  <td>{{detail.capacity}}</td>
+                  <td>{{detail.height}}</td>
+                  <td>{{detail.width}}</td>
+                  <td>{{detail.xcoordinate}}</td>
+                  <td>{{detail.ycoordinate}}</td>
+                  <td>{{detail.mode}}</td>
+                  <!-- <td><span *ngFor="let det of detail.columnHelpers">{{det.columnName}}</span></td> -->
+                  <td><span [hidden]="detail.columnHelpers.length==0"
+                      *ngFor="let det of detail.columnHelpers;let j=index">{{det.columnName}}
+                      <span *ngIf="det.columnName && (j)!=(detail.columnHelpers.length-1)">,</span>
+                    </span></td>
+                  <td>{{detail.status}}</td>
+                  <td><span _ngcontent-lty-c40="" class="btn btn-pink btn-sm">
+                      <i _ngcontent-lty-c40="" class="fa fa-trash btn-blue" (click)="delete(detail)"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
+<ngx-smart-modal customClass="nsm-centered" id="rackMaster" #recieveLocationsModal
+  [identifier]="'recieveLocationsModal'">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Columns</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="wmsDataTables p-2">
+        <div id="style-8" class="panel-body scrollbar" style="height: 410px">
+          <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger2">
+            <thead>
+              <tr>
+                <th scope="col">{{'S.No' |translate}}</th>
+                <th scope="col">{{'Include' |translate}}</th>
+                <th scope="col">{{'Column Name' |translate}}</th>
+                <th scope="col">{{'X-Coordinate' |translate}}</th>
+                <th scope="col" style="width: 20px;">{{'Y-Coordinate' |translate}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="columnsListData.length>0">
+              <tr *ngFor="let data of columnsListData;let i=index">
+                <td scope="row">{{i+1}}</td>
+                <td><input type="checkbox" [checked]="data.isChecked" (click)="read($event,data)"
+                    [(ngModel)]="data.isChecked" [ngModelOptions]="{standalone: true}"></td>
+                <td>{{data.columnName}}</td>
+                <td *ngIf="!data.isEdit">
+                  <span>
+                    {{data.xcoordinate}}
+                  </span>
+                </td>
+                <td *ngIf="data.isEdit"><span>
+                    <input type="text" class="form-control" #xcoordinate [value]="data.xcoordinate"
+                      (focusout)="savequantity(xcoordinate.value,data,'xcoordinate')"></span>
+                </td>
+                <td *ngIf="!data.isEdit">
+                  <span>
+                    {{data.ycoordinate}}
+                  </span>
+                </td>
+                <td *ngIf="data.isEdit"><span>
+                    <input type="text" class="form-control" #ycoordinate [value]="data.ycoordinate"
+                      (focusout)="savequantity(ycoordinate.value,data,'ycoordinate')"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="float-right">
+        <button class="btn btn-green" (click)="saveColumnsToRack()">Save</button>
+        <button class="btn btn-white" (click)="resetColumns('Recieve')">Clear</button>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>

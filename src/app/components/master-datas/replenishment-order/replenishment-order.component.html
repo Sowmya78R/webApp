@@ -1,0 +1,218 @@
+<div id="inBody" *ngIf="permissionsList.includes('View')" [dir]="direction">
+  <form [formGroup]="replenishmentOrderForm">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 " *ngIf="permissionsList.includes('Update')">
+          <div class="udcBtns float-right">
+            <a (click)="getFile()"><img src="assets/Export.png" title="Upload Excel" alt=""
+                style="width: 25px;height: 23px;margin-right: 16px;">
+              <input id="upfile" class="hidden" type="file" accept=".xlsx" (change)="uploadExcel($event)">
+            </a>
+            <a value="Log File" *ngIf="failureRecords.length > 0"><img src="assets/Log file 2.png" title="Log File"
+                alt="" style="width: 25px;height: 23px;margin-right: 10px;" (click)="downloadLogFile()">
+            </a>
+            <a>
+              <button type="button" value="Download Excel" (click)="exportAsXLSX()" title="Download Excel"
+                style="background: none !important;border: none !important;">
+                <img src="assets/Import.png" alt="" style="width: 25px;height: 23px;">
+              </button>
+            </a>
+            <!-- <ul>
+              <li (click)="getFile()"><a> <i class="material-icons align-middle"> open_in_browser
+                  </i>{{'Upload Excel' |translate}}<input id="upfile" class="hidden" type="file" accept=".xlsx"
+                    (change)="uploadExcel($event)">
+                </a>
+              </li>
+              <li value="Log File" *ngIf="failureRecords.length > 0"><a (click)="downloadLogFile()"> <i
+                    class="material-icons align-middle"> description
+                  </i> Log File </a>
+              </li>
+              <li value="Download Excel" (click)="exportAsXLSX()"><a> <i class="material-icons align-middle"> get_app
+                  </i>{{'Download Excel' |translate}}</a>
+              </li>
+            </ul> -->
+
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="panel portlet">
+            <div class="formBox portlet-title">
+              <div class="row">
+                <div class="panel-heading formTitle w-auto">
+                  <h4>{{'REPLENISHMENT ORDER' |translate}}</h4>
+                  <div class="float-right"><span class="clickable"><i class="fa fa-angle-up"
+                        aria-hidden="true"></i></span> | <i class="material-icons fullscreen">
+                      unfold_less </i> </div>
+                </div>
+                <div class="formTitleHover">
+                  <h4>{{'REPLENISHMENT ORDER' |translate}}
+                    <div class="float-right"><i class="material-icons fullscreen"> close </i>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <div id="style-8" class="panel-body ">
+                <div class="row ">
+                  <div class="col-md-4">
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-4 col-form-label">{{'Product' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search product to retrive data of product">{{'info' |translate}}</i>
+                        <ng2-completer name="productIDName" formControlName="productIDName" [disabled]="isReadMode"
+                          [datasource]="productIDNameValues" [minSearchLength]="0"
+                          placeholder="{{'Product' |translate}}" (selected)="getSelectedValue('productIDName')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-4 col-form-label">{{'Product ID' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <input id="productID" name="productID" formControlName="productID"
+                          placeholder="{{'Product ID' |translate}}" class="form-control extraLongWidth" readonly
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row" formGroupName="productMasterInfo">
+                      <label class="col-sm-4 col-form-label">{{'Product Name' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <input type="text" name="productName" class="form-control extraLongWidth" id="productName"
+                          placeholder="{{'Product Name' |translate}}" formControlName="productName" readonly
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row  drop-status">
+                      <label class="col-sm-4 col-form-label">{{'Area Replenishment Allow' |translate}}
+                      </label>
+                      <div class="col-sm-4">
+                        <input type="checkbox" name="areaReplenishmentAllows" id="areaReplenishmentAllows"
+                          formControlName="areaReplenishmentAllows" class="mt-3 ml-5" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" formGroupName="locationInfo">
+                      <label class="col-sm-4 col-form-label">{{'Location Name' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-8">
+                        <i class="material-icons iIcon" data-toggle="tooltip" data-placement="top"
+                          title="Search location to retrive data of location"> info </i>
+                        <ng2-completer name="locationName" formControlName="locationName"
+                          [datasource]="locationNameValues" [minSearchLength]="0"
+                          placeholder="{{'Location Name' |translate}}" (selected)="getSelectedValue('locationName')">
+                        </ng2-completer>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Replenishment Quantity' |translate}}<i class="red">*</i>
+                      </label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control extraLongWidth" id="replenishmentQuantity"
+                          placeholder="{{'Replenishment Quantity' |translate}}" formControlName="replenishmentQuantity"
+                          (focus)="onFocusForElement('replenishmentQuantity')" (focusout)="onFocusOutForElement()"
+                          type="text" oninput="validity.valid||(value='');" min="0" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Reason' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control extraLongWidth" id="reason"
+                          placeholder="{{'Reason' |translate}} " formControlName="reason"
+                          (focus)="onFocusForElement('reason')" (focusOut)="onFocusOutForElement()" type="text"
+                          [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group row" *ngIf="showImage">
+                      <label for="" class="col-sm-4 col-form-label">{{'Product Image' |translate}} </label>
+                      <div class="col-sm-8">
+                        <img id="pLogo" style="width: 175px;height: 80px;border-radius: 10px;margin-top:8px;"
+                          alt="No Image">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Threshold Quantity' |translate}}
+                      </label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control extraLongWidth" id="thresholdQuantity"
+                          placeholder="{{'Threshold Quantity' |translate}}" formControlName="thresholdQuantity"
+                          (focus)="onFocusForElement('thresholdQuantity')" (focusout)="onFocusOutForElement()"
+                          type="text" oninput="validity.valid||(value='');" min="0" [readonly]="makeReadOnly">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">{{'Brand' | translate}}
+                      </label>
+                      <div class="col-sm-5" style="width: 146px;">
+                        <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="dropdownSettings"
+                          [data]="brandConfigureIDs" name="Sub-Category 1" formControlName="brandNames"
+                          name="brandNames" placeholder="Brand Configurations">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label"> </label>
+              <div class="col-sm-8 text-right">
+                <button class="btn btn-green mr-1" (click)="save()" [disabled]="replenishmentOrderForm.invalid">{{'Save'
+                  |translate}}
+                </button>
+                <button class="btn btn-white" (click)="clear()">{{'Clear' |translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="scrolTable" class="wmsDataTables">
+            <table id="example" class="table table-striped d-table" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <td>{{'S.No' |translate}}</td>
+                  <td>{{'Product ID' |translate}}</td>
+                  <td>{{'Product Name' |translate}}</td>
+                  <td>{{'Location Name' |translate}}</td>
+                  <td>{{'Replenishment Quantity' |translate}}</td>
+                  <td>{{'Threshold Quantity' |translate}}</td>
+                  <td>{{'Area Replenishment Allow' |translate}}</td>
+                  <td>{{'Brand Name' |translate}}</td>
+                  <td>{{'Reason' |translate}}</td>
+                  <td>{{'Action' |translate}}</td>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of replenishmentOrders; let i = index;">
+                  <td class="text-left">{{i+1}}</td>
+                  <th style="cursor:pointer" (click)="edit(detail)">{{detail.productMasterInfo.productID}}</th>
+                  <td>{{detail.productMasterInfo.productName}}</td>
+                  <td>{{detail.locationInfo.locationName}}</td>
+                  <td>{{detail.replenishmentQuantity}}</td>
+                  <td>{{detail.thresholdQuantity}}</td>
+                  <td>{{detail.areaReplenishmentAllows}}</td>
+                  <td>{{detail.brandNames}}</td>
+                  <td>{{detail.reason}}</td>
+                  <td><span class="btn btn-pink btn-sm"><i class="fa fa-trash btn-blue"
+                        (click)="delete(detail)"></i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-delete-popup [getInfo]="deleteInfo" (sendConfirmation)="getConfirmation($event)"></app-delete-popup>
